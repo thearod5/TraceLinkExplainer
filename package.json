@@ -6,7 +6,10 @@
   "scripts": {
     "fend": "cd fend && npm start",
     "bend": "cd bend && npm start",
-    "dev": "concurrently \"npm run bend\" \"npm run fend\""
+    "fend-lint": "cd fend && npm run lint",
+    "bend-lint": "cd bend && npm run lint",
+    "dev": "concurrently \"npm run bend\" \"npm run fend\"",
+    "lint": "concurrently \"npm run bend-lint\" \"npm run fend-lint\""
   },
   "repository": {
     "type": "git",
