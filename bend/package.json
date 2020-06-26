@@ -1,0 +1,11 @@
+{
+  "name": "tracelinkexplainerbend",
+  "version": "1.0.0",
+  "description": "API for accessing data to explain traces between artifacts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Alberto Rodriguez",
+  "license": "ISC"
+}
