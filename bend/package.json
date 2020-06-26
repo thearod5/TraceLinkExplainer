@@ -4,7 +4,7 @@
   "description": "API for accessing data to explain traces between artifacts.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/server.ts",
+    "start": "lsof -t -i tcp:5000 | xargs kill & nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/server.ts",
     "lint": "eslint . --ext .ts,.tsx,.js"
   },
   "author": "Alberto Rodriguez",
