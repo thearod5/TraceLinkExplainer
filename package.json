@@ -1,0 +1,24 @@
+{
+  "name": "tracelinkexplainer",
+  "version": "1.0.0",
+  "description": "An experiment designed to explore the different forms of explaining the ontology between two traced artifacts.",
+  "main": "index.js",
+  "scripts": {
+    "fend": "cd fend && npm start",
+    "bend": "cd bend && npm start",
+    "dev": "concurrently \"npm run bend\" \"npm run fend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thearod5/TraceLinkExplainer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thearod5/TraceLinkExplainer/issues"
+  },
+  "homepage": "https://github.com/thearod5/TraceLinkExplainer#readme",
+  "dependencies": {
+    "concurrently": "^5.2.0"
+  }
+}
