@@ -1,7 +1,7 @@
 interface Dataset {
   name: string;
   summary: string;
-  artifacts: Array<ArtifactSet>
+  artifactSets: Array<ArtifactSet>
 }
 
 interface ArtifactSet {

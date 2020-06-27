@@ -1,6 +1,7 @@
 import { handleTestRoute } from './controllers/TestRouteController'
-import express from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
+import { getDatasetByName } from './controllers/DatasetController'
 
 const app = express()
 const port = 5000
@@ -14,6 +15,7 @@ app.use(cors())
  * ENDPOINTS
  */
 app.get('/test', handleTestRoute)
+app.get('/dataset/:datasetName', (req: Request, res: Response) => getDatasetByName(req.params.datasetName, res))
 
 /*
  * START SERVER
