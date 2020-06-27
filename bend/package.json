@@ -2,9 +2,11 @@
   "name": "tracelinkexplainerbend",
   "version": "1.0.0",
   "description": "API for accessing data to explain traces between artifacts.",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "lsof -t -i tcp:5000 | xargs kill & nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/server.ts",
+    "killOld": "lsof -t -i tcp:5000 | xargs kill",
+    "start": "'ts-node' src/server.ts",
+    "start-watch": "npm run killOld & nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec npm start",
     "lint": "eslint . --ext .ts,.tsx,.js"
   },
   "author": "Alberto Rodriguez",

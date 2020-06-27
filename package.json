@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "fend": "cd fend && npm start",
-    "bend": "cd bend && npm start",
+    "bend": "cd bend && npm run start-watch",
     "fend-lint": "cd fend && npm run lint",
     "bend-lint": "cd bend && npm run lint",
-    "dev": "concurrently \"npm run bend\" \"npm run fend\"",
+    "start": "concurrently \"npm run bend\" \"npm run fend\"",
     "lint": "concurrently \"npm run bend-lint\" \"npm run fend-lint\""
   },
   "repository": {
