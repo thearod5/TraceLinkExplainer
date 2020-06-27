@@ -9,7 +9,7 @@ import {
   Route
 } from 'react-router-dom'
 
-function App () {
+function App() {
   return (
     <Router>
       {/* A <Switch> looks through its children <Route>s and
