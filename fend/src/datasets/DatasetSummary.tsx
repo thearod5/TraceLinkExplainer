@@ -1,5 +1,6 @@
 import Button from "@material-ui/core/Button";
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Dataset } from "../../../shared/Dataset";
 import { HEIGHT_FROM_TOP_NUM } from "../nav/PageTitle";
@@ -19,7 +20,8 @@ function DatasetSummary(props: DatasetSummaryProps) {
             size="large"
             variant="contained"
             color="primary"
-            href="/explore"
+            component={Link}
+            to={"/explore"}
           >
             Explore
           </Button>

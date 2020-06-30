@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Dataset } from "../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../api/base";
 import DatasetItemSummary from "../datasets/DatasetItemSummary";
-import { selectDataset, unselectDataset } from "../redux/actions";
+import { newPage, selectDataset, unselectDataset } from "../redux/actions";
 
 const DEFAULT_INDEX_SELECTED = -1;
 
@@ -23,12 +23,15 @@ function DatasetChooser() {
     const clickedDatasetName = datasets[indexToSelect];
     getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
       dispatch(selectDataset(dataset));
+      dispatch(newPage(dataset.name));
       setIndexSelected(indexToSelect);
     });
   };
 
   const deselectDataset = () => {
+    console.log("deleselect");
     dispatch(unselectDataset());
+    dispatch(newPage(""));
     setIndexSelected(DEFAULT_INDEX_SELECTED);
   };
 
@@ -63,13 +66,6 @@ function DatasetChooser() {
 }
 
 const ChooserContainer = styled.div``;
-
-const iconStyle = {
-  position: "relative",
-  top: "0px",
-  left: "0px",
-  zIndex: -1,
-};
 
 const LoadingItem = styled.p`
   text-align: center;

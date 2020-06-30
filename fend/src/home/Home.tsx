@@ -2,14 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SplitterLayout from "react-splitter-layout";
 import "react-splitter-layout/lib/index.css";
-import { Dataset } from "../../../shared/Dataset";
 import DatasetSummary from "../datasets/DatasetSummary";
+import { RootState } from "../redux";
 import "../styles/App.css";
 import DatasetChooser from "./DatasetChooser";
 import NoDatasetFound from "./NoDatasetFound";
 
 function Home() {
-  const dataset = useSelector((state: Dataset) => state);
+  const dataset = useSelector((state: RootState) => state.dataset);
+  console.log(dataset);
   const leftPanel =
     dataset.name !== "" ? (
       <DatasetSummary dataset={dataset}></DatasetSummary>
@@ -18,9 +19,13 @@ function Home() {
     );
 
   return (
-    <SplitterLayout percentage={true} primaryMinSize={50}>
+    <SplitterLayout
+      percentage={true}
+      secondaryInitialSize={25}
+      primaryMinSize={75}
+    >
       {leftPanel}
-      <DatasetChooser></DatasetChooser>
+      <DatasetChooser />
     </SplitterLayout>
   );
 }

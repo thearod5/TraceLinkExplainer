@@ -1,6 +1,6 @@
 import { createStore } from "redux";
-import { datasetReducer } from "./reducers";
+import rootReducer from "./index";
 
-const store = createStore(datasetReducer); //TODO: Find way to extend to combineReducers
+const store = createStore(rootReducer()); //TODO: Find way to extend to combineReducers
 
 export default store;

@@ -1,10 +1,12 @@
-import { combineReducers } from "redux";
-import { SELECT_DATASET, UNSELECT_DATASET } from "./actions";
-import initializeData from "./initializers";
-import { DatasetActionType } from "./types";
+import { NEW_PAGE, SELECT_DATASET, UNSELECT_DATASET } from "./actions";
+import {
+  initializeEmptyDataset,
+  initializeEmptyMetaData,
+} from "./initializers";
+import { DatasetActionType, MetaActionType } from "./types";
 
 export function datasetReducer(
-  state = initializeData(),
+  state = initializeEmptyDataset(),
   action: DatasetActionType
 ) {
   switch (action.type) {
@@ -17,8 +19,18 @@ export function datasetReducer(
   }
 }
 
-export default function rootReducer() {
-  return combineReducers({
-    dataset: datasetReducer,
-  });
+export function metaDataReducer(
+  state = initializeEmptyMetaData(),
+  action: MetaActionType
+) {
+  switch (action.type) {
+    case NEW_PAGE:
+      return {
+        ...state,
+        oldPage: state.currentPage,
+        currentPage: action.payload,
+      };
+    default:
+      return state;
+  }
 }
