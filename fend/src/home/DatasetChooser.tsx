@@ -1,22 +1,29 @@
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dataset } from "../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../api/base";
 import DatasetItemSummary from "../datasets/DatasetItemSummary";
+import { RootState } from "../redux";
 import { newPage, selectDataset, unselectDataset } from "../redux/actions";
 
 const DEFAULT_INDEX_SELECTED = -1;
 
 function DatasetChooser() {
+  const dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
 
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
   const [datasets, setDatasetsNames] = useState<string[]>([]);
 
   useEffect(() => {
-    getDatasetNames().then((res) => setDatasetsNames(res));
+    getDatasetNames().then((names) => {
+      names.map((name, index) =>
+        dataset.name === name ? setIndexSelected(index) : null
+      );
+      setDatasetsNames(names);
+    });
   }, []);
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
