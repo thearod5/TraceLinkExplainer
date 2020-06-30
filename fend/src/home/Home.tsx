@@ -1,17 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/App.css'
-import { testCall } from '../api/base'
+import { Dataset } from '../../../shared/Dataset'
+import { getDataset } from '../api/base'
+import SplitterLayout from 'react-splitter-layout'
+import 'react-splitter-layout/lib/index.css'
+import DatasetSummary from '../datasets/DatasetSummary'
+import NoDatasetFound from './NoDatasetFound'
+import DatasetChooser from './DatasetChooser'
 
-function Home () {
-  const [response, setResponse] = useState('loading ...')
+const datasetName = 'Drone';
+
+function Home() {
+  const [dataset, setDataset] = useState<Dataset | undefined>(undefined)
 
   useEffect(() => {
-    testCall().then(response => setResponse(response.message))
-  }, [response])
+    getDataset(datasetName).then(setDataset);
+  }, [dataset])
 
-  return (
-    <p>{response}</p>
-  )
+  if (dataset)
+    return (
+      <SplitterLayout percentage={true} primaryMinSize={75}>
+        <DatasetSummary dataset={dataset}></DatasetSummary>
+        <DatasetChooser></DatasetChooser>
+      </SplitterLayout>
+    )
+  else
+    return (
+      <SplitterLayout percentage={true} primaryMinSize={75}>
+        <NoDatasetFound></NoDatasetFound>
+        <DatasetChooser></DatasetChooser>
+      </SplitterLayout>
+
+    )
 }
 
 export default Home
