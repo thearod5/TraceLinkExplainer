@@ -1,37 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import '../styles/App.css'
-import { Dataset } from '../../../shared/Dataset'
-import { getDataset } from '../api/base'
-import SplitterLayout from 'react-splitter-layout'
-import 'react-splitter-layout/lib/index.css'
-import DatasetSummary from '../datasets/DatasetSummary'
-import NoDatasetFound from './NoDatasetFound'
-import DatasetChooser from './DatasetChooser'
-
-const datasetName = 'Drone';
+import React from "react";
+import { useSelector } from "react-redux";
+import SplitterLayout from "react-splitter-layout";
+import "react-splitter-layout/lib/index.css";
+import { Dataset } from "../../../shared/Dataset";
+import DatasetSummary from "../datasets/DatasetSummary";
+import "../styles/App.css";
+import DatasetChooser from "./DatasetChooser";
+import NoDatasetFound from "./NoDatasetFound";
 
 function Home() {
-  const [dataset, setDataset] = useState<Dataset | undefined>(undefined)
+  const dataset = useSelector((state: Dataset) => state);
+  const leftPanel =
+    dataset.name !== "" ? (
+      <DatasetSummary dataset={dataset}></DatasetSummary>
+    ) : (
+      <NoDatasetFound />
+    );
 
-  useEffect(() => {
-    getDataset(datasetName).then(setDataset);
-  }, [dataset])
-
-  if (dataset)
-    return (
-      <SplitterLayout percentage={true} primaryMinSize={75}>
-        <DatasetSummary dataset={dataset}></DatasetSummary>
-        <DatasetChooser></DatasetChooser>
-      </SplitterLayout>
-    )
-  else
-    return (
-      <SplitterLayout percentage={true} primaryMinSize={75}>
-        <NoDatasetFound></NoDatasetFound>
-        <DatasetChooser></DatasetChooser>
-      </SplitterLayout>
-
-    )
+  return (
+    <SplitterLayout percentage={true} primaryMinSize={50}>
+      {leftPanel}
+      <DatasetChooser></DatasetChooser>
+    </SplitterLayout>
+  );
 }
 
-export default Home
+export default Home;

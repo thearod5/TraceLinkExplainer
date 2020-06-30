@@ -1,12 +1,12 @@
-import React from 'react'
-import PageTitle from '../nav/PageTitle'
+import React from "react";
 
 //TODO: Get dataset name from store
 function Explore() {
   return (
     <div>
       <p>...this is the explore page...</p>
-    </div>)
+    </div>
+  );
 }
 
-export default Explore
+export default Explore;

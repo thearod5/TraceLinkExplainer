@@ -1,8 +1,7 @@
+import React from "react";
 
-import React from 'react'
-
-function ArtifactSearch () {
-  return (<p>search for artifacts</p>)
+function ArtifactSearch() {
+  return <p>search for artifacts</p>;
 }
 
-export default ArtifactSearch
+export default ArtifactSearch;

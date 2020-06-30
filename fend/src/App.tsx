@@ -1,14 +1,10 @@
-import React from 'react'
-import './styles/App.css'
-import Home from './home/Home'
-import Datasets from './datasets/Datasets'
-import Explore from './explore/Explore'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
-import PageTitle from './nav/PageTitle'
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Datasets from "./datasets/Datasets";
+import Explore from "./explore/Explore";
+import Home from "./home/Home";
+import PageTitle from "./nav/PageTitle";
+import "./styles/App.css";
 
 function App() {
   return (
@@ -28,7 +24,7 @@ function App() {
         </Switch>
       </Router>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

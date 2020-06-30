@@ -17,4 +17,7 @@ function getDatasetByName (datasetName: string, res: Response<Dataset>) {
   res.send(mockDataset)
 };
 
-export { getDatasetByName }
+function getDatasetNames (res: Response<Array<string>>) {
+  res.send(['Drone'])
+}
+export { getDatasetByName, getDatasetNames }

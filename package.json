@@ -23,5 +23,8 @@
   "homepage": "https://github.com/thearod5/TraceLinkExplainer#readme",
   "dependencies": {
     "concurrently": "^5.2.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.20.2"
   }
 }
