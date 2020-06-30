@@ -36,7 +36,6 @@ function DatasetChooser() {
   };
 
   const deselectDataset = () => {
-    console.log("deleselect");
     dispatch(unselectDataset());
     dispatch(newPage(""));
     setIndexSelected(DEFAULT_INDEX_SELECTED);
