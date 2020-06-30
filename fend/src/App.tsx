@@ -8,25 +8,26 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
+import PageTitle from './nav/PageTitle'
 
 function App() {
   return (
-    <Router>
-      {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-      <Switch>
-
-        <Route path="/datasets">
-          <Datasets />
-        </Route>
-        <Route path="/explore">
-          <Explore />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
+    <div>
+      <PageTitle />
+      <Router>
+        <Switch>
+          <Route path="/datasets">
+            <Datasets />
+          </Route>
+          <Route path="/explore">
+            <Explore />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   )
 }
 
