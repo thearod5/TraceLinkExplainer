@@ -3,7 +3,7 @@ import { Dataset } from '../../../shared/Dataset'
 
 const mockDataset: Dataset = {
   name: 'Drone',
-  summary: 'UAV...',
+  summary: '...description about drone dataset...',
   artifactSets: [{
     name: 'Requirements',
     artifacts: [{
