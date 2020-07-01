@@ -2,10 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SplitterLayout from "react-splitter-layout";
 import "react-splitter-layout/lib/index.css";
+import DatasetChooser from "../datasets/DatasetChooser";
 import DatasetSummary from "../datasets/DatasetSummary";
 import { RootState } from "../redux";
 import "../styles/App.css";
-import DatasetChooser from "./DatasetChooser";
 import NoDatasetFound from "./NoDatasetFound";
 
 function Home() {
