@@ -6,3 +6,5 @@ package-lock.json
 */package-lock.json
 .vscode
 .idea
+.ipynp_checkpoints
+*/.ipynp_checkpoints
