@@ -10,28 +10,22 @@ const SUMMARY_TOP_MARGIN = 75;
 interface DatasetSummaryProps {
   dataset: Dataset;
 }
+
 function DatasetSummary(props: DatasetSummaryProps) {
   return (
     <SummaryContainer>
       <Summary>{props.dataset.summary}</Summary>
-      <Operations>
-        <OperationContainer>
-          <Button
-            size="large"
-            variant="contained"
-            color="primary"
-            component={Link}
-            to={"/explore"}
-          >
-            Explore
-          </Button>
-        </OperationContainer>
-        <OperationContainer>
-          <Button size="large" variant="contained" color="secondary">
-            Edit
-          </Button>
-        </OperationContainer>
-      </Operations>
+      <OperationsContainer>
+        <Button
+          size="large"
+          variant="contained"
+          color="primary"
+          component={Link}
+          to={"/explore"}
+        >
+          Explore Artifacts
+        </Button>
+      </OperationsContainer>
     </SummaryContainer>
   );
 }
@@ -45,13 +39,11 @@ const Summary = styled.p`
   text-align: center;
 `;
 
-const Operations = styled.div`
+const OperationsContainer = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const OperationContainer = styled.div`
   margin-right: 10px;
   margin-left: 10px;
 `;
+
 export default DatasetSummary;
