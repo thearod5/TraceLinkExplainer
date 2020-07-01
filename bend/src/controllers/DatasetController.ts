@@ -1,16 +1,15 @@
 import { Response } from 'express'
 import { Dataset } from '../../../shared/Dataset'
 
+const requirements = require('../../../data/Drone/requirements.json')
+const designs = require('../../../data/Drone/designs.json')
+const tasks = require('../../../data/Drone/tasks.json')
+const classes = require('../../../data/Drone/classes.json')
+
 const mockDataset: Dataset = {
   name: 'Drone',
-  summary: '...description about drone dataset...',
-  artifactSets: [{
-    name: 'Requirements',
-    artifacts: [{
-      id: 'RE-08',
-      body: 'This is test requirements'
-    }]
-  }]
+  summary: '...placeholder description about drone dataset...',
+  artifactSets: [requirements, designs, classes, tasks]
 }
 
 function getDatasetByName (datasetName: string, res: Response<Dataset>) {
