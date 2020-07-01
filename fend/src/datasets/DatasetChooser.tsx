@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dataset } from "../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../api/base";
-import DatasetItemSummary from "../datasets/DatasetItemSummary";
 import { RootState } from "../redux";
 import { newPage, selectDataset, unselectDataset } from "../redux/actions";
+import { BORDER_LINE } from "../styles/constants";
+import DatasetItemSummary from "./DatasetItemSummary";
 
 const DEFAULT_INDEX_SELECTED = -1;
 
@@ -84,6 +85,6 @@ const Title = styled.h2`
 const DatasetItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-top: 1px solid black;
+  border-top: ${BORDER_LINE};
 `;
 export default DatasetChooser;
