@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { BORDER_LINE } from "../styles/constants";
 
 interface DataItemSummaryProps {
   dataset: string;
@@ -21,7 +22,6 @@ function DataItemSummary(props: DataItemSummaryProps) {
   );
 }
 
-const BORDER = "1px solid black";
 const ROW_HEIGHT = "40px";
 const HIGHLIGHT_BAR_WIDTH = "10px";
 
@@ -29,9 +29,9 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direct: row;
   height: ${ROW_HEIGHT};
-  border-left: ${BORDER};
-  border-right: ${BORDER};
-  border-bottom: ${BORDER};
+  border-left: ${BORDER_LINE};
+  border-right: ${BORDER_LINE};
+  border-bottom: ${BORDER_LINE};
 `;
 
 const ItemLabel = styled.h3`

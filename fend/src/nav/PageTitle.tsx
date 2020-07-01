@@ -5,10 +5,10 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "../redux";
+import { BORDER_LINE } from "../styles/constants";
 
 export const HEIGHT_FROM_TOP_NUM = 25;
 const HEIGHT_FROM_TOP = HEIGHT_FROM_TOP_NUM + "px";
-const BORDER_LINE = "2px solid black";
 const ICON_FONT_SIZE = "48px"; //TODO: why does this define the height of the bar
 const TEXT_SIDE_PADDING = "15px";
 const DEFAULT_TEXT = "Home";
