@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Dataset } from "../../../shared/Dataset";
 import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
+import { EXPLORE_ROUTE } from "../nav/routes";
 
 const SUMMARY_TOP_MARGIN = 75;
 
@@ -21,7 +22,7 @@ function DatasetSummary(props: DatasetSummaryProps) {
           variant="contained"
           color="primary"
           component={Link}
-          to={"/explore"}
+          to={EXPLORE_ROUTE}
         >
           Explore Artifacts
         </Button>
