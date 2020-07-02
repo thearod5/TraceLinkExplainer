@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Dataset } from "../../../shared/Dataset";
-import { HEIGHT_FROM_TOP_NUM } from "../nav/PageTitle";
+import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 
 const SUMMARY_TOP_MARGIN = 75;
 
@@ -31,7 +31,7 @@ function DatasetSummary(props: DatasetSummaryProps) {
 }
 
 const SummaryContainer = styled.div`
-  margin-top: ${HEIGHT_FROM_TOP_NUM + SUMMARY_TOP_MARGIN}px;
+  margin-top: ${PAGE_NAV_MARGIN_TOP + SUMMARY_TOP_MARGIN}px;
 `;
 
 const Summary = styled.p`

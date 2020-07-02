@@ -1,24 +1,22 @@
 // eslint-disable-next-line no-unused-vars
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "../redux";
-import { BORDER_LINE } from "../styles/constants";
+import { BORDER_LINE_EMPHASIS } from "../styles/constants";
 
-export const HEIGHT_FROM_TOP_NUM = 25;
-const HEIGHT_FROM_TOP = HEIGHT_FROM_TOP_NUM + "px";
-const ICON_FONT_SIZE = "48px"; //TODO: why does this define the height of the bar
-const TEXT_SIDE_PADDING = "15px";
+export const PAGE_NAP_HEIGHT = 60;
+export const PAGE_NAV_MARGIN_TOP = 25;
+const TEXT_TOP_PADDING = 5;
+
+//TODO: why does ICON_FONT_SIZE define the height of the bar
+const ICON_FONT_SIZE = 48; //px
+const TEXT_SIDE_PADDING = 15; ///px
 const DEFAULT_TEXT = "Home";
 
-//TODO: Replace hardcoded text with store
 function PageTitle() {
   const metaData = useSelector((state: RootState) => state.metaData);
-
-  const [isHovering, setIsHovering] = useState(false);
-  let history = useHistory();
 
   return (
     <TitleContainer>
@@ -34,29 +32,23 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direct: row;
   align-items: stretch;
-  margin-top: ${HEIGHT_FROM_TOP};
+  margin-top: ${PAGE_NAV_MARGIN_TOP}px;
   position: absolute;
   left: 0px;
   top: 0px;
   z-index: -1;
 `;
 
-const TitleIconStyle = {
-  height: "100%",
-  fontSize: ICON_FONT_SIZE,
-  borderTop: BORDER_LINE,
-  borderRight: BORDER_LINE,
-  borderBottom: BORDER_LINE,
-};
-
 const TitleText = styled.h1`
   margin: 0px;
-  padding-left: ${TEXT_SIDE_PADDING};
-  padding-right: ${TEXT_SIDE_PADDING};
+  padding-top: ${TEXT_TOP_PADDING}px;
+  padding-bottom: ${TEXT_TOP_PADDING}px;
+  padding-left: ${TEXT_SIDE_PADDING}px;
+  padding-right: ${TEXT_SIDE_PADDING}px;
   display: inline-block;
-  border-top: ${BORDER_LINE};
-  border-bottom: ${BORDER_LINE};
-  border-right: ${BORDER_LINE};
+  border-top: ${BORDER_LINE_EMPHASIS};
+  border-bottom: ${BORDER_LINE_EMPHASIS};
+  border-right: ${BORDER_LINE_EMPHASIS};
 `;
 
 export default PageTitle;

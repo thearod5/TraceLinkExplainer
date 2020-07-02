@@ -1,11 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Datasets from "./datasets/Datasets";
-import Explore from "./explore/Explore";
 import Home from "./home/Home";
 import PageTitle from "./nav/PageTitle";
+import TargetArtifactSearch from "./search/target/TargetArtifactSearch";
 import "./styles/App.css";
-
 function App() {
   return (
     <div>
@@ -16,7 +15,7 @@ function App() {
             <Datasets />
           </Route>
           <Route path="/explore">
-            <Explore />
+            <TargetArtifactSearch />
           </Route>
           <Route path="/">
             <Home />
