@@ -2,6 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "../redux";
 import { BORDER_LINE_EMPHASIS } from "../styles/constants";
@@ -19,6 +20,7 @@ const DEFAULT_TEXT = "Home";
 function PageTitle() {
   const metaData = useSelector((state: RootState) => state.metaData);
 
+  //TODO: programmatically set the last back page
   return (
     <TitleContainer to={HOME_ROUTE}>
       <TitleText>
@@ -29,15 +31,14 @@ function PageTitle() {
 }
 
 // eslint-disable-next-line no-unused-vars
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direct: row;
-  align-items: stretch;
+const TitleContainer = styled(Link)`
+  text-decoration: none;
   margin-top: ${PAGE_NAV_MARGIN_TOP}px;
   position: absolute;
   left: 0px;
   top: 0px;
-  z-index: -1;
+  z-index: 0;
+  color: blue;
 `;
 
 const TitleText = styled.h1`
