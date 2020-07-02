@@ -10,6 +10,7 @@ import Tab, { IconMetaType } from "./Tab";
 
 const TAB_BAR_TOP_MARGIN = 50;
 const TAB_BAR_BOTTOM_PADDING = 5;
+const DEFAULT_INDEX = 0;
 
 export default function TabBar() {
   const Tabs: Record<string, IconMetaType> = {
@@ -20,7 +21,7 @@ export default function TabBar() {
     Tasks: FormatListBulletedIcon,
   };
 
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
   return (
     <TabContainer>
       {Object.keys(Tabs).map((label, index) => (
