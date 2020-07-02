@@ -2,7 +2,7 @@ import { Response } from 'express'
 import { Dataset } from '../../../shared/Dataset'
 
 const requirements = require('../../../data/Drone/requirements.json')
-const designs = require('../../../data/Drone/designs.json')
+const designs = require('../../../data/Drone/designdefinitions.json')
 const tasks = require('../../../data/Drone/tasks.json')
 const classes = require('../../../data/Drone/classes.json')
 
