@@ -10,7 +10,6 @@ import NoDatasetFound from "./NoDatasetFound";
 
 function Home() {
   const dataset = useSelector((state: RootState) => state.dataset);
-  console.log(dataset);
   const leftPanel =
     dataset.name !== "" ? (
       <DatasetSummary dataset={dataset}></DatasetSummary>
