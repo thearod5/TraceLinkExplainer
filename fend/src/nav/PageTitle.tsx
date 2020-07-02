@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../redux";
 import { BORDER_LINE_EMPHASIS } from "../styles/constants";
+import { HOME_ROUTE } from "./routes";
 
 export const PAGE_NAP_HEIGHT = 60;
 export const PAGE_NAV_MARGIN_TOP = 25;
@@ -19,7 +20,7 @@ function PageTitle() {
   const metaData = useSelector((state: RootState) => state.metaData);
 
   return (
-    <TitleContainer>
+    <TitleContainer to={HOME_ROUTE}>
       <TitleText>
         {metaData.currentPage === "" ? DEFAULT_TEXT : metaData.currentPage}
       </TitleText>

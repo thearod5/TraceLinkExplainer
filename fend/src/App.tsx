@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Datasets from "./datasets/Datasets";
 import Home from "./home/Home";
 import PageTitle from "./nav/PageTitle";
-import { DATASETS_ROUTES, EXPLORE_ROUTE } from "./nav/routes";
+import { DATASETS_ROUTE, EXPLORE_ROUTE } from "./nav/routes";
 import TargetArtifactSearch from "./search/target/TargetArtifactSearch";
 import "./styles/App.css";
 
@@ -13,7 +13,7 @@ function App() {
       <Router>
         <PageTitle />
         <Switch>
-          <Route path={DATASETS_ROUTES}>
+          <Route path={DATASETS_ROUTE}>
             <Datasets />
           </Route>
           <Route path={EXPLORE_ROUTE}>

@@ -1,2 +1,3 @@
 export const EXPLORE_ROUTE = "/artifacts";
-export const DATASETS_ROUTES = "/datasets";
+export const DATASETS_ROUTE = "/datasets";
+export const HOME_ROUTE = "/";
