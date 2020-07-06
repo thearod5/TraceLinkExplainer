@@ -2,38 +2,48 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Artifact } from "../../../../shared/Dataset";
 import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../../nav/PageTitle";
+import SearchResultsDisplay from "./results/SearchResultsDisplay";
 import SearchBar from "./SearchBar";
-import SearchResultsDisplay from "./SearchResultsDisplay";
-import TabBar from "./TabBar";
-
-export interface SearchResult {
-  artifact: Artifact;
-  similarity: number;
-}
-
-export interface SearchSet {
-  results: SearchResult[];
-  type: string;
-}
-
-export type SuggestionFunctionType = (
-  query: string,
-  relatedToArtifact?: Artifact
-) => string[];
+import TabBar from "./tabbar/TabBar";
+import { TabKeys, Tabs } from "./tabbar/types";
+import { SearchResults, SuggestionFunctionType } from "./types";
 
 export interface SearchProps {
   suggestionFunction: SuggestionFunctionType;
-  searchFunction: (query: string, relatedToArtifact?: Artifact) => SearchSet[];
+  searchFunction: (
+    query: string,
+    relatedToArtifact?: Artifact
+  ) => SearchResults[];
   searchOptions: string[];
 }
 
+function getSelectedItems(
+  searchResultList: SearchResults[],
+  selectedIndex: number
+) {
+  const type_selected = Object.keys(Tabs)[selectedIndex];
+
+  return searchResultList
+    .filter(
+      (searchResults) =>
+        searchResults.type === type_selected || type_selected === TabKeys[0] // All
+    )
+    .map((searchResult) => searchResult.items)
+    .flat();
+}
+
+const DEFAULT_INDEX = 0;
+
 //TODO: Separate Row Height from search bar and vertically center so that all matches the page header
 export default function Search(props: SearchProps) {
-  const [results, setResults] = useState<SearchSet[]>([]);
+  const [results, setResults] = useState<SearchResults[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
 
   const startSearch = (searchString: string) => {
     setResults(props.searchFunction(searchString));
   };
+
+  const selectedItems = getSelectedItems(results, selectedIndex);
 
   return (
     <SearchContainer>
@@ -45,12 +55,14 @@ export default function Search(props: SearchProps) {
         />
       </SearchRow>
       <SearchRow>
-        <TabBar />
+        <TabBar
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+          tabs={Tabs}
+        />
       </SearchRow>
       <SearchRow>
-        {results.length > 0 ? (
-          <SearchResultsDisplay results={results[0].results} /> //TODO: Filter by selected tab
-        ) : null}
+        <SearchResultsDisplay results={selectedItems} />
       </SearchRow>
     </SearchContainer>
   );
@@ -69,5 +81,3 @@ const SearchRow = styled.div`
   justify-content: center;
   width: 100%;
 `;
-
-const Suggestion = styled.div``;

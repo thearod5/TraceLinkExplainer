@@ -1,0 +1,1 @@
+export const SEARCH_RESULT_ITEM_HEIGHT = 50;

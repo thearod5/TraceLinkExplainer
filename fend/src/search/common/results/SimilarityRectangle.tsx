@@ -1,13 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { BORDER_LINE } from "../../../styles/constants";
+import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
 
 interface SimilarityRectangleProps {
   similarity: number;
 }
 
+const SIMILARITY_RECTANGLE_WIDTH = 25;
+
+//TODO: Add theme color
 export default function SimilarityRectangle(props: SimilarityRectangleProps) {
-  //TODO: Add opacity change
-  console.log(props.similarity);
   return (
     <Rectangle
       style={{ background: `rgba(0, 0, 255, ${props.similarity})` }}
@@ -16,6 +19,7 @@ export default function SimilarityRectangle(props: SimilarityRectangleProps) {
 }
 
 const Rectangle = styled.div`
-  height: 100%;
-  width: 10px;
+  height: ${SEARCH_RESULT_ITEM_HEIGHT}px;
+  width: ${SIMILARITY_RECTANGLE_WIDTH}px;
+  border-right: ${BORDER_LINE};
 `;

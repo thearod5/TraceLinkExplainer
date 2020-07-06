@@ -4,7 +4,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
 import styled from "styled-components";
 import { PAGE_NAP_HEIGHT } from "../../nav/PageTitle";
-import { SuggestionFunctionType } from "./Search";
+import { SuggestionFunctionType } from "./types";
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const SEARCH_BAR_WIDTH = 600;
@@ -20,6 +20,7 @@ interface SearchBarProps {
   onSubmit: (query: string) => void;
   searchOptions: string[];
 }
+
 export default function SearchBar(props: SearchBarProps) {
   return (
     <SearchBarContainer>
@@ -36,7 +37,7 @@ export default function SearchBar(props: SearchBarProps) {
             placeholder={PLACE_HOLDER_TEXT}
             variant="outlined"
             onKeyDown={(event) =>
-              event.keyCode == ENTER_KEY_CODE
+              event.keyCode === ENTER_KEY_CODE
                 ? props.onSubmit((event.target as HTMLInputElement).value)
                 : undefined
             }
@@ -51,7 +52,6 @@ export default function SearchBar(props: SearchBarProps) {
 const SearchBarContainer = styled.div`
   display: flex;
   flex-direction: row
-  border: 1px solid blue;
   height: ${SEARCH_BAR_HEIGHT}px
 `;
 
