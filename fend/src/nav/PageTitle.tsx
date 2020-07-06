@@ -12,8 +12,6 @@ export const PAGE_NAP_HEIGHT = 60;
 export const PAGE_NAV_MARGIN_TOP = 25;
 const TEXT_TOP_PADDING = 5;
 
-//TODO: why does ICON_FONT_SIZE define the height of the bar
-const ICON_FONT_SIZE = 48; //px
 const TEXT_SIDE_PADDING = 15; ///px
 const DEFAULT_TEXT = "Home";
 

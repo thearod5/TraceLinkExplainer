@@ -25,7 +25,7 @@ function DatasetChooser() {
       );
       setDatasetsNames(names);
     });
-  }, []);
+  }, [dataset.name]);
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
@@ -52,7 +52,7 @@ function DatasetChooser() {
     <DatasetItemSummary
       key={dataset}
       dataset={dataset}
-      isSelected={currentIndex == indexSelected}
+      isSelected={currentIndex === indexSelected}
       clickHandler={() => toggleItemAtIndex(currentIndex)}
     />
   ));
