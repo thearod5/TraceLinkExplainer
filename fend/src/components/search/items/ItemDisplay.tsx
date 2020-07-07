@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { SearchItem } from "../types";
-import SearchResultItem from "./SearchResultItem";
+import { ArtifactClickAction, SearchItem } from "../types";
+import SearchResultItem from "./Item";
 
 const NUMBER_RESULTS_PROMPT = " results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
@@ -9,9 +9,10 @@ const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
 interface SearchResultsProps {
   results: SearchItem[];
   searchItemResultPage: string;
+  clickAction: ArtifactClickAction;
 }
 
-export default function SearchResultsDisplay(props: SearchResultsProps) {
+export default function ItemDisplay(props: SearchResultsProps) {
   return (
     <SearchResultsDisplayContainer>
       <NumberResultsDisplay>
@@ -22,6 +23,7 @@ export default function SearchResultsDisplay(props: SearchResultsProps) {
           key={result.artifact.id}
           result={result}
           searchItemResultPage={props.searchItemResultPage}
+          clickAction={props.clickAction}
         />
       ))}
     </SearchResultsDisplayContainer>

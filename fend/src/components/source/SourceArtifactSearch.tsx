@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
+import { setSourceArtifact } from "../../redux/actions";
 import { TARGET_ARTIFACT_ROUTE } from "../nav/routes";
 import { createSearchOptionsForSourceArtifact } from "../search/filtering/searchOptionsCreator";
 import Search from "../search/Search";
@@ -16,6 +17,7 @@ export default function TargetArtifactSearch() {
       suggestionFunction={dummyRecommendationFunction}
       searchOptions={searchOptions}
       searchItemResultPage={TARGET_ARTIFACT_ROUTE}
+      dispatchEvent={setSourceArtifact}
     />
   );
 }

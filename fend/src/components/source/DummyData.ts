@@ -1,6 +1,10 @@
+import { Artifact } from "../../../../shared/Dataset";
+import { SearchItem, SearchResults } from "../search/types";
+
 export const dummyDesign: Artifact = {
   id: "DD-16",
   body: "...place holder for design document...",
+  type: "Design", //TODO: Add Enum
 };
 
 export const dummyDesignSearchItem: SearchItem = {
@@ -20,6 +24,7 @@ export const dummyDesignSearch: SearchResults = {
 export const dummyRequirement: Artifact = {
   id: "RE-8",
   body: "UAV State transitions when requested the...",
+  type: "Requirement", //TODO: Add enum
 };
 
 export const dummyRequirementSearchitem: SearchItem = {

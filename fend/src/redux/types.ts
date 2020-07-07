@@ -1,4 +1,4 @@
-import { ArtifactMetaInformation, Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../../../shared/Dataset";
 import {
   NEW_PAGE_ACTION,
   SELECT_DATASET,
@@ -28,8 +28,8 @@ export type DatasetActionType = SelectDatasetAction | UnselectDatasetAction;
 export interface MetaData {
   oldPage: string;
   currentPage: string;
-  targetArtifact: ArtifactMetaInformation;
-  sourceArtifact: ArtifactMetaInformation;
+  targetArtifact: Artifact;
+  sourceArtifact: Artifact;
 }
 
 export interface NewPageAction {

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Artifact } from "../../../../shared/Dataset";
+import { ArtifactMutatorActionType } from "../../redux/actions";
 import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 import { getSelectedItems } from "./filtering/filterSearchResults";
-import SearchResultsDisplay from "./results/SearchResultsDisplay";
+import ItemDisplay from "./items/ItemDisplay";
 import SearchBar from "./searchbar/SearchBar";
 import TabBar from "./tabbar/TabBar";
 import { Tabs } from "./tabbar/types";
@@ -19,10 +21,12 @@ export interface SearchProps {
   ) => SearchResults[];
   searchOptions: string[];
   searchItemResultPage: string;
+  dispatchEvent: (artifact: Artifact) => ArtifactMutatorActionType;
 }
 
 //TODO: Separate Row Height from search bar and vertically center so that all matches the page header
 export default function Search(props: SearchProps) {
+  const dispatch = useDispatch();
   const [results, setResults] = useState<SearchResults[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
 
@@ -30,6 +34,10 @@ export default function Search(props: SearchProps) {
   const startSearch = (searchString: string) => {
     setResults(props.searchFunction(searchString));
   };
+  const createDispatchAction = (artifact: Artifact) => {
+    dispatch(props.dispatchEvent(artifact));
+  };
+
   const selectedItems = getSelectedItems(results, selectedIndex);
 
   return (
@@ -49,9 +57,10 @@ export default function Search(props: SearchProps) {
         />
       </SearchRow>
       <SearchRow>
-        <SearchResultsDisplay
+        <ItemDisplay
           results={selectedItems}
           searchItemResultPage={props.searchItemResultPage}
+          clickAction={createDispatchAction}
         />
       </SearchRow>
     </SearchContainer>

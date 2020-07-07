@@ -4,7 +4,7 @@ export function initializeEmptyDataset(): Dataset {
   return {
     name: "",
     summary: "",
-    artifactSets: [],
+    artifacts: [],
   };
 }
 
@@ -14,18 +14,14 @@ export function initializeEmptyMetaData(): MetaData {
     currentPage: "",
 
     sourceArtifact: {
+      id: "",
+      body: "",
       type: "",
-      artifact: {
-        id: "",
-        body: "",
-      },
     },
     targetArtifact: {
+      id: "",
+      body: "",
       type: "",
-      artifact: {
-        id: "",
-        body: "",
-      },
     },
   };
 }

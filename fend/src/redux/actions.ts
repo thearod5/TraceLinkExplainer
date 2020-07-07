@@ -1,4 +1,4 @@
-import { ArtifactMetaInformation, Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../../../shared/Dataset";
 import { initializeEmptyDataset } from "./initializers";
 import { SelectDatasetAction, UnselectDatasetAction } from "./types";
 
@@ -37,9 +37,16 @@ export function newPage(newPageName: string) {
   };
 }
 
+export interface ArtifactMutatorActionType {
+  type: string;
+  payload: Artifact;
+}
+
 export const SET_SOURCE_ARTIFACT_ACTION = "SET_SOURCE_ARTIFACT_ACTION";
 
-export function setSourceArtifact(sourceArtifact: ArtifactMetaInformation) {
+export function setSourceArtifact(
+  sourceArtifact: Artifact
+): ArtifactMutatorActionType {
   return {
     type: SET_SOURCE_ARTIFACT_ACTION,
     payload: sourceArtifact,
@@ -48,7 +55,9 @@ export function setSourceArtifact(sourceArtifact: ArtifactMetaInformation) {
 
 export const SET_TARGET_ARTIFACT_ACTION = "SET_TARGET_ARTIFACT_ACTION";
 
-export function setTargetArtifact(targetArtifact: ArtifactMetaInformation) {
+export function setTargetArtifact(
+  targetArtifact: Artifact
+): ArtifactMutatorActionType {
   return {
     type: SET_TARGET_ARTIFACT_ACTION,
     payload: targetArtifact,

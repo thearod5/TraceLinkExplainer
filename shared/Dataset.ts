@@ -1,15 +1,11 @@
 interface Dataset {
   name: string;
   summary: string;
-  artifactSets: Array<ArtifactSet>;
-}
-
-interface ArtifactSet {
-  name: string;
   artifacts: Array<Artifact>;
 }
 
 interface Artifact {
+  type: string;
   id: string;
   body: string;
 }
@@ -20,15 +16,4 @@ interface ArtifactQuery {
   type: string;
 }
 
-interface ArtifactMetaInformation {
-  artifact: Artifact;
-  type: string;
-}
-
-export type {
-  Dataset,
-  ArtifactSet,
-  Artifact,
-  ArtifactQuery,
-  ArtifactMetaInformation,
-};
+export type { Dataset, Artifact, ArtifactQuery };

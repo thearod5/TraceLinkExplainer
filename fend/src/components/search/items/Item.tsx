@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { BORDER_LINE } from "../../../styles/constants";
-import { SearchItem } from "../types";
+import { ArtifactClickAction, SearchItem } from "../types";
 import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
 import SimilarityRectangle from "./SimilarityRectangle";
 
@@ -14,11 +14,16 @@ const SEARCH_RESULT_ITEM_BODY_SIDE_PADDING = 10; //px
 interface SearchResultProps {
   result: SearchItem;
   searchItemResultPage: string;
+  clickAction: ArtifactClickAction;
 }
 
 export default function SearchResultItem(props: SearchResultProps) {
   return (
-    <ItemContainer className="styledLink" to={props.searchItemResultPage}>
+    <ItemContainer
+      className="styledLink"
+      to={props.searchItemResultPage}
+      onClick={() => props.clickAction(props.result.artifact)}
+    >
       <SimilarityRectangle similarity={props.result.similarity} />
       <IdContainer>
         <label>{props.result.artifact.id}</label>

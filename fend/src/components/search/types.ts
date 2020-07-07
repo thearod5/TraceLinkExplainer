@@ -1,5 +1,7 @@
 import { Artifact, ArtifactQuery } from "../../../../shared/Dataset";
 
+export type ArtifactClickAction = (artifact: Artifact) => void;
+
 export interface SearchResults {
   items: SearchItem[];
   type: string;
