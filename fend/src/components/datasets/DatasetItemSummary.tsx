@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BORDER_LINE } from "../styles/constants";
+import { BORDER_LINE } from "../../styles/constants";
 
 interface DataItemSummaryProps {
   dataset: string;

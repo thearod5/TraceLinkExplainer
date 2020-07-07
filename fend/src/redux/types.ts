@@ -1,5 +1,10 @@
-import { Dataset } from "../../../shared/Dataset";
-import { NEW_PAGE, SELECT_DATASET, UNSELECT_DATASET } from "./actions";
+import { ArtifactMetaInformation, Dataset } from "../../../shared/Dataset";
+import {
+  NEW_PAGE_ACTION,
+  SELECT_DATASET,
+  SET_TARGET_ARTIFACT_ACTION,
+  UNSELECT_DATASET,
+} from "./actions";
 
 /*
  * Datasets
@@ -23,11 +28,26 @@ export type DatasetActionType = SelectDatasetAction | UnselectDatasetAction;
 export interface MetaData {
   oldPage: string;
   currentPage: string;
+  targetArtifact: ArtifactMetaInformation;
+  sourceArtifact: ArtifactMetaInformation;
 }
 
 export interface NewPageAction {
-  type: typeof NEW_PAGE;
+  type: typeof NEW_PAGE_ACTION;
   payload: string; //name of new page
 }
 
-export type MetaActionType = NewPageAction;
+export interface SetTargetArtifactAction {
+  type: typeof SET_TARGET_ARTIFACT_ACTION;
+  payload: ArtifactMetaInformation;
+}
+
+export interface SetSourceArtifactAction {
+  type: typeof SET_TARGET_ARTIFACT_ACTION;
+  payload: ArtifactMetaInformation;
+}
+
+export type MetaActionType =
+  | NewPageAction
+  | SetTargetArtifactAction
+  | SetSourceArtifactAction;

@@ -1,11 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Datasets from "./datasets/Datasets";
-import Home from "./home/Home";
-import PageTitle from "./nav/PageTitle";
-import { DATASETS_ROUTE, EXPLORE_ROUTE } from "./nav/routes";
-import TargetArtifactSearch from "./search/target/TargetArtifactSearch";
-import "./styles/App.css";
+import Datasets from "./components/datasets/Datasets";
+import Home from "./components/home/Home";
+import PageTitle from "./components/nav/PageTitle";
+import {
+  DATASETS_ROUTE,
+  SOURCE_ARTIFACT_ROUTE,
+  TARGET_ARTIFACT_ROUTE,
+  TRACE_VIEW_ROUTE,
+} from "./components/nav/routes";
+import SourceArtifactSearch from "./components/source/SourceArtifactSearch";
+import TargetArtifactSearch from "./components/target/TargetArtifactSearch";
+import TraceLinkView from "./components/trace/TraceLinkView";
 
 function App() {
   return (
@@ -16,8 +22,14 @@ function App() {
           <Route path={DATASETS_ROUTE}>
             <Datasets />
           </Route>
-          <Route path={EXPLORE_ROUTE}>
+          <Route path={SOURCE_ARTIFACT_ROUTE}>
+            <SourceArtifactSearch />
+          </Route>
+          <Route path={TARGET_ARTIFACT_ROUTE}>
             <TargetArtifactSearch />
+          </Route>
+          <Route path={TRACE_VIEW_ROUTE}>
+            <TraceLinkView />
           </Route>
           <Route path="/">
             <Home />

@@ -20,4 +20,15 @@ interface ArtifactQuery {
   type: string;
 }
 
-export type { Dataset, ArtifactSet, Artifact, ArtifactQuery };
+interface ArtifactMetaInformation {
+  artifact: Artifact;
+  type: string;
+}
+
+export type {
+  Dataset,
+  ArtifactSet,
+  Artifact,
+  ArtifactQuery,
+  ArtifactMetaInformation,
+};

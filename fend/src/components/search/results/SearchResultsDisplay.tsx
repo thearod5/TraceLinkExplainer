@@ -3,12 +3,13 @@ import styled from "styled-components";
 import { SearchItem } from "../types";
 import SearchResultItem from "./SearchResultItem";
 
-interface SearchResultsProps {
-  results: SearchItem[];
-}
-
 const NUMBER_RESULTS_PROMPT = " results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
+
+interface SearchResultsProps {
+  results: SearchItem[];
+  searchItemResultPage: string;
+}
 
 export default function SearchResultsDisplay(props: SearchResultsProps) {
   return (
@@ -17,7 +18,11 @@ export default function SearchResultsDisplay(props: SearchResultsProps) {
         {props.results.length + NUMBER_RESULTS_PROMPT}
       </NumberResultsDisplay>
       {props.results.map((result) => (
-        <SearchResultItem key={result.artifact.id} result={result} />
+        <SearchResultItem
+          key={result.artifact.id}
+          result={result}
+          searchItemResultPage={props.searchItemResultPage}
+        />
       ))}
     </SearchResultsDisplayContainer>
   );

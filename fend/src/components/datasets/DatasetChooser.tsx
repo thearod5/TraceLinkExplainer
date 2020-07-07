@@ -2,11 +2,11 @@ import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { Dataset } from "../../../shared/Dataset";
-import { getDatasetByName, getDatasetNames } from "../api/base";
-import { RootState } from "../redux";
-import { newPage, selectDataset, unselectDataset } from "../redux/actions";
-import { BORDER_LINE } from "../styles/constants";
+import { Dataset } from "../../../../shared/Dataset";
+import { getDatasetByName, getDatasetNames } from "../../api/base";
+import { RootState } from "../../redux";
+import { newPage, selectDataset, unselectDataset } from "../../redux/actions";
+import { BORDER_LINE } from "../../styles/constants";
 import DatasetItemSummary from "./DatasetItemSummary";
 
 const DEFAULT_INDEX_SELECTED = -1;

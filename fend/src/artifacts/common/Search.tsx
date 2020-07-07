@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Artifact } from "../../../../shared/Dataset";
-import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../../nav/PageTitle";
+import { Artifact } from "../../../../../shared/Dataset";
+import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../../../nav/PageTitle";
+import { getSelectedItems } from "./filtering/filterSearchResults";
 import SearchResultsDisplay from "./results/SearchResultsDisplay";
 import SearchBar from "./SearchBar";
 import TabBar from "./tabbar/TabBar";
-import { TabKeys, Tabs } from "./tabbar/types";
+import { Tabs } from "./tabbar/types";
 import { SearchResults, SuggestionFunctionType } from "./types";
+
+const DEFAULT_INDEX = 0;
 
 export interface SearchProps {
   suggestionFunction: SuggestionFunctionType;
@@ -15,34 +18,18 @@ export interface SearchProps {
     relatedToArtifact?: Artifact
   ) => SearchResults[];
   searchOptions: string[];
+  searchItemResultPage: string;
 }
-
-function getSelectedItems(
-  searchResultList: SearchResults[],
-  selectedIndex: number
-) {
-  const type_selected = Object.keys(Tabs)[selectedIndex];
-
-  return searchResultList
-    .filter(
-      (searchResults) =>
-        searchResults.type === type_selected || type_selected === TabKeys[0] // All
-    )
-    .map((searchResult) => searchResult.items)
-    .flat();
-}
-
-const DEFAULT_INDEX = 0;
 
 //TODO: Separate Row Height from search bar and vertically center so that all matches the page header
 export default function Search(props: SearchProps) {
   const [results, setResults] = useState<SearchResults[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
 
+  // Search for query and separate results
   const startSearch = (searchString: string) => {
     setResults(props.searchFunction(searchString));
   };
-
   const selectedItems = getSelectedItems(results, selectedIndex);
 
   return (
@@ -62,7 +49,10 @@ export default function Search(props: SearchProps) {
         />
       </SearchRow>
       <SearchRow>
-        <SearchResultsDisplay results={selectedItems} />
+        <SearchResultsDisplay
+          results={selectedItems}
+          searchItemResultPage={props.searchItemResultPage}
+        />
       </SearchRow>
     </SearchContainer>
   );

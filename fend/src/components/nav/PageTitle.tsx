@@ -4,8 +4,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { RootState } from "../redux";
-import { BORDER_LINE_EMPHASIS } from "../styles/constants";
+import { RootState } from "../../redux";
+import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 import { HOME_ROUTE } from "./routes";
 
 export const PAGE_NAP_HEIGHT = 60;

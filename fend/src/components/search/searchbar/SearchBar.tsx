@@ -4,7 +4,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
 import styled from "styled-components";
 import { PAGE_NAP_HEIGHT } from "../../nav/PageTitle";
-import { SuggestionFunctionType } from "./types";
+import { SuggestionFunctionType } from "../types";
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const SEARCH_BAR_WIDTH = 600;

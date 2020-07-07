@@ -1,4 +1,10 @@
-import { NEW_PAGE, SELECT_DATASET, UNSELECT_DATASET } from "./actions";
+import {
+  NEW_PAGE_ACTION,
+  SELECT_DATASET,
+  SET_SOURCE_ARTIFACT_ACTION,
+  SET_TARGET_ARTIFACT_ACTION,
+  UNSELECT_DATASET,
+} from "./actions";
 import {
   initializeEmptyDataset,
   initializeEmptyMetaData,
@@ -24,11 +30,21 @@ export function metaDataReducer(
   action: MetaActionType
 ) {
   switch (action.type) {
-    case NEW_PAGE:
+    case NEW_PAGE_ACTION:
       return {
         ...state,
         oldPage: state.currentPage,
         currentPage: action.payload,
+      };
+    case SET_SOURCE_ARTIFACT_ACTION:
+      return {
+        ...state,
+        sourceArtifact: action.payload,
+      };
+    case SET_TARGET_ARTIFACT_ACTION:
+      return {
+        ...state,
+        targetArtifact: action.payload,
       };
     default:
       return state;

@@ -12,5 +12,20 @@ export function initializeEmptyMetaData(): MetaData {
   return {
     oldPage: "",
     currentPage: "",
+
+    sourceArtifact: {
+      type: "",
+      artifact: {
+        id: "",
+        body: "",
+      },
+    },
+    targetArtifact: {
+      type: "",
+      artifact: {
+        id: "",
+        body: "",
+      },
+    },
   };
 }

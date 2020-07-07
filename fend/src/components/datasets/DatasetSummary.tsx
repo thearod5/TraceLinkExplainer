@@ -2,9 +2,9 @@ import Button from "@material-ui/core/Button";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Dataset } from "../../../shared/Dataset";
+import { Dataset } from "../../../../shared/Dataset";
 import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
-import { EXPLORE_ROUTE } from "../nav/routes";
+import { SOURCE_ARTIFACT_ROUTE } from "../nav/routes";
 
 const SUMMARY_TOP_MARGIN = 75;
 
@@ -22,7 +22,7 @@ function DatasetSummary(props: DatasetSummaryProps) {
           variant="contained"
           color="primary"
           component={Link}
-          to={EXPLORE_ROUTE}
+          to={SOURCE_ARTIFACT_ROUTE}
         >
           Explore Artifacts
         </Button>
