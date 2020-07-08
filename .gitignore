@@ -8,4 +8,5 @@ package-lock.json
 .idea
 .ipynp_checkpoints
 */.ipynp_checkpoints
+*/*/.ipynp_checkpoints
 */*/*/__pycache__
