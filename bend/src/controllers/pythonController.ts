@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-
+import path from 'path'
 // TODO: Write function for making predictions
 // TODO: Write function for making suggestions (Traced Artifacts)
 /* TODO: Write script for making predictions
@@ -9,16 +9,23 @@ import { spawn } from 'child_process'
  * 4. std out predictions json
  * 5. read in preditions
  */
-function runFunction () {
+
+const pathToRunner = path.join(__dirname, '..', 'python', 'ClassRunner.py')
+export function runFunction (className: string, functionName: string, ...functionArguments: any[]) {
   return new Promise(function (resolve, reject) {
-    const pyprog = spawn('python', ['./../pypy.py'])
+    const pyprog = spawn('python', [
+      pathToRunner,
+      className,
+      functionName,
+      ...functionArguments
+    ])
 
     pyprog.stdout.on('data', function (data) {
-      resolve(data)
+      resolve(JSON.parse(data.toString()))
     })
 
     pyprog.stderr.on('data', (data) => {
-      reject(data)
+      reject(data.toString())
     })
   })
 }
