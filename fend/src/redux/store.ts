@@ -10,7 +10,7 @@ import createRootReducer from "./index";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["dataset", "metadata"], // Top level store branches to persist
+  whitelist: ["dataset", "metaData"], // Top level store branches to persist
 };
 
 export const history = createBrowserHistory();

@@ -43,7 +43,7 @@ export interface SetTargetArtifactAction {
 }
 
 export interface SetSourceArtifactAction {
-  type: typeof SET_TARGET_ARTIFACT_ACTION;
+  type: typeof SET_SOURCE_ARTIFACT_ACTION;
   payload: ArtifactMetaInformation;
 }
 

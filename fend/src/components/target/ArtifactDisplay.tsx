@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Artifact } from "../../../../shared/Dataset";
+import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 
 interface ArtifactDisplayProps {
   artifact: Artifact;
@@ -9,10 +10,19 @@ interface ArtifactDisplayProps {
 export default function ArtifactDisplay(props: ArtifactDisplayProps) {
   return (
     <ArtifactContainer>
-      <h1>{props.artifact.id}</h1>
-      <p>{props.artifact.body}</p>
+      <ArtifactBody>{props.artifact.body}</ArtifactBody>
     </ArtifactContainer>
   );
 }
 
-const ArtifactContainer = styled.div``;
+const CONTAINER_TOP_PADDING = 100;
+const CONTAINER_SIDE_PADDING = 10;
+
+const ArtifactContainer = styled.div`
+  margin-top: ${PAGE_NAV_MARGIN_TOP + CONTAINER_TOP_PADDING}px;
+`;
+
+const ArtifactBody = styled.p`
+  margin-left: ${CONTAINER_SIDE_PADDING}px;
+  margin-right: ${CONTAINER_SIDE_PADDING}px;
+`;

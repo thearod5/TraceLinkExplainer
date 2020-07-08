@@ -8,11 +8,6 @@ import { RootState } from "../../redux";
 import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 import { HOME_ROUTE } from "./routes";
 
-export const PAGE_NAP_HEIGHT = 60;
-export const PAGE_NAV_MARGIN_TOP = 25;
-const TEXT_TOP_PADDING = 5;
-
-const TEXT_SIDE_PADDING = 15; ///px
 const DEFAULT_TEXT = "Home";
 
 function PageTitle() {
@@ -20,13 +15,19 @@ function PageTitle() {
 
   //TODO: programmatically set the last back page
   return (
-    <TitleContainer to={HOME_ROUTE}>
+    <TitleContainer to={HOME_ROUTE} id="PageTitle">
       <TitleText>
         {metaData.currentPage === "" ? DEFAULT_TEXT : metaData.currentPage}
       </TitleText>
     </TitleContainer>
   );
 }
+
+export const PAGE_NAP_HEIGHT = 60;
+export const PAGE_NAV_MARGIN_TOP = 25;
+
+export const TEXT_TOP_PADDING = 5;
+export const TEXT_SIDE_PADDING = 15; ///px
 
 // eslint-disable-next-line no-unused-vars
 const TitleContainer = styled(Link)`

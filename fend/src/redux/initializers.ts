@@ -1,5 +1,6 @@
 import { Dataset } from "../../../shared/Dataset";
 import { MetaData } from "./types";
+
 export function initializeEmptyDataset(): Dataset {
   return {
     name: "",

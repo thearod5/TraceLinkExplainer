@@ -1,8 +1,10 @@
 import Button from "@material-ui/core/Button";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Dataset } from "../../../../shared/Dataset";
+import { newPage } from "../../redux/actions";
 import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 import { SOURCE_ARTIFACT_ROUTE } from "../nav/routes";
 
@@ -13,6 +15,8 @@ interface DatasetSummaryProps {
 }
 
 function DatasetSummary(props: DatasetSummaryProps) {
+  const dispatch = useDispatch();
+
   return (
     <SummaryContainer>
       <Summary>{props.dataset.summary}</Summary>
@@ -23,6 +27,7 @@ function DatasetSummary(props: DatasetSummaryProps) {
           color="primary"
           component={Link}
           to={SOURCE_ARTIFACT_ROUTE}
+          onClick={() => dispatch(newPage(props.dataset.name))}
         >
           Explore Artifacts
         </Button>

@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { newPage } from "../../../redux/actions";
 import { BORDER_LINE } from "../../../styles/constants";
 import { ArtifactClickAction, SearchItem } from "../types";
 import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
@@ -18,11 +20,18 @@ interface SearchResultProps {
 }
 
 export default function SearchResultItem(props: SearchResultProps) {
+  const dispatch = useDispatch();
+
+  const clickHandler = () => {
+    props.clickAction(props.result.artifact);
+    dispatch(newPage(props.result.artifact.id));
+  };
+
   return (
     <ItemContainer
       className="styledLink"
       to={props.searchItemResultPage}
-      onClick={() => props.clickAction(props.result.artifact)}
+      onClick={clickHandler}
     >
       <SimilarityRectangle similarity={props.result.similarity} />
       <IdContainer>
