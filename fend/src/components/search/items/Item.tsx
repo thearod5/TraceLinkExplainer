@@ -2,16 +2,14 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { SearchItem } from "../../../../../shared/Dataset";
 import { newPage } from "../../../redux/actions";
 import { BORDER_LINE } from "../../../styles/constants";
-import { ArtifactClickAction, SearchItem } from "../types";
+import { ArtifactClickAction } from "../types";
 import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
 import SimilarityRectangle from "./SimilarityRectangle";
 
-const ID_WIDTH = 100;
-const SEARCH_RESULT_BODY_FONT_SIZE = 24; //px
-const SEARCH_RESULT_ID_SIDE_PADDING = 10; //px
-const SEARCH_RESULT_ITEM_BODY_SIDE_PADDING = 10; //px
+const MAX_CHAR_LENGTH = 200;
 
 interface SearchResultProps {
   result: SearchItem;
@@ -38,11 +36,19 @@ export default function SearchResultItem(props: SearchResultProps) {
         <label>{props.result.artifact.id}</label>
       </IdContainer>
       <ArtifactBodyContainer>
-        <label>{props.result.artifact.body}</label>
+        <label>
+          {props.result.artifact.body.substring(0, MAX_CHAR_LENGTH)}
+        </label>
       </ArtifactBodyContainer>
     </ItemContainer>
   );
 }
+
+const ID_WIDTH = 200;
+const SEARCH_RESULT_ID_FONT_SIZE = 24; //px
+const SEARCH_RESULT_BODY_FONT_SIZE = 14; //px
+const SEARCH_RESULT_ID_SIDE_PADDING = 10; //px
+const SEARCH_RESULT_ITEM_BODY_SIDE_PADDING = 10; //px
 
 const ItemContainer = styled(Link)`
   display: flex;
@@ -53,7 +59,7 @@ const ItemContainer = styled(Link)`
 `;
 
 const IdContainer = styled.div`
-  font-size: ${SEARCH_RESULT_BODY_FONT_SIZE}px;
+  font-size: ${SEARCH_RESULT_ID_FONT_SIZE}px;
   height: ${SEARCH_RESULT_ITEM_HEIGHT}px;
   padding-left: ${SEARCH_RESULT_ID_SIDE_PADDING}px;
   padding-right: ${SEARCH_RESULT_ID_SIDE_PADDING}px;

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dataset } from "../../../../shared/Dataset";
-import { getDatasetByName, getDatasetNames } from "../../api/base";
+import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
 import { newPage, selectDataset, unselectDataset } from "../../redux/actions";
 import { BORDER_LINE } from "../../styles/constants";

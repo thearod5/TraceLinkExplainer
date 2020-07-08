@@ -7,7 +7,7 @@ interface SimilarityRectangleProps {
   similarity: number;
 }
 
-const SIMILARITY_RECTANGLE_WIDTH = 25;
+const SIMILARITY_RECTANGLE_WIDTH = 50;
 
 //TODO: Add theme color
 export default function SimilarityRectangle(props: SimilarityRectangleProps) {

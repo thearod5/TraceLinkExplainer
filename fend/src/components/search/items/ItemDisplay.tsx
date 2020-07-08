@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { ArtifactClickAction, SearchItem } from "../types";
+import { SearchItem } from "../../../../../shared/Dataset";
+import { ArtifactClickAction } from "../types";
 import SearchResultItem from "./Item";
 
 const NUMBER_RESULTS_PROMPT = " results were found";

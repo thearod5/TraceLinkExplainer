@@ -3,15 +3,12 @@ import { useSelector } from "react-redux";
 import SplitterLayout from "react-splitter-layout";
 import styled from "styled-components";
 import { Artifact } from "../../../../shared/Dataset";
+import { searchForTargetArtifact } from "../../api/search";
 import { RootState } from "../../redux";
 import { setTargetArtifact } from "../../redux/actions";
 import { TRACE_VIEW_ROUTE } from "../nav/routes";
 import { createSearchOptionsForTargetArtifact } from "../search/filtering/searchOptionsCreator";
 import Search from "../search/Search";
-import {
-  dummyRecommendationFunction,
-  dummySearchFunction,
-} from "../source/DummyData";
 import ArtifactDisplay from "./ArtifactDisplay";
 
 interface TargetArtifactSearchProps {}
@@ -31,8 +28,7 @@ export default function TargetArtifactSearch(props: TargetArtifactSearchProps) {
       >
         <ArtifactDisplay artifact={sourceArtifact} />
         <Search
-          searchFunction={dummySearchFunction} //TODO: Remove dummy functions after bend functionality
-          suggestionFunction={dummyRecommendationFunction}
+          searchFunction={searchForTargetArtifact} //TODO: Remove dummy functions after bend functionality
           searchOptions={searchOptions}
           searchItemResultPage={TRACE_VIEW_ROUTE}
           dispatchEvent={setTargetArtifact}

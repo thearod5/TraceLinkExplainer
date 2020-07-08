@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { Artifact } from "../../../../shared/Dataset";
+import { Artifact, SearchItem } from "../../../../shared/Dataset";
+import { RootState } from "../../redux";
 import { ArtifactMutatorActionType } from "../../redux/actions";
 import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 import { getSelectedItems } from "./filtering/filterSearchResults";
@@ -9,16 +10,15 @@ import ItemDisplay from "./items/ItemDisplay";
 import SearchBar from "./searchbar/SearchBar";
 import TabBar from "./tabbar/TabBar";
 import { Tabs } from "./tabbar/types";
-import { SearchResults, SuggestionFunctionType } from "./types";
+import { SuggestionFunctionType } from "./types";
 
 const DEFAULT_INDEX = 0;
+const SEARCH_LIMIT = 10; //TODO: Fix buffer overflow
+
+//TODO: Fix empty query not returning results
 
 export interface SearchProps {
-  suggestionFunction: SuggestionFunctionType;
-  searchFunction: (
-    query: string,
-    relatedToArtifact?: Artifact
-  ) => SearchResults[];
+  searchFunction: SuggestionFunctionType;
   searchOptions: string[];
   searchItemResultPage: string;
   dispatchEvent: (artifact: Artifact) => ArtifactMutatorActionType;
@@ -26,13 +26,16 @@ export interface SearchProps {
 
 //TODO: Separate Row Height from search bar and vertically center so that all matches the page header
 export default function Search(props: SearchProps) {
+  const dataset: Dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
-  const [results, setResults] = useState<SearchResults[]>([]);
+  const [results, setResults] = useState<SearchItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
 
   // Search for query and separate results
   const startSearch = (searchString: string) => {
-    setResults(props.searchFunction(searchString));
+    props
+      .searchFunction(dataset.name, searchString, SEARCH_LIMIT)
+      .then(setResults);
   };
   const createDispatchAction = (artifact: Artifact) => {
     dispatch(props.dispatchEvent(artifact));
@@ -43,11 +46,7 @@ export default function Search(props: SearchProps) {
   return (
     <SearchContainer>
       <SearchRow style={{ height: `${PAGE_NAP_HEIGHT}px` }}>
-        <SearchBar
-          suggestionFunction={props.suggestionFunction}
-          onSubmit={startSearch}
-          searchOptions={props.searchOptions}
-        />
+        <SearchBar onSubmit={startSearch} searchOptions={props.searchOptions} />
       </SearchRow>
       <SearchRow>
         <TabBar

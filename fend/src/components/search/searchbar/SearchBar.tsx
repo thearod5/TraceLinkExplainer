@@ -3,14 +3,12 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
 import styled from "styled-components";
-import { SuggestionFunctionType } from "../types";
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const ENTER_KEY_CODE = 13;
 const PLACE_HOLDER_TEXT = "...artifact text...";
 
 interface SearchBarProps {
-  suggestionFunction: SuggestionFunctionType;
   onSubmit: (query: string) => void;
   searchOptions: string[];
 }
@@ -20,6 +18,7 @@ export default function SearchBar(props: SearchBarProps) {
     <SearchBarContainer>
       <Autocomplete
         id={SEARCH_BAR_ID}
+        freesolo
         options={props.searchOptions}
         getOptionLabel={(option) =>
           option.substring(0, SUGGESTION_LENGTH) + "..."

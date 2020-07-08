@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { searchForSourceArtifact } from "../../api/search";
 import { RootState } from "../../redux";
 import { setSourceArtifact } from "../../redux/actions";
 import { TARGET_ARTIFACT_ROUTE } from "../nav/routes";
 import { createSearchOptionsForSourceArtifact } from "../search/filtering/searchOptionsCreator";
 import Search from "../search/Search";
-import { dummyRecommendationFunction, dummySearchFunction } from "./DummyData";
 
 export default function TargetArtifactSearch() {
   const dataset = useSelector((state: RootState) => state.dataset);
@@ -13,8 +13,7 @@ export default function TargetArtifactSearch() {
 
   return (
     <Search
-      searchFunction={dummySearchFunction}
-      suggestionFunction={dummyRecommendationFunction}
+      searchFunction={searchForSourceArtifact}
       searchOptions={searchOptions}
       searchItemResultPage={TARGET_ARTIFACT_ROUTE}
       dispatchEvent={setSourceArtifact}

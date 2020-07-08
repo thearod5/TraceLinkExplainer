@@ -3,7 +3,6 @@ import { Dataset } from "../../../../../shared/Dataset";
 export function createSearchOptionsForSourceArtifact(dataset: Dataset) {
   const ids: string[] = [];
   const bodies: string[] = [];
-  console.log(dataset);
   for (
     let artifactIndex = 0;
     artifactIndex < dataset.artifacts.length;

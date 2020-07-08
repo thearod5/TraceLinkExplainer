@@ -1,18 +1,14 @@
-import { Artifact, ArtifactQuery } from "../../../../shared/Dataset";
+import {
+  Artifact,
+  ArtifactQuery,
+  SearchItem,
+} from "../../../../shared/Dataset";
 
 export type ArtifactClickAction = (artifact: Artifact) => void;
 
-export interface SearchResults {
-  items: SearchItem[];
-  type: string;
-}
-
-export interface SearchItem {
-  artifact: Artifact;
-  similarity: number;
-}
-
 export type SuggestionFunctionType = (
+  dataset: string,
   query: string,
+  limit: number,
   relatedToArtifact?: ArtifactQuery
-) => string[];
+) => Promise<SearchItem[]>;
