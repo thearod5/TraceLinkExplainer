@@ -1,5 +1,6 @@
 import { spawn } from 'child_process'
 import path from 'path'
+
 // TODO: Write function for making predictions
 // TODO: Write function for making suggestions (Traced Artifacts)
 /* TODO: Write script for making predictions
@@ -11,9 +12,13 @@ import path from 'path'
  */
 
 const pathToRunner = path.join(__dirname, '..', 'python', 'ClassRunner.py')
-export function runFunction (className: string, functionName: string, ...functionArguments: any[]) {
+export function runFunction<T> (
+  className: string,
+  functionName: string,
+  ...functionArguments: any[]
+): Promise<T> {
   return new Promise(function (resolve, reject) {
-    const pyprog = spawn('python', [
+    const pyprog = spawn('python3', [
       pathToRunner,
       className,
       functionName,

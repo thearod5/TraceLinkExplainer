@@ -32,7 +32,7 @@ method_to_call = getattr(custom_module, function_name)
 3. Call Method
 """
 
-dictResult = method_to_call(function_arguments)
+dictResult = method_to_call(*function_arguments)
 dataToSendBack = json.dumps(dictResult)
 
 
