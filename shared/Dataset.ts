@@ -16,4 +16,9 @@ interface ArtifactQuery {
   type: string;
 }
 
+export interface SearchItem {
+  artifact: Artifact;
+  similarity: number;
+}
+
 export type { Dataset, Artifact, ArtifactQuery };
