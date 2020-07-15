@@ -9,7 +9,7 @@ export const Tabs: Record<string, IconMetaType> = {
   All: SearchIcon,
   Requirements: MenuBookIcon,
   Designs: CategoryIcon,
-  Code: CodeIcon,
+  Classes: CodeIcon,
   Tasks: FormatListBulletedIcon,
 };
 
