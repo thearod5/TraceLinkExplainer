@@ -1,22 +1,38 @@
 import { Artifact, SearchItem } from "../../../shared/Dataset";
 import store from "../redux/store";
 import { BASE_URL, post } from "./base";
+import { createAlertMessage, CustomError, isError } from "./errors";
 
-interface SearchResponse {
+export interface SearchResponse {
   searchItems: SearchItem[];
 }
 
+interface SourceSearchPayload {
+  datasetName: string;
+  query: string;
+  limit: number;
+}
+
+interface TargetSearchPayload extends SourceSearchPayload {
+  sourceType: string;
+  sourceId: string;
+}
+
+export type ServerResponse = CustomError | SearchResponse;
+
 export async function searchForSourceArtifact(
-  dataset: string,
+  datasetName: string,
   query: string,
   limit: number
 ): Promise<SearchItem[]> {
-  const searchUrl = [BASE_URL, "source", dataset, limit].join("/");
-  return baseSearchFunction(searchUrl, query);
+  const searchUrl = [BASE_URL, "source"].join("/");
+  const payload: SourceSearchPayload = { datasetName, query, limit };
+  console.log(payload);
+  return baseSearchFunction(searchUrl, payload);
 }
 
 export async function searchForTargetArtifact(
-  dataset: string,
+  datasetName: string,
   query: string,
   limit: number
 ): Promise<SearchItem[]> {
@@ -26,23 +42,27 @@ export async function searchForTargetArtifact(
       "cannot search for target artifact without a source artifact selected"
     );
 
-  const searchUrl = [
-    BASE_URL,
-    "target",
-    dataset,
-    sourceArtifact.type,
-    sourceArtifact.id,
+  const searchUrl = [BASE_URL, "target"].join("/");
+  const payload: TargetSearchPayload = {
+    datasetName,
+    query,
     limit,
-  ].join("/");
-  return baseSearchFunction(searchUrl, query);
+    sourceType: sourceArtifact.type,
+    sourceId: sourceArtifact.id,
+  };
+  return baseSearchFunction(searchUrl, payload);
 }
 
 async function baseSearchFunction(
   url: string,
-  query: string
+  payload: SourceSearchPayload
 ): Promise<SearchItem[]> {
-  const response: SearchResponse = await (post(url, {
-    query: query,
-  }) as Promise<SearchResponse>);
+  const response: ServerResponse = await (post(url, payload) as Promise<
+    SearchResponse
+  >);
+  if (isError(response)) {
+    alert(createAlertMessage(response));
+    return [];
+  }
   return response.searchItems;
 }
