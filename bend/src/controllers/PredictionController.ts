@@ -20,7 +20,7 @@ export async function makePredictionsForArtifact (
     artifactId,
     query,
     limit
-  ).catch((e) => e)
+  ).catch((e) => { throw e })
 }
 
 export async function searchForArtifact (
@@ -34,6 +34,6 @@ export async function searchForArtifact (
     dataset,
     query,
     limit
-  ).catch((e) => e)
+  ).catch((e) => { throw e })
 }
 // TODO: thing
