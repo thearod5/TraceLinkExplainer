@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { Artifact, SearchItem } from "../../../../shared/Dataset";
+import { Artifact, Dataset, SearchItem } from "../../../../shared/Dataset";
 import { RootState } from "../../redux";
 import { ArtifactMutatorActionType } from "../../redux/actions";
 import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 import { getSelectedItems } from "./filtering/filterSearchResults";
+import { getNumberOfResults } from "./filtering/searchOptionsCreator";
 import ItemDisplay from "./items/ItemDisplay";
 import SearchBar from "./searchbar/SearchBar";
 import TabBar from "./tabbar/TabBar";
@@ -13,13 +14,13 @@ import { Tabs } from "./tabbar/types";
 import { SuggestionFunctionType } from "./types";
 
 const DEFAULT_INDEX = 0;
-const SEARCH_LIMIT = 10; //TODO: Fix buffer overflow
+const SEARCH_LIMIT = 30; //TODO: Fix buffer overflow
 
 //TODO: Fix empty query not returning results
 
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
-  searchOptions: string[];
+  getSearchOptions: (selectedIndex: number) => string[];
   searchItemResultPage: string;
   dispatchEvent: (artifact: Artifact) => ArtifactMutatorActionType;
 }
@@ -30,12 +31,18 @@ export default function Search(props: SearchProps) {
   const dispatch = useDispatch();
   const [results, setResults] = useState<SearchItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
+  const [numberOfResults, setNumberOfResulst] = useState([0, 0, 0, 0]);
 
   // Search for query and separate results
   const startSearch = (searchString: string) => {
     props
       .searchFunction(dataset.name, searchString, SEARCH_LIMIT)
-      .then(setResults);
+      .then((results: SearchItem[]) => {
+        const resultCounts = getNumberOfResults(results);
+
+        setNumberOfResulst(resultCounts);
+        setResults(results);
+      });
   };
   const createDispatchAction = (artifact: Artifact) => {
     dispatch(props.dispatchEvent(artifact));
@@ -46,13 +53,17 @@ export default function Search(props: SearchProps) {
   return (
     <SearchContainer>
       <SearchRow style={{ height: `${PAGE_NAP_HEIGHT}px` }}>
-        <SearchBar onSubmit={startSearch} searchOptions={props.searchOptions} />
+        <SearchBar
+          onSubmit={startSearch}
+          searchOptions={props.getSearchOptions(selectedIndex)}
+        />
       </SearchRow>
       <SearchRow>
         <TabBar
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
           tabs={Tabs}
+          numberOfResults={numberOfResults}
         />
       </SearchRow>
       <SearchRow>

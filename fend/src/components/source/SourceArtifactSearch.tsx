@@ -9,12 +9,13 @@ import Search from "../search/Search";
 
 export default function TargetArtifactSearch() {
   const dataset = useSelector((state: RootState) => state.dataset);
-  const searchOptions = createSearchOptionsForSourceArtifact(dataset);
 
   return (
     <Search
       searchFunction={searchForSourceArtifact}
-      searchOptions={searchOptions}
+      getSearchOptions={(selectedIndex: number) =>
+        createSearchOptionsForSourceArtifact(dataset, selectedIndex)
+      }
       searchItemResultPage={TARGET_ARTIFACT_ROUTE}
       dispatchEvent={setSourceArtifact}
     />

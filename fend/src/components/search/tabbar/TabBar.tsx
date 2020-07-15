@@ -10,7 +10,10 @@ interface TabBarProps {
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
   tabs: Record<string, IconMetaType>;
+  numberOfResults: number[];
 }
+
+// TODO: Add labels indicating how many results per tab
 
 export default function TabBar(props: TabBarProps) {
   return (
@@ -22,6 +25,7 @@ export default function TabBar(props: TabBarProps) {
           icon={props.tabs[label]}
           selected={index === props.selectedIndex}
           onClick={() => props.setSelectedIndex(index)}
+          numberOfResults={props.numberOfResults[index]}
         />
       ))}
     </TabContainer>

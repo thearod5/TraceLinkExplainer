@@ -13,11 +13,16 @@ interface ArtifactTabProps {
   icon: IconMetaType;
   selected: boolean;
   onClick: () => void;
+  numberOfResults: number;
 }
 
 const TAB_ITEM_SELECTED_COLOR = "blue";
 
 export default function Tab(props: ArtifactTabProps) {
+  const numberOfResultsIdentifier =
+    props.numberOfResults === 0 ? null : (
+      <TabItem>({props.numberOfResults})</TabItem>
+    );
   return (
     <TabContainer onClick={() => props.onClick()}>
       <TabItem
@@ -33,6 +38,7 @@ export default function Tab(props: ArtifactTabProps) {
           color={props.selected ? "primary" : undefined}
         />
       </TabItem>
+      {numberOfResultsIdentifier}
     </TabContainer>
   );
 }
