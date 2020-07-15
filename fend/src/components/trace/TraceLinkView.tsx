@@ -12,6 +12,8 @@ import {
   TEXT_TOP_PADDING,
 } from "../nav/PageTitle";
 
+// TODO: Make trace line a symmetrical distance from each identifier label
+
 export default function TraceLinkView() {
   const dispatch = useDispatch();
   const targetArtifact: Artifact = useSelector(
