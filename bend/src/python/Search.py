@@ -1,7 +1,9 @@
+import json
+
 import pandas as pd
 
 from CalculateSimilarityMatrix import calculate_similarity_matrix
-from DataLoader import get_all_artifacts_for_dataset
+from DataLoader import get_all_artifacts_for_dataset, get_traced_artifacts
 
 
 """
@@ -13,7 +15,7 @@ from DataLoader import get_all_artifacts_for_dataset
 def search_for_artifact(dataset: str, query: str, limit: int):
     artifacts = get_all_artifacts(dataset)
     if query == "":
-        return create_default_search_items
+        return create_default_search_items(artifacts, limit)
     similarities = compare_target_to_artifacts(query, artifacts)
     return create_search_items(artifacts, similarities, limit)
 
@@ -24,22 +26,17 @@ def search_for_related_artifacts(
         target_id: str,
         query: str,
         limit: int):
-    artifacts = get_all_artifacts(dataset)
 
-    target_artifact_query = list(
-        filter(lambda a: a["id"] == target_id, artifacts))
+    traced_artifacts = get_traced_artifacts(dataset, target_type, target_id)
+    if isinstance(traced_artifacts, dict) and "error" in traced_artifacts.keys():
+        return traced_artifacts
+    if query.strip() == "":
+        default_items = create_default_search_items(traced_artifacts, limit)
+        return default_items
+    similarities = compare_target_to_artifacts(query, traced_artifacts)
+    search_items = create_search_items(traced_artifacts, similarities, limit)
 
-    assert len(
-        target_artifact_query) == 1, "No artifact OR more than one artifact matching id: %s" % target_id
-
-    target_artifact = target_artifact_query[0]["body"]
-    other_artifacts = list(
-        map(lambda a: a, filter(lambda a: a["id"] != target_id, artifacts)))
-
-    similarities = compare_target_to_artifacts(
-        target_artifact, other_artifacts)
-
-    return create_search_items(artifacts, similarities, limit)
+    return search_items
 
 
 """
