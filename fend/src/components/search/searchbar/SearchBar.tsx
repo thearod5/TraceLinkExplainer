@@ -13,16 +13,18 @@ interface SearchBarProps {
   searchOptions: string[];
 }
 
+const UNIMPLEMTED_ADVANCED_SEARCH_MESSAGE =
+  "Advanced search is not yet implemented.";
 export default function SearchBar(props: SearchBarProps) {
   return (
     <SearchBarContainer>
       <Autocomplete
         id={SEARCH_BAR_ID}
-        freesolo
+        freeSolo
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
         options={props.searchOptions}
-        getOptionLabel={(option) =>
-          option.substring(0, SUGGESTION_LENGTH) + "..."
-        }
         style={SearchBarStyle}
         renderInput={(params: object) => (
           <TextField
@@ -37,7 +39,10 @@ export default function SearchBar(props: SearchBarProps) {
           />
         )}
       />
-      <MoreVertIcon style={MoreIconStyle} />
+      <MoreVertIcon
+        style={MoreIconStyle}
+        onClick={() => alert(UNIMPLEMTED_ADVANCED_SEARCH_MESSAGE)}
+      />
     </SearchBarContainer>
   );
 }
@@ -48,7 +53,6 @@ const SEARCH_BAR_MAX_WIDTH = 1000;
 const SEARCH_BAR_HEIGHT = 55;
 const SEARCH_BAR_SIDE_PADDING = 10;
 
-const SUGGESTION_LENGTH = 100;
 const MORE_ICON_SIDE_MARGIN = 10;
 
 const SearchBarContainer = styled.div`
