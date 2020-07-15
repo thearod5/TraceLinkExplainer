@@ -10,3 +10,4 @@ package-lock.json
 */.ipynp_checkpoints
 */*/.ipynp_checkpoints
 */*/*/__pycache__
+*.code-workspace
