@@ -1,10 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Datasets from "./components/datasets/Datasets";
 import Home from "./components/home/Home";
 import PageTitle from "./components/nav/PageTitle";
 import {
-  DATASETS_ROUTE,
   SOURCE_ARTIFACT_ROUTE,
   TARGET_ARTIFACT_ROUTE,
   TRACE_VIEW_ROUTE,
@@ -19,9 +17,6 @@ function App() {
       <Router>
         <PageTitle />
         <Switch>
-          <Route path={DATASETS_ROUTE}>
-            <Datasets />
-          </Route>
           <Route path={SOURCE_ARTIFACT_ROUTE}>
             <SourceArtifactSearch />
           </Route>
