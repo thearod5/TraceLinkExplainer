@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,6 +69,16 @@ function DatasetChooser() {
           datasetItems
         )}
       </DatasetItemContainer>
+      <NewDatasetButtonContainer>
+        <NewDatasetButton
+          size="large"
+          variant="contained"
+          color="secondary"
+          // TODO: Functionality for this
+        >
+          New Dataset
+        </NewDatasetButton>
+      </NewDatasetButtonContainer>
     </ChooserContainer>
   );
 }
@@ -86,5 +97,23 @@ const DatasetItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   border-top: ${BORDER_LINE};
+`;
+
+const NEW_DATASET_CONTAINER_TOP_MARGIN = 10;
+
+const NewDatasetButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  margin-top: ${NEW_DATASET_CONTAINER_TOP_MARGIN}px;
+`;
+
+const NEW_DATASET_BUTTON_WIDTH = 100;
+const NEW_DATASET_BUTTON_HEIGHT = 100;
+
+const NewDatasetButton = styled(Button)`
+  height: ${NEW_DATASET_BUTTON_HEIGHT}px;
+  width: ${NEW_DATASET_BUTTON_WIDTH}px;
 `;
 export default DatasetChooser;
