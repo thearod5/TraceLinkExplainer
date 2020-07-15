@@ -36,8 +36,9 @@ const TitleContainer = styled(Link)`
   position: absolute;
   left: 0px;
   top: 0px;
-  z-index: 0;
-  color: blue;
+  z-index: 5;
+  color: black;
+  background: white;
 `;
 
 const TitleText = styled.h1`

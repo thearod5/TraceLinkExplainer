@@ -17,6 +17,8 @@ interface DatasetSummaryProps {
 function DatasetSummary(props: DatasetSummaryProps) {
   const dispatch = useDispatch();
 
+  if (props.dataset.name !== "") dispatch(newPage(props.dataset.name));
+
   return (
     <SummaryContainer>
       <Summary>{props.dataset.summary}</Summary>
