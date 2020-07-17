@@ -13,3 +13,4 @@ package-lock.json
 */*/*/__pycache__
 *.code-workspace
 bend/src/python/.ipynb_checkpoints
+docs/*
