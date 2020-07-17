@@ -6,10 +6,9 @@ import { Artifact } from "../../../../shared/Dataset";
 import { RootState } from "../../redux";
 import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 import ArtifactDisplay from "./ArtifactDisplay";
+import NoSourceMessage from "./NoSourceMessage";
 import SourceArtifactSearch from "./source/SourceArtifactSearch";
 import TargetArtifactSearch from "./target/TargetArtifactSearch";
-
-const helpMessage = "No source artifact selected.";
 
 interface ArtifactsProps {}
 
@@ -32,7 +31,7 @@ export default function ArtifactSelector(props: ArtifactsProps) {
   const rightPanel = sourceIsSelected ? (
     <TargetArtifactSearch />
   ) : (
-    <p>{helpMessage}</p>
+    <NoSourceMessage />
   );
 
   return (
