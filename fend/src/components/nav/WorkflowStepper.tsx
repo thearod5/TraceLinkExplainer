@@ -18,7 +18,7 @@ export default function WorkflowStepper(props: StepperProps) {
   const activeStep = useSelector(getCurrentStep);
   const steps = getSteps();
 
-  const handleClick = (step: number) => {
+  const moveToStep = (step: number) => {
     const error = getStepChangeError(store.getState(), step, undefined);
     if (error !== undefined) {
       alert(error);
@@ -32,7 +32,7 @@ export default function WorkflowStepper(props: StepperProps) {
     <StepperContainer>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, stepIndex) => (
-          <Step key={stepIndex} onClick={() => handleClick(stepIndex)}>
+          <Step key={stepIndex} onClick={() => moveToStep(stepIndex)}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
