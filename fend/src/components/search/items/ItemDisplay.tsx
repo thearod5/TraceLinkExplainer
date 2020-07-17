@@ -9,7 +9,6 @@ const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
 
 interface SearchResultsProps {
   results: SearchItem[];
-  searchItemResultPage: string;
   clickAction: ArtifactClickAction;
 }
 
@@ -23,7 +22,6 @@ export default function ItemDisplay(props: SearchResultsProps) {
         <SearchResultItem
           key={result.artifact.id}
           result={result}
-          searchItemResultPage={props.searchItemResultPage}
           clickAction={props.clickAction}
         />
       ))}

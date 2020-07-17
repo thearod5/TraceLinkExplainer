@@ -1,41 +1,64 @@
 import { Artifact, Dataset } from "../../../shared/Dataset";
 import { initializeEmptyDataset } from "./initializers";
-import { SelectDatasetAction, UnselectDatasetAction } from "./types";
+import {
+  ClearDataAction,
+  SelectDatasetAction,
+  StepPayload,
+  UnselectDatasetAction,
+} from "./types";
+
+/*
+ * All
+ */
+
+export const CLEAR_DATA = "CLEAR_DATA";
+
+export function clearData(): ClearDataAction {
+  return {
+    type: CLEAR_DATA,
+    payload: null,
+  };
+}
 
 /*
  * Datasets
  */
-const SELECT_DATASET = "SELECT_DATASET";
-const UNSELECT_DATASET = "UNSELECT_DATASET";
+export const SELECT_DATASET = "SELECT_DATASET";
+export const UNSELECT_DATASET = "UNSELECT_DATASET";
 
-function selectDataset(dataset: Dataset): SelectDatasetAction {
+export function selectDataset(dataset: Dataset): SelectDatasetAction {
   return {
     type: SELECT_DATASET,
     payload: dataset,
   };
 }
 
-function unselectDataset(): UnselectDatasetAction {
+export function unselectDataset(): UnselectDatasetAction {
   return {
     type: UNSELECT_DATASET,
     payload: initializeEmptyDataset(),
   };
 }
 
-export { SELECT_DATASET, selectDataset, UNSELECT_DATASET, unselectDataset };
-
 /*
  * Meta
  */
 
-export const NEW_PAGE_ACTION = "NEW_PAGE";
+export const CHANGE_STEP_ACTION = "CHANGE_STEP";
 
-export function newPage(newPageName: string) {
+export function changeStep(newStep: number, stepPayload: StepPayload) {
   return {
-    type: NEW_PAGE_ACTION,
-    payload: newPageName,
+    type: CHANGE_STEP_ACTION,
+    payload: {
+      newStep,
+      stepPayload,
+    },
   };
 }
+
+/*
+ * Artifacts
+ */
 
 export interface ArtifactMutatorActionType {
   type: string;

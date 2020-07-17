@@ -1,5 +1,6 @@
+import { RootState } from ".";
 import {
-  NEW_PAGE_ACTION,
+  CHANGE_STEP_ACTION,
   SELECT_DATASET,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
@@ -30,11 +31,11 @@ export function metaDataReducer(
   action: MetaActionType
 ) {
   switch (action.type) {
-    case NEW_PAGE_ACTION:
+    case CHANGE_STEP_ACTION:
       return {
         ...state,
-        oldPage: state.currentPage,
-        currentPage: action.payload,
+        oldStep: state.currentStep,
+        currentStep: action.payload,
       };
     case SET_SOURCE_ARTIFACT_ACTION:
       return {
@@ -49,4 +50,11 @@ export function metaDataReducer(
     default:
       return state;
   }
+}
+
+export function createEmptyState(): RootState {
+  return {
+    metaData: initializeEmptyMetaData(),
+    dataset: initializeEmptyDataset(),
+  };
 }

@@ -1,18 +1,24 @@
 import { Button } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dataset } from "../../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
-import { newPage, selectDataset, unselectDataset } from "../../redux/actions";
+import { changeStep, clearData } from "../../redux/actions";
+import { history } from "../../redux/store";
+import { SELECT_SOURCE_STEP } from "../../stepmanager/constants";
 import { BORDER_LINE } from "../../styles/constants";
+import { SELECT_ARTIFACTS_ROUTE } from "../nav/routes";
 import DatasetItemSummary from "./DatasetItemSummary";
 
 const DEFAULT_INDEX_SELECTED = -1;
+const UNIMPLEMENTED_NEW_DATASET_ERROR =
+  "Adding a new dataset is not yet implemented.";
 
-function DatasetChooser() {
+interface DatasetChooserProps {}
+
+function DatasetChooser(props: DatasetChooserProps) {
   const dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
 
@@ -28,25 +34,23 @@ function DatasetChooser() {
     });
   }, [dataset.name]);
 
+  const toggleItemAtIndex = (indexClicked: number) => {
+    indexClicked === indexSelected
+      ? deselectDataset() //clears state
+      : selectDatasetAtIndex(indexClicked);
+  };
+
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
     getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
-      dispatch(selectDataset(dataset));
-      dispatch(newPage(dataset.name));
-      setIndexSelected(indexToSelect);
+      dispatch(changeStep(SELECT_SOURCE_STEP, dataset));
+      history.push(SELECT_ARTIFACTS_ROUTE);
     });
   };
 
   const deselectDataset = () => {
-    dispatch(unselectDataset());
-    dispatch(newPage(""));
+    dispatch(clearData());
     setIndexSelected(DEFAULT_INDEX_SELECTED);
-  };
-
-  const toggleItemAtIndex = (indexClicked: number) => {
-    indexClicked === indexSelected
-      ? deselectDataset()
-      : selectDatasetAtIndex(indexClicked);
   };
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
@@ -60,7 +64,6 @@ function DatasetChooser() {
 
   return (
     <ChooserContainer>
-      <CloseIcon />
       <Title>Datasets</Title>
       <DatasetItemContainer>
         {datasets.length === 0 ? (
@@ -73,7 +76,8 @@ function DatasetChooser() {
         <NewDatasetButton
           size="large"
           variant="contained"
-          color="secondary"
+          disabled
+          onClick={() => alert(UNIMPLEMENTED_NEW_DATASET_ERROR)}
           // TODO: Functionality for this
         >
           New Dataset
@@ -83,7 +87,12 @@ function DatasetChooser() {
   );
 }
 
-const ChooserContainer = styled.div``;
+const ChooserContainer = styled.div`
+  min-width: 400px;
+  max-width: 500px;
+  border: ${BORDER_LINE};
+  border-top: none;
+`;
 
 const LoadingItem = styled.p`
   text-align: center;
@@ -107,6 +116,7 @@ const NewDatasetButtonContainer = styled.div`
   justify-content: center;
   align-content: center;
   margin-top: ${NEW_DATASET_CONTAINER_TOP_MARGIN}px;
+  margin-bottom: ${NEW_DATASET_CONTAINER_TOP_MARGIN}px;
 `;
 
 const NEW_DATASET_BUTTON_WIDTH = 100;

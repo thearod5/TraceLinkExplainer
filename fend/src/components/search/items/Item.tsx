@@ -1,10 +1,13 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../shared/Dataset";
-import { newPage } from "../../../redux/actions";
+import { RootState } from "../../../redux";
+import { changeStep } from "../../../redux/actions";
+import { history } from "../../../redux/store";
+import { SELECT_TARGET_STEP } from "../../../stepmanager/constants";
 import { BORDER_LINE } from "../../../styles/constants";
+import { TRACE_VIEW_ROUTE } from "../../nav/routes";
 import { ArtifactClickAction } from "../types";
 import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
 import SimilarityRectangle from "./SimilarityRectangle";
@@ -13,24 +16,23 @@ const MAX_CHAR_LENGTH = 200;
 
 interface SearchResultProps {
   result: SearchItem;
-  searchItemResultPage: string;
   clickAction: ArtifactClickAction;
 }
 
 export default function SearchResultItem(props: SearchResultProps) {
+  const currentStep: number = useSelector(
+    (state: RootState) => state.metaData.currentStep
+  );
   const dispatch = useDispatch();
 
   const clickHandler = () => {
     props.clickAction(props.result.artifact);
-    dispatch(newPage(props.result.artifact.id));
+    dispatch(changeStep(currentStep + 1, props.result.artifact));
+    if (currentStep === SELECT_TARGET_STEP) history.push(TRACE_VIEW_ROUTE);
   };
 
   return (
-    <ItemContainer
-      className="styledLink"
-      to={props.searchItemResultPage}
-      onClick={clickHandler}
-    >
+    <ItemContainer className="styledLink" onClick={clickHandler}>
       <SimilarityRectangle similarity={props.result.similarity} />
       <IdContainer>
         <label>{props.result.artifact.id}</label>
@@ -50,7 +52,7 @@ const SEARCH_RESULT_BODY_FONT_SIZE = 14; //px
 const SEARCH_RESULT_ID_SIDE_PADDING = 10; //px
 const SEARCH_RESULT_ITEM_BODY_SIDE_PADDING = 10; //px
 
-const ItemContainer = styled(Link)`
+const ItemContainer = styled.div`
   display: flex;
   flex-direct: row;
   width 100%;

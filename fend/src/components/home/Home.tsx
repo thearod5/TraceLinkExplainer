@@ -1,32 +1,40 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import SplitterLayout from "react-splitter-layout";
+import { useDispatch, useSelector } from "react-redux";
 import "react-splitter-layout/lib/index.css";
-import { RootState } from "../../redux";
+import styled from "styled-components";
+import { getDataset } from "../../redux/selectors";
 import "../../styles/App.css";
 import DatasetChooser from "../datasets/DatasetChooser";
-import DatasetSummary from "../datasets/DatasetSummary";
-import NoDatasetFound from "./NoDatasetFound";
 
-function Home() {
-  const dataset = useSelector((state: RootState) => state.dataset);
-  const leftPanel =
-    dataset.name !== "" ? (
-      <DatasetSummary dataset={dataset}></DatasetSummary>
-    ) : (
-      <NoDatasetFound />
-    );
+export default function Home() {
+  const dispatch = useDispatch();
+  const datasetSelected = useSelector(getDataset).name !== "";
 
   return (
-    <SplitterLayout
-      percentage={true}
-      secondaryInitialSize={25}
-      primaryMinSize={75}
-    >
-      {leftPanel}
-      <DatasetChooser />
-    </SplitterLayout>
+    <HomeContainer>
+      <ContentContainer>
+        <DatasetChooser />
+      </ContentContainer>
+    </HomeContainer>
   );
 }
 
-export default Home;
+const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const OperationsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid green;
+`;

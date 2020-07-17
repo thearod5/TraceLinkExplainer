@@ -21,7 +21,6 @@ const SEARCH_LIMIT = 30; //TODO: Fix buffer overflow
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
   getSearchOptions: (selectedIndex: number) => string[];
-  searchItemResultPage: string;
   dispatchEvent: (artifact: Artifact) => ArtifactMutatorActionType;
 }
 
@@ -69,7 +68,6 @@ export default function Search(props: SearchProps) {
       <SearchRow>
         <ItemDisplay
           results={selectedItems}
-          searchItemResultPage={props.searchItemResultPage}
           clickAction={createDispatchAction}
         />
       </SearchRow>

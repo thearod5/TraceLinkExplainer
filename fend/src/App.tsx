@@ -1,30 +1,31 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
+import ArtifactSelector from "./components/artifacts/ArtifactsSelector";
+import DatasetSummary from "./components/datasets/DatasetSummary";
 import Home from "./components/home/Home";
-import PageTitle from "./components/nav/PageTitle";
+import NavBar from "./components/nav/NavBar";
 import {
-  SOURCE_ARTIFACT_ROUTE,
-  TARGET_ARTIFACT_ROUTE,
+  DATASET_ROUTE,
+  SELECT_ARTIFACTS_ROUTE,
   TRACE_VIEW_ROUTE,
 } from "./components/nav/routes";
-import SourceArtifactSearch from "./components/source/SourceArtifactSearch";
-import TargetArtifactSearch from "./components/target/TargetArtifactSearch";
 import TraceLinkView from "./components/trace/TraceLinkView";
+import { history } from "./redux/store";
 
 function App() {
   return (
     <div>
-      <Router>
-        <PageTitle />
+      <Router history={history}>
+        <NavBar />
         <Switch>
-          <Route path={SOURCE_ARTIFACT_ROUTE}>
-            <SourceArtifactSearch />
-          </Route>
-          <Route path={TARGET_ARTIFACT_ROUTE}>
-            <TargetArtifactSearch />
-          </Route>
           <Route path={TRACE_VIEW_ROUTE}>
             <TraceLinkView />
+          </Route>
+          <Route path={SELECT_ARTIFACTS_ROUTE}>
+            <ArtifactSelector />
+          </Route>
+          <Route path={DATASET_ROUTE}>
+            <DatasetSummary />
           </Route>
           <Route path="/">
             <Home />

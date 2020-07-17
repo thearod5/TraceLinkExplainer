@@ -7,14 +7,17 @@ import styled from "styled-components";
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const ENTER_KEY_CODE = 13;
 const PLACE_HOLDER_TEXT = "...artifact text...";
+const UNIMPLEMTED_ADVANCED_SEARCH_MESSAGE =
+  "Advanced search is not yet implemented.";
 
 interface SearchBarProps {
   onSubmit: (query: string) => void;
   searchOptions: string[];
 }
 
-const UNIMPLEMTED_ADVANCED_SEARCH_MESSAGE =
-  "Advanced search is not yet implemented.";
+// TODO: Vertically stack text and icons to make more room
+// TODO: Fix overflow of search bar tabs. Add button to see more tabs.
+
 export default function SearchBar(props: SearchBarProps) {
   return (
     <SearchBarContainer>

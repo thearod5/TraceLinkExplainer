@@ -1,10 +1,21 @@
 import { Artifact, Dataset } from "../../../shared/Dataset";
 import {
-  NEW_PAGE_ACTION,
+  CHANGE_STEP_ACTION,
+  CLEAR_DATA,
   SELECT_DATASET,
+  SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
   UNSELECT_DATASET,
 } from "./actions";
+
+/*
+ * All
+ */
+
+export interface ClearDataAction {
+  type: typeof CLEAR_DATA;
+  payload: null;
+}
 
 /*
  * Datasets
@@ -19,35 +30,45 @@ export interface UnselectDatasetAction {
   payload: Dataset;
 }
 
-export type DatasetActionType = SelectDatasetAction | UnselectDatasetAction;
+export type DatasetActionType =
+  | SelectDatasetAction
+  | UnselectDatasetAction
+  | ClearDataAction;
 
 /*
  * Meta
  */
 
 export interface MetaData {
-  oldPage: string;
-  currentPage: string;
+  oldStep: number;
+  currentStep: number;
   targetArtifact: Artifact;
   sourceArtifact: Artifact;
 }
 
-export interface NewPageAction {
-  type: typeof NEW_PAGE_ACTION;
-  payload: string; //name of new page
+export type StepPayload = Dataset | Artifact;
+
+export interface StepChangePayload {
+  newStep: number;
+  stepPayload: StepPayload;
+}
+
+export interface ChangeStepAction {
+  type: typeof CHANGE_STEP_ACTION;
+  payload: StepChangePayload; //name of new page
 }
 
 export interface SetTargetArtifactAction {
   type: typeof SET_TARGET_ARTIFACT_ACTION;
-  payload: ArtifactMetaInformation;
+  payload: Artifact;
 }
 
 export interface SetSourceArtifactAction {
   type: typeof SET_SOURCE_ARTIFACT_ACTION;
-  payload: ArtifactMetaInformation;
+  payload: Artifact;
 }
 
 export type MetaActionType =
-  | NewPageAction
   | SetTargetArtifactAction
-  | SetSourceArtifactAction;
+  | SetSourceArtifactAction
+  | ClearDataAction;

@@ -3,11 +3,14 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import styled from "styled-components";
 import { Artifact } from "../../../../shared/Dataset";
-import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
+import PageTitle, { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
 
 interface ArtifactDisplayProps {
   artifact: Artifact;
 }
+
+//TODO: Add field to props displaying if page header should be on left or right side.
+//TODO: Add line that continues all the way after the page header to replicate trace link.
 
 export default function ArtifactDisplay(props: ArtifactDisplayProps) {
   let body;
@@ -26,7 +29,12 @@ export default function ArtifactDisplay(props: ArtifactDisplayProps) {
   } else {
     body = <ArtifactBody>{props.artifact.body}</ArtifactBody>;
   }
-  return <ArtifactContainer>{body}</ArtifactContainer>;
+  return (
+    <ArtifactContainer>
+      <PageTitle isSource={true} title={props.artifact.id} />
+      {body}
+    </ArtifactContainer>
+  );
 }
 
 const CONTAINER_TOP_PADDING = 100;

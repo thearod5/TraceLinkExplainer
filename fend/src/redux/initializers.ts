@@ -11,8 +11,8 @@ export function initializeEmptyDataset(): Dataset {
 
 export function initializeEmptyMetaData(): MetaData {
   return {
-    oldPage: "",
-    currentPage: "",
+    oldStep: -1,
+    currentStep: 0,
 
     sourceArtifact: {
       id: "",

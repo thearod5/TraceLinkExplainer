@@ -1,24 +1,28 @@
 // eslint-disable-next-line no-unused-vars
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { RootState } from "../../redux";
+import { changeStep } from "../../redux/actions";
 import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
-import { HOME_ROUTE } from "./routes";
 
-const DEFAULT_TEXT = "Home";
+interface PageTitleProps {
+  title: string;
+  isSource: boolean;
+}
 
-function PageTitle() {
-  const metaData = useSelector((state: RootState) => state.metaData);
+function PageTitle(props: PageTitleProps) {
+  const dispatch = useDispatch();
 
-  //TODO: programmatically set the last back page
+  const deselectArtifact = () => {
+    console.log("...moving back");
+    const lastStep = props.isSource ? 1 : 2;
+    dispatch(changeStep(lastStep));
+  };
+
   return (
-    <TitleContainer to={HOME_ROUTE} id="PageTitle">
-      <TitleText>
-        {metaData.currentPage === "" ? DEFAULT_TEXT : metaData.currentPage}
-      </TitleText>
+    <TitleContainer id="PageTitle" onClick={deselectArtifact}>
+      <TitleText>{props.title}</TitleText>
     </TitleContainer>
   );
 }
@@ -30,7 +34,7 @@ export const TEXT_TOP_PADDING = 5;
 export const TEXT_SIDE_PADDING = 15; ///px
 
 // eslint-disable-next-line no-unused-vars
-const TitleContainer = styled(Link)`
+const TitleContainer = styled.div`
   text-decoration: none;
   margin-top: ${PAGE_NAV_MARGIN_TOP}px;
   position: absolute;

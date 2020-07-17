@@ -1,39 +1,20 @@
-import Button from "@material-ui/core/Button";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dataset } from "../../../../shared/Dataset";
-import { newPage } from "../../redux/actions";
+import { RootState } from "../../redux";
 import { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
-import { SOURCE_ARTIFACT_ROUTE } from "../nav/routes";
 
 const SUMMARY_TOP_MARGIN = 75;
 
-interface DatasetSummaryProps {
-  dataset: Dataset;
-}
+interface DatasetSummaryProps {}
 
 function DatasetSummary(props: DatasetSummaryProps) {
-  const dispatch = useDispatch();
-
-  if (props.dataset.name !== "") dispatch(newPage(props.dataset.name));
+  const dataset: Dataset = useSelector((state: RootState) => state.dataset);
 
   return (
     <SummaryContainer>
-      <Summary>{props.dataset.summary}</Summary>
-      <OperationsContainer>
-        <Button
-          size="large"
-          variant="contained"
-          color="primary"
-          component={Link}
-          to={SOURCE_ARTIFACT_ROUTE}
-          onClick={() => dispatch(newPage(props.dataset.name))}
-        >
-          Explore Artifacts
-        </Button>
-      </OperationsContainer>
+      <Summary>{dataset.summary}</Summary>
     </SummaryContainer>
   );
 }
@@ -45,13 +26,6 @@ const SummaryContainer = styled.div`
 const Summary = styled.p`
   font-size: 1.5em;
   text-align: center;
-`;
-
-const OperationsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-right: 10px;
-  margin-left: 10px;
 `;
 
 export default DatasetSummary;

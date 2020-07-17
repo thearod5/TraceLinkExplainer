@@ -1,3 +1,5 @@
+import { objectContainsKeys } from "../util/TypeUtil";
+
 export interface CustomError {
   error: string;
   message: string;
@@ -5,10 +7,7 @@ export interface CustomError {
 
 export function isError(obj: object): obj is CustomError {
   const requiredKeys: string[] = ["error", "message"];
-  for (let requiredKeyIndex in requiredKeys) {
-    let requiredKey: string = requiredKeys[requiredKeyIndex];
-    if (!(requiredKey in obj)) return false;
-  }
+  return objectContainsKeys(obj, requiredKeys);
   return true;
 }
 
