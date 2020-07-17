@@ -60,11 +60,12 @@ def get_all_artifacts(dataset: str):
 
 
 def create_default_search_items(artifacts, limit: int):
-    return create_search_items(artifacts, pd.Series([0] * len(artifacts)), limit)
+    return create_search_items(artifacts, pd.Series([0.0] * len(artifacts)), limit)
 
 
 def create_search_items(artifacts, similarities, limit):
     searchItems = []
+    limit = None if limit == -1 else limit
     for itemIndex in similarities.sort_values(ascending=False).index:
         searchItems.append(
             {

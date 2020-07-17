@@ -47,6 +47,7 @@ app.post(
 app.post('/source',
   async (req: Request, res: Response, next) => {
     // TODO: Check for required fields used below
+    console.log(req.body)
     const data = searchForArtifact(
       req.body.datasetName,
       req.body.query,

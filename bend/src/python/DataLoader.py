@@ -5,7 +5,10 @@ import pathlib
 import pandas as pd
 
 CURRENT_PATH = pathlib.Path().absolute()
+
+# Dynamically search for data folder
 PATH_TO_DATA = os.path.join(CURRENT_PATH, "..", "Data")
+assert os.path.isdir(PATH_TO_DATA)
 
 LINKED_MATRICES = {
     "Requirements": [("Level_1_to_Level_2.csv", 0), ("Level_1_to_Level_3.csv", 0)],

@@ -29,6 +29,7 @@ class_name = sys.argv[1]
 function_name = sys.argv[2]
 function_arguments = sys.argv[3:]
 
+
 custom_module = import_module(class_name)
 method_to_call = getattr(custom_module, function_name)
 
@@ -82,5 +83,5 @@ except:
         "error": PYTHON_INTERNAL_EXPORT_ERROR,
         "message": str(traceback.format_exc())
     }
-    print(export_error)
+    print(json.dumps(export_error, indent=2))
     sys.stdout.flush()
