@@ -17,7 +17,7 @@ interface TabBarProps {
 
 export default function TabBar(props: TabBarProps) {
   return (
-    <TabContainer>
+    <TabBarContainer>
       {Object.keys(props.tabs).map((label, index) => (
         <Tab
           label={label}
@@ -28,17 +28,19 @@ export default function TabBar(props: TabBarProps) {
           numberOfResults={props.numberOfResults[index]}
         />
       ))}
-    </TabContainer>
+    </TabBarContainer>
   );
 }
 
-const TabContainer = styled.div`
+const TabBarContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direct: row;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 25px;
+  overflow-x: scroll;
   padding-bottom: ${TAB_BAR_BOTTOM_PADDING}px;
   border-bottom: ${BORDER_LINE};
   margin-top: ${TAB_BAR_TOP_MARGIN}px;
+  border-bottom: ${BORDER_LINE};
 `;
