@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Artifact, Dataset, SearchItem } from "../../../../shared/Dataset";
@@ -14,9 +14,10 @@ import { Tabs } from "./tabbar/types";
 import { SuggestionFunctionType } from "./types";
 
 const DEFAULT_INDEX = 0;
-const SEARCH_LIMIT = 30; //TODO: Fix buffer overflow
+const SEARCH_LIMIT = -1; //TODO: Fix buffer overflow
 
 //TODO: Fix empty query not returning results
+//TODO: Add loading symbol while initial query finishes
 
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
@@ -31,6 +32,10 @@ export default function Search(props: SearchProps) {
   const [results, setResults] = useState<SearchItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
   const [numberOfResults, setNumberOfResulst] = useState([0, 0, 0, 0]);
+
+  useEffect(() => {
+    startSearch("");
+  }, []);
 
   // Search for query and separate results
   const startSearch = (searchString: string) => {
