@@ -46,7 +46,7 @@ export interface MetaData {
   sourceArtifact: Artifact;
 }
 
-export type StepPayload = Dataset | Artifact;
+export type StepPayload = Dataset | Artifact | undefined;
 
 export interface StepChangePayload {
   newStep: number;

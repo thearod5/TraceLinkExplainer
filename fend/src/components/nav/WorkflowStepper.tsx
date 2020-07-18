@@ -2,8 +2,9 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
 import store, { history } from "../../redux/store";
 import {
@@ -15,6 +16,7 @@ import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 interface StepperProps {}
 
 export default function WorkflowStepper(props: StepperProps) {
+  const dispatch = useDispatch();
   const activeStep = useSelector(getCurrentStep);
   const steps = getSteps();
 
@@ -24,6 +26,7 @@ export default function WorkflowStepper(props: StepperProps) {
       alert(error);
     } else {
       const nextPage = PAGE_STEP_MAPPING[step];
+      dispatch(changeStep(step, undefined));
       history.push(nextPage);
     }
   };

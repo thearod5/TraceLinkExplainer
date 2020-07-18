@@ -5,6 +5,10 @@ import {
   TRACE_VIEW_ROUTE,
 } from "../components/nav/routes";
 import { RootState } from "../redux";
+import {
+  initializeEmptyDataset,
+  initializeEmptyMetaData,
+} from "../redux/initializers";
 import { isArtifact, isDataset } from "../util/TypeUtil";
 import {
   SELECT_DATASET_STEP,
@@ -36,56 +40,56 @@ export function getNewStepState(
   requestedStep: number,
   stepPayload: StepPayload
 ): RootState | string {
-  const error = getStepChangeError(currentState, requestedStep, stepPayload);
+  const error = getStepChangeError(currentState, requestedStep, stepPayload); //validation
   if (error !== undefined) return error;
 
-  const oldMetaData = currentState.metaData;
+  const currentMetaData = currentState.metaData;
+  const emptyMetaData = initializeEmptyMetaData();
   switch (requestedStep) {
+    case SELECT_DATASET_STEP:
+      return {
+        dataset: initializeEmptyDataset(),
+        metaData: initializeEmptyMetaData(),
+      };
     case SELECT_SOURCE_STEP:
-      if (isDataset(stepPayload)) {
-        return {
-          ...currentState,
-          dataset: stepPayload,
-          metaData: {
-            ...oldMetaData,
-            currentStep: requestedStep,
-            oldStep: oldMetaData.currentStep,
-          },
-        };
-      } else throw Error(createStepError("dataset", SELECT_DATASET_STEP));
+      const requiredDataset: Dataset = isDataset(stepPayload)
+        ? stepPayload
+        : currentState.dataset;
+      return {
+        ...currentState,
+        dataset: requiredDataset,
+        metaData: {
+          ...emptyMetaData,
+          currentStep: requestedStep,
+          oldStep: currentMetaData.currentStep,
+        },
+      };
+
     case SELECT_TARGET_STEP:
-      if (isArtifact(stepPayload)) {
-        return {
-          ...currentState,
-          metaData: {
-            ...oldMetaData,
-            currentStep: requestedStep,
-            oldStep: oldMetaData.currentStep,
-            sourceArtifact: stepPayload,
-          },
-        };
-      } else throw Error(createStepError("artifact", SELECT_SOURCE_STEP));
-
-    case VIEW_TRACE_STEP:
-      if (isArtifact(stepPayload)) {
-        return {
-          ...currentState,
-          metaData: {
-            ...oldMetaData,
-            currentStep: requestedStep,
-            oldStep: oldMetaData.currentStep,
-            targetArtifact: stepPayload,
-          },
-        };
-      } else throw Error(createStepError("artifact", SELECT_TARGET_STEP));
-
-    case VIEW_TRACE_STEP:
+      const requiredSource = isArtifact(stepPayload)
+        ? stepPayload
+        : currentState.metaData.sourceArtifact;
       return {
         ...currentState,
         metaData: {
-          ...oldMetaData,
+          ...currentMetaData,
           currentStep: requestedStep,
-          oldStep: oldMetaData.currentStep,
+          oldStep: currentMetaData.currentStep,
+          sourceArtifact: requiredSource,
+        },
+      };
+
+    case VIEW_TRACE_STEP:
+      const requiredTarget = isArtifact(stepPayload)
+        ? stepPayload
+        : currentState.metaData.targetArtifact;
+      return {
+        ...currentState,
+        metaData: {
+          ...currentMetaData,
+          currentStep: requestedStep,
+          oldStep: currentMetaData.currentStep,
+          targetArtifact: requiredTarget,
         },
       };
     default:
