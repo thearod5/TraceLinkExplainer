@@ -31,7 +31,9 @@ export default function WorkflowStepper(props: StepperProps) {
     }
   };
 
-  return (
+  console.log(activeStep);
+
+  return activeStep != 0 ? (
     <StepperContainer>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, stepIndex) => (
@@ -41,7 +43,7 @@ export default function WorkflowStepper(props: StepperProps) {
         ))}
       </Stepper>
     </StepperContainer>
-  );
+  ) : null;
 }
 
 function getSteps() {

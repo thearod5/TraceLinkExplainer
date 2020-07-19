@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BORDER_LINE } from "../../styles/constants";
 
@@ -10,10 +10,18 @@ interface DataItemSummaryProps {
 
 const selectedColor = "blue"; //TODO: Set to theme colors
 const unselectedColor = "grey";
+const onHoverColor = "lightblue";
 
 function DataItemSummary(props: DataItemSummaryProps) {
+  const [hover, setHover] = useState(false);
+
   return (
-    <ItemContainer onClick={props.clickHandler}>
+    <ItemContainer
+      onClick={props.clickHandler}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ background: hover ? onHoverColor : undefined }}
+    >
       <HighlightBar
         style={{ background: props.isSelected ? selectedColor : undefined }}
       ></HighlightBar>

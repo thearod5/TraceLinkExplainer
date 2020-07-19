@@ -5,10 +5,7 @@ import {
   TRACE_VIEW_ROUTE,
 } from "../components/nav/routes";
 import { RootState } from "../redux";
-import {
-  initializeEmptyDataset,
-  initializeEmptyMetaData,
-} from "../redux/initializers";
+import { initializeEmptyMetaData } from "../redux/initializers";
 import { isArtifact, isDataset } from "../util/TypeUtil";
 import {
   SELECT_DATASET_STEP,
@@ -40,15 +37,17 @@ export function getNewStepState(
   requestedStep: number,
   stepPayload: StepPayload
 ): RootState | string {
+  //Step step if an error is found
   const error = getStepChangeError(currentState, requestedStep, stepPayload); //validation
   if (error !== undefined) return error;
 
+  //All Code assumes valid step change.
   const currentMetaData = currentState.metaData;
   const emptyMetaData = initializeEmptyMetaData();
   switch (requestedStep) {
     case SELECT_DATASET_STEP:
       return {
-        dataset: initializeEmptyDataset(),
+        dataset: currentState.dataset,
         metaData: initializeEmptyMetaData(),
       };
     case SELECT_SOURCE_STEP:
@@ -114,6 +113,8 @@ export function getStepChangeError(
       return undefined;
     case SELECT_ARTIFACTS_ROUTE:
       if (!datasetSelected) return DATASET_NOT_SELECTED_ERROR;
+      else if (!sourceSelected && requestedStep > SELECT_SOURCE_STEP)
+        return SOURCE_NOT_SELECTED_ERROR;
       else return undefined;
     case TRACE_VIEW_ROUTE:
       if (!datasetSelected) return DATASET_NOT_SELECTED_ERROR;

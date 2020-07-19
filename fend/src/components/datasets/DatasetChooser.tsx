@@ -5,12 +5,10 @@ import styled from "styled-components";
 import { Dataset } from "../../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
-import { changeStep, clearData } from "../../redux/actions";
-import { history } from "../../redux/store";
-import { SELECT_SOURCE_STEP } from "../../stepmanager/constants";
+import { clearData, selectDataset } from "../../redux/actions";
 import { BORDER_LINE } from "../../styles/constants";
-import { SELECT_ARTIFACTS_ROUTE } from "../nav/routes";
 import DatasetItemSummary from "./DatasetItemSummary";
+import DatasetModal from "./modal/DatasetModal";
 
 const DEFAULT_INDEX_SELECTED = -1;
 const UNIMPLEMENTED_NEW_DATASET_ERROR =
@@ -22,6 +20,7 @@ function DatasetChooser(props: DatasetChooserProps) {
   const dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
 
+  const [modalOpen, setModalOpen] = useState(false);
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
   const [datasets, setDatasetsNames] = useState<string[]>([]);
 
@@ -34,6 +33,13 @@ function DatasetChooser(props: DatasetChooserProps) {
     });
   }, [dataset.name]);
 
+  useEffect(() => {
+    if (dataset.name !== "") {
+      setModalOpen(true);
+    }
+    console.log("starting modal", dataset);
+  }, []);
+
   const toggleItemAtIndex = (indexClicked: number) => {
     indexClicked === indexSelected
       ? deselectDataset() //clears state
@@ -43,8 +49,8 @@ function DatasetChooser(props: DatasetChooserProps) {
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
     getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
-      dispatch(changeStep(SELECT_SOURCE_STEP, dataset));
-      history.push(SELECT_ARTIFACTS_ROUTE);
+      dispatch(selectDataset(dataset));
+      setModalOpen(true);
     });
   };
 
@@ -64,6 +70,7 @@ function DatasetChooser(props: DatasetChooserProps) {
 
   return (
     <ChooserContainer>
+      <DatasetModal open={modalOpen} setClose={() => setModalOpen(false)} />
       <Title>Datasets</Title>
       <DatasetItemContainer>
         {datasets.length === 0 ? (

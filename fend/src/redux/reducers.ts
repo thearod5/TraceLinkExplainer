@@ -1,6 +1,5 @@
 import { RootState } from ".";
 import {
-  CHANGE_STEP_ACTION,
   SELECT_DATASET,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
@@ -31,12 +30,6 @@ export function metaDataReducer(
   action: MetaActionType
 ) {
   switch (action.type) {
-    case CHANGE_STEP_ACTION:
-      return {
-        ...state,
-        oldStep: state.currentStep,
-        currentStep: action.payload,
-      };
     case SET_SOURCE_ARTIFACT_ACTION:
       return {
         ...state,

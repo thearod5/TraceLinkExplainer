@@ -15,9 +15,8 @@ function PageTitle(props: PageTitleProps) {
   const dispatch = useDispatch();
 
   const deselectArtifact = () => {
-    console.log("...moving back");
     const lastStep = props.isSource ? 1 : 2;
-    dispatch(changeStep(lastStep));
+    dispatch(changeStep(lastStep, undefined));
   };
 
   return (

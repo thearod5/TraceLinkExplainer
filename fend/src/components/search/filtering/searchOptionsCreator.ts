@@ -4,6 +4,9 @@ import { TabKeys } from "../tabbar/types";
 type CountDictionary = Record<string, number>;
 
 export function getNumberOfResults(results: SearchItem[]): number[] {
+  if (results === undefined) {
+    return new Array(TabKeys.values.length).fill(0);
+  }
   const tabCounts: CountDictionary = initializeSearchResultCounts();
   for (let resultIndex = 0; resultIndex < results.length; resultIndex++) {
     let searchResult: SearchItem = results[resultIndex];
