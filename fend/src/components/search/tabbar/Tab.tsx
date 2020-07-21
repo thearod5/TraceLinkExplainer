@@ -3,9 +3,6 @@ import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import React from "react";
 import styled from "styled-components";
 
-const CONTAINER_HEIGHT = 25;
-const TAB_ITEM_SIDE_MARGIN = 5;
-
 export type IconMetaType = OverridableComponent<SvgIconTypeMap<{}, "svg">>;
 
 interface ArtifactTabProps {

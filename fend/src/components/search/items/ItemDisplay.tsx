@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../shared/Dataset";
+import { BORDER_LINE } from "../../../styles/constants";
 import { ArtifactClickAction } from "../types";
 import SearchResultItem from "./Item";
 
@@ -40,4 +41,5 @@ const NumberResultsDisplay = styled.div`
   text-align: center;
   padding-top: ${NUMBER_DISPLAY_VERTICAL_PADDING}px;
   padding-bottom: ${NUMBER_DISPLAY_VERTICAL_PADDING}px;
+  border-bottom: ${BORDER_LINE};
 `;

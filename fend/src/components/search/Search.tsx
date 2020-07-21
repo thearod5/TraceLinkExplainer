@@ -9,6 +9,7 @@ import { getSelectedItems } from "./filtering/filterSearchResults";
 import { getNumberOfResults } from "./filtering/searchOptionsCreator";
 import ItemDisplay from "./items/ItemDisplay";
 import SearchBar from "./searchbar/SearchBar";
+import SearchSnackBar from "./snackbar/SearchSnackBar";
 import TabBar from "./tabbar/TabBar";
 import { Tabs } from "./tabbar/types";
 import { SuggestionFunctionType } from "./types";
@@ -27,32 +28,43 @@ export interface SearchProps {
 
 //TODO: Separate Row Height from search bar and vertically center so that all matches the page header
 export default function Search(props: SearchProps) {
-  const dataset: Dataset = useSelector((state: RootState) => state.dataset);
-  const dispatch = useDispatch();
-  const [results, setResults] = useState<SearchItem[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
   const [numberOfResults, setNumberOfResulst] = useState([0, 0, 0, 0]);
+  const [errorOccurred, setErrorOccurred] = useState(false);
 
-  useEffect(() => {
-    startSearch("");
-  }, []);
+  const dataset: Dataset = useSelector((state: RootState) => state.dataset);
+  const dispatch = useDispatch();
 
-  // Search for query and separate results
+  /* Requeset API for search results
+   * 1. Set as results state
+   * 2. Count number of each type and set number of results
+   */
   const startSearch = (searchString: string) => {
     props
       .searchFunction(dataset.name, searchString, SEARCH_LIMIT)
       .then((results: SearchItem[]) => {
+        setSearchResults(results);
         const resultCounts = getNumberOfResults(results);
-
         setNumberOfResulst(resultCounts);
-        setResults(results);
+      })
+      .catch((e) => {
+        setErrorOccurred(true);
       });
   };
+
   const createDispatchAction = (artifact: Artifact) => {
     dispatch(props.dispatchEvent(artifact));
   };
 
-  const selectedItems = getSelectedItems(results, selectedIndex);
+  const handleSnackBarClose = () => {
+    setErrorOccurred(false);
+  };
+
+  const selectedItems = getSelectedItems(searchResults, selectedIndex);
+
+  /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  useEffect(() => startSearch(""), []);
 
   return (
     <SearchContainer>
@@ -76,6 +88,7 @@ export default function Search(props: SearchProps) {
           clickAction={createDispatchAction}
         />
       </SearchRow>
+      <SearchSnackBar open={errorOccurred} handleClose={handleSnackBarClose} />
     </SearchContainer>
   );
 }
