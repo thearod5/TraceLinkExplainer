@@ -4,7 +4,7 @@ import "react-splitter-layout/lib/index.css";
 import styled from "styled-components";
 import { getDataset } from "../../redux/selectors";
 import "../../styles/App.css";
-import DatasetChooser from "../datasets/DatasetChooser";
+import Chooser from "../datasets/Chooser";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <HomeContainer>
       <ContentContainer>
-        <DatasetChooser />
+        <Chooser />
       </ContentContainer>
     </HomeContainer>
   );
