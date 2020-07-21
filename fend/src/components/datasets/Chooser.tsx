@@ -1,14 +1,14 @@
-import { Button } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Dataset } from "../../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
-import { clearData, selectDataset } from "../../redux/actions";
+import { changeStep, clearData, selectDataset } from "../../redux/actions";
+import { getCurrentStep } from "../../redux/selectors";
 import { BORDER_LINE } from "../../styles/constants";
-import DatasetItemSummary from "./DatasetItemSummary";
-import DatasetModal from "./modal/DatasetModal";
+import ItemAccordion from "./accordion/ItemAccordion";
 
 const DEFAULT_INDEX_SELECTED = -1;
 const UNIMPLEMENTED_NEW_DATASET_ERROR =
@@ -16,13 +16,19 @@ const UNIMPLEMENTED_NEW_DATASET_ERROR =
 
 interface DatasetChooserProps {}
 
-function DatasetChooser(props: DatasetChooserProps) {
+function Chooser(props: DatasetChooserProps) {
+  const activeStep = useSelector(getCurrentStep);
   const dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
 
-  const [modalOpen, setModalOpen] = useState(false);
+  console.log("chooser step: ", activeStep);
+
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
   const [datasets, setDatasetsNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    dispatch(changeStep(0, undefined));
+  }, []);
 
   useEffect(() => {
     getDatasetNames().then((names) => {
@@ -33,24 +39,10 @@ function DatasetChooser(props: DatasetChooserProps) {
     });
   }, [dataset.name]);
 
-  useEffect(() => {
-    if (dataset.name !== "") {
-      setModalOpen(true);
-    }
-    console.log("starting modal", dataset);
-  }, []);
-
-  const toggleItemAtIndex = (indexClicked: number) => {
-    indexClicked === indexSelected
-      ? deselectDataset() //clears state
-      : selectDatasetAtIndex(indexClicked);
-  };
-
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
     getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
       dispatch(selectDataset(dataset));
-      setModalOpen(true);
     });
   };
 
@@ -60,17 +52,17 @@ function DatasetChooser(props: DatasetChooserProps) {
   };
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
-    <DatasetItemSummary
+    <ItemAccordion
       key={dataset}
       dataset={dataset}
       isSelected={currentIndex === indexSelected}
-      clickHandler={() => toggleItemAtIndex(currentIndex)}
+      select={() => selectDatasetAtIndex(currentIndex)}
+      deselect={() => deselectDataset}
     />
   ));
 
   return (
-    <ChooserContainer>
-      <DatasetModal open={modalOpen} setClose={() => setModalOpen(false)} />
+    <DatasetChooserContainer boxShadow={3}>
       <Title>Datasets</Title>
       <DatasetItemContainer>
         {datasets.length === 0 ? (
@@ -90,15 +82,20 @@ function DatasetChooser(props: DatasetChooserProps) {
           New Dataset
         </NewDatasetButton>
       </NewDatasetButtonContainer>
-    </ChooserContainer>
+    </DatasetChooserContainer>
   );
 }
 
-const ChooserContainer = styled.div`
+const DatasetChooserContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-width: 400px;
   max-width: 500px;
   border: ${BORDER_LINE};
-  border-top: none;
+  border-radius: 5px;
+  min-height: 500px;
+  margin-top: 50px;
 `;
 
 const LoadingItem = styled.p`
@@ -107,23 +104,25 @@ const LoadingItem = styled.p`
 
 const Title = styled.h2`
   text-align: center;
+  margin-bottom: 10px;
+  font-weight: normal;
+  border-bottom: ${BORDER_LINE};
 `;
 
 const DatasetItemContainer = styled.div`
   display: flex;
+  flex-grow: 4;
   flex-direction: column;
-  border-top: ${BORDER_LINE};
+  padding: 10px;
 `;
 
-const NEW_DATASET_CONTAINER_TOP_MARGIN = 10;
-
+//TODO: Make so its 10px or something FROM the bottom
 const NewDatasetButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-content: center;
-  margin-top: ${NEW_DATASET_CONTAINER_TOP_MARGIN}px;
-  margin-bottom: ${NEW_DATASET_CONTAINER_TOP_MARGIN}px;
+  margin-bottom: 20px;
 `;
 
 const NEW_DATASET_BUTTON_WIDTH = 100;
@@ -133,4 +132,4 @@ const NewDatasetButton = styled(Button)`
   height: ${NEW_DATASET_BUTTON_HEIGHT}px;
   width: ${NEW_DATASET_BUTTON_WIDTH}px;
 `;
-export default DatasetChooser;
+export default Chooser;
