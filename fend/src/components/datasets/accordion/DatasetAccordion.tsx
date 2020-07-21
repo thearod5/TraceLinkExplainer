@@ -12,13 +12,13 @@ interface DataItemSummaryProps {
   deselect: () => void;
 }
 
-function ItemAccordion(props: DataItemSummaryProps) {
+function DatasetAccordion(props: DataItemSummaryProps) {
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const callback = expanded ? props.select : props.deselect;
     callback();
-  }, [expanded]);
+  }, [expanded, props.select, props.deselect]);
 
   return (
     <ItemAccordionContainer
@@ -37,4 +37,4 @@ const ItemSummary = styled(AccordionSummary)`
   font-weight: bold;
 `;
 
-export default ItemAccordion;
+export default DatasetAccordion;

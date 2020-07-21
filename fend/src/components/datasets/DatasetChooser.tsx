@@ -6,9 +6,8 @@ import { Dataset } from "../../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
 import { changeStep, clearData, selectDataset } from "../../redux/actions";
-import { getCurrentStep } from "../../redux/selectors";
 import { BORDER_LINE } from "../../styles/constants";
-import ItemAccordion from "./accordion/ItemAccordion";
+import DatasetAccordion from "./accordion/DatasetAccordion";
 
 const DEFAULT_INDEX_SELECTED = -1;
 const UNIMPLEMENTED_NEW_DATASET_ERROR =
@@ -16,18 +15,16 @@ const UNIMPLEMENTED_NEW_DATASET_ERROR =
 
 interface DatasetChooserProps {}
 
-function Chooser(props: DatasetChooserProps) {
-  const activeStep = useSelector(getCurrentStep);
+function DatasetChooser(props: DatasetChooserProps) {
   const dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
-
-  console.log("chooser step: ", activeStep);
 
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
   const [datasets, setDatasetsNames] = useState<string[]>([]);
 
   useEffect(() => {
     dispatch(changeStep(0, undefined));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -52,7 +49,7 @@ function Chooser(props: DatasetChooserProps) {
   };
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
-    <ItemAccordion
+    <DatasetAccordion
       key={dataset}
       dataset={dataset}
       isSelected={currentIndex === indexSelected}
@@ -132,4 +129,4 @@ const NewDatasetButton = styled(Button)`
   height: ${NEW_DATASET_BUTTON_HEIGHT}px;
   width: ${NEW_DATASET_BUTTON_WIDTH}px;
 `;
-export default Chooser;
+export default DatasetChooser;

@@ -1,27 +1,30 @@
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import ViewModuleIcon from "@material-ui/icons/ViewModule";
+import React, { JSXElementConstructor } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../../redux/actions";
-import { getCurrentStep } from "../../../redux/selectors";
 import { history } from "../../../redux/store";
 import { FIRST_STEP_IN_WIZARD } from "../../../stepmanager/constants";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "../../nav/routes";
-
 type ButtonClickCallback = (route: string) => void;
 
 interface ModalItemContent {
   route: string;
+  icon: JSXElementConstructor<{}>;
 }
 
 const MODAL_ITEMS: Record<string, ModalItemContent> = {
-  "Explore Artifacts": {
+  "Link Explanation": {
     route: SELECT_ARTIFACTS_ROUTE,
+    icon: AccountTreeIcon,
   },
   "View Dataset": {
     route: DATASET_ROUTE,
+    icon: ViewModuleIcon,
   },
 };
 
@@ -29,12 +32,10 @@ interface ItemDetailsProps {}
 
 export default function ItemDetails(props: ItemDetailsProps) {
   const dispatch = useDispatch();
-  const activeStep = useSelector(getCurrentStep);
 
   const handleItemClick: ButtonClickCallback = (route: string) => {
     if (route === SELECT_ARTIFACTS_ROUTE) {
       dispatch(changeStep(FIRST_STEP_IN_WIZARD, undefined));
-      console.log("changing steps...", activeStep);
     }
 
     history.push(route);
@@ -58,7 +59,10 @@ function createButtons(clickHandler: ButtonClickCallback): JSX.Element[] {
   return Object.keys(MODAL_ITEMS).map((modalDescription) => {
     let itemContent: ModalItemContent = MODAL_ITEMS[modalDescription];
     return (
-      <Button onClick={() => clickHandler(itemContent.route)}>
+      <Button
+        startIcon={<itemContent.icon />}
+        onClick={() => clickHandler(itemContent.route)}
+      >
         {modalDescription}
       </Button>
     );
