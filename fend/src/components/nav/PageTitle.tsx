@@ -4,6 +4,10 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
+import {
+  SELECT_SOURCE_STEP,
+  SELECT_TARGET_STEP,
+} from "../../stepmanager/constants";
 import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 
 interface PageTitleProps {
@@ -15,7 +19,7 @@ function PageTitle(props: PageTitleProps) {
   const dispatch = useDispatch();
 
   const deselectArtifact = () => {
-    const lastStep = props.isSource ? 1 : 2;
+    const lastStep = props.isSource ? SELECT_SOURCE_STEP : SELECT_TARGET_STEP;
     dispatch(changeStep(lastStep, undefined));
   };
 

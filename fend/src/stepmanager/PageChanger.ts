@@ -28,10 +28,7 @@ export const PAGE_STEP_MAPPING: Record<number, string> = {
   3: TRACE_VIEW_ROUTE,
 };
 
-function createStepError(type: string, step: number) {
-  return `Expected ${type} to complete step # ${step}`;
-}
-
+//write unit tests for state
 export function getNewStepState(
   currentState: RootState,
   requestedStep: number,

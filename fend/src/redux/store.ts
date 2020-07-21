@@ -1,21 +1,15 @@
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
-import { applyMiddleware, CombinedState, createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { Dataset } from "../../../shared/Dataset";
 import { getNewStepState } from "../stepmanager/PageChanger";
 import { CHANGE_STEP_ACTION, CLEAR_DATA } from "./actions";
 import createRootReducer from "./index";
 import { createEmptyState } from "./reducers";
-import {
-  ChangeStepAction,
-  DatasetActionType,
-  MetaActionType,
-  MetaData,
-} from "./types";
+import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
 
 const persistConfig = {
   key: "root",
@@ -28,11 +22,6 @@ export const history = createBrowserHistory();
 const middleware = [thunk, routerMiddleware(history)];
 
 const appReducer = createRootReducer(history);
-
-type CombinedAppState = CombinedState<{
-  dataset: Dataset;
-  metaData: MetaData;
-}>;
 
 const rootReducer = (
   state = createEmptyState(),

@@ -11,13 +11,12 @@ import {
   getStepChangeError,
   PAGE_STEP_MAPPING,
 } from "../../stepmanager/PageChanger";
-import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 
 interface StepperProps {}
 
 export default function WorkflowStepper(props: StepperProps) {
   const dispatch = useDispatch();
-  const activeStep = useSelector(getCurrentStep);
+  const activeStep = useSelector(getCurrentStep) - 1; //recreated index at 0, but remove select dataset move
   const steps = getSteps();
 
   const moveToStep = (step: number) => {
@@ -25,15 +24,14 @@ export default function WorkflowStepper(props: StepperProps) {
     if (error !== undefined) {
       alert(error);
     } else {
-      const nextPage = PAGE_STEP_MAPPING[step];
-      dispatch(changeStep(step, undefined));
+      const reIndexStep = step + 1;
+      const nextPage = PAGE_STEP_MAPPING[reIndexStep]; //return to old index (with dataset as first step) for page mappings
+      dispatch(changeStep(reIndexStep, undefined));
       history.push(nextPage);
     }
   };
 
-  console.log(activeStep);
-
-  return activeStep != 0 ? (
+  return (
     <StepperContainer>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, stepIndex) => (
@@ -43,14 +41,13 @@ export default function WorkflowStepper(props: StepperProps) {
         ))}
       </Stepper>
     </StepperContainer>
-  ) : null;
+  );
 }
 
 function getSteps() {
-  return ["Select Dataset", "Source Artifact", "Target Artifact", "View Trace"];
+  return ["Source Artifact", "Target Artifact", "View Trace"];
 }
 
 const StepperContainer = styled.div`
-  border-bottom: ${BORDER_LINE_EMPHASIS};
   width: 100%;
 `;
