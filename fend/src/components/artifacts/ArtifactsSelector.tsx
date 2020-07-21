@@ -22,7 +22,7 @@ export default function ArtifactSelector(props: ArtifactsProps) {
     (state: RootState) => state.metaData.currentStep
   );
 
-  const sourceIsSelected = currentStep == 2;
+  const sourceIsSelected = currentStep === 2;
   const leftPanel = sourceIsSelected ? (
     <ArtifactDisplay artifact={sourceArtifact} />
   ) : (
