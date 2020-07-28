@@ -21,7 +21,7 @@ interface SearchBarProps {
 export default function SearchBar(props: SearchBarProps) {
   return (
     <SearchBarContainer>
-      <Autocomplete
+      <StyledSearchBar
         id={SEARCH_BAR_ID}
         freeSolo
         selectOnFocus
@@ -64,6 +64,10 @@ const SearchBarContainer = styled.div`
   justify-content: center;
   height: ${SEARCH_BAR_HEIGHT}px;
   width: 100%;
+`;
+
+const StyledSearchBar = styled(Autocomplete)`
+  border-radius: 5px;
 `;
 
 const SearchBarStyle = {
