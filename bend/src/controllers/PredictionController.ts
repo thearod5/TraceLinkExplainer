@@ -7,7 +7,7 @@ export async function makePredictionsForArtifact (
   artifactType: string,
   artifactId: string,
   query: string,
-  limit: string
+  limit: number
 ): Promise<SearchItem[]> {
   const functionArguments: FunctionArguments = {
     arguments: [dataset, artifactType, artifactId, query, limit]

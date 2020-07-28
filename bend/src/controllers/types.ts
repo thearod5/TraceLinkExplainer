@@ -1,3 +1,3 @@
 export interface FunctionArguments {
-  arguments: Array<object | string>
+  arguments: Array<object | string | number>
 }

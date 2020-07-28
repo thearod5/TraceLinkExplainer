@@ -21,4 +21,16 @@ export interface SearchItem {
   similarity: number;
 }
 
+export interface SearchRoutePayload {
+  datasetName: string;
+  sourceType: string;
+  sourceId: string;
+  query: string;
+  limit: number
+}
+
+export interface SearchResponse {
+  searchItems: SearchItem[];
+}
+
 export type { Dataset, Artifact, ArtifactQuery };

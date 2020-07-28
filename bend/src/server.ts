@@ -1,6 +1,6 @@
-import app from './App';
+import app from './App'
 
-const port = 5000;
+const port = 5000
 /*
  * START SERVER
  */
