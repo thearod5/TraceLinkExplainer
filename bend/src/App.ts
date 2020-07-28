@@ -12,7 +12,7 @@ import {
   searchForArtifact
 } from './controllers/PredictionController'
 import { handleTestRoute } from './controllers/TestRouteController'
-import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE, SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE, TEST_ROUTE } from './types'
+import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE, SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE, TEST_ROUTE } from './routes'
 
 const app = express()
 

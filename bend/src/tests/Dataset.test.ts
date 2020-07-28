@@ -1,7 +1,7 @@
 
 import request from 'supertest'
 import app from '../App'
-import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE } from '../types'
+import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE } from '../routes'
 
 test('GET dataset/names', () => {
   return new Promise((resolve, reject) => {

@@ -3,7 +3,7 @@ import { assert } from 'console'
 import request from 'supertest'
 import app from '../App'
 import { testKeyOne, testKeyTwo, testValueOne, testValueTwo } from '../controllers/TestRouteController'
-import { TEST_ROUTE } from '../types'
+import { TEST_ROUTE } from '../routes'
 
 test('test route', () => {
   return new Promise((resolve, reject) => {

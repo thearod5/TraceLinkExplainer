@@ -4,7 +4,7 @@ import request from 'supertest'
 import { SearchItem, SearchResponse, SearchRoutePayload } from '../../../shared/Dataset'
 import { isSearchItem } from '../../../shared/util/ObjectOperations'
 import app from '../App'
-import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../types'
+import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../routes'
 
 test('SEARCH source', () => {
   const TEST_LIMIT = 5
