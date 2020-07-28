@@ -1,10 +1,8 @@
 import { spawn } from 'child_process'
 import fs from 'fs'
 import path from 'path'
-
-// TODO: Write function for making predictions
-// TODO: Write function for making suggestions (Traced Artifacts)
-/* TODO: Write script for making predictions
+import { FunctionArguments } from './types'
+/*
  * 1. Takes in dataset, type (e.g. Requirement), artifact-id
  * 2. Grabs that artifact and compares it to all the artifacts in the dataset
  * 3. Create datastructure for search predictions
@@ -15,17 +13,17 @@ const PYTHON_GENERAL_EXTERNAL_ERROR = 'PYTHON_GENERAL_EXTERNAL_ERROR'
 const PATH_TO_RUNNER = path.join(__dirname, '..', 'python', 'ClassRunner.py')
 const PATH_TO_TEMP_FOLDER = path.join(__dirname, '..', 'temp')
 
-export function runFunction<T> (
+export function runFunction<T>(
   className: string,
   functionName: string,
-  ...functionArguments: any[]
+  functionArguments: FunctionArguments
 ): Promise<T> {
   return new Promise(function (resolve, reject) {
     const pyprog = spawn('python3', [
       PATH_TO_RUNNER,
       className,
       functionName,
-      ...functionArguments
+      JSON.stringify(functionArguments)
     ])
 
     pyprog.stdout.on('data', function (data) {
@@ -52,7 +50,7 @@ export function runFunction<T> (
   })
 }
 
-function deleteFilesInDir (directory: string):Promise<void> {
+function deleteFilesInDir(directory: string): Promise<void> {
   return new Promise((resolve, reject) => {
     fs.readdir(directory, (err, files) => {
       if (err) throw err
@@ -67,7 +65,7 @@ function deleteFilesInDir (directory: string):Promise<void> {
   })
 }
 
-function readAndDeleteJsonFile <T> (pathToFile: string): Promise<T> {
+function readAndDeleteJsonFile<T>(pathToFile: string): Promise<T> {
   return new Promise((resolve, reject) => {
     readAndDeleteFile(pathToFile).then(jsonFileContent => {
       resolve(JSON.parse(jsonFileContent))
@@ -75,7 +73,7 @@ function readAndDeleteJsonFile <T> (pathToFile: string): Promise<T> {
   })
 }
 
-function readAndDeleteFile (pathToFile: string): Promise<string> {
+function readAndDeleteFile(pathToFile: string): Promise<string> {
   return new Promise((resolve, reject) => {
     if (fs.existsSync(pathToFile)) {
       const fileContents = fs.readFileSync(pathToFile).toString()

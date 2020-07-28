@@ -1,0 +1,5 @@
+export const TEST_ROUTE = '/test'
+export const DATASET_MAIN_ROUTE = '/dataset'
+export const GET_DATASET_NAMES_ROUTE = '/dataset/names'
+export const SEARCH_SOURCE_ROUTE = '/source'
+export const SEARCH_TARGET_ROUTE = '/target'

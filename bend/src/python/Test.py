@@ -1,6 +1,6 @@
 
 def test(keys, values):
-    return {
-        "keys": keys,
-        "values": values
-    }
+    result = {}
+    for key_index, key in enumerate(keys):
+        result[key] = values[key_index]
+    return result

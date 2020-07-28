@@ -7,7 +7,9 @@
     "killOld": "lsof -t -i tcp:5000 | xargs kill",
     "start": "'ts-node' src/server.ts",
     "start-watch": "npm run killOld & nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec npm start",
-    "lint": "eslint . --ext .ts,.tsx,.js"
+    "lint": "eslint . --ext .ts,.tsx,.js",
+    "test": "jest --forceExit --maxWorkers=1 --detectOpenHandles",
+    "test-watch": "jest --watch --forceExit --maxWorkers=1 --detectOpenHandles"
   },
   "author": "Alberto Rodriguez",
   "license": "ISC",
@@ -21,7 +23,10 @@
     "python-shell": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.7",
     "@types/node": "^14.0.14",
+    "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
     "eslint": "^7.3.1",
@@ -31,8 +36,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-standard": "^4.0.1",
+    "jest": "^26.1.0",
     "nodemon": "^2.0.4",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.1.4",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.7"
   }
 }

@@ -27,7 +27,11 @@ def import_module(file_name):
 
 class_name = sys.argv[1]
 function_name = sys.argv[2]
-function_arguments = sys.argv[3:]
+function_arguments_str_object = sys.argv[3]
+
+# Parse json object and extract or arguments
+function_arguments_object = json.loads(function_arguments_str_object)
+function_arguments = function_arguments_object["arguments"]
 
 
 custom_module = import_module(class_name)
