@@ -1,9 +1,8 @@
+import classes from '../../../data/Drone/Classes.json'
+import designs from '../../../data/Drone/Designs.json'
+import requirements from '../../../data/Drone/Requirements.json'
+import tasks from '../../../data/Drone/Tasks.json'
 import { Dataset } from '../../../shared/Dataset'
-
-const requirements = require('../../../data/Drone/Requirements.json')
-const designs = require('../../../data/Drone/Designs.json')
-const tasks = require('../../../data/Drone/Tasks.json')
-const classes = require('../../../data/Drone/Classes.json')
 
 const artifacts = [
   ...requirements.artifacts,

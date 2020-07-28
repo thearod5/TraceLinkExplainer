@@ -2,11 +2,7 @@ import { SearchItem } from '../../../shared/Dataset'
 import { runFunction } from './pythonController'
 import { FunctionArguments } from './types'
 
-interface SimilarityMatrixResponse {
-  similarities: number[]
-}
-
-export async function makePredictionsForArtifact(
+export async function makePredictionsForArtifact (
   dataset: string,
   artifactType: string,
   artifactId: string,
@@ -23,7 +19,7 @@ export async function makePredictionsForArtifact(
   ).catch((e) => { throw e })
 }
 
-export async function searchForArtifact(
+export async function searchForArtifact (
   dataset: string,
   query: string,
   limit: string

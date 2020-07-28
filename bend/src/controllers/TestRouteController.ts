@@ -5,11 +5,11 @@ import { runFunction } from '../controllers/pythonController'
 import { FunctionArguments } from './types'
 
 export const testKeyOne = 'keyOne'
-export const testValueOne = "valueOne"
-export const testKeyTwo = "keyTwo"
-export const testValueTwo = "valueTwo"
+export const testValueOne = 'valueOne'
+export const testKeyTwo = 'keyTwo'
+export const testValueTwo = 'valueTwo'
 
-function handleTestRoute(req: Request, res: Response<object>): void {
+function handleTestRoute (req: Request, res: Response<object>): void {
   const functionArguments: FunctionArguments = {
     arguments: [[testKeyOne, 'keyTwo'], [testValueOne, testValueTwo]]
   }

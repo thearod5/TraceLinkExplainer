@@ -57,8 +57,6 @@ app.post(
     handleError(res, dataPromise)
   })
 
-
-
 function handleError<T>(res: Response, data: Promise<T>) {
   data.then(data => res.send(data)).catch(e => { // convention is to reject with error
     res.status(400)
@@ -66,5 +64,4 @@ function handleError<T>(res: Response, data: Promise<T>) {
   })
 }
 
-
-export default app;
+export default app

@@ -13,7 +13,7 @@ const PYTHON_GENERAL_EXTERNAL_ERROR = 'PYTHON_GENERAL_EXTERNAL_ERROR'
 const PATH_TO_RUNNER = path.join(__dirname, '..', 'python', 'ClassRunner.py')
 const PATH_TO_TEMP_FOLDER = path.join(__dirname, '..', 'temp')
 
-export function runFunction<T>(
+export function runFunction<T> (
   className: string,
   functionName: string,
   functionArguments: FunctionArguments
@@ -50,7 +50,7 @@ export function runFunction<T>(
   })
 }
 
-function deleteFilesInDir(directory: string): Promise<void> {
+function deleteFilesInDir (directory: string): Promise<void> {
   return new Promise((resolve, reject) => {
     fs.readdir(directory, (err, files) => {
       if (err) throw err
@@ -65,7 +65,7 @@ function deleteFilesInDir(directory: string): Promise<void> {
   })
 }
 
-function readAndDeleteJsonFile<T>(pathToFile: string): Promise<T> {
+function readAndDeleteJsonFile<T> (pathToFile: string): Promise<T> {
   return new Promise((resolve, reject) => {
     readAndDeleteFile(pathToFile).then(jsonFileContent => {
       resolve(JSON.parse(jsonFileContent))
@@ -73,7 +73,7 @@ function readAndDeleteJsonFile<T>(pathToFile: string): Promise<T> {
   })
 }
 
-function readAndDeleteFile(pathToFile: string): Promise<string> {
+function readAndDeleteFile (pathToFile: string): Promise<string> {
   return new Promise((resolve, reject) => {
     if (fs.existsSync(pathToFile)) {
       const fileContents = fs.readFileSync(pathToFile).toString()
