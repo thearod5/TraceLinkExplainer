@@ -118,7 +118,6 @@ export function getStepChangeError(
       else if (!sourceSelected) return SOURCE_NOT_SELECTED_ERROR;
       else if (!targetSelected) return TARGET_NOT_SELECTED_ERROR;
       else return undefined;
-
     default:
       return undefined;
   }

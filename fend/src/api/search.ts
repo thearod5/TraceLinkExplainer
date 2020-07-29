@@ -1,11 +1,7 @@
-import { Artifact, SearchItem } from "../../../shared/Dataset";
+import { Artifact, SearchItem, SearchResponse } from "../../../shared/Dataset";
 import store from "../redux/store";
 import { BASE_URL, post } from "./base";
 import { createAlertMessage, CustomError, isError } from "./errors";
-
-export interface SearchResponse {
-  searchItems: SearchItem[];
-}
 
 interface SourceSearchPayload {
   datasetName: string;

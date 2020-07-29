@@ -1,15 +1,13 @@
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { persistReducer, persistStore } from "redux-persist";
+import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { getNewStepState } from "../stepmanager/PageChanger";
 import { CHANGE_STEP_ACTION, CLEAR_DATA } from "./actions";
-import createRootReducer from "./index";
-import { createEmptyState } from "./reducers";
-import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
+import createRootReducer, { RootState } from "./index";
+import { changeStepReducer, createEmptyState, CustomAction } from "./reducers";
 
 const persistConfig = {
   key: "root",
@@ -23,34 +21,24 @@ const middleware = [thunk, routerMiddleware(history)];
 
 const appReducer = createRootReducer(history);
 
-const rootReducer = (
-  state = createEmptyState(),
-  action: MetaActionType | DatasetActionType | ChangeStepAction
-) => {
+const rootReducer = (state = createEmptyState(), action: CustomAction) => {
   switch (action.type) {
     case CLEAR_DATA:
       return appReducer(undefined, action);
     case CHANGE_STEP_ACTION:
-      const newStep = action.payload.newStep;
-      const stepPayload = action.payload.stepPayload;
-      const result = getNewStepState(state, newStep, stepPayload);
-      if (typeof result === "string") {
-        alert(result);
-        return state;
-      }
-      return result;
-
+      return changeStepReducer(state, action);
     default:
       return appReducer(state, action);
   }
 };
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(
+export const store: Store<RootState, CustomAction> = createStore(
   persistedReducer,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-export const persistor = persistStore(store);
+//TODO: export const persistor = persistStore(store);
 
 export default store;

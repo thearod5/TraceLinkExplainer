@@ -1,4 +1,5 @@
 import { RootState } from ".";
+import { getNewStepState } from "../stepmanager/PageChanger";
 import {
   SELECT_DATASET,
   SET_SOURCE_ARTIFACT_ACTION,
@@ -9,7 +10,12 @@ import {
   initializeEmptyDataset,
   initializeEmptyMetaData,
 } from "./initializers";
-import { DatasetActionType, MetaActionType } from "./types";
+import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
+
+export type CustomAction =
+  | MetaActionType
+  | DatasetActionType
+  | ChangeStepAction;
 
 export function datasetReducer(
   state = initializeEmptyDataset(),
@@ -50,4 +56,18 @@ export function createEmptyState(): RootState {
     metaData: initializeEmptyMetaData(),
     dataset: initializeEmptyDataset(),
   };
+}
+
+export function changeStepReducer(
+  state: RootState,
+  action: ChangeStepAction
+): RootState {
+  const newStep = action.payload.newStep;
+  const stepPayload = action.payload.stepPayload;
+  const result = getNewStepState(state, newStep, stepPayload);
+  if (typeof result === "string") {
+    alert(result);
+    return state;
+  }
+  return result;
 }

@@ -7,7 +7,7 @@ export interface CustomError {
 
 export function isError(obj: object): obj is CustomError {
   const requiredKeys: string[] = ["error", "message"];
-  return objectContainsKeys(obj, requiredKeys);
+  return objectContainsKeys(requiredKeys, obj);
 }
 
 export function createAlertMessage(error: CustomError): string {

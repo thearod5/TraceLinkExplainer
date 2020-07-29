@@ -1,16 +1,16 @@
-interface Dataset {
+export interface Dataset {
   name: string;
   summary: string;
   artifacts: Array<Artifact>;
 }
 
-interface Artifact {
+export interface Artifact {
   type: string;
   id: string;
   body: string;
 }
 
-interface ArtifactQuery {
+export interface ArtifactQuery {
   id: string;
   body: string;
   type: string;
@@ -26,11 +26,37 @@ export interface SearchRoutePayload {
   sourceType: string;
   sourceId: string;
   query: string;
-  limit: number
+  limit: number;
+}
+
+export interface TraceRetrievalPayload {
+  dataset: string;
+  sourceId: string;
+  sourceType: string;
+  targetId: string;
+  targetType: string;
 }
 
 export interface SearchResponse {
   searchItems: SearchItem[];
 }
 
-export type { Dataset, Artifact, ArtifactQuery };
+export interface WordFamily {
+  word: string;
+  root: string; // Porter Stemmer Root
+}
+
+export interface WordFamilyDescriptors {
+  color: string;
+  weight: number;
+}
+
+export type WordRootMapping = Record<string, string>; //maps word to root
+export type WordDescriptorMapping = Record<string, WordFamilyDescriptors>; //Maps root to Descriptor
+
+export interface TraceInformation {
+  wordRootMapping: WordRootMapping;
+  wordDescriptorsMapping: WordDescriptorMapping;
+  traceType: string;
+  score: number;
+}
