@@ -1,5 +1,5 @@
 import { SearchItem } from '../../../shared/Dataset'
-import { runFunction } from './pythonController'
+import { runFunction } from './PythonController'
 import { FunctionArguments } from './types'
 
 export async function makePredictionsForArtifact (

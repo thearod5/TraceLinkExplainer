@@ -3,6 +3,9 @@ import os
 import pathlib
 
 import pandas as pd
+from nltk.stem import PorterStemmer
+
+ps = PorterStemmer()
 
 CURRENT_PATH = pathlib.Path().absolute()
 
@@ -111,3 +114,33 @@ def get_all_artifacts_for_dataset(dataset: str):
     artifact_types = list(
         filter(lambda f: f[0] != "." and ".json" in f, os.listdir(path_to_dataset)))
     return list(map(lambda a_type: get_dataset_artifacts_for_type(dataset, a_type, True), artifact_types))
+
+
+def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):
+    path_to_artifacts = get_path_to_artifacts(dataset, artifact_type)
+    data = None
+    with open(path_to_artifacts) as json_file:
+        data = json.load(json_file)
+    query = list(
+        filter(lambda artifact: artifact["id"] == artifact_id, data["artifacts"]))
+    assert len(
+        query) == 1, "Expected a single match but found: %d matches" % len(query)
+    return query[0]
+
+
+def get_trace_information(dataset: str, source_type: str, source_id: str, target_type: str, target_id: str):
+    source_artifact = get_artifact_in_dataset(dataset, source_type, source_id)
+    target_artifact = get_artifact_in_dataset(dataset, target_type, target_id)
+
+    all_words = source_artifact["body"].split(
+        " ") + target_artifact["body"].split(" ")
+    all_words = list(set(all_words))
+    stemmed_words = list(map(ps.stem, all_words))
+    wordRootMapping = {}
+    for word_index, word in enumerate(all_words):
+        wordRootMapping[word] = stemmed_words[word_index]
+    return {
+        "source": source_artifact,
+        "target": target_artifact,
+        "wordRootMapping": wordRootMapping
+    }

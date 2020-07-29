@@ -1,8 +1,8 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
+import { isSearchRoutePayload, isTraceTrievealPayload, objectContainsKeys } from '../../fend/src/util/TypeUtil'
 import { SearchItem } from '../../shared/Dataset'
-import { isSearchRoutePayload, objectContainsKeys } from '../../shared/util/ObjectOperations'
 import {
   getDatasetByName,
   getDatasetNames
@@ -12,7 +12,8 @@ import {
   searchForArtifact
 } from './controllers/PredictionController'
 import { handleTestRoute } from './controllers/TestRouteController'
-import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE, SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE, TEST_ROUTE } from './routes'
+import { getInitialTraceInformation } from './controllers/TraceController'
+import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE, GET_TRACE_ROUTE, SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE, TEST_ROUTE } from './routes'
 
 const app = express()
 
@@ -57,6 +58,22 @@ app.post(
     )
     handleError(res, dataPromise)
   })
+
+app.post(GET_TRACE_ROUTE, async (req: Request, res: Response, next) => {
+  if (!isTraceTrievealPayload(req.body, true)) {
+    throw Error(
+      `Expected SearchRoutePayload receied: ${JSON.stringify(req.body)}`
+    )
+  }
+  const dataPromise = getInitialTraceInformation(
+    req.body.dataset,
+    req.body.sourceId,
+    req.body.sourceType,
+    req.body.targetId,
+    req.body.targetType
+  )
+  handleError(res, dataPromise)
+})
 
 function handleError<T> (res: Response, data: Promise<T>) {
   data.then(data => res.send(data)).catch(e => { // convention is to reject with error

@@ -1,11 +1,10 @@
 /* eslint-disable jest/expect-expect */
 
 import request from 'supertest'
+import { isSearchItem } from '../../../fend/src/util/TypeUtil'
 import { SearchItem, SearchResponse, SearchRoutePayload } from '../../../shared/Dataset'
-import { isSearchItem } from '../../../shared/util/ObjectOperations'
 import app from '../App'
 import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../routes'
-
 test('SEARCH source', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
@@ -37,7 +36,6 @@ test('SEARCH target', () => {
   }
   return testSearchFunction(SEARCH_TARGET_ROUTE, searchQuery, TEST_LIMIT)
 })
-
 test('SEARCH default target', () => {
   const TEST_LIMIT = 2
   const searchQuery: SearchRoutePayload = {
@@ -55,7 +53,7 @@ function testSearchFunction (route: string, payload: object, expectedLimit: numb
     request(app).post(route).send(payload).then(res => {
       expect(res.status).toBe(200)
       expectSearchItems(res.body, expectedLimit)
-      resolve(res.body)
+      resolve()
     }).catch(reject)
   })
 }

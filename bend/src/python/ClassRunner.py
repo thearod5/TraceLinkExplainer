@@ -42,6 +42,10 @@ GENERAL_INTERNAL_ERROR = "PYTHON_GENERAL_ERROR_INTERNAL"
 ASSERTION_ERROR = "ASSERTION_ERROR"
 TYPE_ERROR = "TYPE_ERROR"
 
+time_stamp = time.time()
+temp_file_name = repr(time_stamp) + ".json"
+path_to_temp_file = os.path.join(PATH_TO_TEMP_FOLDER, temp_file_name)
+
 try:
     """
     3. Call Method
@@ -50,12 +54,6 @@ try:
     assert isinstance(
         dictResult, dict), "Expected function result to be dictionary. %s" % repr(method_to_call)
 
-    """
-    4. Create temp file identifier
-    """
-    time_stamp = time.time()
-    temp_file_name = repr(time_stamp) + ".json"
-    path_to_temp_file = os.path.join(PATH_TO_TEMP_FOLDER, temp_file_name)
 except AssertionError as error:
     dictResult = {
         "error": ASSERTION_ERROR,
