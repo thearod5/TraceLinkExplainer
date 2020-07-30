@@ -1,9 +1,5 @@
 import functools
 
-import nltk
-
-nltk.download()
-
 # nltk.download()
 # import PorterStemmer
 
@@ -17,24 +13,35 @@ nltk.download()
 #     return functools.reduce(lambda acc, value: value(acc), pipeline, doc)
 
 
-# def split_chained_calls(line):
-#     return line.replace(".", " ").strip()
+def split_chained_calls(line):
+    return line.replace(".", " ").strip()
 
 
-# def separate_camel_case(line):
-#     """
-#     theCowJumpedOverTheMoon -> the Cow Jumped Over The Moon
-#     :param line: containing words in camel case
-#     :return: {String} given string with camel case words separated
-#     """
-#     result = ""
-#     for i in range(0, len(line)):
-#         char = line[i]
-#         if char.isupper() and i != 0 and line[i - 1] != " " and not line[i - 1].isupper():
-#             result = result + " "
-#         result = result + char
-#     return result.strip()
+def separate_camel_case(line):
+    """
+    theCowJumpedOverTheMoon -> the Cow Jumped Over The Moon
+    :param line: containing words in camel case
+    :return: {String} given string with camel case words separated
+    """
+    result = ""
+    for i in range(0, len(line)):
+        char = line[i]
+        if char.isupper() and i != 0 and line[i - 1] != " " and not line[i - 1].isupper():
+            result = result + " "
+        result = result + char
+    return result.strip()
 
+
+def is_alpha_or_space(letter):
+    return str.isalpha(letter) or str.isspace(letter)
+
+
+def replace_alpha_charater(doc, replacement):
+    return "".join(list(map(lambda letter: letter if is_alpha_or_space(letter) else replacement, doc)))
+
+
+def filter_alpha_characters(doc):
+    return ''.join(filter(is_alpha_or_space, doc))
 
 # def remove_stop_words(doc):
 #     stop_words = set(stopwords.words('english'))
@@ -43,15 +50,8 @@ nltk.download()
 #     return " ".join(filtered_sentence)
 
 
-# def filter_alpha_characters(doc):
-#     def is_alpha_or_space(letter):
-#         return str.isalpha(letter) or str.isspace(letter)
-
-#     return ''.join(filter(is_alpha_or_space, doc))
-
-
-# def to_lower(doc):
-#     return " ".join(map(lambda word: word.lower(), doc.split(" ")))
+def to_lower(doc):
+    return " ".join(map(lambda word: word.lower(), doc.split(" ")))
 
 
 # def stem_doc(doc):

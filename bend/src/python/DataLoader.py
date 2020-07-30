@@ -3,9 +3,8 @@ import os
 import pathlib
 
 import pandas as pd
-from nltk.stem import PorterStemmer
 
-ps = PorterStemmer()
+from Cleaners import replace_alpha_charater, separate_camel_case, to_lower
 
 CURRENT_PATH = pathlib.Path().absolute()
 
@@ -18,6 +17,7 @@ LINKED_MATRICES = {
     "Designs": [("Level_1_to_Level_2.csv", 1), ("Level_2_to_Level_3.csv", 0)],
     "Classes": [("Level_1_to_Level_3.csv", 1), ("Level_2_to_Level_3.csv", 1)]
 }
+
 SOURCE_MATRICES = {
     "Level_1_to_Level_2.csv": {
         0: "Requirements",
@@ -33,7 +33,7 @@ SOURCE_MATRICES = {
     }
 }
 
-ARTIFACT_NOT_FOUND = "ARTIFACT_NOT_FOUND"
+ARTIFACT_NOT_FOUND_ERROR_TAG = "ARTIFACT_NOT_FOUND"
 
 
 def get_dataset_path(dataset_name: str):
@@ -80,7 +80,7 @@ def get_traced_artifacts(dataset: str, source_artifact_type: str, source_artifac
         # 3. Get traced artifacts ids
         search_id_list = trace_matrices.index if target_axis == 0 else trace_matrices.columns
         if source_artifact_id not in search_id_list:
-            return create_error(ARTIFACT_NOT_FOUND, "Source artifact not found: %s" % source_artifact_id)
+            return create_error(ARTIFACT_NOT_FOUND_ERROR_TAG, "Source artifact not found: %s" % source_artifact_id)
         query = trace_matrices.loc[source_artifact_id] if target_axis == 0 else trace_matrices[source_artifact_id]
         traced_artifact_ids = query[query == 1].index
 
@@ -128,14 +128,25 @@ def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):
     return query[0]
 
 
+def get_words_in_doc(doc):
+    doc = doc.replace("\n", "")
+    doc = doc.replace("\t", "")
+    doc = replace_alpha_charater(doc, " ")
+    doc = separate_camel_case(doc)
+    doc = to_lower(doc)
+
+    return doc.split(" ")
+
+
 def get_trace_information(dataset: str, source_type: str, source_id: str, target_type: str, target_id: str):
     source_artifact = get_artifact_in_dataset(dataset, source_type, source_id)
     target_artifact = get_artifact_in_dataset(dataset, target_type, target_id)
 
-    all_words = source_artifact["body"].split(
-        " ") + target_artifact["body"].split(" ")
+    all_words = get_words_in_doc(
+        source_artifact["body"]) + get_words_in_doc(target_artifact["body"])
     all_words = list(set(all_words))
-    stemmed_words = list(map(ps.stem, all_words))
+    stemmed_words = list(map(lambda word: word, all_words)
+                         )  # TODO: Add stemming here
     wordRootMapping = {}
     for word_index, word in enumerate(all_words):
         wordRootMapping[word] = stemmed_words[word_index]
