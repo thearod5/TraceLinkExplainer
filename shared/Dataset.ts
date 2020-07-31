@@ -55,8 +55,10 @@ export type WordRootMapping = Record<string, string>; //maps word to root
 export type WordDescriptorMapping = Record<string, WordFamilyDescriptors>; //Maps root to Descriptor
 
 export interface TraceInformation {
+  sourceWords: string[];
+  targetWords: string[];
   wordRootMapping: WordRootMapping;
-  wordDescriptorsMapping: WordDescriptorMapping;
+  wordWeightMapping: WordDescriptorMapping;
   traceType: string;
   score: number;
 }

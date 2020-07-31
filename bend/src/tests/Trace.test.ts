@@ -17,7 +17,7 @@ test('TRACE route', () => {
       .send(query)
       .then((res) => {
         expect(res.status).toBe(200)
-        expect(isTraceInformation(res.body)).toStrictEqual(true)
+        expect(isTraceInformation(res.body, true)).toStrictEqual(true)
         resolve()
       })
       .catch(reject)

@@ -3,6 +3,7 @@ import {
   Dataset,
   SearchItem,
   SearchRoutePayload,
+  TraceInformation,
   TraceRetrievalPayload,
   WordDescriptorMapping,
 } from "../../../shared/Dataset";
@@ -76,10 +77,12 @@ export function isWordDescriptorMapping(
 export function isTraceInformation(
   obj: any,
   log = false
-): obj is TraceRetrievalPayload {
+): obj is TraceInformation {
   const requiredKeys = [
+    "sourceWords",
+    "targetWords",
     "wordRootMapping",
-    "wordDescriptorsMapping",
+    "wordWeightMapping",
     "traceType",
     "score",
   ];
@@ -99,7 +102,7 @@ export function objectContainsKeys(
     let requiredKey: string = requiredKeys[requiredKeyIndex];
     if (!(requiredKey in obj)) {
       if (log) console.log(`Could not find key: ${requiredKey}`);
-      else return false;
+      return false;
     }
   }
   return true;

@@ -7,10 +7,10 @@ import functools
 # ps = PorterStemmer()
 
 
-# def clean_doc(doc, stop_at_index=None):
-#     pipeline = [split_chained_calls, separate_camel_case, filter_alpha_characters,
-#                 to_lower, remove_stop_words, stem_doc][:stop_at_index]
-#     return functools.reduce(lambda acc, value: value(acc), pipeline, doc)
+def clean_doc(doc, stop_at_index=None):
+    pipeline = [split_chained_calls, separate_camel_case, filter_alpha_characters,
+                to_lower][:stop_at_index]  # , remove_stop_words, stem_doc][:stop_at_index]
+    return functools.reduce(lambda acc, value: value(acc), pipeline, doc)
 
 
 def split_chained_calls(line):
@@ -30,6 +30,19 @@ def separate_camel_case(line):
             result = result + " "
         result = result + char
     return result.strip()
+
+
+def get_camel_case_words(line):
+    words = []
+    start_index = 0
+    for i in range(0, len(line)):
+        current_char = line[i]
+        if i != 0 and current_char.isupper() and not line[i - 1].isupper() and line[i - 1] != " ":
+            words.append(line[start_index:i])
+            start_index = i
+    if start_index != i:
+        words.append(line[start_index: i+1])
+    return words
 
 
 def is_alpha_or_space(letter):

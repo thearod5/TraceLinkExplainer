@@ -4,13 +4,14 @@ import pathlib
 
 import pandas as pd
 
-from Cleaners import replace_alpha_charater, separate_camel_case, to_lower
+from util.FileHelper import get_path_to_data
 
 CURRENT_PATH = pathlib.Path().absolute()
 
 # Dynamically search for data folder
-PATH_TO_DATA = os.path.join(CURRENT_PATH, "..", "Data")
-assert os.path.isdir(PATH_TO_DATA)
+PATH_TO_DATA = get_path_to_data(CURRENT_PATH)
+assert os.path.isdir(PATH_TO_DATA), PATH_TO_DATA
+
 
 LINKED_MATRICES = {
     "Requirements": [("Level_1_to_Level_2.csv", 0), ("Level_1_to_Level_3.csv", 0)],
@@ -126,32 +127,3 @@ def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):
     assert len(
         query) == 1, "Expected a single match but found: %d matches" % len(query)
     return query[0]
-
-
-def get_words_in_doc(doc):
-    doc = doc.replace("\n", "")
-    doc = doc.replace("\t", "")
-    doc = replace_alpha_charater(doc, " ")
-    doc = separate_camel_case(doc)
-    doc = to_lower(doc)
-
-    return doc.split(" ")
-
-
-def get_trace_information(dataset: str, source_type: str, source_id: str, target_type: str, target_id: str):
-    source_artifact = get_artifact_in_dataset(dataset, source_type, source_id)
-    target_artifact = get_artifact_in_dataset(dataset, target_type, target_id)
-
-    all_words = get_words_in_doc(
-        source_artifact["body"]) + get_words_in_doc(target_artifact["body"])
-    all_words = list(set(all_words))
-    stemmed_words = list(map(lambda word: word, all_words)
-                         )  # TODO: Add stemming here
-    wordRootMapping = {}
-    for word_index, word in enumerate(all_words):
-        wordRootMapping[word] = stemmed_words[word_index]
-    return {
-        "source": source_artifact,
-        "target": target_artifact,
-        "wordRootMapping": wordRootMapping
-    }

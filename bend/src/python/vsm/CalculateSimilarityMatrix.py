@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import pairwise_distances
 from sklearn.preprocessing import minmax_scale
 
-from DataLoader import get_all_artifacts_for_dataset
+from data.DataLoader import get_all_artifacts_for_dataset
 
 #import Cleaners
 
@@ -90,7 +90,7 @@ def calculate_similarity_matrix_lsa(raw_a, raw_b, logger=None):
     return similarity_matrix
 
 
-def create_term_frequency_matrix(raw_a, raw_b):
+def create_term_frequency_matrix(raw_a, raw_b, return_vectorizer=False):
     """
     Creates 2 TermFrequencyMatrices (one for A another for B) where the weight of
     each (row, col) pair is calculated via TF-IDF
@@ -105,6 +105,8 @@ def create_term_frequency_matrix(raw_a, raw_b):
     model.fit(combined)  # creates vocabulary with features from both A and B
     set_a = model.transform(raw_a)
     set_b = model.transform(raw_b)
+    if return_vectorizer:
+        return model, set_a, set_b
     return set_a, set_b
 
 

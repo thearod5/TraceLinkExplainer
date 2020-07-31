@@ -2,8 +2,8 @@ import json
 
 import pandas as pd
 
-from CalculateSimilarityMatrix import calculate_similarity_matrix
-from DataLoader import get_all_artifacts_for_dataset, get_traced_artifacts
+from data.DataLoader import get_all_artifacts_for_dataset, get_traced_artifacts
+from vsm.CalculateSimilarityMatrix import calculate_similarity_matrix
 
 
 """
