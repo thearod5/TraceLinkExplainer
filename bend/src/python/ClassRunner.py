@@ -10,6 +10,11 @@ import traceback
 import numpy as np
 import pandas as pd
 
+PYTHON_INTERNAL_EXPORT_ERROR = "PYTHON_INTERNAL_EXPORT_ERROR"
+GENERAL_INTERNAL_ERROR = "PYTHON_GENERAL_ERROR_INTERNAL"
+ASSERTION_ERROR = "ASSERTION_ERROR"
+TYPE_ERROR = "TYPE_ERROR"
+
 PATH_TO_PYTHON_MODULE = pathlib.Path(__file__).parent.absolute()
 PATH_TO_TEMP_FOLDER = os.path.join(PATH_TO_PYTHON_MODULE, "..", "..", "temp")
 
@@ -37,10 +42,6 @@ import_module("controllers")
 custom_module = import_module(class_name)
 method_to_call = getattr(custom_module, function_name)
 
-PYTHON_INTERNAL_EXPORT_ERROR = "PYTHON_INTERNAL_EXPORT_ERROR"
-GENERAL_INTERNAL_ERROR = "PYTHON_GENERAL_ERROR_INTERNAL"
-ASSERTION_ERROR = "ASSERTION_ERROR"
-TYPE_ERROR = "TYPE_ERROR"
 
 time_stamp = time.time()
 temp_file_name = repr(time_stamp) + ".json"
