@@ -1,10 +1,12 @@
 import functools
 
-# nltk.download()
-# import PorterStemmer
+# import nltk
+# from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 
+# from nltk.tokenize import word_tokenize
 
-# ps = PorterStemmer()
+ps = PorterStemmer()
 
 
 def clean_doc(doc, stop_at_index=None):
@@ -56,6 +58,7 @@ def replace_alpha_charater(doc, replacement):
 def filter_alpha_characters(doc):
     return ''.join(filter(is_alpha_or_space, doc))
 
+
 # def remove_stop_words(doc):
 #     stop_words = set(stopwords.words('english'))
 #     word_tokens = word_tokenize(doc)
@@ -63,16 +66,22 @@ def filter_alpha_characters(doc):
 #     return " ".join(filtered_sentence)
 
 
+# assert remove_stop_words("the") == ""
+
+
 def to_lower(doc):
     return " ".join(map(lambda word: word.lower(), doc.split(" ")))
 
 
-# def stem_doc(doc):
-#     """
-#     Removes numbers, newlines, parenthesis, stems words, and makes them all lower case
-#     :param doc: {String} The uncleaned string.
-#     :return: {String} Cleaned string.
-#     """
-#     if doc is None:
-#         raise Exception("Received None as text document")
-#     return " ".join([ps.stem(word) for word in doc.split(" ")])
+def stem_doc(doc):
+    """
+    Removes numbers, newlines, parenthesis, stems words, and makes them all lower case
+    :param doc: {String} The uncleaned string.
+    :return: {String} Cleaned string.
+    """
+    if doc is None:
+        raise Exception("Received None as text document")
+    return " ".join([ps.stem(word) for word in doc.split(" ")])
+
+
+assert stem_doc("Manager") == "manag"

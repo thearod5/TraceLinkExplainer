@@ -11,8 +11,8 @@ import { FunctionArguments } from './types'
  */
 const PYTHON_GENERAL_EXTERNAL_ERROR = 'PYTHON_GENERAL_EXTERNAL_ERROR'
 const PATH_TO_RUNNER = path.join(__dirname, '..', 'python', 'ClassRunner.py')
-const PATH_TO_TEMP_FOLDER = path.join(__dirname, '..', 'temp')
-const PATH_TO_PYTHON = path.join(__dirname, '..', '..', 'venv', 'bin', 'python3')
+const PATH_TO_TEMP_FOLDER = path.join(__dirname, '..', '..', 'temp')
+const PATH_TO_PYTHON = path.join(__dirname, '..', '..', 'env', 'bin', 'python3')
 
 export function runFunction<T> (
   className: string,

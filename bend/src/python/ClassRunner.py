@@ -11,13 +11,13 @@ import numpy as np
 import pandas as pd
 
 PATH_TO_PYTHON_MODULE = pathlib.Path(__file__).parent.absolute()
-PATH_TO_TEMP_FOLDER = os.path.join(PATH_TO_PYTHON_MODULE, "..", "temp")
+PATH_TO_TEMP_FOLDER = os.path.join(PATH_TO_PYTHON_MODULE, "..", "..", "temp")
 
 sys.path.insert(0, PATH_TO_PYTHON_MODULE)
 
 
 def import_module(file_name):
-    module_name = file_name.split(".")[0]  # removes .py
+    module_name = file_name.replace(".py", "")
     return importlib.import_module(module_name)
 
 
@@ -25,7 +25,7 @@ def import_module(file_name):
 1. Read Class, Function, and Function Arguments
 """
 
-class_name = sys.argv[1]
+class_name = ".".join(["controllers", sys.argv[1]])
 function_name = sys.argv[2]
 function_arguments_str_object = sys.argv[3]
 
@@ -33,7 +33,7 @@ function_arguments_str_object = sys.argv[3]
 function_arguments_object = json.loads(function_arguments_str_object)
 function_arguments = function_arguments_object["arguments"]
 
-
+import_module("controllers")
 custom_module = import_module(class_name)
 method_to_call = getattr(custom_module, function_name)
 
