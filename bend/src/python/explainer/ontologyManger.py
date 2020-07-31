@@ -1,19 +1,29 @@
-import os, re
+import os
+import re
+
 import javalang
 import networkx as nx
 import nltk
-
-from javalang.tree import ReferenceType
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
-from javalang.tree import ReferenceType
 import pandas as pd
-
-Dronology_src = "../Data/dronology_data"
+from fuzzywuzzy import fuzz, process
+from javalang.tree import ReferenceType
 
 ANC = "ancestor"
 SIB = "sibling"
 SYN = "synonym"
+
+FILE_DIR_NAME = os.path.dirname(__file__)
+Dronology_src = os.path.join(
+    FILE_DIR_NAME, "..", "..", "..", "..", "Data", "dronology_data")
+CODE_ROOT_PATH = os.path.join(Dronology_src, "Dronology-DATASET_V001")
+ONTOLOGY_FILE_PATH = os.path.join(
+    Dronology_src, "ontology", "database-relation.txt")
+ONTOLOGY_ANALYSIS_PATH = os.path.join(
+    Dronology_src, "ontology", "ontology_analysis.csv")
+
+assert os.path.isdir(CODE_ROOT_PATH), CODE_ROOT_PATH
+assert os.path.isfile(ONTOLOGY_FILE_PATH), ONTOLOGY_FILE_PATH
+assert os.path.isfile(ONTOLOGY_ANALYSIS_PATH), ONTOLOGY_ANALYSIS_PATH
 
 
 class OntologyManger:
@@ -21,8 +31,7 @@ class OntologyManger:
     Check if two concepts are related and give reasons why they are related.
     """
 
-    def __init__(self, code_root_dir=os.path.dirname(__file__) + "/../Data/dronology_data/Dronology-DATASET_V001",
-                 ontology_file=os.path.dirname(__file__) + "/../Data/dronology_data/ontology/database-relation.txt"):
+    def __init__(self, code_root_dir=CODE_ROOT_PATH, ontology_file=ONTOLOGY_FILE_PATH):
         self.g = nx.DiGraph()
         self.ontology_match_cache = dict()
         self.build_cha(code_root_dir)
@@ -40,7 +49,7 @@ class OntologyManger:
                 self.g.remove_node(term)
 
     def analyze_onotology(self, graph):
-        ontology_analysis = os.path.dirname(__file__) + "/../Data/dronology_data/ontology/ontology_analysis.csv"
+        ontology_analysis = ONTOLOGY_ANALYSIS_PATH
         E = graph.edges
         df = pd.DataFrame()
         t1 = []
@@ -56,7 +65,8 @@ class OntologyManger:
         df.to_csv(ontology_analysis)
 
     def camel_case_split(self, identifier):
-        matches = re.finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
+        matches = re.finditer(
+            '.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
         parts = [m.group(0) for m in matches]
         return parts
 
@@ -96,21 +106,26 @@ class OntologyManger:
                     with open(file_path) as fin:
                         ast = javalang.parse.parse(fin.read())
                         for path, class_node in ast.filter(javalang.tree.ClassDeclaration):
-                            class_name = " ".join(self.camel_case_split(class_node.name)).lower()
+                            class_name = " ".join(
+                                self.camel_case_split(class_node.name)).lower()
                             extends = class_node.implements
                             implements = class_node.extends
                             self.g.add_node(class_name)
                             if extends is not None:
                                 for parent_class in extends:
-                                    parent_class_name = " ".join(self.camel_case_split(parent_class.name)).lower()
+                                    parent_class_name = " ".join(
+                                        self.camel_case_split(parent_class.name)).lower()
                                     self.g.add_node(parent_class_name)
-                                    self.g.add_edge(parent_class_name, class_name, label=ANC)
+                                    self.g.add_edge(
+                                        parent_class_name, class_name, label=ANC)
                             if implements is not None:
                                 for interface in implements:
                                     if isinstance(interface, ReferenceType):
-                                        interface_name = " ".join(self.camel_case_split(interface[1].name)).lower()
+                                        interface_name = " ".join(
+                                            self.camel_case_split(interface[1].name)).lower()
                                         self.g.add_node(interface_name)
-                                        self.g.add_edge(interface_name, class_name, label=ANC)
+                                        self.g.add_edge(
+                                            interface_name, class_name, label=ANC)
 
     def relevance_score(self, w1, w2):
         if w1 == "?" or w2 == "?":
@@ -168,7 +183,8 @@ class OntologyManger:
 
     def get_best_match_in_ontology(self, word):
         if word not in self.ontology_match_cache:
-            w_match, w_score = process.extractOne(word, set(self.g.nodes), scorer=fuzz.token_set_ratio)
+            w_match, w_score = process.extractOne(
+                word, set(self.g.nodes), scorer=fuzz.token_set_ratio)
             if w_score >= 90:
                 self.ontology_match_cache[word] = w_match
             else:
@@ -230,12 +246,16 @@ class OntologyManger:
     #     return lca_flag or syntax_flag or ontology_flag
 
     def print_stat(self):
-        phrase_process = lambda phrase: " ".join([self.ps.stem(x) for x in phrase.split()])
+        def phrase_process(phrase): return " ".join(
+            [self.ps.stem(x) for x in phrase.split()])
         cp_num = len(set([phrase_process(x) for x in set(self.g.nodes)]))
 
-        synonym_num = len([x for x in self.g.edges.data() if x[2]["label"] == SYN])
-        ancestor_num = len([x for x in self.g.edges.data() if x[2]["label"] == ANC])
-        sibling_num = len([x for x in self.g.edges.data() if x[2]["label"] == SIB])
+        synonym_num = len(
+            [x for x in self.g.edges.data() if x[2]["label"] == SYN])
+        ancestor_num = len(
+            [x for x in self.g.edges.data() if x[2]["label"] == ANC])
+        sibling_num = len(
+            [x for x in self.g.edges.data() if x[2]["label"] == SIB])
         print({
             "concept nums": cp_num,
             "synonym_num": synonym_num,
