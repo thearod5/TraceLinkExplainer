@@ -1,0 +1,32 @@
+To run the current version of Dronology. 
+Go to edu.nd.dronology.services.launcher and invoke DronologyServiceRunner.java
+This will start up the services (note that you'll currently see errors as it starts up the Ground Station middleware, if the GroundStation is not running (you can ignore this for now)).
+
+There are several options for running a placeholder GUI.  The easiest one (with the least functionality too) can be invoked from:
+edu.nd.dronology.ui.javafx.start DronologyFXUIRunner.java
+
+
+
+To set up the GroundStation and the SITL drone simulator in a linux environment:
+Open a terminal and cd into Dronology/python/edu.nd.dronology.gstation.python/
+Run the bash script ./setup_SITL.sh
+This will install SITL and all of its dependencies, along with everything needed to run the GroundStation.
+You will have to enter the root password multiple times to allow the script to install everything.
+When the script completes, it will start the SITL drone simulator once to confirm everything is set up.
+When the mavproxy console opens, close the simulator by pressing Ctrl+C in the terminal window.
+
+To run the GroundStation in a linux environment:
+Open a terminal and cd into Dronology/python/edu.nd.dronology.gstation.python/
+Run the python file ./GroundStation.py
+The GroundStation will make connections to all of the configured drones, and start the SITL drone simulator if necessary.
+Connecting to the GroundStation from Dronology currently requires changing line 47 of DronologyServiceRunner.java to use the hostname of the GroundStation.
+
+To configure new drones on the GroundStation:
+Create a file "Dronology/python/edu.nd.dronology.gstation.python/initial_connection_lists/location.override.conf" containing the name of a 
+configuration file in the initial_connection_lists directory that describes which drones should be connected to initially. 
+If a configuration file does not exist for the desired combination of drones, create another configuration file as desired.
+If the file location.override.conf does not exist, the configuration file listed in location.default.conf (SITL.json) is used instead.
+
+To close the GroundStation:
+The GroundStation can now be properly closed by simply pressing Ctrl+C in the terminal window of the GroundStation.
+If the GroundStation doesn't properly close this way, you can run the file ./killPY.sh in a separate terminal to force close the GroundStation.

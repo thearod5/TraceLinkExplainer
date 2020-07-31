@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="dronology" packages="net.mv.logging">
+	<properties>
+
+		<property name="net.mv.filename">dronology-core</property>
+		<property name="net.mv.filenameHW">dronology-gcs</property>
+		<property name="net.mv.filenameHWTRACE">dronology-gcs-tracelog</property>
+		<property name="net.mv.filenameMission">dronology-miss</property>
+		<property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5.8p] %-20M |%-5C:%L | %msg%n</property>
+
+	</properties>
+	<appenders> 
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%-8p] %-30M @ (%F:%L) %m%n" />
+
+			<Filters>
+				<ThresholdFilter level="HW_INFO" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+			</Filters>
+
+		</Console>
+
+
+
+		<RollingFile name="RollingFile"
+			fileName="logs/${date:yyyy_MM_dd_hh_mm_ss}_${net.mv.filename}.log">
+			<FilePattern>logs/%d{yyyy_MM_dd_hh_mm_ss}_${net.mv.filename}.log
+			</FilePattern>
+			<PatternLayout>
+				<pattern>${pattern}</pattern>
+				<!-- <pattern>"%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - 
+					%msg%n"</pattern> -->
+			</PatternLayout>
+
+			<Policies>
+				<OnStartupTriggeringPolicy minSize="0" />
+			</Policies>
+
+
+
+			<DefaultRolloverStrategy max="50" />
+
+
+			<Filters>
+
+
+				<ThresholdFilter level="HW_INFO" onMatch="DENY"
+					onMismatch="ACCEPT" />
+			</Filters>
+
+		</RollingFile>
+
+
+		<RollingFile name="hwfile"
+			fileName="logs/${date:yyyy_MM_dd_hh_mm_ss}_${net.mv.filenameHW}.log">
+			<FilePattern>logs/%d{yyyy_MM_dd_hh_mm_ss}_${net.mv.filenameHW}.log
+			</FilePattern>
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+
+			<Policies>
+				<OnStartupTriggeringPolicy minSize="0" />
+			</Policies>
+			<DefaultRolloverStrategy max="50" />
+
+			<Filters>
+				<MarkerFilter marker="HW" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+
+
+
+		<RollingFile name="hwTrace"
+			fileName="logs/${date:yyyy_MM_dd_hh_mm_ss}_${net.mv.filenameHWTRACE}.log">
+			<FilePattern>logs/%d{yyyy_MM_dd_hh_mm_ss}_${net.mv.filenameHWTRACE}.log
+			</FilePattern>
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+
+			<Policies>
+				<OnStartupTriggeringPolicy minSize="0" />
+			</Policies>
+			<DefaultRolloverStrategy max="50" />
+
+			<Filters>
+				<MarkerFilter marker="HW_TRACE" onMatch="ACCEPT"
+					onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+
+		<RollingFile name="missionfile"
+			fileName="logs/${date:yyyy_MM_dd_hh_mm_ss}_${net.mv.filenameMission}.log">
+			<FilePattern>logs/%d{yyyy_MM_dd_hh_mm_ss}_${net.mv.filenameMission}.log
+			</FilePattern>
+
+
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+
+			<Filters>
+				<MarkerFilter marker="MISSION" onMatch="ACCEPT"
+					onMismatch="DENY" />
+
+			</Filters>
+
+			<Policies>
+				<OnStartupTriggeringPolicy minSize="0" />
+			</Policies>
+			<DefaultRolloverStrategy max="50" />
+
+
+		</RollingFile>
+
+
+	</appenders>
+	<loggers>
+		<root level="HW_TRACE"> <!-- We log everything -->
+			<appender-ref ref="Console" level="INFO" /> <!-- To console -->
+			<appender-ref ref="RollingFile" level="TRACE" /> <!-- And to a rotated file -->
+			<AppenderRef ref="hwfile" level="FATAL" />
+			<AppenderRef ref="missionfile" level="DEBUG" />
+			<AppenderRef ref="hwTrace" level="HW_TRACE" />
+		</root>
+	</loggers>
+</configuration>
