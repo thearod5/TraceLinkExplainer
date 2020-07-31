@@ -11,4 +11,4 @@ package-lock.json
 *.code-workspace
 bend/src/python/.ipynb_checkpoints
 docs/*
-bend/venv
+bend/env
