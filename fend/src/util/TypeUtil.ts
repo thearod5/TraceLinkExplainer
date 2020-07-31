@@ -82,7 +82,7 @@ export function isTraceInformation(
     "sourceWords",
     "targetWords",
     "wordRootMapping",
-    "wordWeightMapping",
+    "rootWeightMapping",
     "traceType",
     "score",
   ];

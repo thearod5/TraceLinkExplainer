@@ -58,7 +58,7 @@ export interface TraceInformation {
   sourceWords: string[];
   targetWords: string[];
   wordRootMapping: WordRootMapping;
-  wordWeightMapping: WordDescriptorMapping;
+  rootWeightMapping: WordDescriptorMapping;
   traceType: string;
   score: number;
 }
