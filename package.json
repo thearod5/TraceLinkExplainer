@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "fend": "cd fend && npm start",
+    "fend-test": "cd fend && npm run test",
     "bend": "cd bend && npm run start-watch",
+    "bend-test": "cd bend && npm run test",
     "fend-lint": "cd fend && npm run lint",
     "bend-lint": "cd bend && npm run lint",
     "start": "concurrently \"npm run bend\" \"npm run fend\"",
-    "lint": "concurrently \"npm run bend-lint\" \"npm run fend-lint\""
+    "lint": "concurrently \"npm run bend-lint\" \"npm run fend-lint\"",
+    "test": "npm run bend-test && npm run fend-test"
   },
   "repository": {
     "type": "git",
