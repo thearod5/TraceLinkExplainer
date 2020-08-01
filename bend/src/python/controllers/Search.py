@@ -63,7 +63,7 @@ def create_default_search_items(artifacts, limit: int):
     return create_search_items(artifacts, pd.Series([0.0] * len(artifacts)), limit)
 
 
-def create_search_items(artifacts, similarities, limit):
+def create_search_items(artifacts, similarities, limit: int):
     searchItems = []
     limit = None if limit == -1 else limit
     for itemIndex in similarities.sort_values(ascending=False).index:
@@ -73,4 +73,4 @@ def create_search_items(artifacts, similarities, limit):
                 "artifact": artifacts[itemIndex]
             }
         )
-    return {"searchItems": searchItems[:int(limit)]}
+    return {"searchItems": searchItems[:limit]}
