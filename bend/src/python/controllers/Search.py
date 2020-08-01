@@ -60,7 +60,9 @@ def get_all_artifacts(dataset: str):
 
 
 def create_default_search_items(artifacts, limit: int):
-    return create_search_items(artifacts, pd.Series([0.0] * len(artifacts)), limit)
+    sorted_artifacts = sorted(artifacts, key=lambda i: (
+        i['type'], i['id']), reverse=True)
+    return create_search_items(sorted_artifacts, pd.Series([0.0] * len(artifacts)), limit)
 
 
 def create_search_items(artifacts, similarities, limit: int):
