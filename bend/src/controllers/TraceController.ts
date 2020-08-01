@@ -4,10 +4,10 @@ import { FunctionArguments } from './types'
 
 export function getInitialTraceInformation (
   dataset: string,
-  sourceId: string,
   sourceType: string,
-  targetId: string,
-  targetType: string
+  sourceId: string,
+  targetType: string,
+  targetId: string
 ): Promise<TraceInformation> {
   return new Promise((resolve, reject) => {
     const functionArguments: FunctionArguments = {

@@ -5,11 +5,11 @@ import { GET_TRACE_ROUTE } from '../routes'
 
 test('TRACE route', () => {
   const query = {
-    dataset: 'Drone',
-    sourceId: 'RE-8',
+    datasetName: 'Drone',
     sourceType: 'Requirements',
-    targetId: 'DroneFlightStateManager.java',
-    targetType: 'Classes'
+    sourceId: 'RE-8',
+    targetType: 'Classes',
+    targetId: 'DroneFlightStateManager.java'
   }
   return new Promise((resolve, reject) => {
     return request(app)
