@@ -17,9 +17,10 @@ export function getInitialTraceInformation (
       'TraceExplanation.py',
       'get_trace_information',
       functionArguments
-    ).then(result => {
-      console.log(result.wordRootMapping)
-      resolve(result)
-    })
+    )
+      .then((result) => {
+        resolve(result)
+      })
+      .catch(reject)
   })
 }

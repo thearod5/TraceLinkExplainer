@@ -38,7 +38,6 @@ function_arguments_str_object = sys.argv[3]
 function_arguments_object = json.loads(function_arguments_str_object)
 function_arguments = function_arguments_object["arguments"]
 
-import_module("controllers")
 custom_module = import_module(class_name)
 method_to_call = getattr(custom_module, function_name)
 

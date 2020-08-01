@@ -33,4 +33,3 @@ export async function searchForArtifact (
     functionArguments
   ).catch((e) => { throw e })
 }
-// TODO: thing
