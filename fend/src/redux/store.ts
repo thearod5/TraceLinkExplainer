@@ -7,7 +7,8 @@ import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import { CHANGE_STEP_ACTION, CLEAR_DATA } from "./actions";
 import createRootReducer, { RootState } from "./index";
-import { changeStepReducer, createEmptyState, CustomAction } from "./reducers";
+import { changeStepReducer, createEmptyState } from "./reducers";
+import { CustomAction } from "./types";
 
 const persistConfig = {
   key: "root",
@@ -39,6 +40,6 @@ export const store: Store<RootState, CustomAction> = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-//TODO: export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 
 export default store;

@@ -12,6 +12,11 @@ import {
  * All
  */
 
+export type CustomAction =
+  | MetaActionType
+  | DatasetActionType
+  | ChangeStepAction;
+
 export interface ClearDataAction {
   type: typeof CLEAR_DATA;
   payload: null;
@@ -55,7 +60,7 @@ export interface StepChangePayload {
 
 export interface ChangeStepAction {
   type: typeof CHANGE_STEP_ACTION;
-  payload: StepChangePayload; //name of new page
+  payload: StepChangePayload;
 }
 
 export interface SetTargetArtifactAction {

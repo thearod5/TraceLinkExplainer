@@ -12,11 +12,6 @@ import {
 } from "./initializers";
 import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
 
-export type CustomAction =
-  | MetaActionType
-  | DatasetActionType
-  | ChangeStepAction;
-
 export function datasetReducer(
   state = initializeEmptyDataset(),
   action: DatasetActionType
@@ -66,7 +61,7 @@ export function changeStepReducer(
   const stepPayload = action.payload.stepPayload;
   const result = getNewStepState(state, newStep, stepPayload);
   if (typeof result === "string") {
-    alert(result);
+    alert(result); // this is an error now
     return state;
   }
   return result;
