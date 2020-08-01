@@ -11,7 +11,7 @@ ps = PorterStemmer()
 
 def clean_doc(doc, stop_at_index=None):
     pipeline = [split_chained_calls, separate_camel_case, filter_alpha_characters,
-                to_lower][:stop_at_index]  # TODO: Remove to activate stemming, remove_stop_words, stem_doc][:stop_at_index]
+                to_lower, stem_doc][:stop_at_index]  # TODO: Remove to activate stemming, remove_stop_words, ][:stop_at_index]
     return functools.reduce(lambda acc, value: value(acc), pipeline, doc)
 
 
