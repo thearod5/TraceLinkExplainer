@@ -30,7 +30,7 @@ export interface SearchRoutePayload {
 }
 
 export interface TraceRetrievalPayload {
-  dataset: string;
+  datasetName: string;
   sourceId: string;
   sourceType: string;
   targetId: string;
@@ -41,24 +41,18 @@ export interface SearchResponse {
   searchItems: SearchItem[];
 }
 
-export interface WordFamily {
+export interface WordDescriptor {
   word: string;
-  root: string; // Porter Stemmer Root
-}
-
-export interface WordFamilyDescriptors {
-  color: string;
+  family: string;
   weight: number;
 }
 
-export type WordRootMapping = Record<string, string>; //maps word to root
-export type WordDescriptorMapping = Record<string, WordFamilyDescriptors>; //Maps root to Descriptor
+export type WordDescriptors = WordDescriptor[];
 
 export interface TraceInformation {
-  sourceWords: string[];
-  targetWords: string[];
-  wordRootMapping: WordRootMapping;
-  rootWeightMapping: WordDescriptorMapping;
+  families: string[];
+  sourceWords: WordDescriptors;
+  targetWords: WordDescriptors;
   traceType: string;
   score: number;
 }

@@ -5,7 +5,8 @@ import {
   SearchRoutePayload,
   TraceInformation,
   TraceRetrievalPayload,
-  WordDescriptorMapping,
+  WordDescriptor,
+  WordDescriptors,
 } from "../../../shared/Dataset";
 
 export function isDataset(obj?: object): obj is Dataset {
@@ -45,7 +46,7 @@ export function isTraceTrievealPayload(
   log = false
 ): obj is TraceRetrievalPayload {
   const requiredKeys = [
-    "dataset",
+    "datasetName",
     "sourceId",
     "sourceType",
     "targetId",
@@ -54,24 +55,25 @@ export function isTraceTrievealPayload(
   return objectContainsKeys(requiredKeys, obj, log);
 }
 
-export function isWordFamilyDescriptor(obj?: any, log = false) {
-  const requiredKeys = ["color", "weight"];
-  return (
+function isWordDescriptor(obj?: any, log = false): obj is WordDescriptor {
+  const requiredKeys = ["word", "family", "weight"];
+  const result =
     objectContainsKeys(requiredKeys, obj, log) &&
     typeof obj.weight === "number" &&
-    typeof obj.color === "string"
-  );
+    typeof obj.word === "string" &&
+    typeof obj.family === "string";
+  if (log && !result) console.log("Failed: ", obj);
+  return result;
 }
 
-export function isWordDescriptorMapping(
-  obj?: any
-): obj is WordDescriptorMapping {
-  for (let key in obj) {
-    let value: any = obj[key] as object;
-    if (typeof value !== "object" || !isWordFamilyDescriptor(value))
-      return false;
-  }
-  return true;
+export function isWordDescriptors(
+  obj?: any,
+  log = false
+): obj is WordDescriptors {
+  if (!Array.isArray(obj)) return false;
+  return !obj
+    .map((wordDescriptor: any) => isWordDescriptor(wordDescriptor, log))
+    .includes(false);
 }
 
 export function isTraceInformation(
@@ -79,16 +81,16 @@ export function isTraceInformation(
   log = false
 ): obj is TraceInformation {
   const requiredKeys = [
+    "families",
     "sourceWords",
     "targetWords",
-    "wordRootMapping",
-    "rootWeightMapping",
     "traceType",
     "score",
   ];
   return (
     objectContainsKeys(requiredKeys, obj, log) &&
-    isWordDescriptorMapping(obj.wordMapping)
+    isWordDescriptors(obj.sourceWords, log) &&
+    isWordDescriptors(obj.targetWords, log)
   );
 }
 

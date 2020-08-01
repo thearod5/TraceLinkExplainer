@@ -16,14 +16,13 @@ def get_trace_information(dataset: str, source_type: str, source_id: str, target
     source_words = get_words_in_artifact(dataset, source_type, source_id)
     target_words = get_words_in_artifact(dataset, target_type, target_id)
 
-    word_root_mapping, root_weight_mapping = create_mappings(
+    families, source_word_weight_list, target_word_weight_list = create_mappings(
         source_words, target_words)
 
     return {
-        "sourceWords": source_words,
-        "targetWords": target_words,
-        "wordRootMapping": word_root_mapping,
-        "rootWeightMapping": root_weight_mapping,
+        "families": families,
+        "sourceWords": source_word_weight_list,
+        "targetWords": target_word_weight_list,
         "traceType": "MANUAL",
         "score": 0.5,
     }
@@ -49,7 +48,30 @@ def create_mappings(source_words: [str], target_words: [str]):
     root_weight_mapping = create_root_weight_mapping(
         source_cleaned_words, target_cleaned_words)
 
-    return word_root_mapping, root_weight_mapping
+    source_word_weight_list = create_word_weight_list(
+        source_words, word_root_mapping, root_weight_mapping)
+    target_word_weight_list = create_word_weight_list(
+        target_words, word_root_mapping, root_weight_mapping)
+
+    families = list(set(root_weight_mapping.keys()))
+
+    return families, source_word_weight_list, target_word_weight_list
+
+
+def create_word_weight_list(words: [str],
+                            word_root_mapping: dict,
+                            root_weight_mapping: dict):
+    word_weight_list = []
+    for word in words:
+        word_root = word_root_mapping[word]
+        has_nonempty_root = word_root in root_weight_mapping.keys()
+        word_weight = root_weight_mapping[word_root]["weight"] if has_nonempty_root else 0
+        word_weight_list.append({
+            "word": word,
+            "family": word_root,
+            "weight": word_weight
+        })
+    return word_weight_list
 
 
 def create_root_weight_mapping(source_root_words: [str], target_root_words: [str]):
