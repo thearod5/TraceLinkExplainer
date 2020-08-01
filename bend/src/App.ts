@@ -1,16 +1,17 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
-import { isSearchRoutePayload, isTraceTrievealPayload, objectContainsKeys } from '../../fend/src/util/TypeUtil'
+import {
+  isSearchRoutePayload,
+  isTraceTrievealPayload,
+  objectContainsKeys
+} from '../../fend/src/util/TypeUtil'
 import { SearchItem } from '../../shared/Dataset'
 import {
   getDatasetByName,
   getDatasetNames
 } from './controllers/DatasetController'
-import {
-  makePredictionsForArtifact,
-  searchForArtifact
-} from './controllers/PredictionController'
+import { makePredictionsForArtifact, searchForArtifact } from './controllers/PredictionController'
 import { handleTestRoute } from './controllers/TestRouteController'
 import { getInitialTraceInformation } from './controllers/TraceController'
 import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE, GET_TRACE_ROUTE, SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE, TEST_ROUTE } from './routes'
@@ -36,7 +37,12 @@ app.get(`${DATASET_MAIN_ROUTE}/:datasetName`, (req: Request, res: Response) =>
 app.post(SEARCH_SOURCE_ROUTE,
   async (req: Request, res: Response, next) => {
     const requiredFields = ['datasetName', 'query', 'limit']
-    if (!objectContainsKeys(requiredFields, req.body)) { throw Error(`Missing One of Required Fields: ${requiredFields}`) }
+    if (!objectContainsKeys(requiredFields, req.body)) {
+      return sendError(
+        res,
+      `Missing One of Required Fields: ${requiredFields}`
+      )
+    }
     const data = searchForArtifact(
       req.body.datasetName,
       req.body.query,
@@ -48,7 +54,7 @@ app.post(SEARCH_SOURCE_ROUTE,
 app.post(
   SEARCH_TARGET_ROUTE,
   async (req: Request, res: Response, next) => {
-    if (!isSearchRoutePayload(req.body, true)) { throw Error(`Expected SearchRoutePayload receied: ${JSON.stringify(req.body)}`) }
+    if (!isSearchRoutePayload(req.body, true)) { return sendError(res, `Expected SearchRoutePayload receied: ${JSON.stringify(req.body)}`) }
     const dataPromise = makePredictionsForArtifact(
       req.body.datasetName,
       req.body.sourceType,
@@ -61,25 +67,31 @@ app.post(
 
 app.post(GET_TRACE_ROUTE, async (req: Request, res: Response, next) => {
   if (!isTraceTrievealPayload(req.body, true)) {
-    throw Error(
+    return sendError(
+      res,
       `Expected SearchRoutePayload receied: ${JSON.stringify(req.body)}`
     )
   }
   const dataPromise = getInitialTraceInformation(
-    req.body.dataset,
-    req.body.sourceId,
+    req.body.datasetName,
     req.body.sourceType,
-    req.body.targetId,
-    req.body.targetType
+    req.body.sourceId,
+    req.body.targetType,
+    req.body.targetId
   )
   handleError(res, dataPromise)
 })
 
 function handleError<T> (res: Response, data: Promise<T>) {
   data.then(data => res.send(data)).catch(e => { // convention is to reject with error
-    res.status(400)
-    res.send(e)
+    sendError(res, e)
   })
+}
+
+function sendError (res: Response, error: object | string) {
+  res.status(400)
+  if (typeof error === 'string') res.send({ error })
+  else res.send(error)
 }
 
 export default app
