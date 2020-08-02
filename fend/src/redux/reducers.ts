@@ -1,5 +1,4 @@
 import { RootState } from ".";
-import { getNewStepState } from "../stepmanager/PageChanger";
 import {
   SELECT_DATASET,
   SET_SOURCE_ARTIFACT_ACTION,
@@ -10,6 +9,7 @@ import {
   initializeEmptyDataset,
   initializeEmptyMetaData,
 } from "./initializers";
+import { getNewStepState } from "./stepmanager/PageChanger";
 import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
 
 export function datasetReducer(

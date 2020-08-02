@@ -1,12 +1,12 @@
-import { Artifact, Dataset } from "../../../shared/Dataset";
+import { RootState } from "..";
+import { Artifact, Dataset } from "../../../../shared/Dataset";
 import {
   HOME_ROUTE,
   SELECT_ARTIFACTS_ROUTE,
   TRACE_VIEW_ROUTE,
-} from "../components/nav/routes";
-import { RootState } from "../redux";
-import { initializeEmptyMetaData } from "../redux/initializers";
-import { isArtifact, isDataset } from "../util/TypeUtil";
+} from "../../components/nav/routes";
+import { isArtifact, isDataset } from "../../util/TypeUtil";
+import { initializeEmptyMetaData } from "../initializers";
 import {
   SELECT_DATASET_STEP,
   SELECT_SOURCE_STEP,
