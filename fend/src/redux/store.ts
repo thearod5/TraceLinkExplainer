@@ -1,8 +1,8 @@
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
-import { applyMiddleware, createStore, Store } from "redux";
+import { AnyAction, applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import { CHANGE_STEP_ACTION, CLEAR_DATA } from "./actions";
@@ -35,11 +35,11 @@ const rootReducer = (state = createEmptyState(), action: CustomAction) => {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store: Store<RootState, CustomAction> = createStore(
+export const store: Store<RootState, AnyAction> = createStore(
   persistedReducer,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-// export const persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 export default store;
