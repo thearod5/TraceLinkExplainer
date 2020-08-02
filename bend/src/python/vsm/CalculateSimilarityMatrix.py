@@ -5,7 +5,7 @@ import pathlib
 import pandas as pd
 from scipy.sparse import vstack
 from sklearn.decomposition import TruncatedSVD
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import pairwise_distances
 from sklearn.preprocessing import minmax_scale
 
@@ -100,7 +100,7 @@ def create_term_frequency_matrix(raw_a, raw_b, return_vectorizer=False):
     """
     raw_a = list(raw_a)
     raw_b = list(raw_b)
-    model = CountVectorizer()
+    model = TfidfVectorizer()
     combined = raw_a + raw_b
     model.fit(combined)  # creates vocabulary with features from both A and B
     set_a = model.transform(raw_a)
