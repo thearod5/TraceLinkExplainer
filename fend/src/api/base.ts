@@ -8,7 +8,7 @@ export async function testCall() {
   );
 }
 
-export async function post(url: string, data: object): Promise<object> {
+export async function post(url: string, data: object): Promise<any> {
   return fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { getCurrentStep, getDataset } from "../../redux/selectors";
 import { history } from "../../redux/store";
-import WorkflowStepper from "./WorkflowStepper";
+import theme, { secondaryColor } from "../../styles/theme";
 
 const WELCOME_MESSAGE = "TraceViewer";
 //TODO: Add button to view dataset. Also make a real nav bar looking thing.
@@ -17,25 +17,22 @@ export default function NavBar() {
   };
 
   return (
-    <NavBarContainer boxShadow={2}>
+    <NavBarContainer color="secondary" boxShadow={3}>
       <NavBarTitle onClick={GoHomeClickHanlder}>
-        {activeStep === -1 ? WELCOME_MESSAGE : dataset}
+        {activeStep == 0 ? WELCOME_MESSAGE : dataset}
       </NavBarTitle>
-      {activeStep >= 0 ? <WorkflowStepper /> : null}
     </NavBarContainer>
   );
 }
 
-export const NAV_BAR_HEIGHT = 50;
-
 const NavBarContainer = styled(Box)`
   display: flex;
   flex-direction: row;
-  min-height: ${NAV_BAR_HEIGHT}px;
   width: 100%;
+  background-color: ${secondaryColor};
 `;
 
 const NavBarTitle = styled.h1`
-  font: 1em
+  color: ${theme.palette.primary.main};
   padding: 10px;
 `;

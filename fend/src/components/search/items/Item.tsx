@@ -4,16 +4,18 @@ import styled from "styled-components";
 import { SearchItem } from "../../../../../shared/Dataset";
 import { RootState } from "../../../redux";
 import { changeStep } from "../../../redux/actions";
+import { SELECT_TARGET_STEP } from "../../../redux/stepmanager/constants";
 import { history } from "../../../redux/store";
-import { SELECT_TARGET_STEP } from "../../../stepmanager/constants";
 import { BORDER_LINE } from "../../../styles/constants";
+import style from "../../../styles/theme";
 import { TRACE_VIEW_ROUTE } from "../../nav/routes";
 import { ArtifactClickAction } from "../types";
 import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
+import ItemPopup from "./ItemPopup";
 import SimilarityRectangle from "./SimilarityRectangle";
 
 const MAX_CHAR_LENGTH = 200;
-const HIGHLIGHT_COLOR = "lightblue";
+const HIGHLIGHT_COLOR = style.palette.primary.main;
 
 interface SearchResultProps {
   result: SearchItem;
@@ -22,16 +24,28 @@ interface SearchResultProps {
 
 export default function SearchResultItem(props: SearchResultProps) {
   const [hover, setHover] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const currentStep: number = useSelector(
     (state: RootState) => state.metaData.currentStep
   );
   const dispatch = useDispatch();
 
-  const clickHandler = () => {
-    props.clickAction(props.result.artifact);
+  const selectSource = () => {
     dispatch(changeStep(currentStep + 1, props.result.artifact));
     if (currentStep === SELECT_TARGET_STEP) history.push(TRACE_VIEW_ROUTE);
+  };
+
+  const clickHandler = () => {
+    setOpen(!open);
+    // props.clickAction(props.result.artifact);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -46,11 +60,18 @@ export default function SearchResultItem(props: SearchResultProps) {
       <IdContainer>
         <label>{props.result.artifact.id}</label>
       </IdContainer>
-      <ArtifactBodyContainer>
-        <label>
+      <div className="labelContainer">
+        <label className="containedLabel">
           {props.result.artifact.body.substring(0, MAX_CHAR_LENGTH)}
         </label>
-      </ArtifactBodyContainer>
+      </div>
+
+      <ItemPopup
+        selectSource={selectSource}
+        handleClose={handleClose}
+        open={open}
+        artifact={props.result.artifact}
+      />
     </ItemContainer>
   );
 }
@@ -74,14 +95,6 @@ const IdContainer = styled.div`
   padding-left: ${SEARCH_RESULT_ID_SIDE_PADDING}px;
   padding-right: ${SEARCH_RESULT_ID_SIDE_PADDING}px;
   border-right: ${BORDER_LINE};
-  width: 40%;
-  overflow-x: scroll;
-`;
-
-const ArtifactBodyContainer = styled.div`
-  height: 100%;
-  font-size: 1em;
-  text-align: left;
   width: 40%;
   overflow-x: hidden;
 `;

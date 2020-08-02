@@ -25,7 +25,7 @@ export default function Tab(props: ArtifactTabProps) {
       style={{ borderBottom: props.selected ? "2px solid blue" : "none" }}
     >
       <TabRow>
-        <props.icon color={props.selected ? "primary" : undefined} />
+        <props.icon color={props.selected ? "secondary" : undefined} />
       </TabRow>
       <TabItem
         style={{ color: props.selected ? TAB_ITEM_SELECTED_COLOR : undefined }}

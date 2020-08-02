@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Artifact, Dataset, SearchItem } from "../../../../shared/Dataset";
 import { RootState } from "../../redux";
 import { ArtifactMutatorActionType } from "../../redux/actions";
-import { PAGE_NAP_HEIGHT, PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
+import { PAGE_NAP_HEIGHT } from "../nav/PageTitle";
 import { getSelectedItems } from "./filtering/filterSearchResults";
 import { getNumberOfResults } from "./filtering/searchOptionsCreator";
 import ItemDisplay from "./items/ItemDisplay";
@@ -97,7 +97,8 @@ const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-content: flex-end;
-  margin-top: ${PAGE_NAV_MARGIN_TOP}px;
+  height: 100%;
+  overflow-y: scroll;
 `;
 
 const SearchRow = styled.div`

@@ -7,8 +7,8 @@ import React, { JSXElementConstructor } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../../redux/actions";
+import { FIRST_STEP_IN_WIZARD } from "../../../redux/stepmanager/constants";
 import { history } from "../../../redux/store";
-import { FIRST_STEP_IN_WIZARD } from "../../../stepmanager/constants";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "../../nav/routes";
 type ButtonClickCallback = (route: string) => void;
 

@@ -1,3 +1,4 @@
+import { Box } from "@material-ui/core";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
@@ -6,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
-import store, { history } from "../../redux/store";
 import {
   getStepChangeError,
   PAGE_STEP_MAPPING,
-} from "../../stepmanager/PageChanger";
+} from "../../redux/stepmanager/PageChanger";
+import store, { history } from "../../redux/store";
+import { primaryColor } from "../../styles/theme";
 
 interface StepperProps {}
 
@@ -32,14 +34,18 @@ export default function WorkflowStepper(props: StepperProps) {
   };
 
   return (
-    <StepperContainer>
-      <Stepper activeStep={activeStep} alternativeLabel>
+    <StepperContainer boxShadow={3}>
+      <WizardStepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, stepIndex) => (
-          <Step key={stepIndex} onClick={() => moveToStep(stepIndex)}>
+          <Step
+            key={stepIndex}
+            onClick={() => moveToStep(stepIndex)}
+            color="primary"
+          >
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
+      </WizardStepper>
     </StepperContainer>
   );
 }
@@ -48,6 +54,9 @@ function getSteps() {
   return ["Source Artifact", "Target Artifact", "View Trace"];
 }
 
-const StepperContainer = styled.div`
+const StepperContainer = styled(Box)`
   width: 100%;
+  background-color: ${primaryColor};
 `;
+
+const WizardStepper = styled(Stepper)``;

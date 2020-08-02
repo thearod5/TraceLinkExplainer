@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { BORDER_LINE } from "../../../styles/constants";
+import theme from "../../../styles/theme";
 
 interface SimilarityRectangleProps {
   similarity: number;
@@ -8,9 +9,15 @@ interface SimilarityRectangleProps {
 
 //TODO: Add theme color
 export default function SimilarityRectangle(props: SimilarityRectangleProps) {
+  const hexAlpha = parseInt(
+    (props.similarity * 255).toString(16),
+    16
+  ).toString();
+  const color = theme.palette.primary.main + hexAlpha;
+  console.log("Before: ", theme.palette.primary.main, "After: ", color);
   return (
     <Rectangle
-      style={{ background: `rgba(0, 0, 255, ${props.similarity})` }}
+      style={{ background: `${color}` }} //TODO: Add primary color here
     ></Rectangle>
   );
 }

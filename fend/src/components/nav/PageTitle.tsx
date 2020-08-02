@@ -7,8 +7,7 @@ import { changeStep } from "../../redux/actions";
 import {
   SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
-} from "../../stepmanager/constants";
-import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
+} from "../../redux/stepmanager/constants";
 
 interface PageTitleProps {
   title: string;
@@ -50,14 +49,13 @@ const TitleContainer = styled.div`
 
 const TitleText = styled.h1`
   margin: 0px;
+  width: 100%;
+  text-align: center;
   padding-top: ${TEXT_TOP_PADDING}px;
   padding-bottom: ${TEXT_TOP_PADDING}px;
   padding-left: ${TEXT_SIDE_PADDING}px;
   padding-right: ${TEXT_SIDE_PADDING}px;
   display: inline-block;
-  border-top: ${BORDER_LINE_EMPHASIS};
-  border-bottom: ${BORDER_LINE_EMPHASIS};
-  border-right: ${BORDER_LINE_EMPHASIS};
 `;
 
 export default PageTitle;

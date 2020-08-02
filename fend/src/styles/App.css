@@ -1,3 +1,8 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
 html,
 body,
 #app,
@@ -6,4 +11,25 @@ body,
   font-family: "Roboto";
   font: "Roboto";
   font-size: 14px;
+}
+
+.labelContainer {
+  height: 100%;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.containedLabel {
+  font-size: 1em;
+  text-align: left;
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+.sidewaysContainer {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+  height: 100%;
 }

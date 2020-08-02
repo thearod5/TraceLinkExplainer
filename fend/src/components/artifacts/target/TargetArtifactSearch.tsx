@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import { Artifact, Dataset } from "../../../../../shared/Dataset";
 import { searchForTargetArtifact } from "../../../api/search";
 import { RootState } from "../../../redux";
@@ -17,20 +16,16 @@ export default function TargetArtifactSearch(props: TargetArtifactSearchProps) {
   );
 
   return (
-    <TargetArtifactContainer>
-      <Search
-        searchFunction={searchForTargetArtifact} //TODO: Remove dummy functions after bend functionality
-        getSearchOptions={(selectedIndex: number) =>
-          createSearchOptionsForTargetArtifact(
-            dataset,
-            sourceArtifact,
-            selectedIndex
-          )
-        }
-        dispatchEvent={setTargetArtifact}
-      />
-    </TargetArtifactContainer>
+    <Search
+      searchFunction={searchForTargetArtifact} //TODO: Remove dummy functions after bend functionality
+      getSearchOptions={(selectedIndex: number) =>
+        createSearchOptionsForTargetArtifact(
+          dataset,
+          sourceArtifact,
+          selectedIndex
+        )
+      }
+      dispatchEvent={setTargetArtifact}
+    />
   );
 }
-
-const TargetArtifactContainer = styled.div``;

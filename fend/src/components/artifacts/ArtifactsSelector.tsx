@@ -4,7 +4,6 @@ import SplitterLayout from "react-splitter-layout";
 import styled from "styled-components";
 import { Artifact } from "../../../../shared/Dataset";
 import { RootState } from "../../redux";
-import { BORDER_LINE_EMPHASIS } from "../../styles/constants";
 import ArtifactDisplay from "./ArtifactDisplay";
 import NoSourceMessage from "./NoSourceMessage";
 import SourceArtifactSearch from "./source/SourceArtifactSearch";
@@ -24,7 +23,18 @@ export default function ArtifactSelector(props: ArtifactsProps) {
 
   const sourceIsSelected = currentStep === 2;
   const leftPanel = sourceIsSelected ? (
-    <ArtifactDisplay artifact={sourceArtifact} />
+    <ArtifactDisplay
+      words={[
+        {
+          family: "",
+          word: sourceArtifact.body,
+          weight: 0,
+        },
+      ]}
+      artifactId={sourceArtifact.id}
+      artifactType={sourceArtifact.type}
+      familyColors={{}}
+    />
   ) : (
     <SourceArtifactSearch />
   );
@@ -50,5 +60,5 @@ export default function ArtifactSelector(props: ArtifactsProps) {
 }
 
 const ArtifactsContainer = styled.div`
-  border-top: ${BORDER_LINE_EMPHASIS};
+  padding: 10px;
 `;

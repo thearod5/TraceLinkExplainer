@@ -1,50 +1,74 @@
-import React from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { Box } from "@material-ui/core";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Artifact } from "../../../../shared/Dataset";
-import PageTitle, { PAGE_NAV_MARGIN_TOP } from "../nav/PageTitle";
+import { FamilyColors, WordDescriptors } from "../../../../shared/Dataset";
+import ArtifactToolbar from "./ArtifactToolbar";
 
 interface ArtifactDisplayProps {
-  artifact: Artifact;
+  words: WordDescriptors;
+  artifactType: string;
+  artifactId: string;
+  familyColors: FamilyColors;
 }
 
+const defaultSize = 1;
+const defaultColor = "black";
 //TODO: Add field to props displaying if page header should be on left or right side.
 //TODO: Add line that continues all the way after the page header to replicate trace link.
 
 export default function ArtifactDisplay(props: ArtifactDisplayProps) {
-  let body;
+  const [sizeSelected, setSizeSelected] = useState(true);
+  const [colorSelected, setColorSelected] = useState(true);
 
-  if (props.artifact.type === "Classes") {
-    body = (
-      <SyntaxHighlighter
-        language="java" //TODO: Dynamically set this field
-        showLineNumbers
-        style={docco}
-        customStyle={{ background: "none" }}
-      >
-        {props.artifact.body}
-      </SyntaxHighlighter>
+  const body = props.words.map((word) => {
+    const wordSize = sizeSelected ? word.weight + defaultSize : defaultSize;
+    const wordColor =
+      word.family in props.familyColors && colorSelected
+        ? props.familyColors[word.family]
+        : defaultColor;
+    if (word.word === "\n") {
+      return <br></br>;
+    }
+    return (
+      <Word style={{ fontSize: `${wordSize}em`, color: wordColor }}>
+        {word.word}
+      </Word>
     );
-  } else {
-    body = <ArtifactBody>{props.artifact.body}</ArtifactBody>;
-  }
+  });
   return (
-    <ArtifactContainer>
-      <PageTitle isSource={true} title={props.artifact.id} />
-      {body}
-    </ArtifactContainer>
+    <ArtifactDisplayContainer>
+      <ArtifactDisplayContent>
+        <ArtifactToolbar
+          title={props.artifactId}
+          colorSelected={colorSelected}
+          sizeSelected={sizeSelected}
+          setSizeSelected={setSizeSelected}
+          setColorSelected={setColorSelected}
+        />
+      </ArtifactDisplayContent>
+      <WordContainer>{body}</WordContainer>
+    </ArtifactDisplayContainer>
   );
 }
 
-const CONTAINER_TOP_PADDING = 100;
-const CONTAINER_SIDE_PADDING = 10;
-
-const ArtifactContainer = styled.div`
-  margin-top: ${PAGE_NAV_MARGIN_TOP + CONTAINER_TOP_PADDING}px;
+const WordContainer = styled.div`
+  font-size: 1em;
+  text-align: left;
+  overflow-x: scroll;
 `;
 
-const ArtifactBody = styled.p`
-  margin-left: ${CONTAINER_SIDE_PADDING}px;
-  margin-right: ${CONTAINER_SIDE_PADDING}px;
+const ArtifactDisplayContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const ArtifactDisplayContainer = styled(Box)`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Word = styled.pre`
+  display: inline-block;
 `;

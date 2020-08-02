@@ -6,7 +6,6 @@ import { Dataset } from "../../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
 import { changeStep, clearData, selectDataset } from "../../redux/actions";
-import { BORDER_LINE } from "../../styles/constants";
 import DatasetAccordion from "./accordion/DatasetAccordion";
 
 const DEFAULT_INDEX_SELECTED = -1;
@@ -83,16 +82,14 @@ function DatasetChooser(props: DatasetChooserProps) {
   );
 }
 
+//TODO: Remove manual top margin
 const DatasetChooserContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 400px;
-  max-width: 500px;
-  border: ${BORDER_LINE};
   border-radius: 5px;
-  min-height: 500px;
-  margin-top: 50px;
+  padding: auto;
+  margin-top: 150px;
 `;
 
 const LoadingItem = styled.p`
@@ -103,7 +100,7 @@ const Title = styled.h2`
   text-align: center;
   margin-bottom: 10px;
   font-weight: normal;
-  border-bottom: ${BORDER_LINE};
+  padding: 10px;
 `;
 
 const DatasetItemContainer = styled.div`
