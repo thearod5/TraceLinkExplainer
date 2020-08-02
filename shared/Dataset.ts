@@ -41,6 +41,8 @@ export interface SearchResponse {
   searchItems: SearchItem[];
 }
 
+export type FamilyColors = Record<string, string>;
+
 export interface WordDescriptor {
   word: string;
   family: string;
