@@ -33,6 +33,7 @@ const NavBarContainer = styled(Box)`
 `;
 
 const NavBarTitle = styled.h1`
+  line-height: 100%;
   color: ${theme.palette.primary.main};
   padding: 10px;
 `;

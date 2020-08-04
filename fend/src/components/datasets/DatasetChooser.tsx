@@ -12,9 +12,7 @@ const DEFAULT_INDEX_SELECTED = -1;
 const UNIMPLEMENTED_NEW_DATASET_ERROR =
   "Adding a new dataset is not yet implemented.";
 
-interface DatasetChooserProps {}
-
-function DatasetChooser(props: DatasetChooserProps) {
+function DatasetChooser() {
   const dataset = useSelector((state: RootState) => state.dataset);
   const dispatch = useDispatch();
 
@@ -70,8 +68,8 @@ function DatasetChooser(props: DatasetChooserProps) {
       <NewDatasetButtonContainer>
         <NewDatasetButton
           size="large"
+          color="primary"
           variant="contained"
-          disabled
           onClick={() => alert(UNIMPLEMENTED_NEW_DATASET_ERROR)}
           // TODO: Functionality for this
         >
@@ -88,8 +86,10 @@ const DatasetChooserContainer = styled(Box)`
   flex-direction: column;
   justify-content: space-between;
   border-radius: 5px;
-  padding: auto;
-  margin-top: 150px;
+  height: 50%;
+  width: 20%;
+  margin-top: 10%;
+  overflow-y: scroll;
 `;
 
 const LoadingItem = styled.p`

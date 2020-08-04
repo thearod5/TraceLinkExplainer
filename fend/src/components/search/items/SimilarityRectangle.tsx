@@ -14,7 +14,6 @@ export default function SimilarityRectangle(props: SimilarityRectangleProps) {
     16
   ).toString();
   const color = theme.palette.primary.main + hexAlpha;
-  console.log("Before: ", theme.palette.primary.main, "After: ", color);
   return (
     <Rectangle
       style={{ background: `${color}` }} //TODO: Add primary color here
@@ -24,6 +23,6 @@ export default function SimilarityRectangle(props: SimilarityRectangleProps) {
 
 const Rectangle = styled.div`
   height: 100%;
-  width: 10%;
+  width: 2%;
   border-right: ${BORDER_LINE};
 `;

@@ -25,16 +25,28 @@ import TargetArtifactSearch from "./target/TargetArtifactSearch";
 
 const colors = ["DarkSeaGreen", "CornFlowerBlue", "DarkSalmon"]; //TODO: Add to theme
 
+function createDefaultWords(body: string): string[] {
+  const words: string[] = [];
+  const space_words = body.split(" ");
+  for (let wordIndex = 0; wordIndex < space_words.length; wordIndex++) {
+    words.push(space_words[wordIndex]);
+    if (wordIndex < space_words.length - 1) {
+      words.push(" ");
+    }
+  }
+  return words;
+}
+
 function getDefaultArtifactDisplay(artifact: Artifact) {
   return (
     <ArtifactDisplay
-      words={[
-        {
+      words={createDefaultWords(artifact.body).map((bodyWord) => {
+        return {
           family: "",
-          word: artifact.body,
+          word: bodyWord,
           weight: 0,
-        },
-      ]}
+        };
+      })}
       artifactId={artifact.id}
       artifactType={artifact.type}
       familyColors={{}}
@@ -128,8 +140,4 @@ const ArtifactsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
-`;
-
-const SplitterContainer = styled(SplitPane)`
-  border: 1px solid blue;
 `;

@@ -32,14 +32,10 @@ export default function SearchResultItem(props: SearchResultProps) {
     dispatch(changeStep(currentStep + 1, props.result.artifact));
   };
 
-  const clickHandler = () => {
+  const handleOpen = () => {
     setOpen(!open);
-    // props.clickAction(props.result.artifact);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -47,20 +43,15 @@ export default function SearchResultItem(props: SearchResultProps) {
   return (
     <ItemContainer
       className="styledLink"
-      onClick={clickHandler}
+      onClick={handleOpen}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{ background: hover ? HIGHLIGHT_COLOR : undefined }}
     >
       <SimilarityRectangle similarity={props.result.similarity} />
       <IdContainer>
-        <label>{props.result.artifact.id}</label>
+        <IdText>{props.result.artifact.id}</IdText>
       </IdContainer>
-      <div className="labelContainer">
-        <label className="containedLabel">
-          {props.result.artifact.body.substring(0, MAX_CHAR_LENGTH)}
-        </label>
-      </div>
 
       <ItemPopup
         selectSource={selectSource}
@@ -68,11 +59,16 @@ export default function SearchResultItem(props: SearchResultProps) {
         open={open}
         artifact={props.result.artifact}
       />
+      <BodyContainer>
+        <div className="paddingContainer">
+          <IdText className="containedLabel">
+            {props.result.artifact.body.substring(0, MAX_CHAR_LENGTH)}
+          </IdText>
+        </div>
+      </BodyContainer>
     </ItemContainer>
   );
 }
-
-const SEARCH_RESULT_ID_SIDE_PADDING = 10; //px
 
 const ItemContainer = styled.div`
   display: flex;
@@ -88,9 +84,24 @@ const ItemContainer = styled.div`
 const IdContainer = styled.div`
   font-size: 1em;
   height: ${SEARCH_RESULT_ITEM_HEIGHT}px;
-  padding-left: ${SEARCH_RESULT_ID_SIDE_PADDING}px;
-  padding-right: ${SEARCH_RESULT_ID_SIDE_PADDING}px;
+  line-height: ${SEARCH_RESULT_ITEM_HEIGHT}px;
   border-right: ${BORDER_LINE};
-  width: 40%;
+  width: 38%;
+  overflow-x: scroll;
+`;
+
+const IdText = styled.label`
+  font-size: 1em;
+  text-align: center;
+  padding: 10px;
   overflow-x: hidden;
+  overflow-y: hidden;
+  word-wrap: initial;
+`;
+
+const BodyContainer = styled.div`
+  height: 100%;
+  width: 60%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 `;

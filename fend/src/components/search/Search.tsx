@@ -99,7 +99,7 @@ const SearchContainer = styled.div`
   align-content: flex-end;
   height: 100%;
   overflow-y: scroll;
-  padding-top: 10px;
+  padding-top: 20px;
 `;
 
 const SearchRow = styled.div`

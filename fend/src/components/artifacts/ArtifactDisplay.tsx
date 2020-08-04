@@ -11,14 +11,16 @@ interface ArtifactDisplayProps {
   familyColors: FamilyColors;
 }
 
-const defaultSize = 1;
 const defaultColor = "black";
+const fontSizeDelta = 0.1;
+
 //TODO: Add field to props displaying if page header should be on left or right side.
 //TODO: Add line that continues all the way after the page header to replicate trace link.
 
 export default function ArtifactDisplay(props: ArtifactDisplayProps) {
   const [sizeSelected, setSizeSelected] = useState(true);
   const [colorSelected, setColorSelected] = useState(true);
+  const [defaultSize, setDefaultSize] = useState(1);
 
   const body = props.words.map((word) => {
     const wordSize = sizeSelected ? word.weight + defaultSize : defaultSize;
@@ -37,42 +39,38 @@ export default function ArtifactDisplay(props: ArtifactDisplayProps) {
   });
   return (
     <ArtifactDisplayContainer>
-      <ArtifactDisplayContent>
-        <ArtifactToolbar
-          title={props.artifactId}
-          colorSelected={colorSelected}
-          sizeSelected={sizeSelected}
-          setSizeSelected={setSizeSelected}
-          setColorSelected={setColorSelected}
-        />
-      </ArtifactDisplayContent>
-      <WordContainer>{body}</WordContainer>
+      <ArtifactToolbar
+        title={props.artifactId}
+        colorSelected={colorSelected}
+        sizeSelected={sizeSelected}
+        setSizeSelected={setSizeSelected}
+        setColorSelected={setColorSelected}
+        handleZoomIn={() => setDefaultSize(defaultSize + fontSizeDelta)}
+        handleZoomOut={() => setDefaultSize(defaultSize - fontSizeDelta)}
+      />
+      <WordContainer>
+        <div className="paddingContainer">{body}</div>
+      </WordContainer>
     </ArtifactDisplayContainer>
   );
 }
 
+const ArtifactDisplayContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
+
 const WordContainer = styled.div`
   font-size: 1em;
   text-align: left;
-  overflow-wrap: normal;
   width: 100%;
-  border: 1px solid orange;
-`;
-
-const ArtifactDisplayContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const ArtifactDisplayContainer = styled(Box)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid red;
-  flex-wrap: wrap;
+  height: 80%;
+  word-wrap: break-word;
 `;
 
 const Word = styled.pre`
   display: inline-block;
+  word-wrap: break-word;
 `;

@@ -19,7 +19,7 @@ type StepPayload = Dataset | Artifact | undefined;
 const DATASET_NOT_SELECTED_ERROR =
   "You must select a dataset before proceeding.";
 const SOURCE_NOT_SELECTED_ERROR = "You must select a source artifact.";
-const TARGET_NOT_SELECTED_ERROR = "You must select a target articact.";
+const TARGET_NOT_SELECTED_ERROR = "You must select a target artifact.";
 
 export const PAGE_STEP_MAPPING: Record<number, string> = {
   0: HOME_ROUTE,

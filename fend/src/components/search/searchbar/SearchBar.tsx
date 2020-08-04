@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const ENTER_KEY_CODE = 13;
-const PLACE_HOLDER_TEXT = "...artifact text...";
+const PLACE_HOLDER_TEXT = "...search for a source artifact...";
 const UNIMPLEMTED_ADVANCED_SEARCH_MESSAGE =
   "Advanced search is not yet implemented.";
 

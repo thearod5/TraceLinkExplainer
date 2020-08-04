@@ -1,21 +1,32 @@
-import { Checkbox } from "@material-ui/core";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import { Box, Checkbox, IconButton } from "@material-ui/core";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
-import InvertColorsIcon from "@material-ui/icons/InvertColors";
 import InvertColorsOffIcon from "@material-ui/icons/InvertColorsOff";
+import ZoomInIcon from "@material-ui/icons/ZoomIn";
+import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
 import { fitfthColor, primaryColor } from "../../styles/theme";
+import { IconMetaType } from "../search/tabbar/Tab";
 
 interface ArtifactToolbarProps {
   sizeSelected: boolean;
   colorSelected: boolean;
   setSizeSelected: (checked: boolean) => void;
   setColorSelected: (checked: boolean) => void;
+  handleZoomIn: () => void;
+  handleZoomOut: () => void;
   title: string;
+}
+
+interface IconButton {
+  iconElement: IconMetaType;
+  checked: boolean;
+  onChange: (event: any) => void;
 }
 
 export default function ArtifactToolbar(props: ArtifactToolbarProps) {
@@ -26,45 +37,86 @@ export default function ArtifactToolbar(props: ArtifactToolbarProps) {
     dispatch(changeStep(currentStep - 1, undefined));
   };
 
-  return (
-    <ContainerToolBar onClick={clickHandler}>
-      <h2 style={{ color: primaryColor }}>{props.title}</h2>
-      <CheckBoxContainer>
-        <Checkbox
-          checked={props.colorSelected}
-          value="Color"
-          color="primary"
-          checkedIcon={<InvertColorsOffIcon color="primary" />}
-          icon={<InvertColorsIcon color="action" />}
-          onChange={(event: any) =>
-            props.setColorSelected(event.target.checked)
-          }
-        />
+  const ICONS: IconButton[] = [
+    {
+      iconElement: ArrowBackIosIcon,
+      checked: true,
+      onChange: (event: any) => alert("Moving backward not implemented"),
+    },
+    {
+      iconElement: ZoomInIcon,
+      checked: true,
+      onChange: props.handleZoomIn,
+    },
+    {
+      iconElement: InvertColorsOffIcon,
+      checked: props.colorSelected,
+      onChange: (event: any) => props.setColorSelected(event.target.checked),
+    },
+    {
+      iconElement: FullscreenExitIcon,
+      checked: props.sizeSelected,
+      onChange: (event: any) => props.setSizeSelected(event.target.checked),
+    },
+    {
+      iconElement: ZoomOutIcon,
+      checked: true,
+      onChange: props.handleZoomOut,
+    },
+    {
+      iconElement: ArrowForwardIosIcon,
+      checked: true,
+      onChange: (event: any) => alert("Moving Forward not implemented"),
+    },
+  ];
 
-        <Checkbox
-          checked={props.sizeSelected}
-          value="Size"
-          color="primary"
-          checkedIcon={<FullscreenExitIcon color="primary" />}
-          icon={<FullscreenIcon color="action" />}
-          onChange={(event: any) => props.setSizeSelected(event.target.checked)}
-        />
+  return (
+    <ContainerToolBar boxShadow={3}>
+      <TitleContainer>
+        <Title onClick={clickHandler}>{props.title}</Title>
+      </TitleContainer>
+
+      <CheckBoxContainer>
+        {ICONS.map((iconButton: IconButton) => {
+          const { checked, onChange } = iconButton;
+          return (
+            <Checkbox
+              checked={checked}
+              color="primary"
+              checkedIcon={<iconButton.iconElement color="primary" />} //Compains if iconElement moved to deconstruction
+              icon={<iconButton.iconElement color="action" />}
+              onChange={onChange}
+            />
+          );
+        })}
       </CheckBoxContainer>
     </ContainerToolBar>
   );
 }
 
-const ContainerToolBar = styled.div`
+const ContainerToolBar = styled(Box)`
   display: flex;
+  flex-direction: column;
   align-content: center;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px;
+  justify-content: center;
   background-color: ${fitfthColor};
   width: 100%;
+`;
+
+const TitleContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  overflow-x: scroll;
+`;
+
+const Title = styled.h2`
+  color: ${primaryColor};
 `;
 
 const CheckBoxContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  overflow-x: scroll;
+  width: 100%;
 `;
