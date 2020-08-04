@@ -4,11 +4,8 @@ import styled from "styled-components";
 import { SearchItem } from "../../../../../shared/Dataset";
 import { RootState } from "../../../redux";
 import { changeStep } from "../../../redux/actions";
-import { SELECT_TARGET_STEP } from "../../../redux/stepmanager/constants";
-import { history } from "../../../redux/store";
 import { BORDER_LINE } from "../../../styles/constants";
 import style from "../../../styles/theme";
-import { TRACE_VIEW_ROUTE } from "../../nav/routes";
 import { ArtifactClickAction } from "../types";
 import { SEARCH_RESULT_ITEM_HEIGHT } from "./constants";
 import ItemPopup from "./ItemPopup";
@@ -33,7 +30,6 @@ export default function SearchResultItem(props: SearchResultProps) {
 
   const selectSource = () => {
     dispatch(changeStep(currentStep + 1, props.result.artifact));
-    if (currentStep === SELECT_TARGET_STEP) history.push(TRACE_VIEW_ROUTE);
   };
 
   const clickHandler = () => {

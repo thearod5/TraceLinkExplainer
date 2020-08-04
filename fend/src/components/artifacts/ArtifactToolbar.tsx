@@ -4,7 +4,10 @@ import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
 import InvertColorsIcon from "@material-ui/icons/InvertColors";
 import InvertColorsOffIcon from "@material-ui/icons/InvertColorsOff";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { changeStep } from "../../redux/actions";
+import { getCurrentStep } from "../../redux/selectors";
 import { fitfthColor, primaryColor } from "../../styles/theme";
 
 interface ArtifactToolbarProps {
@@ -16,8 +19,15 @@ interface ArtifactToolbarProps {
 }
 
 export default function ArtifactToolbar(props: ArtifactToolbarProps) {
+  const currentStep = useSelector(getCurrentStep);
+  const dispatch = useDispatch();
+
+  const clickHandler = () => {
+    dispatch(changeStep(currentStep - 1, undefined));
+  };
+
   return (
-    <ContainerToolBar>
+    <ContainerToolBar onClick={clickHandler}>
       <h2 style={{ color: primaryColor }}>{props.title}</h2>
       <CheckBoxContainer>
         <Checkbox

@@ -54,7 +54,9 @@ export default function ArtifactDisplay(props: ArtifactDisplayProps) {
 const WordContainer = styled.div`
   font-size: 1em;
   text-align: left;
-  overflow-x: scroll;
+  overflow-wrap: normal;
+  width: 100%;
+  border: 1px solid orange;
 `;
 
 const ArtifactDisplayContent = styled.div`
@@ -67,6 +69,8 @@ const ArtifactDisplayContainer = styled(Box)`
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid red;
+  flex-wrap: wrap;
 `;
 
 const Word = styled.pre`

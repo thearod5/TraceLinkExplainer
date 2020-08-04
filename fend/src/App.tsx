@@ -8,13 +8,8 @@ import ArtifactSelector from "./components/artifacts/ArtifactsSelector";
 import DatasetSummary from "./components/datasets/Viewer";
 import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
-import {
-  DATASET_ROUTE,
-  SELECT_ARTIFACTS_ROUTE,
-  TRACE_VIEW_ROUTE,
-} from "./components/nav/routes";
+import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
 import WorkflowStepper from "./components/nav/WorkflowStepper";
-import TraceLinkView from "./components/trace/TraceLinkView";
 import { getCurrentStep } from "./redux/selectors";
 import { history, persistor, store } from "./redux/store";
 import theme from "./styles/theme";
@@ -34,9 +29,6 @@ function App() {
 
               <AppContent>
                 <Switch>
-                  <Route path={TRACE_VIEW_ROUTE}>
-                    <TraceLinkView />
-                  </Route>
                   <Route path={SELECT_ARTIFACTS_ROUTE}>
                     <ArtifactSelector />
                   </Route>

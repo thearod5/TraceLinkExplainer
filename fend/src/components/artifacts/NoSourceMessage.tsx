@@ -13,6 +13,7 @@ export default function NoSourceMessage() {
 
 const NoSourceMessageContainer = styled.div`
   text-align: center;
+  border: 3px solid green;
 `;
 
 const NoSourceMessageText = styled.p`
