@@ -87,7 +87,7 @@ def create_root_weight_mapping(source_root_words: [str], target_root_words: [str
 
     # 3.
     word_weight_mapping = create_word_weight_dictionary(
-        vectorizer.vocabulary_, summed_term_weight_matrix.toarray(), cutoff=0)
+        vectorizer.vocabulary_, summed_term_weight_matrix.toarray(), cutoff=0.5)
 
     return word_weight_mapping
 
@@ -131,10 +131,6 @@ def get_words_in_string_doc(doc: str, word_splitters=word_splitters, append_word
     return words
 
 
-assert get_words_in_string_doc("dispatchQueueManager.getGroundStationId()") == [
-    "dispatch", "Queue", "Manager", ".", "get", "Ground", "Station", "Id", "(", ")"]
-
-
 def create_dictionary_from_values(source: dict, keys: [str], values: [str]):
     """
     Returns a dict with keys being the values of `keys` and values being the values of `values`.
@@ -143,6 +139,18 @@ def create_dictionary_from_values(source: dict, keys: [str], values: [str]):
     for key_index, key in enumerate(keys):
         source[key] = values[key_index]
     return source
+
+
+"""
+Tests
+"""
+
+
+# TODO assert False, create_root_weight_mapping(
+#     ["the pig danced"], ["the dancing kim"])
+
+assert get_words_in_string_doc("dispatchQueueManager.getGroundStationId()") == [
+    "dispatch", "Queue", "Manager", ".", "get", "Ground", "Station", "Id", "(", ")"]
 
 
 assert create_dictionary_from_values({}, ["foo"], ["bar"]) == {"foo": "bar"}
