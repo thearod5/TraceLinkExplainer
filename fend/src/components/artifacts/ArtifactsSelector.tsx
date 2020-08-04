@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import SplitterLayout from "react-splitter-layout";
+import SplitPane from "react-split-pane";
 import styled from "styled-components";
 import {
   Artifact,
@@ -74,21 +74,17 @@ export default function ArtifactSelector() {
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
 
-  console.log("current step: ", currentStep);
   useEffect(() => {
     switch (currentStep) {
       case SELECT_SOURCE_STEP:
-        console.log("setting state to SELECT_SOURCE");
         setLeftPanel(<SourceArtifactSearch />);
         setRightPanel(<NoSourceMessage />);
         break;
       case SELECT_TARGET_STEP:
-        console.log("setting state to SELECT_TARGET");
         setLeftPanel(getDefaultArtifactDisplay(sourceArtifact));
         setRightPanel(<TargetArtifactSearch />);
         break;
       case VIEW_TRACE_STEP:
-        console.log("setting state to VIEW_TRACE");
         getTraceInformation("Drone", sourceArtifact, targetArtifact)
           .then((traceInformation) => {
             const familyColors = createFamilyColors(traceInformation.families);
@@ -119,23 +115,21 @@ export default function ArtifactSelector() {
 
   return (
     <ArtifactsContainer>
-      <SplitterContainer
-        percentage={true}
-        secondaryInitialSize={50}
-        secondaryMinSize={25}
-        primaryMinSize={25}
-      >
+      <SplitPane split="vertical">
         {leftPanel}
         {rightPanel}
-      </SplitterContainer>
+      </SplitPane>
     </ArtifactsContainer>
   );
 }
 
 const ArtifactsContainer = styled.div`
-  padding: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
 `;
 
-const SplitterContainer = styled(SplitterLayout)`
-  border: 3px solid blue;
+const SplitterContainer = styled(SplitPane)`
+  border: 1px solid blue;
 `;

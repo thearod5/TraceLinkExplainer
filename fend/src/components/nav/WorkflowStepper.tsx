@@ -14,9 +14,7 @@ import {
 import store, { history } from "../../redux/store";
 import { primaryColor } from "../../styles/theme";
 
-interface StepperProps {}
-
-export default function WorkflowStepper(props: StepperProps) {
+export default function WorkflowStepper() {
   const dispatch = useDispatch();
   const activeStep = useSelector(getCurrentStep) - 1; //recreated index at 0, but remove select dataset move
   const steps = getSteps();
@@ -55,6 +53,10 @@ function getSteps() {
 }
 
 const StepperContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  height: 100%;
   width: 100%;
   background-color: ${primaryColor};
 `;

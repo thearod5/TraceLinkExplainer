@@ -1,5 +1,4 @@
 import React from "react";
-import "react-splitter-layout/lib/index.css";
 import styled from "styled-components";
 import "../../styles/App.css";
 import DatasetChooser from "../datasets/DatasetChooser";

@@ -13,7 +13,7 @@ function DatasetSummary(props: DatasetSummaryProps) {
 
   return (
     <div>
-      <Summary>{dataset.summary}</Summary>
+      <Summary>[MARO's WORK]</Summary>
     </div>
   );
 }
@@ -21,6 +21,7 @@ function DatasetSummary(props: DatasetSummaryProps) {
 const Summary = styled.p`
   font-size: 1.5em;
   text-align: center;
+  padding: 50px;
 `;
 
 export default DatasetSummary;

@@ -20,8 +20,8 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <MuiThemeProvider theme={theme}>
-          <Router history={history}>
+        <Router history={history}>
+          <MuiThemeProvider theme={theme}>
             <AppContainer id="app">
               <AppHeader>
                 <NavBar />
@@ -45,8 +45,8 @@ function App() {
                 {activeStep >= 0 ? <WorkflowStepper /> : null}
               </AppFooter>
             </AppContainer>
-          </Router>
-        </MuiThemeProvider>
+          </MuiThemeProvider>
+        </Router>
       </PersistGate>
     </Provider>
   );
@@ -65,17 +65,23 @@ const AppContainer = styled.div`
   justify-content: space-between;
 `;
 
-const AppContent = styled.main`
-  height: 80%;
-  width: 100%;
-  overflow-y: hidden;
-`;
-
 const AppHeader = styled.header`
+  display: flex;
   height: 10%;
 `;
 
+const AppContent = styled.main`
+  display: flex;
+  flex-direction: column;
+  min-height: 80%;
+  max-height: 80%;
+  width: 100%;
+`;
+
 const AppFooter = styled.footer`
+  display: flex;
+  position: absolute:
+  bottom: 0px;
   height: 10%;
   width: 100%;
   z-index: 5;
