@@ -24,5 +24,8 @@ export function initializeEmptyMetaData(): MetaData {
       body: "",
       type: "",
     },
+
+    selectedSources: [],
+    selectedTargets: [],
   };
 }

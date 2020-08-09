@@ -1,6 +1,8 @@
 import { RootState } from ".";
 import {
   SELECT_DATASET,
+  SET_SELECTED_SOURCE_ACTION,
+  SET_SELECTED_TARGET_ACTION,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
   UNSELECT_DATASET,
@@ -40,6 +42,16 @@ export function metaDataReducer(
       return {
         ...state,
         targetArtifact: action.payload,
+      };
+    case SET_SELECTED_SOURCE_ACTION:
+      return {
+        ...state,
+        selectedSources: action.payload,
+      };
+    case SET_SELECTED_TARGET_ACTION:
+      return {
+        ...state,
+        selectedTargets: action.payload,
       };
     default:
       return state;

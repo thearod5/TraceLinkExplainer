@@ -86,3 +86,21 @@ export function setTargetArtifact(
     payload: targetArtifact,
   };
 }
+
+export const SET_SELECTED_SOURCE_ACTION = "ADD_SELECTED_SOURCE_ACTION";
+
+export function addSelectedSource(selectedArtifact: Artifact) {
+  return {
+    type: SET_SELECTED_SOURCE_ACTION,
+    payload: selectedArtifact,
+  };
+}
+
+export const SET_SELECTED_TARGET_ACTION = "ADD_SELECTED_SOURCE_ACTION";
+
+export function addSelectedTarget(selectedArtifact: Artifact) {
+  return {
+    type: SET_SELECTED_TARGET_ACTION,
+    payload: selectedArtifact,
+  };
+}
