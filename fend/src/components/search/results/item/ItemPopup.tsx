@@ -8,12 +8,10 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
 import React from "react";
-import { useSelector } from "react-redux";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import styled from "styled-components";
 import { Artifact } from "../../../../../../shared/Dataset";
-import { getCurrentStep } from "../../../../redux/selectors";
 
 interface ItemPopupProps {
   selectSource: () => void;
@@ -23,7 +21,6 @@ interface ItemPopupProps {
 }
 
 export default function ItemPopup(props: ItemPopupProps) {
-  const activeStep = useSelector(getCurrentStep);
   const isCode = props.artifact.type === "Classes";
   const createBodyContainer = isCode ? (
     <SyntaxHighlighter
