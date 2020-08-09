@@ -24,7 +24,6 @@ export default function SearchBar(props: SearchBarProps) {
   const [validQuery, setValidQuery] = useState(true);
 
   useEffect(() => {
-    console.log("search bar starting validatoin....");
     setValidQuery(isValidQuery(query));
   }, [query]);
 
@@ -54,7 +53,7 @@ export default function SearchBar(props: SearchBarProps) {
           setQuery(newValue);
         }}
       />
-      <Button style={{ margin: "5px" }} color="secondary" variant="contained">
+      <Button style={{ margin: "5px" }} color="primary" variant="contained">
         Search
       </Button>
     </SearchBarContainer>
