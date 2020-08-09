@@ -3,16 +3,19 @@ import { FamilyColors, WordDescriptor } from "../../../../../shared/Dataset";
 const SyntaxWordType = "#SYNTAX";
 const KeyWordType = "#KEYWORD";
 
-const delimiters = [" ", "\n", "\t", ".", ";"];
+const syntaxDelimiters = ["{", "}", "(", ")", "[", "]"];
+const lineDelimiters = [" ", "\n", "\t"].concat(syntaxDelimiters);
 const keyWordDelimiters = [
   "public",
   "private",
   "protected",
+  "final",
   "static",
   "package",
   "switch",
   "default",
   "import",
+  "new",
   "class",
   "void",
   "try",
@@ -23,7 +26,6 @@ const keyWordDelimiters = [
   "for",
   "if",
 ];
-const syntaxDelimiters = ["{", "}"];
 
 function getWordFamily(word: string) {
   if (syntaxDelimiters.includes(word)) return SyntaxWordType;
@@ -33,7 +35,7 @@ function getWordFamily(word: string) {
 
 export function getDefaultFamilyColors(): FamilyColors {
   const colors: FamilyColors = {};
-  colors[SyntaxWordType] = "#FF9505";
+  colors[SyntaxWordType] = "#FF8C00";
   colors[KeyWordType] = "#79ADDC";
   colors[""] = "black";
   return colors;
@@ -54,12 +56,12 @@ export function separateWords(body: string): string[] {
 
   for (
     let delimiterIndex = 0;
-    delimiterIndex < delimiters.length;
+    delimiterIndex < lineDelimiters.length;
     delimiterIndex++
   ) {
     let delimiterWords = [];
     for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
-      let delimiter = delimiters[delimiterIndex];
+      let delimiter = lineDelimiters[delimiterIndex];
       let wordChildren = words[wordIndex].split(delimiter);
       for (let childIndex = 0; childIndex < wordChildren.length; childIndex++) {
         delimiterWords.push(wordChildren[childIndex]);
