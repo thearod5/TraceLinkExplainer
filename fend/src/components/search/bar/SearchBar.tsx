@@ -10,8 +10,6 @@ import { getQueryRecommendations, isValidQuery } from "../QueryHelper";
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const ENTER_KEY_CODE = 13;
 const PLACE_HOLDER_TEXT = "...search for a source artifact...";
-const UNIMPLEMTED_ADVANCED_SEARCH_MESSAGE =
-  "Advanced search is not yet implemented.";
 
 type SubmitFuncType = (query: string) => void;
 interface SearchBarProps {

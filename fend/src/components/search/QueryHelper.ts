@@ -31,11 +31,11 @@ const COMBINATORS = ["AND", "NOT", "ORDER BY"];
 
 export function isValidQuery(query: string) {
   const currentSteps = getStepsInQuery(query);
-  if (currentSteps.length == 0) return true;
+  if (currentSteps.length === 0) return true;
 
   for (let stepIndex = 0; stepIndex < currentSteps.length; stepIndex++) {
     let currentStep = currentSteps[stepIndex];
-    if (stepIndex == 0) {
+    if (stepIndex === 0) {
       if (!isValidStep(currentStep, stepIndex)) return false;
     } else {
       let previousStep = currentSteps[stepIndex - 1];
@@ -96,7 +96,7 @@ export function getQueryRecommendations(query: string) {
     case StepType.COMBINATOR:
       return COMBINATORS;
     default:
-      throw "Unexpected step type: " + nextExpectedStepType;
+      throw Error("Unexpected step type: " + nextExpectedStepType);
   }
 }
 
@@ -114,5 +114,5 @@ function getOperationRecommendations(attribute: string): string[] {
 }
 
 function getStepsInQuery(query: string) {
-  return query.split(" ").filter((step) => step != "");
+  return query.split(" ").filter((step) => step !== "");
 }

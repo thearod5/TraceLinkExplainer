@@ -5,7 +5,7 @@ import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import styled from "styled-components";
 import ArtifactSelector from "./components/artifacts/ArtifactsSelector";
-import DatasetSummary from "./components/datasets/Viewer";
+import DatasetViewer from "./components/datasets/DatasetViewer";
 import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
@@ -33,7 +33,7 @@ function App() {
                     <ArtifactSelector />
                   </Route>
                   <Route path={DATASET_ROUTE}>
-                    <DatasetSummary />
+                    <DatasetViewer />
                   </Route>
                   <Route path="/">
                     <Home />

@@ -115,7 +115,7 @@ export default function ArtifactSelector() {
         setRightPanel(<NoSourceMessage />);
         break;
     }
-  }, [currentStep]);
+  }, [currentStep, sourceArtifact, targetArtifact]);
 
   return (
     <ArtifactsContainer>

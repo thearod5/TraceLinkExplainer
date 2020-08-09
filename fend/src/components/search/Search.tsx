@@ -1,3 +1,4 @@
+import { LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -55,12 +56,16 @@ export default function Search(props: SearchProps) {
         <SearchBar onSubmit={startSearch} />
       </SearchRow>
 
-      <SearchRow>
-        <SearchResults
-          results={searchResults}
-          clickAction={createDispatchAction}
-        />
-      </SearchRow>
+      {loading ? (
+        <LinearProgress color="secondary" />
+      ) : (
+        <SearchRow>
+          <SearchResults
+            results={searchResults}
+            clickAction={createDispatchAction}
+          />
+        </SearchRow>
+      )}
     </SearchContainer>
   );
 }
@@ -79,8 +84,4 @@ const SearchRow = styled.div`
   flex-direct: row;
   justify-content: left;
   width: 100%;
-`;
-
-const SearchBarContainer = styled.div`
-  width: 80%;
 `;

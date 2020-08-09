@@ -2,7 +2,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
@@ -48,10 +47,8 @@ export default function SearchResultItem(props: SearchResultProps) {
           label={id}
         />
       </AccordionSummary>
-      <AccordionDetails>
-        <BodyContainer>
-          {getDefaultArtifactDisplay(props.result.artifact, false)}
-        </BodyContainer>
+      <AccordionDetails style={AccordionDetailsStyle}>
+        {getDefaultArtifactDisplay(props.result.artifact, false)}
       </AccordionDetails>
     </ItemContainer>
   );
@@ -63,11 +60,6 @@ const ItemContainer = styled(Accordion)`
   margin: 1px;
 `;
 
-//TODO: Change height to percentage (50%?)
-const BodyContainer = styled(Box)`
-  min-height: 100px;
-  max-height: 300px;
-  width: 100%;
-  text-wrap: wrap;
-  overflow-y: hidden;
-`;
+const AccordionDetailsStyle = {
+  maxHeight: "300px",
+};
