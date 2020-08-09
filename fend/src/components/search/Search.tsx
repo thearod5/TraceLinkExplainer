@@ -20,6 +20,7 @@ export interface SearchProps {
 }
 
 export default function Search(props: SearchProps) {
+  const [selectedArtifacts, setSelectedArtifacts] = useState<Artifact[]>([]);
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -43,8 +44,9 @@ export default function Search(props: SearchProps) {
       });
   };
 
-  const createDispatchAction = (artifact: Artifact) => {
-    dispatch(props.dispatchEvent(artifact));
+  const searchItemOnClick = (artifact: Artifact) => {
+    setSelectedArtifacts([...selectedArtifacts, artifact]);
+    dispatch(props.dispatchEvent(artifact)); //sets artifact in state.
   };
 
   /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -62,7 +64,7 @@ export default function Search(props: SearchProps) {
         <SearchRow>
           <SearchResults
             results={searchResults}
-            clickAction={createDispatchAction}
+            clickAction={searchItemOnClick}
           />
         </SearchRow>
       )}

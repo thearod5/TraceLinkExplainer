@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../shared/Dataset";
 import { BORDER_LINE } from "../../../styles/constants";
-import SearchResultItem from "../items/Item";
 import { ArtifactClickAction } from "../types";
+import SearchResultItem from "./item/Item";
 
 const NUMBER_RESULTS_PROMPT = " results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
