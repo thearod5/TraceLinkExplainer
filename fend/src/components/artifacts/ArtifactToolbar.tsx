@@ -1,4 +1,5 @@
-import { Box, Checkbox, IconButton } from "@material-ui/core";
+import { Box, Checkbox, IconButton, SvgIconTypeMap } from "@material-ui/core";
+import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
@@ -11,7 +12,6 @@ import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
 import { fitfthColor, primaryColor } from "../../styles/theme";
-import { IconMetaType } from "../search/tabbar/Tab";
 
 interface ArtifactToolbarProps {
   sizeSelected: boolean;
@@ -24,7 +24,7 @@ interface ArtifactToolbarProps {
 }
 
 interface IconButton {
-  iconElement: IconMetaType;
+  iconElement: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   checked: boolean;
   onChange: (event: any) => void;
 }
@@ -100,6 +100,7 @@ const ContainerToolBar = styled(Box)`
   align-content: center;
   justify-content: center;
   background-color: ${fitfthColor};
+  height: 100%;
   width: 100%;
 `;
 

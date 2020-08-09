@@ -19,7 +19,7 @@ export default function NavBar() {
   return (
     <NavBarContainer color="secondary" boxShadow={3}>
       <NavBarTitle onClick={GoHomeClickHanlder}>
-        {activeStep == 0 ? WELCOME_MESSAGE : dataset}
+        {activeStep === 0 ? WELCOME_MESSAGE : dataset}
       </NavBarTitle>
     </NavBarContainer>
   );

@@ -58,3 +58,11 @@ export interface TraceInformation {
   traceType: string;
   score: number;
 }
+
+export interface SearchFilter {
+  attribute: string;
+  action: string;
+  value: string | number;
+  lower?: number;
+  upper?: number;
+}

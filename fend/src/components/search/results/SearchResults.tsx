@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../shared/Dataset";
 import { BORDER_LINE } from "../../../styles/constants";
+import SearchResultItem from "../items/Item";
 import { ArtifactClickAction } from "../types";
-import SearchResultItem from "./Item";
 
 const NUMBER_RESULTS_PROMPT = " results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
@@ -13,19 +13,21 @@ interface SearchResultsProps {
   clickAction: ArtifactClickAction;
 }
 
-export default function ItemDisplay(props: SearchResultsProps) {
+export default function SearchResults(props: SearchResultsProps) {
   return (
     <SearchResultsDisplayContainer>
       <NumberResultsDisplay>
         {props.results.length + NUMBER_RESULTS_PROMPT}
       </NumberResultsDisplay>
-      {props.results.map((result) => (
-        <SearchResultItem
-          key={result.artifact.id}
-          result={result}
-          clickAction={props.clickAction}
-        />
-      ))}
+      {props.results.map((searchItem) => {
+        return (
+          <SearchResultItem
+            key={searchItem.artifact.id}
+            result={searchItem}
+            clickAction={props.clickAction}
+          />
+        );
+      })}
     </SearchResultsDisplayContainer>
   );
 }
@@ -33,6 +35,7 @@ export default function ItemDisplay(props: SearchResultsProps) {
 const SearchResultsDisplayContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
   width: 100%;
 `;
 

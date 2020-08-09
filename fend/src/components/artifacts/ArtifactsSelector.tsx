@@ -18,38 +18,28 @@ import {
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP,
 } from "../../redux/stepmanager/constants";
-import ArtifactDisplay from "./ArtifactDisplay";
+import ArtifactDisplay from "./artifactdisplay/ArtifactDisplay";
+import {
+  createDefaultWords,
+  getDefaultFamilyColors,
+} from "./artifactdisplay/WordCreator";
 import NoSourceMessage from "./NoSourceMessage";
 import SourceArtifactSearch from "./source/SourceArtifactSearch";
 import TargetArtifactSearch from "./target/TargetArtifactSearch";
 
 const colors = ["DarkSeaGreen", "CornFlowerBlue", "DarkSalmon"]; //TODO: Add to theme
 
-function createDefaultWords(body: string): string[] {
-  const words: string[] = [];
-  const space_words = body.split(" ");
-  for (let wordIndex = 0; wordIndex < space_words.length; wordIndex++) {
-    words.push(space_words[wordIndex]);
-    if (wordIndex < space_words.length - 1) {
-      words.push(" ");
-    }
-  }
-  return words;
-}
-
-function getDefaultArtifactDisplay(artifact: Artifact) {
+export function getDefaultArtifactDisplay(
+  artifact: Artifact,
+  showToolbar = true
+) {
   return (
     <ArtifactDisplay
-      words={createDefaultWords(artifact.body).map((bodyWord) => {
-        return {
-          family: "",
-          word: bodyWord,
-          weight: 0,
-        };
-      })}
+      words={createDefaultWords(artifact.body)}
       artifactId={artifact.id}
       artifactType={artifact.type}
-      familyColors={{}}
+      familyColors={getDefaultFamilyColors()}
+      showToolbar={showToolbar}
     />
   );
 }
@@ -57,7 +47,8 @@ function getDefaultArtifactDisplay(artifact: Artifact) {
 function getTraceArtifactDisplay(
   artifactWords: WordDescriptors,
   artifact: Artifact,
-  familyColors: FamilyColors
+  familyColors: FamilyColors,
+  showToolbar = true
 ) {
   return (
     <ArtifactDisplay
@@ -65,6 +56,7 @@ function getTraceArtifactDisplay(
       artifactId={artifact.id}
       artifactType={artifact.type}
       familyColors={familyColors}
+      showToolbar={showToolbar}
     />
   );
 }
