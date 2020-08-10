@@ -1,11 +1,10 @@
-import { Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../../../shared/Dataset";
 import { MetaData } from "./types";
 
 export function initializeEmptyDataset(): Dataset {
   return {
     name: "",
     summary: "",
-    artifacts: [],
   };
 }
 
@@ -14,18 +13,18 @@ export function initializeEmptyMetaData(): MetaData {
     oldStep: -1,
     currentStep: 0,
 
-    sourceArtifact: {
-      id: "",
-      body: "",
-      type: "",
-    },
-    targetArtifact: {
-      id: "",
-      body: "",
-      type: "",
-    },
+    sourceArtifact: initializeEmptyArtifact(),
+    targetArtifact: initializeEmptyArtifact(),
 
     selectedSources: [],
     selectedTargets: [],
+  };
+}
+
+export function initializeEmptyArtifact(): Artifact {
+  return {
+    id: "",
+    body: "",
+    type: "",
   };
 }

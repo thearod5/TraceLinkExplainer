@@ -1,11 +1,12 @@
 import { FamilyColors, WordDescriptor } from "../../../../../shared/Dataset";
 
-const SyntaxWordType = "#SYNTAX";
-const KeyWordType = "#KEYWORD";
+export const SyntaxWordType = "#SYNTAX";
+export const KeyWordType = "#KEYWORD";
 
 const syntaxDelimiters = ["{", "}", "(", ")", "[", "]"];
 const lineDelimiters = [" ", "\n", "\t"].concat(syntaxDelimiters);
 const keyWordDelimiters = [
+  "function",
   "public",
   "private",
   "protected",
@@ -25,13 +26,11 @@ const keyWordDelimiters = [
   "implements",
   "for",
   "if",
+  "int",
+  "double",
+  "float",
+  "string",
 ];
-
-function getWordFamily(word: string) {
-  if (syntaxDelimiters.includes(word)) return SyntaxWordType;
-  if (keyWordDelimiters.includes(word)) return KeyWordType;
-  else return "";
-}
 
 export function getDefaultFamilyColors(): FamilyColors {
   const colors: FamilyColors = {};
@@ -51,6 +50,12 @@ export function createDefaultWords(body: string): WordDescriptor[] {
   });
 }
 
+function getWordFamily(word: string) {
+  if (syntaxDelimiters.includes(word)) return SyntaxWordType;
+  if (keyWordDelimiters.includes(word)) return KeyWordType;
+  else return "";
+}
+
 export function separateWords(body: string): string[] {
   let words: string[] = [body];
 
@@ -59,17 +64,22 @@ export function separateWords(body: string): string[] {
     delimiterIndex < lineDelimiters.length;
     delimiterIndex++
   ) {
-    let delimiterWords = [];
-    for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
-      let delimiter = lineDelimiters[delimiterIndex];
-      let wordChildren = words[wordIndex].split(delimiter);
-      for (let childIndex = 0; childIndex < wordChildren.length; childIndex++) {
-        delimiterWords.push(wordChildren[childIndex]);
-        if (childIndex < wordChildren.length - 1)
-          delimiterWords.push(delimiter);
-      }
-    }
-    words = delimiterWords;
+    let delimiter = lineDelimiters[delimiterIndex];
+    words = splitWordsByDelimiter(words, delimiter);
   }
   return words;
+}
+
+function splitWordsByDelimiter(words: string[], delimiter: string) {
+  //Returns aggregated list of all words after each word is split
+  let delimiterWords = [];
+  for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
+    let wordChildren = words[wordIndex].split(delimiter);
+    for (let childIndex = 0; childIndex < wordChildren.length; childIndex++) {
+      const word = wordChildren[childIndex];
+      if (word != "") delimiterWords.push(word);
+      if (childIndex < wordChildren.length - 1) delimiterWords.push(delimiter);
+    }
+  }
+  return delimiterWords;
 }

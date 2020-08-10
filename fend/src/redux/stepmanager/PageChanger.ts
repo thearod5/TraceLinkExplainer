@@ -5,7 +5,7 @@ import {
   SELECT_ARTIFACTS_ROUTE,
   TRACE_VIEW_ROUTE,
 } from "../../components/nav/routes";
-import { isArtifact, isDataset } from "../../util/TypeUtil";
+import { isArtifact, isDataset, isNonEmptyDataset } from "../../util/TypeUtil";
 import { initializeEmptyMetaData } from "../initializers";
 import {
   SELECT_DATASET_STEP,
@@ -99,7 +99,8 @@ export function getStepChangeError(
   payload: StepPayload
 ): string | undefined {
   const requestedEndpoint = PAGE_STEP_MAPPING[requestedStep];
-  const datasetSelected = isDataset(payload) || state.dataset.name !== "";
+  const datasetSelected =
+    isNonEmptyDataset(payload) || state.dataset.name !== "";
   const sourceSelected =
     isArtifact(payload) || state.metaData.sourceArtifact.id !== "";
   const targetSelected =

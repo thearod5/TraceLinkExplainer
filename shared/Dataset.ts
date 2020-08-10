@@ -1,7 +1,6 @@
 export interface Dataset {
   name: string;
   summary: string;
-  artifacts: Array<Artifact>;
 }
 
 export interface Artifact {

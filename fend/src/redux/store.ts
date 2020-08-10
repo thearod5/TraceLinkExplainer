@@ -35,6 +35,7 @@ const rootReducer = (state = createEmptyState(), action: CustomAction) => {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+//allows for testing teardown
 export const store: Store<RootState, AnyAction> = createStore(
   persistedReducer,
   composeWithDevTools(applyMiddleware(...middleware))

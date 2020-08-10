@@ -10,8 +10,12 @@ import {
 } from "../../../shared/Dataset";
 
 export function isDataset(obj?: object): obj is Dataset {
-  const requiredKeys = ["name", "summary", "artifacts"]; // TODO: Automate generation of list of keys
+  const requiredKeys = ["name", "summary"]; // TODO: Automate generation of list of keys
   return objectContainsKeys(requiredKeys, obj);
+}
+
+export function isNonEmptyDataset(obj?: object): obj is Dataset {
+  return isDataset(obj) && obj.name !== "" && obj.summary !== "";
 }
 
 export function isArtifact(obj?: object): obj is Artifact {

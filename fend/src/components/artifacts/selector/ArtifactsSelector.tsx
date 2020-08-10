@@ -6,26 +6,26 @@ import {
   Artifact,
   FamilyColors,
   WordDescriptors,
-} from "../../../../shared/Dataset";
-import { getTraceInformation } from "../../api/trace";
+} from "../../../../../shared/Dataset";
+import { getTraceInformation } from "../../../api/trace";
 import {
   getCurrentStep,
   getSourceArtifact,
   getTargetArtifact,
-} from "../../redux/selectors";
+} from "../../../redux/selectors";
 import {
   SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP,
-} from "../../redux/stepmanager/constants";
-import ArtifactDisplay from "./artifactdisplay/ArtifactDisplay";
+} from "../../../redux/stepmanager/constants";
+import ArtifactDisplay from "../artifactdisplay/ArtifactDisplay";
 import {
   createDefaultWords,
   getDefaultFamilyColors,
-} from "./artifactdisplay/WordCreator";
-import NoSourceMessage from "./NoSourceMessage";
-import SourceArtifactSearch from "./source/SourceArtifactSearch";
-import TargetArtifactSearch from "./target/TargetArtifactSearch";
+} from "../artifactdisplay/WordCreator";
+import NoSourceMessage from "../NoSourceMessage";
+import SourceArtifactSearch from "../source/SourceArtifactSearch";
+import TargetArtifactSearch from "../target/TargetArtifactSearch";
 
 const colors = ["DarkSeaGreen", "CornFlowerBlue", "DarkSalmon"]; //TODO: Add to theme
 

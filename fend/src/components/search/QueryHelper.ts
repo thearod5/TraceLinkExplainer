@@ -22,60 +22,100 @@ const AttributeTypeMap: Record<string, AttributeType> = {
   id: AttributeType.categorical,
 };
 
-const AttributeValues = ["type", "body", "id"];
-const CATEGORICAL_OPERATIONS = ["contains", "does not contain", "is", "is not"];
-const COMBINATORS = ["AND", "NOT", "ORDER BY"];
+export const AttributeValues = ["type", "body", "id"];
+export const CategoricalOperations = [
+  "contains",
+  "does not contain",
+  "is",
+  "is not",
+];
+const Combinators = ["AND", "NOT", "ORDER BY"];
 /*
  * Validation
  */
 
-export function isValidQuery(query: string) {
+export function isValidQuery(query: string): isValidResponse {
   const currentSteps = getStepsInQuery(query);
-  if (currentSteps.length === 0) return true;
+  if (currentSteps.length === 0) return [true, ""];
 
   for (let stepIndex = 0; stepIndex < currentSteps.length; stepIndex++) {
     let currentStep = currentSteps[stepIndex];
-    if (stepIndex === 0) {
-      if (!isValidStep(currentStep, stepIndex)) return false;
-    } else {
-      let previousStep = currentSteps[stepIndex - 1];
-      return isValidStep(currentStep, stepIndex, previousStep);
-    }
+    let previousStep =
+      stepIndex === 0 ? undefined : currentSteps[stepIndex - 1];
+    let res = isValidStep(currentStep, stepIndex, previousStep);
+    if (!res[0]) return res;
   }
-  return true;
+  return [true, ""];
 }
 
-function isValidStep(step: string, index: number, previousStep?: string) {
-  if (index !== 0 && previousStep === undefined) return false;
+const UNDEFINED_PREVIOUS_STEP = "previous step not defined";
+type isValidResponse = [boolean, string];
+
+export function isValidStep(
+  step: string,
+  index: number,
+  previousStep?: string
+): isValidResponse {
+  const UNDEFINED_PREVIOUS_STEP = "previous step not defined";
 
   let expectedStepType: StepType = STEP_ORDER[index % STEP_ORDER.length];
   switch (expectedStepType) {
     case StepType.ATTRIBUTE:
       return isValidAttibute(step);
     case StepType.OPERATION:
-      if (previousStep === undefined) return false;
+      if (previousStep === undefined) return [false, UNDEFINED_PREVIOUS_STEP];
       return isValidOperation(previousStep, step);
     case StepType.VALUE:
-      if (previousStep === undefined) return false;
-      return isValidOperation(previousStep, step);
+      return isValidValue(step);
     case StepType.COMBINATOR:
       return isValidCombinator(step);
     default:
-      return false;
+      throw Error(`Unimplemented step type: ${expectedStepType}`);
   }
 }
 
-function isValidAttibute(queryStepValue: string) {
-  return ["type", "id", "body"].includes(queryStepValue.toLowerCase());
+function isValidAttibute(queryStepValue: string): isValidResponse {
+  const isValid = AttributeValues.includes(queryStepValue.toLowerCase());
+  return [
+    isValid,
+    `AttributeValues ${AttributeValues} do not contain: ${queryStepValue}`,
+  ];
 }
 
-function isValidOperation(attribute: string, operation: string) {
+function isValidOperation(
+  attribute: string,
+  operation: string
+): isValidResponse {
   const validOperations = getOperationRecommendations(attribute);
-  return validOperations.includes(operation);
+  const isValid = validOperations.includes(operation);
+  return [
+    isValid,
+    `ValidOperations ${validOperations} does not contain ${operation}`,
+  ];
 }
 
-function isValidCombinator(step: string) {
-  return COMBINATORS.includes(step);
+export function isValidValue(value: string): isValidResponse {
+  const isValidString = value.split('"').length >= 2;
+  const isValidWord = !value.includes(" ");
+  const isValid = isValidString || isValidWord;
+  const errors = [isValidWord ? "" : "Word", isValidString ? "" : "String"];
+  return [
+    isValid,
+    `Given word (${value}) not a valid: ${errors
+      .filter((a) => a !== "")
+      .join(",")}`,
+  ];
+}
+
+const COMBINATOR_ERROR_HELP =
+  'Note, multi-word values are expected to wrapped in quotation marks (e.g "[TEXT]"';
+
+function isValidCombinator(step: string): isValidResponse {
+  const isValid = Combinators.includes(step);
+  return [
+    isValid,
+    `Combinators [${Combinators}] do not include ${step}. ${COMBINATOR_ERROR_HELP}`,
+  ];
 }
 
 /*
@@ -92,9 +132,9 @@ export function getQueryRecommendations(query: string) {
     case StepType.OPERATION:
       return getOperationRecommendations(currentStepInput);
     case StepType.VALUE:
-      return [];
+      return [""]; //signals the words be wrapped in quotes
     case StepType.COMBINATOR:
-      return COMBINATORS;
+      return Combinators;
     default:
       throw Error("Unexpected step type: " + nextExpectedStepType);
   }
@@ -105,7 +145,7 @@ function getOperationRecommendations(attribute: string): string[] {
     const attributeType: AttributeType = AttributeTypeMap[attribute];
     switch (attributeType) {
       case AttributeType.categorical:
-        return CATEGORICAL_OPERATIONS;
+        return CategoricalOperations;
       default:
         return [];
     }

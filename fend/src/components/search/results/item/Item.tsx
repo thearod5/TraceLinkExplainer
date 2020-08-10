@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../../shared/Dataset";
 import { RootState } from "../../../../redux";
-import { getDefaultArtifactDisplay } from "../../../artifacts/ArtifactsSelector";
+import { getDefaultArtifactDisplay } from "../../../artifacts/selector/ArtifactsSelector";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./ItemPopup";
 
