@@ -110,6 +110,7 @@ const WordContainer = styled(Box)`
   height: 100%;
   overflow-y: scroll;
   word-wrap: initial;
+  border-radius: 5px;
 `;
 
 const Word = styled.pre`

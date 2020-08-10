@@ -57,7 +57,7 @@ export default function SearchResultItem(props: SearchResultProps) {
           label={id}
         />
       </AccordionSummary>
-      <ItemFooter>
+      <ItemBody>
         <ItemDetails>
           <DisplayContainer>
             {getDefaultArtifactDisplay(props.result.artifact, false)}
@@ -66,7 +66,7 @@ export default function SearchResultItem(props: SearchResultProps) {
         <ZoomButton aria-label="expand" onClick={() => setOpen(!open)}>
           <FullscreenIcon />
         </ZoomButton>
-      </ItemFooter>
+      </ItemBody>
 
       <ItemPopup
         handleClose={handleClose}
@@ -78,15 +78,11 @@ export default function SearchResultItem(props: SearchResultProps) {
   );
 }
 
-const DisplayContainer = styled(Box)`
-  height: 200px;
-`;
-
 const ItemContainer = styled(Accordion)`
   width: 100%;
   overflow-y: scroll;
   margin: 1px;
-  max-height: 350px;
+  max-height: 450px;
 `;
 
 const ItemDetails = styled(AccordionDetails)`
@@ -99,8 +95,12 @@ const ZoomButton = styled(IconButton)`
   bottom: 0px;
 `;
 
-const ItemFooter = styled.div`
+const ItemBody = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+`;
+
+const DisplayContainer = styled(Box)`
+  max-height: 300px;
 `;
