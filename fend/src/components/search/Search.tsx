@@ -1,6 +1,6 @@
 import { LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Artifact, Dataset, SearchItem } from "../../../../shared/Dataset";
 import { RootState } from "../../redux";
@@ -16,16 +16,19 @@ const SEARCH_LIMIT = 30; //TODO: Fix buffer overflow
 
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
-  dispatchEvent: (artifact: Artifact) => ArtifactMutatorActionType;
+  onArtifactSelected: (artifact: Artifact) => ArtifactMutatorActionType;
+  onArtifactRemoved: (artifact: Artifact) => ArtifactMutatorActionType;
 }
 
 export default function Search(props: SearchProps) {
-  const [selectedArtifacts, setSelectedArtifacts] = useState<Artifact[]>([]);
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const selectedSources = useSelector(
+    (state: RootState) => state.metaData.selectedSources
+  );
+
   const dataset: Dataset = useSelector((state: RootState) => state.dataset);
-  const dispatch = useDispatch();
 
   /* Requeset API for search results
    * 1. Set as results state
@@ -44,11 +47,6 @@ export default function Search(props: SearchProps) {
       });
   };
 
-  const searchItemOnClick = (artifact: Artifact) => {
-    setSelectedArtifacts([...selectedArtifacts, artifact]);
-    dispatch(props.dispatchEvent(artifact)); //sets artifact in state.
-  };
-
   /* eslint-disable-next-line react-hooks/exhaustive-deps */
   useEffect(() => startSearch(""), []);
 
@@ -64,7 +62,8 @@ export default function Search(props: SearchProps) {
         <SearchRow>
           <SearchResults
             results={searchResults}
-            clickAction={searchItemOnClick}
+            selectArtifact={props.onArtifactSelected}
+            removeArtifact={props.onArtifactRemoved}
           />
         </SearchRow>
       )}

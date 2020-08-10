@@ -2,9 +2,9 @@ import { Artifact, Dataset } from "../../../shared/Dataset";
 import {
   CHANGE_STEP_ACTION,
   CLEAR_DATA,
+  REMOVE_SELECTED_SOURCE_ACTION,
+  REMOVE_SELECTED_TARGET_ACTION,
   SELECT_DATASET,
-  SET_SELECTED_SOURCE_ACTION,
-  SET_SELECTED_TARGET_ACTION,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
   UNSELECT_DATASET,
@@ -78,19 +78,19 @@ export interface SetSourceArtifactAction {
   payload: Artifact;
 }
 
-export interface SetSelectedSource {
-  type: typeof SET_SELECTED_SOURCE_ACTION;
+export interface RemoveSelectedSource {
+  type: typeof REMOVE_SELECTED_SOURCE_ACTION;
   payload: Artifact[];
 }
 
-export interface SetSelectedTarget {
-  type: typeof SET_SELECTED_TARGET_ACTION;
+export interface RemoveSelectedTarget {
+  type: typeof REMOVE_SELECTED_TARGET_ACTION;
   payload: Artifact[];
 }
 
 export type MetaActionType =
-  | SetSelectedSource
-  | SetSelectedTarget
+  | RemoveSelectedSource
+  | RemoveSelectedTarget
   | SetTargetArtifactAction
   | SetSourceArtifactAction
   | ClearDataAction;

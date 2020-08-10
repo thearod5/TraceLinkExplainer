@@ -87,20 +87,24 @@ export function setTargetArtifact(
   };
 }
 
-export const SET_SELECTED_SOURCE_ACTION = "ADD_SELECTED_SOURCE_ACTION";
+export const REMOVE_SELECTED_SOURCE_ACTION = "REMOVE_SELECTED_SOURCE_ACTION";
 
-export function addSelectedSource(selectedArtifact: Artifact) {
+export function removeSelectedSource(
+  selectedArtifact: Artifact
+): ArtifactMutatorActionType {
   return {
-    type: SET_SELECTED_SOURCE_ACTION,
+    type: REMOVE_SELECTED_SOURCE_ACTION,
     payload: selectedArtifact,
   };
 }
 
-export const SET_SELECTED_TARGET_ACTION = "ADD_SELECTED_SOURCE_ACTION";
+export const REMOVE_SELECTED_TARGET_ACTION = "REMOVE_SELECTED_TARGET_ACTION";
 
-export function addSelectedTarget(selectedArtifact: Artifact) {
+export function removeSelectedTarget(
+  selectedArtifact: Artifact
+): ArtifactMutatorActionType {
   return {
-    type: SET_SELECTED_TARGET_ACTION,
+    type: REMOVE_SELECTED_TARGET_ACTION,
     payload: selectedArtifact,
   };
 }

@@ -9,35 +9,36 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../../shared/Dataset";
 import { RootState } from "../../../../redux";
-import { changeStep } from "../../../../redux/actions";
 import { getDefaultArtifactDisplay } from "../../../artifacts/ArtifactsSelector";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./ItemPopup";
 
 interface SearchResultProps {
   result: SearchItem;
-  clickAction: ArtifactClickAction;
+  selectArtifact: ArtifactClickAction;
+  removeArtifact: ArtifactClickAction;
 }
 
 export default function SearchResultItem(props: SearchResultProps) {
+  const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
   const currentStep: number = useSelector(
     (state: RootState) => state.metaData.currentStep
   );
-  const dispatch = useDispatch();
-
-  const selectSource = () => {
-    dispatch(changeStep(currentStep + 1, props.result.artifact));
-  };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    const clickCallback = checked ? props.selectArtifact : props.removeArtifact;
+    clickCallback(props.result.artifact);
+  }, [checked]);
 
   const { id } = props.result.artifact;
   return (
@@ -50,9 +51,9 @@ export default function SearchResultItem(props: SearchResultProps) {
       >
         <FormControlLabel
           aria-label="Acknowledge"
-          onClick={selectSource}
+          onClick={() => setChecked(!checked)}
           onFocus={(event: any) => event.stopPropagation()}
-          control={<Checkbox />}
+          control={<Checkbox value={checked} />}
           label={id}
         />
       </AccordionSummary>
@@ -71,7 +72,7 @@ export default function SearchResultItem(props: SearchResultProps) {
         handleClose={handleClose}
         open={open}
         artifact={props.result.artifact}
-        selectSource={() => props.clickAction(props.result.artifact)}
+        selectSource={() => props.selectArtifact(props.result.artifact)}
       />
     </ItemContainer>
   );
