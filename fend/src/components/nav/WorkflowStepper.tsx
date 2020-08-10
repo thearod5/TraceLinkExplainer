@@ -20,7 +20,7 @@ export default function WorkflowStepper() {
   const steps = getSteps();
 
   const moveToStep = (step: number) => {
-    const error = getStepChangeError(store.getState(), step, undefined);
+    const error = getStepChangeError(store.getState(), step);
     if (error !== undefined) {
       alert(error);
     } else {

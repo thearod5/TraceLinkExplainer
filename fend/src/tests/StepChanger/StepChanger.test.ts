@@ -1,12 +1,13 @@
 import { Artifact, Dataset } from "../../../../shared/Dataset";
 import {
   clearData,
+  removeSelectedSource,
+  removeSelectedTarget,
   selectDataset,
   setSourceArtifact,
   setTargetArtifact,
 } from "../../redux/actions";
 import { RootState } from "../../redux/index";
-import { initializeEmptyDataset } from "../../redux/initializers";
 import { createEmptyState } from "../../redux/reducers";
 import { SELECT_SOURCE_STEP } from "../../redux/stepmanager/constants";
 import { getNewStepState } from "../../redux/stepmanager/PageChanger";
@@ -41,24 +42,22 @@ afterEach(() => {
  */
 
 test("+ : getStepChangeError : select a dataset", () => {
-  const mockState: RootState = createEmptyState();
-
   //Test
+  store.dispatch(selectDataset(mockDataset));
+  const state = store.getState();
+
   const res: RootState = assertIsRootState(
-    getNewStepState(mockState, SELECT_SOURCE_STEP, mockDataset)
+    getNewStepState(state, SELECT_SOURCE_STEP)
   );
   //Assertions
   expect(res.dataset.name).toEqual(mockDataset.name);
 });
 
 test("- : getStepChangeError : select an empty dataset", () => {
-  const currentDataset = initializeEmptyDataset();
-
   //Test
   const res: RootState | string = getNewStepState(
     mockState,
-    SELECT_SOURCE_STEP,
-    currentDataset
+    SELECT_SOURCE_STEP
   );
 
   expect(typeof res).toEqual("string");
@@ -74,13 +73,14 @@ test("+ : getStepChangeError : select a dataset", () => {
   expect(currentState.metaData.currentStep).toEqual(0);
   expect(currentState.metaData.selectedSources.length).toEqual(0);
   expect(currentState.metaData.selectedTargets.length).toEqual(0);
+  assertEmptyArtifact(currentState.metaData.sourceArtifact);
+  assertEmptyArtifact(currentState.metaData.targetArtifact);
   expect(currentState.dataset.name).toBe("");
   expect(currentState.dataset.summary).toBe("");
 });
 
 test("+ : setDataset", () => {
   let currentState: RootState = store.getState();
-  expect(currentState.dataset.name).toEqual("");
 
   //Test
   store.dispatch(selectDataset(mockDataset));
@@ -91,42 +91,95 @@ test("+ : setDataset", () => {
 
 test("+ : selectSourceArtifact", () => {
   let currentState: RootState = store.getState();
-  expect(currentState.metaData.sourceArtifact.id).toBe("");
-  expect(currentState.metaData.selectedSources.length).toBe(0);
 
   //Test
   store.dispatch(setSourceArtifact(mockArtifact));
 
   //Assertions
   currentState = store.getState();
-  expect(currentState.metaData.sourceArtifact.id).toEqual(mockArtifact.id);
-  expect(currentState.metaData.sourceArtifact.body).toEqual(mockArtifact.body);
-  expect(currentState.metaData.sourceArtifact.type).toEqual(mockArtifact.type);
+  assertEqualToMock(currentState.metaData.sourceArtifact);
   expect(currentState.metaData.selectedSources.length).toEqual(1);
 
-  expect(currentState.metaData.targetArtifact.id).toEqual("");
-  expect(currentState.metaData.targetArtifact.body).toEqual("");
-  expect(currentState.metaData.targetArtifact.type).toEqual("");
+  assertEmptyArtifact(currentState.metaData.targetArtifact);
   expect(currentState.metaData.selectedTargets.length).toEqual(0);
 });
 
 test("+ : selectTargetArtifact", () => {
   let currentState: RootState = store.getState();
-  expect(currentState.metaData.targetArtifact.id).toBe("");
-  expect(currentState.metaData.selectedTargets.length).toBe(0);
 
   //Test
   store.dispatch(setTargetArtifact(mockArtifact));
 
   //Assertions
   currentState = store.getState();
-  expect(currentState.metaData.targetArtifact.id).toEqual(mockArtifact.id);
-  expect(currentState.metaData.targetArtifact.body).toEqual(mockArtifact.body);
-  expect(currentState.metaData.targetArtifact.type).toEqual(mockArtifact.type);
+  assertEqualToMock(currentState.metaData.targetArtifact);
   expect(currentState.metaData.selectedTargets.length).toEqual(1);
-
-  expect(currentState.metaData.sourceArtifact.id).toEqual("");
-  expect(currentState.metaData.sourceArtifact.body).toEqual("");
-  expect(currentState.metaData.sourceArtifact.type).toEqual("");
+  assertEmptyArtifact(currentState.metaData.sourceArtifact);
   expect(currentState.metaData.selectedSources.length).toEqual(0);
 });
+
+/*
+ * Remove selected artifacts
+ */
+
+test("+ : selectTargetArtifact", () => {
+  let currentState: RootState = store.getState();
+
+  //Test
+  store.dispatch(setTargetArtifact(mockArtifact));
+  store.dispatch(removeSelectedTarget(mockArtifact));
+
+  //Assertions
+  currentState = store.getState();
+  assertEmptyArtifact(currentState.metaData.targetArtifact);
+  expect(currentState.metaData.selectedTargets.length).toEqual(0);
+});
+
+test("+ : selectTargetArtifact: remove nonexistent artifact", () => {
+  let currentState: RootState = store.getState();
+
+  //Test
+  store.dispatch(removeSelectedSource(mockArtifact));
+
+  //Assertions
+  currentState = store.getState();
+  assertEmptyArtifact(currentState.metaData.sourceArtifact);
+  expect(currentState.metaData.selectedSources.length).toEqual(0);
+});
+
+test("+ : selectTargetArtifact", () => {
+  let currentState: RootState = store.getState();
+
+  //Test
+  store.dispatch(setTargetArtifact(mockArtifact));
+  store.dispatch(removeSelectedTarget(mockArtifact));
+
+  //Assertions
+  currentState = store.getState();
+  assertEmptyArtifact(currentState.metaData.targetArtifact);
+  expect(currentState.metaData.selectedTargets.length).toEqual(0);
+});
+
+test("+ : selectTargetArtifact: remove nonexistent artifact", () => {
+  let currentState: RootState = store.getState();
+
+  //Test
+  store.dispatch(removeSelectedSource(mockArtifact));
+
+  //Assertions
+  currentState = store.getState();
+  assertEmptyArtifact(currentState.metaData.sourceArtifact);
+  expect(currentState.metaData.selectedSources.length).toEqual(0);
+});
+
+function assertEmptyArtifact(artifact: Artifact) {
+  expect(artifact.id).toBe("");
+  expect(artifact.body).toBe("");
+  expect(artifact.type).toBe("");
+}
+
+function assertEqualToMock(artifact: Artifact) {
+  expect(artifact.id).toBe(mockArtifact.id);
+  expect(artifact.body).toBe(mockArtifact.body);
+  expect(artifact.type).toBe(mockArtifact.type);
+}

@@ -1,4 +1,5 @@
 import { RootState } from ".";
+import { Artifact } from "../../../shared/Dataset";
 import {
   REMOVE_SELECTED_SOURCE_ACTION,
   REMOVE_SELECTED_TARGET_ACTION,
@@ -8,6 +9,7 @@ import {
   UNSELECT_DATASET,
 } from "./actions";
 import {
+  initializeEmptyArtifact,
   initializeEmptyDataset,
   initializeEmptyMetaData,
 } from "./initializers";
@@ -48,12 +50,22 @@ export function metaDataReducer(
     case REMOVE_SELECTED_SOURCE_ACTION:
       return {
         ...state,
-        selectedSources: action.payload,
+        selectedSources: state.selectedSources.filter(
+          (a) => !artifactsAreEqual(a, action.payload)
+        ),
+        sourceArtifact: artifactsAreEqual(state.sourceArtifact, action.payload)
+          ? initializeEmptyArtifact()
+          : state.sourceArtifact,
       };
     case REMOVE_SELECTED_TARGET_ACTION:
       return {
         ...state,
-        selectedTargets: action.payload,
+        selectedTargets: state.selectedTargets.filter(
+          (a) => !artifactsAreEqual(a, action.payload)
+        ),
+        targetArtifact: artifactsAreEqual(state.targetArtifact, action.payload)
+          ? initializeEmptyArtifact()
+          : state.targetArtifact,
       };
     default:
       return state;
@@ -67,13 +79,16 @@ export function createEmptyState(): RootState {
   };
 }
 
+function artifactsAreEqual(a1: Artifact, a2: Artifact) {
+  return a1.type === a2.type && a1.id === a2.id;
+}
+
 export function changeStepReducer(
   state: RootState,
   action: ChangeStepAction
 ): RootState {
-  const newStep = action.payload.newStep;
-  const stepPayload = action.payload.stepPayload;
-  const result = getNewStepState(state, newStep, stepPayload);
+  const newStep = action.payload;
+  const result = getNewStepState(state, newStep);
   if (typeof result === "string") {
     alert(result); // this is an error now
     return state;

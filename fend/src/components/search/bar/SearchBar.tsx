@@ -22,9 +22,12 @@ interface SearchBarProps {
 export default function SearchBar(props: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [validQuery, setValidQuery] = useState(true);
+  const [queryError, setQueryError] = useState("");
 
   useEffect(() => {
-    setValidQuery(isValidQuery(query));
+    const [isValid, error] = isValidQuery(query);
+    setValidQuery(isValid);
+    setQueryError(error);
   }, [query]);
 
   return (

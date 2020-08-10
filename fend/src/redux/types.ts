@@ -58,14 +58,9 @@ export interface MetaData {
 
 export type StepPayload = Dataset | Artifact | undefined;
 
-export interface StepChangePayload {
-  newStep: number;
-  stepPayload: StepPayload;
-}
-
 export interface ChangeStepAction {
   type: typeof CHANGE_STEP_ACTION;
-  payload: StepChangePayload;
+  payload: number;
 }
 
 export interface SetTargetArtifactAction {
@@ -80,12 +75,12 @@ export interface SetSourceArtifactAction {
 
 export interface RemoveSelectedSource {
   type: typeof REMOVE_SELECTED_SOURCE_ACTION;
-  payload: Artifact[];
+  payload: Artifact;
 }
 
 export interface RemoveSelectedTarget {
   type: typeof REMOVE_SELECTED_TARGET_ACTION;
-  payload: Artifact[];
+  payload: Artifact;
 }
 
 export type MetaActionType =

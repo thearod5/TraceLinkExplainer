@@ -1,20 +1,12 @@
 import { RootState } from "..";
-import { Artifact, Dataset } from "../../../../shared/Dataset";
 import {
   HOME_ROUTE,
   SELECT_ARTIFACTS_ROUTE,
   TRACE_VIEW_ROUTE,
 } from "../../components/nav/routes";
-import { isArtifact, isDataset, isNonEmptyDataset } from "../../util/TypeUtil";
+import { isNonEmptyDataset } from "../../util/TypeUtil";
 import { initializeEmptyMetaData } from "../initializers";
-import {
-  SELECT_DATASET_STEP,
-  SELECT_SOURCE_STEP,
-  SELECT_TARGET_STEP,
-  VIEW_TRACE_STEP,
-} from "./constants";
-
-type StepPayload = Dataset | Artifact | undefined;
+import { SELECT_DATASET_STEP, SELECT_SOURCE_STEP } from "./constants";
 
 const DATASET_NOT_SELECTED_ERROR =
   "You must select a dataset before proceeding.";
@@ -31,11 +23,10 @@ export const PAGE_STEP_MAPPING: Record<number, string> = {
 //write unit tests for state
 export function getNewStepState(
   currentState: RootState,
-  requestedStep: number,
-  stepPayload: StepPayload
+  requestedStep: number
 ): RootState | string {
   //Step step if an error is found
-  const error = getStepChangeError(currentState, requestedStep, stepPayload); //validation
+  const error = getStepChangeError(currentState, requestedStep); //validation
   if (error !== undefined) return error;
 
   //All Code assumes valid step change.
@@ -47,64 +38,27 @@ export function getNewStepState(
         dataset: currentState.dataset,
         metaData: initializeEmptyMetaData(),
       };
-    case SELECT_SOURCE_STEP:
-      const requiredDataset: Dataset = isDataset(stepPayload)
-        ? stepPayload
-        : currentState.dataset;
-      return {
-        ...currentState,
-        dataset: requiredDataset,
-        metaData: {
-          ...emptyMetaData,
-          currentStep: requestedStep,
-          oldStep: currentMetaData.currentStep,
-        },
-      };
 
-    case SELECT_TARGET_STEP:
-      const requiredSource = isArtifact(stepPayload)
-        ? stepPayload
-        : currentState.metaData.sourceArtifact;
-      return {
-        ...currentState,
-        metaData: {
-          ...currentMetaData,
-          currentStep: requestedStep,
-          oldStep: currentMetaData.currentStep,
-          sourceArtifact: requiredSource,
-        },
-      };
-
-    case VIEW_TRACE_STEP:
-      const requiredTarget = isArtifact(stepPayload)
-        ? stepPayload
-        : currentState.metaData.targetArtifact;
-      return {
-        ...currentState,
-        metaData: {
-          ...currentMetaData,
-          currentStep: requestedStep,
-          oldStep: currentMetaData.currentStep,
-          targetArtifact: requiredTarget,
-        },
-      };
     default:
-      throw Error("Unknown Step: " + requestedStep);
+      return {
+        ...currentState,
+        metaData: {
+          ...currentMetaData,
+          currentStep: requestedStep,
+          oldStep: currentMetaData.currentStep,
+        },
+      };
   }
 }
 
 export function getStepChangeError(
   state: RootState,
-  requestedStep: number,
-  payload: StepPayload
+  requestedStep: number
 ): string | undefined {
   const requestedEndpoint = PAGE_STEP_MAPPING[requestedStep];
-  const datasetSelected =
-    isNonEmptyDataset(payload) || state.dataset.name !== "";
-  const sourceSelected =
-    isArtifact(payload) || state.metaData.sourceArtifact.id !== "";
-  const targetSelected =
-    isArtifact(payload) && state.metaData.sourceArtifact.id !== "";
+  const datasetSelected = isNonEmptyDataset(state.dataset);
+  const sourceSelected = state.metaData.sourceArtifact.id !== "";
+  const targetSelected = state.metaData.sourceArtifact.id !== "";
 
   switch (requestedEndpoint) {
     case HOME_ROUTE:
