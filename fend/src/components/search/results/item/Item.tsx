@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../../shared/Dataset";
 import { getDefaultArtifactDisplay } from "../../../artifacts/selector/ArtifactsSelector";
@@ -30,15 +30,11 @@ export default function SearchResultItem(props: SearchResultProps) {
     setOpen(false);
   };
 
-  useEffect(() => {
+  const onClick = () => {
+    setChecked(!checked);
     const clickCallback = checked ? props.selectArtifact : props.removeArtifact;
     clickCallback(props.result.artifact);
-  }, [
-    checked,
-    props.selectArtifact,
-    props.removeArtifact,
-    props.result.artifact,
-  ]);
+  };
 
   const { id } = props.result.artifact;
   return (
@@ -53,9 +49,7 @@ export default function SearchResultItem(props: SearchResultProps) {
           aria-label="Acknowledge"
           onClick={(event) => event.stopPropagation()}
           onFocus={(event) => event.stopPropagation()}
-          control={
-            <Checkbox value={checked} onClick={() => setChecked(!checked)} />
-          }
+          control={<Checkbox value={checked} onClick={onClick} />}
           label={id}
         />
       </AccordionSummary>
