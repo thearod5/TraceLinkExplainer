@@ -15,17 +15,21 @@ function createWords(
   familyColors: FamilyColors,
   colorSelected: boolean
 ) {
-  return words.map((word: WordDescriptor) => {
+  return words.map((word: WordDescriptor, wordIndex: Number) => {
+    const wordId = `${word.word}:${wordIndex}`;
     const wordSize = calculateWordSize(word.weight, sizeSelected, defaultSize);
     const wordColor =
       word.family in familyColors && colorSelected
         ? familyColors[word.family]
         : defaultColor;
     if (word.word === "\n") {
-      return <br></br>;
+      return <br key={wordId}></br>;
     }
     return (
-      <Word style={{ fontSize: `${wordSize}em`, color: wordColor }}>
+      <Word
+        key={wordId}
+        style={{ fontSize: `${wordSize}em`, color: wordColor }}
+      >
         {word.word}
       </Word>
     );

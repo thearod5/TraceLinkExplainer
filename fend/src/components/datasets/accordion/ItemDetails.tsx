@@ -35,7 +35,7 @@ export default function ItemDetails(props: ItemDetailsProps) {
 
   const handleItemClick: ButtonClickCallback = (route: string) => {
     if (route === SELECT_ARTIFACTS_ROUTE) {
-      dispatch(changeStep(FIRST_STEP_IN_WIZARD, undefined));
+      dispatch(changeStep(FIRST_STEP_IN_WIZARD));
     }
 
     history.push(route);

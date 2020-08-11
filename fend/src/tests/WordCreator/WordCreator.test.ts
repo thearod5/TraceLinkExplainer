@@ -3,7 +3,7 @@ import {
   createDefaultWords,
   KeyWordType,
   SyntaxWordType,
-} from "../../components/artifacts/artifactdisplay/WordCreator";
+} from "../../components/artifacts/display/WordCreator";
 
 test("dummy test", () => {
   const document = "function(int count)";

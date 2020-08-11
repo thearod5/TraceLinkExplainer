@@ -18,11 +18,11 @@ import {
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP,
 } from "../../../redux/stepmanager/constants";
-import ArtifactDisplay from "../artifactdisplay/ArtifactDisplay";
+import ArtifactDisplay from "../display/ArtifactDisplay";
 import {
   createDefaultWords,
   getDefaultFamilyColors,
-} from "../artifactdisplay/WordCreator";
+} from "../display/WordCreator";
 import NoSourceMessage from "../NoSourceMessage";
 import SourceArtifactSearch from "../source/SourceArtifactSearch";
 import TargetArtifactSearch from "../target/TargetArtifactSearch";

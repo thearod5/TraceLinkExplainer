@@ -3,7 +3,6 @@ import { initializeEmptyDataset } from "./initializers";
 import {
   ClearDataAction,
   SelectDatasetAction,
-  StepPayload,
   UnselectDatasetAction,
 } from "./types";
 
@@ -46,13 +45,10 @@ export function unselectDataset(): UnselectDatasetAction {
 
 export const CHANGE_STEP_ACTION = "CHANGE_STEP";
 
-export function changeStep(newStep: number, stepPayload: StepPayload) {
+export function changeStep(newStep: number) {
   return {
     type: CHANGE_STEP_ACTION,
-    payload: {
-      newStep,
-      stepPayload,
-    },
+    payload: newStep,
   };
 }
 

@@ -26,7 +26,7 @@ export default function WorkflowStepper() {
     } else {
       const reIndexStep = step + 1;
       const nextPage = PAGE_STEP_MAPPING[reIndexStep]; //return to old index (with dataset as first step) for page mappings
-      dispatch(changeStep(reIndexStep, undefined));
+      dispatch(changeStep(reIndexStep));
       history.push(nextPage);
     }
   };

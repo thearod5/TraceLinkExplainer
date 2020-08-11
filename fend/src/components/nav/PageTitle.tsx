@@ -19,7 +19,7 @@ function PageTitle(props: PageTitleProps) {
 
   const deselectArtifact = () => {
     const lastStep = props.isSource ? SELECT_SOURCE_STEP : SELECT_TARGET_STEP;
-    dispatch(changeStep(lastStep, undefined));
+    dispatch(changeStep(lastStep));
   };
 
   return (

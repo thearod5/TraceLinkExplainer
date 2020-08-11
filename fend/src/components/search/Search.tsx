@@ -1,6 +1,6 @@
 import { LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Artifact, Dataset, SearchItem } from "../../../../shared/Dataset";
 import { RootState } from "../../redux";
@@ -23,10 +23,7 @@ export interface SearchProps {
 export default function Search(props: SearchProps) {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const selectedSources = useSelector(
-    (state: RootState) => state.metaData.selectedSources
-  );
+  const dispatch = useDispatch();
 
   const dataset: Dataset = useSelector((state: RootState) => state.dataset);
 
@@ -50,6 +47,11 @@ export default function Search(props: SearchProps) {
   /* eslint-disable-next-line react-hooks/exhaustive-deps */
   useEffect(() => startSearch(""), []);
 
+  const selectArtifact = (artifact: Artifact) =>
+    dispatch(props.onArtifactSelected(artifact));
+  const removeArtifact = (artifact: Artifact) =>
+    dispatch(props.onArtifactRemoved(artifact));
+
   return (
     <SearchContainer>
       <SearchRow style={{ height: "20%" }}>
@@ -62,8 +64,8 @@ export default function Search(props: SearchProps) {
         <SearchRow>
           <SearchResults
             results={searchResults}
-            selectArtifact={props.onArtifactSelected}
-            removeArtifact={props.onArtifactRemoved}
+            selectArtifact={selectArtifact}
+            removeArtifact={removeArtifact}
           />
         </SearchRow>
       )}

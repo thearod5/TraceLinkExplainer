@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import CheckIcon from "@material-ui/icons/Check";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
@@ -16,13 +16,11 @@ interface SearchBarProps {
   onSubmit: SubmitFuncType;
 }
 
-// TODO: Vertically stack text and icons to make more room
-// TODO: Fix overflow of search bar tabs. Add button to see more tabs.
-
 export default function SearchBar(props: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [validQuery, setValidQuery] = useState(true);
   const [queryError, setQueryError] = useState("");
+  const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
     const [isValid, error] = isValidQuery(query);
@@ -30,35 +28,46 @@ export default function SearchBar(props: SearchBarProps) {
     setQueryError(error);
   }, [query]);
 
+  const onErrorIconClick = () => setOpenError(!openError);
+
   return (
     <SearchBarContainer>
-      {validQuery ? (
-        <CheckIcon color="secondary" style={IconStyle} />
-      ) : (
-        <ReportProblemIcon color="action" style={IconStyle} />
-      )}
-      <StyledSearchBar
-        id={SEARCH_BAR_ID}
-        selectOnFocus
-        clearOnBlur
-        handleHomeEndKeys
-        options={getQueryRecommendations(query)}
-        style={SearchBarStyle}
-        value={query}
-        onChange={(event: any, newValue: any) => {
-          setQuery(newValue === null ? "" : [query, newValue, ""].join(" "));
-        }}
-        renderInput={(params: object) =>
-          SearchSuggestion(params, props.onSubmit)
-        }
-        inputValue={query}
-        onInputChange={(event, newValue) => {
-          setQuery(newValue);
-        }}
-      />
-      <Button style={{ margin: "5px" }} color="primary" variant="contained">
-        Search
-      </Button>
+      <StyledSearchBarRow>
+        {validQuery ? (
+          <CheckIcon color="secondary" style={IconStyle} />
+        ) : (
+          <Tooltip title={queryError}>
+            <ReportProblemIcon color="action" style={IconStyle} />
+          </Tooltip>
+        )}
+        <StyledSearchBar
+          id={SEARCH_BAR_ID}
+          selectOnFocus
+          clearOnBlur
+          handleHomeEndKeys
+          options={getQueryRecommendations(query)}
+          style={SearchBarStyle}
+          value={query}
+          onChange={(event: any, newValue: any) => {
+            setQuery(newValue === null ? "" : [query, newValue, ""].join(" "));
+          }}
+          renderInput={(params: object) =>
+            SearchSuggestion(params, props.onSubmit)
+          }
+          inputValue={query}
+          onInputChange={(event, newValue) => {
+            setQuery(newValue);
+          }}
+        />
+        <Button
+          style={{ margin: "5px" }}
+          color="primary"
+          variant="contained"
+          onClick={(event: any) => props.onSubmit(query)}
+        >
+          Search
+        </Button>
+      </StyledSearchBarRow>
     </SearchBarContainer>
   );
 }
@@ -85,14 +94,20 @@ const SEARCH_BAR_SIDE_PADDING = 10;
 
 const SearchBarContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  height: ${SEARCH_BAR_HEIGHT}px;
   width: 100%;
 `;
 
 const StyledSearchBar = styled(Autocomplete)`
   border-radius: 5px;
+`;
+
+const StyledSearchBarRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
 `;
 
 const SearchBarStyle = {

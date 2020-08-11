@@ -76,10 +76,7 @@ export function isValidStep(
 
 function isValidAttibute(queryStepValue: string): isValidResponse {
   const isValid = AttributeValues.includes(queryStepValue.toLowerCase());
-  return [
-    isValid,
-    `AttributeValues ${AttributeValues} do not contain: ${queryStepValue}`,
-  ];
+  return [isValid, `Attributes must be one of: ${AttributeValues.join(", ")}`];
 }
 
 function isValidOperation(
@@ -88,10 +85,7 @@ function isValidOperation(
 ): isValidResponse {
   const validOperations = getOperationRecommendations(attribute);
   const isValid = validOperations.includes(operation);
-  return [
-    isValid,
-    `ValidOperations ${validOperations} does not contain ${operation}`,
-  ];
+  return [isValid, `Operations must be one of:  ${validOperations.join(", ")}`];
 }
 
 export function isValidValue(value: string): isValidResponse {
@@ -108,13 +102,15 @@ export function isValidValue(value: string): isValidResponse {
 }
 
 const COMBINATOR_ERROR_HELP =
-  'Note, multi-word values are expected to wrapped in quotation marks (e.g "[TEXT]"';
+  'Note, multi-word values are expected to wrapped in quotation marks (e.g "[TEXT]")';
 
 function isValidCombinator(step: string): isValidResponse {
   const isValid = Combinators.includes(step);
   return [
     isValid,
-    `Combinators [${Combinators}] do not include ${step}. ${COMBINATOR_ERROR_HELP}`,
+    `Combinators must be one of: ${Combinators.join(
+      ", "
+    )}. ${COMBINATOR_ERROR_HELP}`,
   ];
 }
 
@@ -132,7 +128,7 @@ export function getQueryRecommendations(query: string) {
     case StepType.OPERATION:
       return getOperationRecommendations(currentStepInput);
     case StepType.VALUE:
-      return [""]; //signals the words be wrapped in quotes
+      return ['""']; //signals the words be wrapped in quotes
     case StepType.COMBINATOR:
       return Combinators;
     default:

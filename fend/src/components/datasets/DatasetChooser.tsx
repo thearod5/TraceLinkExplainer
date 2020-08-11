@@ -20,7 +20,7 @@ function DatasetChooser() {
   const [datasets, setDatasetsNames] = useState<string[]>([]);
 
   useEffect(() => {
-    dispatch(changeStep(0, undefined));
+    dispatch(changeStep(0));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

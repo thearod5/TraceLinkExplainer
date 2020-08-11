@@ -56,8 +56,6 @@ export interface MetaData {
   selectedTargets: Artifact[];
 }
 
-export type StepPayload = Dataset | Artifact | undefined;
-
 export interface ChangeStepAction {
   type: typeof CHANGE_STEP_ACTION;
   payload: number;

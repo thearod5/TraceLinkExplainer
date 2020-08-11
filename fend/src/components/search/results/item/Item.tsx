@@ -10,10 +10,8 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SearchItem } from "../../../../../../shared/Dataset";
-import { RootState } from "../../../../redux";
 import { getDefaultArtifactDisplay } from "../../../artifacts/selector/ArtifactsSelector";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./ItemPopup";
@@ -27,9 +25,6 @@ interface SearchResultProps {
 export default function SearchResultItem(props: SearchResultProps) {
   const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
-  const currentStep: number = useSelector(
-    (state: RootState) => state.metaData.currentStep
-  );
 
   const handleClose = () => {
     setOpen(false);
@@ -38,11 +33,16 @@ export default function SearchResultItem(props: SearchResultProps) {
   useEffect(() => {
     const clickCallback = checked ? props.selectArtifact : props.removeArtifact;
     clickCallback(props.result.artifact);
-  }, [checked]);
+  }, [
+    checked,
+    props.selectArtifact,
+    props.removeArtifact,
+    props.result.artifact,
+  ]);
 
   const { id } = props.result.artifact;
   return (
-    <ItemContainer TransitionProps={{ unmountOnExit: true }}>
+    <ItemContainer>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-label="Expand"
@@ -51,9 +51,11 @@ export default function SearchResultItem(props: SearchResultProps) {
       >
         <FormControlLabel
           aria-label="Acknowledge"
-          onClick={() => setChecked(!checked)}
-          onFocus={(event: any) => event.stopPropagation()}
-          control={<Checkbox value={checked} />}
+          onClick={(event) => event.stopPropagation()}
+          onFocus={(event) => event.stopPropagation()}
+          control={
+            <Checkbox value={checked} onClick={() => setChecked(!checked)} />
+          }
           label={id}
         />
       </AccordionSummary>

@@ -34,7 +34,7 @@ export default function ArtifactToolbar(props: ArtifactToolbarProps) {
   const dispatch = useDispatch();
 
   const clickHandler = () => {
-    dispatch(changeStep(currentStep - 1, undefined));
+    dispatch(changeStep(currentStep - 1));
   };
 
   const ICONS: IconButton[] = [
