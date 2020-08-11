@@ -13,6 +13,5 @@ const artifacts = [
 
 export const mockDataset: Dataset = {
   name: 'Drone',
-  summary: '...placeholder description about drone dataset...',
-  artifacts: artifacts
+  summary: '...placeholder description about drone dataset...'
 }

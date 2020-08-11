@@ -19,8 +19,6 @@ test('GET dataset/Drone', () => {
       expect(res.status).toBe(200)
       expect(res.body).toHaveProperty('name')
       expect(res.body).toHaveProperty('summary')
-      expect(res.body).toHaveProperty('artifacts')
-      expect(res.body.artifacts.length).toBeGreaterThanOrEqual(1)
       resolve()
     }).catch(reject)
   })
