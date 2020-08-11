@@ -11,7 +11,7 @@ import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import styled from "styled-components";
-import { Artifact } from "../../../../../../shared/Dataset";
+import { Artifact } from "../../../../shared/types/Dataset";
 
 interface ItemPopupProps {
   selectSource: () => void;

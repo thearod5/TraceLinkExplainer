@@ -5,8 +5,8 @@ import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { isValidQuery } from "../QueryHelper";
-import { getQueryRecommendations } from "../QueryRecommender";
+import { isValidQuery } from "../../../shared/queryparser/QueryHelper";
+import { getQueryRecommendations } from "../../../shared/queryparser/QueryRecommender";
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const ENTER_KEY_CODE = 13;

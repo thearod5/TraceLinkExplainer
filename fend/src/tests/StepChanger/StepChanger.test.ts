@@ -1,4 +1,3 @@
-import { Artifact, Dataset } from "../../../../shared/Dataset";
 import {
   clearData,
   removeSelectedSource,
@@ -9,9 +8,10 @@ import {
 } from "../../redux/actions";
 import { RootState } from "../../redux/index";
 import { createEmptyState } from "../../redux/reducers";
-import { SELECT_SOURCE_STEP } from "../../redux/stepmanager/constants";
-import { getNewStepState } from "../../redux/stepmanager/PageChanger";
 import store from "../../redux/store";
+import { SELECT_SOURCE_STEP } from "../../shared/pagechanger/constants";
+import { getNewStepState } from "../../shared/pagechanger/PageChanger";
+import { Artifact, Dataset } from "../../shared/types/Dataset";
 
 let mockState: RootState = createEmptyState();
 

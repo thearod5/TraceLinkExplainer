@@ -2,7 +2,7 @@ import {
   Artifact,
   ArtifactQuery,
   SearchItem,
-} from "../../../../shared/Dataset";
+} from "../../shared/types/Dataset";
 
 export type ArtifactClickAction = (artifact: Artifact) => void;
 

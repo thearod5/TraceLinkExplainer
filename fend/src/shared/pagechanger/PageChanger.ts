@@ -1,11 +1,11 @@
-import { RootState } from "..";
 import {
   HOME_ROUTE,
   SELECT_ARTIFACTS_ROUTE,
   TRACE_VIEW_ROUTE,
 } from "../../components/nav/routes";
-import { isNonEmptyDataset } from "../../util/TypeUtil";
-import { initializeEmptyMetaData } from "../initializers";
+import { RootState } from "../../redux";
+import { initializeEmptyMetaData } from "../../redux/initializers";
+import { isNonEmptyDataset } from "../types/Dataset";
 import { SELECT_DATASET_STEP, SELECT_SOURCE_STEP } from "./constants";
 
 const DATASET_NOT_SELECTED_ERROR =

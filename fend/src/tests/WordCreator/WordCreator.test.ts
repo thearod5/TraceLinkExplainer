@@ -1,9 +1,9 @@
-import { WordDescriptor } from "../../../../shared/Dataset";
 import {
   createDefaultWords,
   KeyWordType,
   SyntaxWordType,
-} from "../../components/artifacts/display/WordCreator";
+} from "../../shared/artifacts/WordCreator";
+import { WordDescriptor } from "../../shared/types/TraceInformation";
 
 test("dummy test", () => {
   const document = "function(int count)";

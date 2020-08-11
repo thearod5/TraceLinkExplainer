@@ -1,5 +1,6 @@
 import { RootState } from ".";
-import { Artifact } from "../../../shared/Dataset";
+import { getNewStepState } from "../shared/pagechanger/PageChanger";
+import { Artifact } from "../shared/types/Dataset";
 import {
   REMOVE_SELECTED_SOURCE_ACTION,
   REMOVE_SELECTED_TARGET_ACTION,
@@ -13,7 +14,6 @@ import {
   initializeEmptyDataset,
   initializeEmptyMetaData,
 } from "./initializers";
-import { getNewStepState } from "./stepmanager/PageChanger";
 import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
 
 export function datasetReducer(

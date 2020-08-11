@@ -3,7 +3,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ItemDetails from "./ItemDetails";
+import DatasetItemDetails from "./DatasetItemDetails";
 
 interface DataItemSummaryProps {
   dataset: string;
@@ -12,7 +12,7 @@ interface DataItemSummaryProps {
   deselect: () => void;
 }
 
-function DatasetAccordion(props: DataItemSummaryProps) {
+function DatasetItem(props: DataItemSummaryProps) {
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function DatasetAccordion(props: DataItemSummaryProps) {
       onClick={() => setExpanded(!expanded)}
     >
       <ItemSummary expandIcon={<ExpandMoreIcon />}>{props.dataset}</ItemSummary>
-      <ItemDetails />
+      <DatasetItemDetails />
     </ItemAccordionContainer>
   );
 }
@@ -37,4 +37,4 @@ const ItemSummary = styled(AccordionSummary)`
   font-weight: bold;
 `;
 
-export default DatasetAccordion;
+export default DatasetItem;

@@ -2,11 +2,11 @@ import { Box, Button } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { Dataset } from "../../../../shared/Dataset";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import { RootState } from "../../redux";
 import { changeStep, clearData, selectDataset } from "../../redux/actions";
-import DatasetAccordion from "./accordion/DatasetAccordion";
+import { Dataset } from "../../shared/types/Dataset";
+import DatasetItem from "./item/DatasetItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
 const UNIMPLEMENTED_NEW_DATASET_ERROR =
@@ -46,7 +46,7 @@ function DatasetChooser() {
   };
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
-    <DatasetAccordion
+    <DatasetItem
       key={dataset}
       dataset={dataset}
       isSelected={currentIndex === indexSelected}

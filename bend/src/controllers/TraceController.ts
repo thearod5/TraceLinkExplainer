@@ -1,4 +1,4 @@
-import { TraceInformation } from '../../../shared/Dataset'
+import { TraceInformation } from '../../../fend/src/shared/Dataset'
 import { runFunction } from './PythonController'
 import { FunctionArguments } from './types'
 

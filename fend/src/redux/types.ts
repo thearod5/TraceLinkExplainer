@@ -1,4 +1,4 @@
-import { Artifact, Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../shared/types/Dataset";
 import {
   CHANGE_STEP_ACTION,
   CLEAR_DATA,

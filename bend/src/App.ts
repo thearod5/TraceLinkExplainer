@@ -1,12 +1,12 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
+import { SearchItem } from '../../fend/src/shared/Dataset'
 import {
   isSearchRoutePayload,
   isTraceTrievealPayload,
   objectContainsKeys
-} from '../../fend/src/util/TypeUtil'
-import { SearchItem } from '../../shared/Dataset'
+} from '../../fend/src/shared/util/TypeUtil'
 import {
   getDatasetByName,
   getDatasetNames

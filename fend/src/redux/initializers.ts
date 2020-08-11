@@ -1,4 +1,4 @@
-import { Artifact, Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../shared/types/Dataset";
 import { MetaData } from "./types";
 
 export function initializeEmptyDataset(): Dataset {

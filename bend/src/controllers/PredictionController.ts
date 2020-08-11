@@ -1,4 +1,4 @@
-import { SearchItem } from '../../../shared/Dataset'
+import { SearchItem } from '../../../fend/src/shared/Dataset'
 import { runFunction } from './PythonController'
 import { FunctionArguments } from './types'
 

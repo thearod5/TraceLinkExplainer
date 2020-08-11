@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SearchItem } from "../../../../../shared/Dataset";
+import { SearchItem } from "../../../shared/types/Dataset";
 import { BORDER_LINE } from "../../../styles/constants";
 import { ArtifactClickAction } from "../types";
 import SearchResultItem from "./item/Item";

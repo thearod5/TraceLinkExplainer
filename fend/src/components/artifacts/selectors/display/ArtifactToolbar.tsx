@@ -9,9 +9,9 @@ import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { changeStep } from "../../redux/actions";
-import { getCurrentStep } from "../../redux/selectors";
-import { fitfthColor, primaryColor } from "../../styles/theme";
+import { changeStep } from "../../../../redux/actions";
+import { getCurrentStep } from "../../../../redux/selectors";
+import { fitfthColor, primaryColor } from "../../../../styles/theme";
 
 interface ArtifactToolbarProps {
   sizeSelected: boolean;

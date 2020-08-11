@@ -2,30 +2,30 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
-import {
-  Artifact,
-  FamilyColors,
-  WordDescriptors,
-} from "../../../../../shared/Dataset";
-import { getTraceInformation } from "../../../api/trace";
+import { getTraceInformation } from "../../api/trace";
 import {
   getCurrentStep,
   getSourceArtifact,
   getTargetArtifact,
-} from "../../../redux/selectors";
+} from "../../redux/selectors";
+import {
+  createDefaultWords,
+  getDefaultFamilyColors,
+} from "../../shared/artifacts/WordCreator";
 import {
   SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP,
-} from "../../../redux/stepmanager/constants";
-import ArtifactDisplay from "../display/ArtifactDisplay";
+} from "../../shared/pagechanger/constants";
+import { Artifact } from "../../shared/types/Dataset";
 import {
-  createDefaultWords,
-  getDefaultFamilyColors,
-} from "../display/WordCreator";
-import NoSourceMessage from "../NoSourceMessage";
-import SourceArtifactSearch from "../source/SourceArtifactSearch";
-import TargetArtifactSearch from "../target/TargetArtifactSearch";
+  FamilyColors,
+  WordDescriptors,
+} from "../../shared/types/TraceInformation";
+import NoSourceMessage from "./NoSourceMessage";
+import ArtifactDisplay from "./selectors/display/ArtifactDisplay";
+import SourceArtifactSearch from "./selectors/SourceArtifactSearch";
+import TargetArtifactSearch from "./selectors/TargetArtifactSearch";
 
 const colors = ["DarkSeaGreen", "CornFlowerBlue", "DarkSalmon"]; //TODO: Add to theme
 

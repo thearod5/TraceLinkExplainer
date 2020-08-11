@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
+import store, { history } from "../../redux/store";
 import {
   getStepChangeError,
   PAGE_STEP_MAPPING,
-} from "../../redux/stepmanager/PageChanger";
-import store, { history } from "../../redux/store";
+} from "../../shared/pagechanger/PageChanger";
 import { primaryColor } from "../../styles/theme";
 
 export default function WorkflowStepper() {

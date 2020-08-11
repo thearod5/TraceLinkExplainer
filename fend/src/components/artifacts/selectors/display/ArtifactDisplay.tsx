@@ -5,8 +5,8 @@ import {
   FamilyColors,
   WordDescriptor,
   WordDescriptors,
-} from "../../../../../shared/Dataset";
-import ArtifactToolbar from "../ArtifactToolbar";
+} from "../../../../shared/types/TraceInformation";
+import ArtifactToolbar from "./ArtifactToolbar";
 
 function createWords(
   words: WordDescriptor[],

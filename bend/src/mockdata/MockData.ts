@@ -2,7 +2,7 @@ import classes from '../../../data/Drone/Classes.json'
 import designs from '../../../data/Drone/Designs.json'
 import requirements from '../../../data/Drone/Requirements.json'
 import tasks from '../../../data/Drone/Tasks.json'
-import { Dataset } from '../../../shared/Dataset'
+import { Dataset } from '../../../fend/src/shared/Dataset'
 
 const artifacts = [
   ...requirements.artifacts,

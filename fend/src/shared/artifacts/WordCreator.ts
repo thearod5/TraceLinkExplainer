@@ -1,4 +1,4 @@
-import { FamilyColors, WordDescriptor } from "../../../../../shared/Dataset";
+import { FamilyColors, WordDescriptor } from "../types/TraceInformation";
 
 export const SyntaxWordType = "#SYNTAX";
 export const KeyWordType = "#KEYWORD";

@@ -1,6 +1,6 @@
 import { History } from "history";
 import { combineReducers } from "redux";
-import { Dataset } from "../../../shared/Dataset";
+import { Dataset } from "../shared/types/Dataset";
 import { datasetReducer, metaDataReducer } from "./reducers";
 import { MetaData } from "./types";
 

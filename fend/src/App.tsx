@@ -4,7 +4,7 @@ import { Provider, useSelector } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import styled from "styled-components";
-import ArtifactSelector from "./components/artifacts/selector/ArtifactsSelector";
+import ArtifactSelector from "./components/artifacts/Artifacts";
 import DatasetViewer from "./components/datasets/DatasetViewer";
 import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";

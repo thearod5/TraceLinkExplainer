@@ -7,7 +7,7 @@ import { changeStep } from "../../redux/actions";
 import {
   SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
-} from "../../redux/stepmanager/constants";
+} from "../../shared/pagechanger/constants";
 
 interface PageTitleProps {
   title: string;

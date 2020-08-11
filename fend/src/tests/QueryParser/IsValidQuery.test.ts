@@ -1,7 +1,7 @@
 import {
   isValidCommand,
   isValidQuery,
-} from "../../components/search/QueryHelper";
+} from "../../shared/queryparser/QueryHelper";
 
 test("- : isValidStep : value", () => {
   const [isValid, error] = isValidCommand("hello word", 2);

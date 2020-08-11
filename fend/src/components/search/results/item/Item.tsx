@@ -11,8 +11,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { SearchItem } from "../../../../../../shared/Dataset";
-import { getDefaultArtifactDisplay } from "../../../artifacts/selector/ArtifactsSelector";
+import { SearchItem } from "../../../../shared/types/Dataset";
+import { getDefaultArtifactDisplay } from "../../../artifacts/Artifacts";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./ItemPopup";
 

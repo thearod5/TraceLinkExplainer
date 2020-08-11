@@ -1,10 +1,11 @@
 /* eslint-disable jest/expect-expect */
 
 import request from 'supertest'
-import { isSearchItem } from '../../../fend/src/util/TypeUtil'
-import { SearchItem, SearchResponse, SearchRoutePayload } from '../../../shared/Dataset'
+import { SearchItem, SearchResponse, SearchRoutePayload } from '../../../fend/src/shared/Dataset'
+import { isSearchItem } from '../../../fend/src/shared/util/TypeUtil'
 import app from '../App'
 import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../routes'
+
 test('SEARCH source', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
