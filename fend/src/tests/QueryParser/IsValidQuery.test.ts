@@ -1,17 +1,17 @@
 import {
+  isValidCommand,
   isValidQuery,
-  isValidValue,
 } from "../../components/search/QueryHelper";
 
 test("- : isValidStep : value", () => {
-  const [isValid, error] = isValidValue("hello word");
+  const [isValid, error] = isValidCommand("hello word", 2);
   expect(isValid).toBe(false);
   expect(error).toContain("Word");
   expect(error).toContain("String");
 });
 
 test("+ : isValidStep : value", () => {
-  const [isValid, error] = isValidValue('"hello word"');
+  const [isValid, error] = isValidCommand('"hello word"', 2);
   expect(isValid).toBe(true);
   expect(error).toContain("Word");
   expect(error).not.toContain("String");

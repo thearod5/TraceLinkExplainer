@@ -1,15 +1,15 @@
 import {
-  AttributeValues,
-  CategoricalOperations,
-  getQueryRecommendations,
+  ATTRIBUTE_VALUES,
+  CATEGORICAL_OPERATIONS,
 } from "../../components/search/QueryHelper";
+import { getQueryRecommendations } from "../../components/search/QueryRecommender";
 
 test("+ : getRecommendations : attributes", () => {
   const query = "";
   const recommendations = getQueryRecommendations(query);
 
-  for (let attributeIndex in AttributeValues) {
-    expect(recommendations).toContain(AttributeValues[attributeIndex]);
+  for (let attributeIndex in ATTRIBUTE_VALUES) {
+    expect(recommendations).toContain(ATTRIBUTE_VALUES[attributeIndex]);
   }
 });
 
@@ -17,8 +17,10 @@ test("+ : getRecommendations : operations", () => {
   const query = "type";
   const recommendations = getQueryRecommendations(query);
 
-  for (let catOperationIndex in CategoricalOperations) {
-    expect(recommendations).toContain(CategoricalOperations[catOperationIndex]);
+  for (let catOperationIndex in CATEGORICAL_OPERATIONS) {
+    expect(recommendations).toContain(
+      CATEGORICAL_OPERATIONS[catOperationIndex]
+    );
   }
 });
 
