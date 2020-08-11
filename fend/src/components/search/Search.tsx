@@ -9,11 +9,7 @@ import SearchBar from "./bar/SearchBar";
 import SearchResults from "./results/SearchResults";
 import { SuggestionFunctionType } from "./types";
 
-const SEARCH_LIMIT = 30; //TODO: Fix buffer overflow
-
-//TODO: Fix empty query not returning results
-//TODO: Add loading symbol while initial query finishes
-
+const SEARCH_LIMIT = 30;
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
   onArtifactSelected: (artifact: Artifact) => ArtifactMutatorActionType;
