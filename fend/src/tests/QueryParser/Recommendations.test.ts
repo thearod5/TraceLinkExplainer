@@ -25,7 +25,7 @@ test("+ : getRecommendations : operations", () => {
 test("+ : getRecommendations : operations", () => {
   const query = "type contains";
   const recommendations = getQueryRecommendations(query);
-  expect(recommendations).toContain("");
+  expect(recommendations).toContain('""');
 });
 
 test("- : getRecommendations : operations", () => {
