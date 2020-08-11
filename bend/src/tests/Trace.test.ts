@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { isTraceInformation } from '../../../fend/src/shared/util/TypeUtil'
+import { isTraceInformation } from '../../../fend/src/shared/types/Trace'
 import app from '../App'
 import { GET_TRACE_ROUTE } from '../routes'
 

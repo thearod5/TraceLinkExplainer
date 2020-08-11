@@ -1,6 +1,6 @@
 import { Artifact, isArtifact } from "./Dataset";
-import { isWordDescriptors, TraceInformation } from "./TraceInformation";
 import { objectContainsKeys } from "./TypeUtil";
+
 /*
  *
  */
@@ -12,14 +12,6 @@ export interface SearchRoutePayload {
   sourceId: string;
   query: string;
   limit: number;
-}
-
-export interface TraceRetrievalPayload {
-  datasetName: string;
-  sourceId: string;
-  sourceType: string;
-  targetId: string;
-  targetType: string;
 }
 
 export interface SearchResponse {
@@ -55,38 +47,6 @@ export function isSearchRoutePayload(
     "limit",
   ];
   return objectContainsKeys(requiredKeys, obj, log);
-}
-
-export function isTraceTrievealPayload(
-  obj: object,
-  log = false
-): obj is TraceRetrievalPayload {
-  const requiredKeys = [
-    "datasetName",
-    "sourceId",
-    "sourceType",
-    "targetId",
-    "targetType",
-  ];
-  return objectContainsKeys(requiredKeys, obj, log);
-}
-
-export function isTraceInformation(
-  obj: any,
-  log = false
-): obj is TraceInformation {
-  const requiredKeys = [
-    "families",
-    "sourceWords",
-    "targetWords",
-    "traceType",
-    "score",
-  ];
-  return (
-    objectContainsKeys(requiredKeys, obj, log) &&
-    isWordDescriptors(obj.sourceWords, log) &&
-    isWordDescriptors(obj.targetWords, log)
-  );
 }
 
 export function isSearchItem(obj?: object): obj is SearchItem {
