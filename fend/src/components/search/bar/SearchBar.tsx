@@ -20,15 +20,12 @@ export default function SearchBar(props: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [validQuery, setValidQuery] = useState(true);
   const [queryError, setQueryError] = useState("");
-  const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
     const [isValid, error] = isValidQuery(query);
     setValidQuery(isValid);
     setQueryError(error);
   }, [query]);
-
-  const onErrorIconClick = () => setOpenError(!openError);
 
   return (
     <SearchBarContainer>
