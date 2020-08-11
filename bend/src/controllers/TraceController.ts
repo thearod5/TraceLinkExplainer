@@ -1,22 +1,23 @@
-import { TraceInformation } from '../../../fend/src/shared/Dataset'
-import { runFunction } from './PythonController'
-import { FunctionArguments } from './types'
+import { TraceInformation, TraceRetrievalPayload } from '../../../fend/src/shared/types/Trace'
+import { runFunction } from '../python/controllers/PythonController'
 
-export function getInitialTraceInformation (
-  dataset: string,
-  sourceType: string,
-  sourceId: string,
-  targetType: string,
-  targetId: string
+export function getTrace (
+  retrievalRequest: TraceRetrievalPayload
 ): Promise<TraceInformation> {
   return new Promise((resolve, reject) => {
-    const functionArguments: FunctionArguments = {
-      arguments: [dataset, sourceType, sourceId, targetType, targetId]
-    }
+    const {
+      datasetName,
+      sourceType,
+      sourceId,
+      targetType,
+      targetId
+    } = retrievalRequest
     runFunction<TraceInformation>(
       'TraceExplanation.py',
       'get_trace_information',
-      functionArguments
+      {
+        arguments: [datasetName, sourceType, sourceId, targetType, targetId]
+      }
     )
       .then((result) => {
         resolve(result)

@@ -18,10 +18,7 @@ import {
   VIEW_TRACE_STEP,
 } from "../../shared/pagechanger/constants";
 import { Artifact } from "../../shared/types/Dataset";
-import {
-  FamilyColors,
-  WordDescriptors,
-} from "../../shared/types/TraceInformation";
+import { FamilyColors, WordDescriptors } from "../../shared/types/Trace";
 import NoSourceMessage from "./NoSourceMessage";
 import ArtifactDisplay from "./selectors/display/ArtifactDisplay";
 import SourceArtifactSearch from "./selectors/SourceArtifactSearch";

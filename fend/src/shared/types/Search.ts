@@ -2,16 +2,18 @@ import { Artifact, isArtifact } from "./Dataset";
 import { objectContainsKeys } from "./TypeUtil";
 
 /*
- *
+ * Type Definitions
  */
 
-//TODO: Is bend using this??
-export interface SearchRoutePayload {
+export interface SearchSourceRoutePayload {
   datasetName: string;
-  sourceType: string;
-  sourceId: string;
   query: string;
   limit: number;
+}
+
+export interface SearchTargetRoutePayload extends SearchSourceRoutePayload {
+  sourceType: string;
+  sourceId: string;
 }
 
 export interface SearchResponse {
@@ -35,18 +37,20 @@ export interface SearchFilter {
  * Type Checkers
  */
 
-export function isSearchRoutePayload(
+export function isSearchSourceRoutePayload(obj?: object, log = false) {
+  const requiredKeys = ["datasetName", "query", "limit"];
+  return objectContainsKeys(requiredKeys, obj, log);
+}
+
+export function isSearchTargetRoutePayload(
   obj?: object,
   log = false
-): obj is SearchRoutePayload {
-  const requiredKeys = [
-    "datasetName",
-    "sourceType",
-    "sourceId",
-    "query",
-    "limit",
-  ];
-  return objectContainsKeys(requiredKeys, obj, log);
+): obj is SearchTargetRoutePayload {
+  const requiredKeys = ["sourceType", "sourceId"];
+  return (
+    isSearchSourceRoutePayload(obj, log) &&
+    objectContainsKeys(requiredKeys, obj, log)
+  );
 }
 
 export function isSearchItem(obj?: object): obj is SearchItem {

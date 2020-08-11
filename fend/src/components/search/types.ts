@@ -1,9 +1,5 @@
-import {
-  Artifact,
-  ArtifactQuery,
-  SearchItem,
-} from "../../shared/types/Dataset";
-
+import { Artifact, ArtifactQuery } from "../../shared/types/Dataset";
+import { SearchItem } from "../../shared/types/Search";
 export type ArtifactClickAction = (artifact: Artifact) => void;
 
 export type SuggestionFunctionType = (

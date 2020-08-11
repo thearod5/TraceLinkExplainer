@@ -1,6 +1,6 @@
 import store from "../redux/store";
-import { Artifact, SearchItem } from "../shared/types/Dataset";
-import { SearchResponse } from "../shared/types/Search";
+import { Artifact } from "../shared/types/Dataset";
+import { SearchItem, SearchResponse } from "../shared/types/Search";
 import { BASE_URL, post } from "./base";
 import { createAlertMessage, CustomError, isError } from "./errors";
 

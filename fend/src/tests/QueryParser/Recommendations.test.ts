@@ -1,8 +1,8 @@
+import { getQueryRecommendations } from "../../shared/query/QueryRecommender";
 import {
   ATTRIBUTE_VALUES,
   CATEGORICAL_OPERATIONS,
-} from "../../shared/queryparser/QueryHelper";
-import { getQueryRecommendations } from "../../shared/queryparser/QueryRecommender";
+} from "../../shared/query/QueryValidator";
 
 test("+ : getRecommendations : attributes", () => {
   const query = "";

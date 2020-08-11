@@ -1,6 +1,5 @@
 import { Artifact } from "../shared/types/Dataset";
-import { TraceRetrievalPayload } from "../shared/types/Trace";
-import { TraceInformation } from "../shared/types/TraceInformation";
+import { TraceInformation, TraceRetrievalPayload } from "../shared/types/Trace";
 import { BASE_URL, post } from "./base";
 import { isError } from "./errors";
 

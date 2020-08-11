@@ -17,13 +17,8 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint"
-  ],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "no-unused-vars": [
-      "off"
-    ]
+    "no-unused-vars": ["off"]
   }
 }

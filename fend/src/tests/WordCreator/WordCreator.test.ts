@@ -3,7 +3,7 @@ import {
   KeyWordType,
   SyntaxWordType,
 } from "../../shared/artifacts/WordCreator";
-import { WordDescriptor } from "../../shared/types/TraceInformation";
+import { WordDescriptor } from "../../shared/types/Trace";
 
 test("dummy test", () => {
   const document = "function(int count)";

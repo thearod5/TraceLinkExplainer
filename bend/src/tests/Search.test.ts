@@ -2,9 +2,10 @@
 
 import request from 'supertest'
 import {
-  isSearchItem, SearchItem,
+  isSearchItem,
+  SearchItem,
   SearchResponse,
-  SearchRoutePayload
+  SearchTargetRoutePayload
 } from '../../../fend/src/shared/types/Search'
 import app from '../App'
 import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../routes'
@@ -31,7 +32,7 @@ test('SEARCH source default', () => {
 
 test('SEARCH target', () => {
   const TEST_LIMIT = 5
-  const searchQuery: SearchRoutePayload = {
+  const searchQuery: SearchTargetRoutePayload = {
     datasetName: 'Drone',
     query: 'diagrams',
     limit: TEST_LIMIT,
@@ -42,23 +43,31 @@ test('SEARCH target', () => {
 })
 test('SEARCH default target', () => {
   const TEST_LIMIT = 2
-  const searchQuery: SearchRoutePayload = {
+  const searchQuery: SearchTargetRoutePayload = {
     datasetName: 'Drone',
-    query: '',
-    limit: TEST_LIMIT,
+    sourceType: 'Requirements',
     sourceId: 'RE-8',
-    sourceType: 'Requirements'
+    query: '',
+    limit: TEST_LIMIT
   }
   return testSearchFunction(SEARCH_TARGET_ROUTE, searchQuery, TEST_LIMIT)
 })
 
-function testSearchFunction (route: string, payload: object, expectedLimit: number): Promise<SearchResponse> {
+function testSearchFunction (
+  route: string,
+  payload: object,
+  expectedLimit: number
+): Promise<SearchResponse> {
   return new Promise((resolve, reject) => {
-    request(app).post(route).send(payload).then(res => {
-      expect(res.status).toBe(200)
-      expectSearchItems(res.body, expectedLimit)
-      resolve()
-    }).catch(reject)
+    request(app)
+      .post(route)
+      .send(payload)
+      .then((res) => {
+        expect(res.status).toBe(200)
+        expectSearchItems(res.body, expectedLimit)
+        resolve()
+      })
+      .catch(reject)
   })
 }
 

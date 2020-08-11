@@ -1,3 +1,4 @@
+import { getStepsInQuery } from "./QueryValidator";
 import {
   AttributeType,
   AttributeTypeMap,
@@ -5,9 +6,8 @@ import {
   CATEGORICAL_OPERATIONS,
   COMBINATORS,
   CommandType,
-  getStepsInQuery,
   STEP_ORDER,
-} from "./QueryHelper";
+} from "./Types";
 
 export function getQueryRecommendations(query: string) {
   const currentSteps = getStepsInQuery(query);

@@ -1,20 +1,32 @@
 import {
-  isValidCommand,
+  isValidCommandStep,
   isValidQuery,
-} from "../../shared/queryparser/QueryHelper";
+} from "../../shared/query/QueryValidator";
 
 test("- : isValidStep : value", () => {
-  const [isValid, error] = isValidCommand("hello word", 2);
+  const [isValid, error] = isValidCommandStep(
+    ["body", "contains", "hello word"],
+    2
+  );
   expect(isValid).toBe(false);
   expect(error).toContain("Word");
   expect(error).toContain("String");
 });
 
 test("+ : isValidStep : value", () => {
-  const [isValid, error] = isValidCommand('"hello word"', 2);
+  const [isValid, error] = isValidCommandStep(
+    ["body", "contains", '"hello word"'],
+    2
+  );
   expect(isValid).toBe(true);
   expect(error).toContain("Word");
   expect(error).not.toContain("String");
+});
+
+test("- : isValidStep : index out of bounds", () => {
+  expect(() =>
+    isValidCommandStep(['body contains "hello word"'], 2)
+  ).toThrowError("out-of-bounds");
 });
 
 test("+ : isValidQuery : body contains", () => {

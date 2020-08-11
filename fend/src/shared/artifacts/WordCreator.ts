@@ -1,4 +1,4 @@
-import { FamilyColors, WordDescriptor } from "../types/TraceInformation";
+import { FamilyColors, WordDescriptor } from "../types/Trace";
 
 export const SyntaxWordType = "#SYNTAX";
 export const KeyWordType = "#KEYWORD";
@@ -77,7 +77,7 @@ function splitWordsByDelimiter(words: string[], delimiter: string) {
     let wordChildren = words[wordIndex].split(delimiter);
     for (let childIndex = 0; childIndex < wordChildren.length; childIndex++) {
       const word = wordChildren[childIndex];
-      if (word != "") delimiterWords.push(word);
+      if (word !== "") delimiterWords.push(word);
       if (childIndex < wordChildren.length - 1) delimiterWords.push(delimiter);
     }
   }

@@ -1,7 +1,18 @@
 import { spawn } from 'child_process'
 import fs from 'fs'
 import path from 'path'
-import { FunctionArguments } from './types'
+import { FunctionArguments } from '../../controllers/types'
+
+const PATH_TO_BEND = path.join(__dirname, '..', '..', '..')
+
+// Relative Paths
+const PATH_TO_RUNNER = path.join(PATH_TO_BEND, 'src', 'python', 'ClassRunner.py')
+const PATH_TO_TEMP_FOLDER = path.join(PATH_TO_BEND, 'src', 'temp')
+const PATH_TO_PYTHON = path.join(PATH_TO_BEND, 'env', 'bin', 'python3')
+
+// Errors
+const PYTHON_GENERAL_EXTERNAL_ERROR = 'PYTHON_GENERAL_EXTERNAL_ERROR'
+
 /*
  * 1. Takes in dataset, type (e.g. Requirement), artifact-id
  * 2. Grabs that artifact and compares it to all the artifacts in the dataset
@@ -9,10 +20,6 @@ import { FunctionArguments } from './types'
  * 4. std out predictions json
  * 5. read in preditions
  */
-const PYTHON_GENERAL_EXTERNAL_ERROR = 'PYTHON_GENERAL_EXTERNAL_ERROR'
-const PATH_TO_RUNNER = path.join(__dirname, '..', 'python', 'ClassRunner.py')
-const PATH_TO_TEMP_FOLDER = path.join(__dirname, '..', '..', 'temp')
-const PATH_TO_PYTHON = path.join(__dirname, '..', '..', 'env', 'bin', 'python3')
 
 export function runFunction<T> (
   className: string,

@@ -31,7 +31,6 @@ export function getNewStepState(
 
   //All Code assumes valid step change.
   const currentMetaData = currentState.metaData;
-  const emptyMetaData = initializeEmptyMetaData();
   switch (requestedStep) {
     case SELECT_DATASET_STEP:
       return {
