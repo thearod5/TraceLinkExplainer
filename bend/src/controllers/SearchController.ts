@@ -1,4 +1,5 @@
-import { getStepsInQuery, isValidQuery } from '../../../fend/src/shared/query/QueryValidator'
+import { getStepsInQuery } from '../../../fend/src/shared/query/QueryStepParser'
+import { isValidQuery } from '../../../fend/src/shared/query/QueryValidator'
 import { SearchItem, SearchSourceRoutePayload, SearchTargetRoutePayload } from '../../../fend/src/shared/types/Search'
 import { runFunction } from '../python/controllers/PythonController'
 

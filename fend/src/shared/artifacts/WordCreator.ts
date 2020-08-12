@@ -70,7 +70,11 @@ export function separateWords(body: string): string[] {
   return words;
 }
 
-function splitWordsByDelimiter(words: string[], delimiter: string) {
+export function splitWordsByDelimiter(
+  words: string[],
+  delimiter: string,
+  addDelimiter = true
+) {
   //Returns aggregated list of all words after each word is split
   let delimiterWords = [];
   for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
@@ -78,7 +82,8 @@ function splitWordsByDelimiter(words: string[], delimiter: string) {
     for (let childIndex = 0; childIndex < wordChildren.length; childIndex++) {
       const word = wordChildren[childIndex];
       if (word !== "") delimiterWords.push(word);
-      if (childIndex < wordChildren.length - 1) delimiterWords.push(delimiter);
+      if (childIndex < wordChildren.length - 1 && addDelimiter)
+        delimiterWords.push(delimiter);
     }
   }
   return delimiterWords;

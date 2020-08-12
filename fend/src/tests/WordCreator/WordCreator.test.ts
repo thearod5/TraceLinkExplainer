@@ -1,6 +1,7 @@
 import {
   createDefaultWords,
   KeyWordType,
+  splitWordsByDelimiter,
   SyntaxWordType,
 } from "../../shared/artifacts/WordCreator";
 import { WordDescriptor } from "../../shared/types/Trace";
@@ -27,4 +28,17 @@ test("dummy test", () => {
   for (let requiredFamilyIndex in requiredFamilies) {
     expect(familiesInWords).toContain(requiredFamilies[requiredFamilyIndex]);
   }
+});
+
+test("+ : splitWordsByDelimiter : space", () => {
+  const words = splitWordsByDelimiter(
+    ["command body", "hello world"],
+    " ",
+    false
+  );
+  expect(words.length).toBe(4);
+  expect(words[0]).toBe("command");
+  expect(words[1]).toBe("body");
+  expect(words[2]).toBe("hello");
+  expect(words[3]).toBe("world");
 });

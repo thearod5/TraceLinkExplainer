@@ -1,4 +1,5 @@
 import { getOperationRecommendations } from "./QueryRecommender";
+import { getStepsInQuery } from "./QueryStepParser";
 import {
   Attributes,
   ATTRIBUTE_VALUES,
@@ -8,18 +9,93 @@ import {
   STEPS_IN_SINGLE_COMMAND,
   STEP_ORDER,
 } from "./Types";
+
 const COMBINATOR_ERROR_HELP =
   'Note, multi-word values are expected to wrapped in quotation marks (e.g "[TEXT]")';
 const UNDEFINED_PREVIOUS_STEP = "previous step not defined";
-const MISSING_ATTRIBUTE_ERROR = `There is not attribute to operate on. Please prefix this with one of: ${ATTRIBUTE_VALUES}`;
+const MISSING_ATTRIBUTE_ERROR = `Missing Attribute to operate on. Attribute are: ${ATTRIBUTE_VALUES}`;
+
 type isValidResponse = [boolean, string];
+
+/*
+ * Specific Command validations
+ */
+
+export function isValidAttibute(command: string): isValidResponse {
+  const isValid = Attributes.some(
+    (attribute) => attribute.fieldName.toLowerCase() === command.toLowerCase()
+  );
+  return [isValid, createQueryError(command, "Value", ATTRIBUTE_VALUES)];
+}
+
+export function isValidOperation(
+  commands: string[],
+  commandIndex: number
+): isValidResponse {
+  if (commandIndex === 0) return [false, MISSING_ATTRIBUTE_ERROR];
+  const previousCommand = commands[commandIndex - 1];
+  const command = commands[commandIndex];
+  const validOperations = getOperationRecommendations(previousCommand);
+  const isValid = validOperations.includes(command.toLowerCase());
+  return [
+    isValid,
+    `Unknown operation: ${command}. Must be one of: ${validOperations}`,
+  ];
+}
+
+export function isValidValue(command: string): isValidResponse {
+  if (command.length == 0) return [false, "Value cannot be empty string."];
+  if (command.includes('"'))
+    return [false, "Value multi-space string could not be parsed."];
+
+  return [true, ""];
+}
+
+export function isValidCombinator(command: string): isValidResponse {
+  const isValid = COMBINATORS.includes(command.toLowerCase());
+  return [
+    isValid,
+    createQueryError(command, "Combinator", COMBINATORS, COMBINATOR_ERROR_HELP),
+  ];
+}
 
 /*
  * Validation
  */
+export function isValidCommandStep(
+  commands: string[],
+  commandIndex: number
+): isValidResponse {
+  if (commandIndex >= commands.length)
+    throw Error(`index out-of-bounds: ${commandIndex}`);
+
+  const command = commands[commandIndex];
+  let expectedStepType: CommandType =
+    STEP_ORDER[commandIndex % STEP_ORDER.length];
+
+  switch (expectedStepType) {
+    case CommandType.ATTRIBUTE:
+      return isValidAttibute(command);
+    case CommandType.OPERATION:
+      return isValidOperation(commands, commandIndex);
+    case CommandType.VALUE:
+      return isValidValue(command);
+    case CommandType.COMBINATOR:
+      return isValidCombinator(command);
+    default:
+      //unreachable but demanded by typescript
+      throw Error(`Unimplemented step type: ${expectedStepType}`);
+  }
+}
 
 export function isValidQuery(query: string): isValidResponse {
-  const currentSteps: string[] = getStepsInQuery(query);
+  let currentSteps;
+  try {
+    currentSteps = getStepsInQuery(query);
+  } catch (error) {
+    return [false, error.message];
+  }
+
   if (currentSteps.length === 0) return [true, ""];
 
   for (let stepIndex = 0; stepIndex < currentSteps.length; stepIndex++) {
@@ -36,84 +112,18 @@ export function isValidQuery(query: string): isValidResponse {
     case 1:
       return [false, "Missing value."];
     case 2:
-      return [false, "Missing operation and value."];
+      return [false, "Missing operation."];
+    case 3:
+      return [false, "Missing right term of combinator"];
     default:
-      throw Error("Unexpected # of steps remaining: " + stepsRemaining);
-  }
-}
-
-export function isValidCommandStep(
-  commands: string[],
-  commandIndex: number
-): isValidResponse {
-  if (commandIndex >= commands.length)
-    throw Error(`index out-of-bounds: ${commandIndex}`);
-
-  const command = commands[commandIndex];
-  const previousCommand =
-    commandIndex === 0 ? undefined : commands[commandIndex - 1];
-  let expectedStepType: CommandType =
-    STEP_ORDER[commandIndex % STEP_ORDER.length];
-
-  switch (expectedStepType) {
-    case CommandType.ATTRIBUTE:
-      return isValidAttibute(command);
-    case CommandType.OPERATION:
-      if (previousCommand === undefined)
-        return [false, UNDEFINED_PREVIOUS_STEP];
-      return isValidOperation(commands, commandIndex);
-    case CommandType.VALUE:
-      return isValidValue(command);
-    case CommandType.COMBINATOR:
-      return isValidCombinator(command);
-    default:
-      throw Error(`Unimplemented step type: ${expectedStepType}`);
+      //unreachable but demanded by typescript
+      throw Error(`Unexpected number of steps left: ${stepsRemaining}`);
   }
 }
 
 /*
- * Specific Command validations
+ * Util
  */
-
-function isValidAttibute(command: string): isValidResponse {
-  const isValid = Attributes.some(
-    (attribute) => attribute.fieldName === command
-  );
-  return [isValid, createQueryError(command, "Value", ATTRIBUTE_VALUES)];
-}
-
-function isValidOperation(
-  commands: string[],
-  commandIndex: number
-): isValidResponse {
-  if (commandIndex === 0) return [false, MISSING_ATTRIBUTE_ERROR];
-  const previousCommand = commands[commandIndex - 1];
-  const command = commands[commandIndex];
-  const validOperations = getOperationRecommendations(previousCommand);
-  const isValid = validOperations.includes(command.toLowerCase());
-  return [isValid, createQueryError(command, "Operation", COMBINATORS)];
-}
-
-function isValidValue(command: string): isValidResponse {
-  const isValidString = command.split('"').length >= 2;
-  const isValidWord = !command.includes(" ");
-  const isValid = isValidString || isValidWord;
-  const errors = [isValidWord ? "" : "Word", isValidString ? "" : "String"];
-  return [
-    isValid,
-    `Given word (${command}) not a valid: ${errors
-      .filter((a) => a !== "")
-      .join(", ")}`,
-  ];
-}
-
-function isValidCombinator(command: string): isValidResponse {
-  const isValid = COMBINATORS.includes(command.toLowerCase());
-  return [
-    isValid,
-    createQueryError(command, "Combinator", COMBINATORS, COMBINATOR_ERROR_HELP),
-  ];
-}
 
 function createQueryError(
   stepName: string,
@@ -121,11 +131,7 @@ function createQueryError(
   options: string[],
   suffix = ""
 ) {
-  return `${stepName} is a ${commandName} and must be one of: ${options.join(
+  return `${stepName} is not a ${commandName}. It must be one of: ${options.join(
     ", "
   )}. ${suffix}`;
-}
-
-export function getStepsInQuery(query: string) {
-  return query.split(" ").filter((step) => step !== "");
 }

@@ -29,9 +29,3 @@ test("+ : getRecommendations : operations", () => {
   const recommendations = getQueryRecommendations(query);
   expect(recommendations).toContain('""');
 });
-
-test("- : getRecommendations : operations", () => {
-  const query = 'type contains "hello world" pig';
-  const recommendations = getQueryRecommendations(query);
-  expect(recommendations.length).toEqual(0);
-});

@@ -50,7 +50,7 @@ def create_query_mask(query: [str], artifacts, boolean_mask=None):
 
         def operation_filter(artifact):
             return operations[operation.lower()](
-                artifact[attribute], value)
+                artifact[attribute].lower(), value.lower())
 
         return create_query_mask(query[3:], artifacts, list(map(operation_filter, artifacts)))
 

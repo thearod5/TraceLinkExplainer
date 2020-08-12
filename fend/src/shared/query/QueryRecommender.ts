@@ -1,4 +1,4 @@
-import { getStepsInQuery } from "./QueryValidator";
+import { getStepsInQuery } from "./QueryStepParser";
 import {
   AttributeType,
   AttributeTypeMap,
@@ -10,7 +10,13 @@ import {
 } from "./Types";
 
 export function getQueryRecommendations(query: string) {
-  const currentSteps = getStepsInQuery(query);
+  let currentSteps;
+  try {
+    currentSteps = getStepsInQuery(query);
+  } catch (error) {
+    return [];
+  }
+
   const currentStepInput = currentSteps[currentSteps.length - 1];
   const nextExpectedStepType: CommandType =
     STEP_ORDER[currentSteps.length % STEP_ORDER.length];
