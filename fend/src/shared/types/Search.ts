@@ -1,4 +1,4 @@
-import { Artifact, isArtifact } from "./Dataset";
+import { Artifact } from "./Dataset";
 import { objectContainsKeys } from "./TypeUtil";
 
 /*
@@ -20,10 +20,7 @@ export interface SearchResponse {
   searchItems: SearchItem[];
 }
 
-export interface SearchItem {
-  artifact: Artifact;
-  similarity: number;
-}
+export type SearchItem = Artifact;
 
 export interface SearchFilter {
   attribute: string;
@@ -50,13 +47,5 @@ export function isSearchTargetRoutePayload(
   return (
     isSearchSourceRoutePayload(obj, log) &&
     objectContainsKeys(requiredKeys, obj, log)
-  );
-}
-
-export function isSearchItem(obj?: object): obj is SearchItem {
-  const requiredKeys = ["artifact", "similarity"];
-  return (
-    objectContainsKeys(requiredKeys, obj) &&
-    isArtifact((obj as SearchItem).artifact)
   );
 }

@@ -23,7 +23,7 @@ export default function SearchResults(props: SearchResultsProps) {
       {props.results.map((searchItem) => {
         return (
           <SearchResultItem
-            key={searchItem.artifact.id}
+            key={searchItem.id}
             result={searchItem}
             selectArtifact={props.selectArtifact}
             removeArtifact={props.removeArtifact}

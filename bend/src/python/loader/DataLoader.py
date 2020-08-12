@@ -12,7 +12,6 @@ CURRENT_PATH = pathlib.Path().absolute()
 PATH_TO_DATA = get_path_to_data(CURRENT_PATH)
 assert os.path.isdir(PATH_TO_DATA), PATH_TO_DATA
 
-
 LINKED_MATRICES = {
     "Requirements": [("Level_1_to_Level_2.csv", 0), ("Level_1_to_Level_3.csv", 0)],
     "Designs": [("Level_1_to_Level_2.csv", 1), ("Level_2_to_Level_3.csv", 0)],
@@ -40,7 +39,7 @@ ARTIFACT_NOT_FOUND_ERROR_TAG = "ARTIFACT_NOT_FOUND"
 def get_dataset_path(dataset_name: str):
     dataset_query = list(
         filter(lambda f: f[0] != ".", os.listdir(PATH_TO_DATA)))
-    assert dataset_name in dataset_query, 'Could not find dataset: %s' % dataset_name
+    assert dataset_name in dataset_query, 'Could not find dataset: %s in %s' % (dataset_name, PATH_TO_DATA)
     return os.path.join(PATH_TO_DATA, dataset_name)
 
 
@@ -49,7 +48,7 @@ def get_path_to_artifacts(dataset: str, artifact_type: str, hasExtension=False):
     artifact_type_query = list(
         filter(lambda f: f[0] != ".", os.listdir(path_to_dataset)))
     artifact_type_file_name = artifact_type + \
-        "" if hasExtension else artifact_type + ".json"
+                              "" if hasExtension else artifact_type + ".json"
     assert artifact_type_file_name in artifact_type_query, "Could not find artifact set: %s" % artifact_type
     return os.path.join(path_to_dataset, artifact_type_file_name)
 

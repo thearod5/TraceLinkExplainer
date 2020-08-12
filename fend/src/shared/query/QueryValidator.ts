@@ -86,11 +86,11 @@ function isValidOperation(
   commands: string[],
   commandIndex: number
 ): isValidResponse {
-  if (commandIndex == 0) return [false, MISSING_ATTRIBUTE_ERROR];
+  if (commandIndex === 0) return [false, MISSING_ATTRIBUTE_ERROR];
   const previousCommand = commands[commandIndex - 1];
   const command = commands[commandIndex];
   const validOperations = getOperationRecommendations(previousCommand);
-  const isValid = validOperations.includes(command);
+  const isValid = validOperations.includes(command.toLowerCase());
   return [isValid, createQueryError(command, "Operation", COMBINATORS)];
 }
 
@@ -108,7 +108,7 @@ function isValidValue(command: string): isValidResponse {
 }
 
 function isValidCombinator(command: string): isValidResponse {
-  const isValid = COMBINATORS.includes(command);
+  const isValid = COMBINATORS.includes(command.toLowerCase());
   return [
     isValid,
     createQueryError(command, "Combinator", COMBINATORS, COMBINATOR_ERROR_HELP),

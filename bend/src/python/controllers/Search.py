@@ -1,10 +1,9 @@
-import json
-
 import pandas as pd
 
-from data.DataLoader import get_all_artifacts_for_dataset, get_traced_artifacts
+from controllers.Query import filter_artifacts
+from loader.DataLoader import (get_all_artifacts_for_dataset,
+                               get_traced_artifacts)
 from vsm.CalculateSimilarityMatrix import calculate_similarity_matrix
-
 
 """
  Source - search_for_artifact
@@ -12,12 +11,13 @@ from vsm.CalculateSimilarityMatrix import calculate_similarity_matrix
 """
 
 
-def search_for_artifact(dataset: str, query: str, limit: int):
+def search_for_artifact(dataset: str, query: [str], limit: int):
     artifacts = get_all_artifacts(dataset)
-    if query == "":
+
+    if query == "" or len(query) == 0:
         return create_default_search_items(artifacts, limit)
-    similarities = compare_target_to_artifacts(query, artifacts)
-    return create_search_items(artifacts, similarities, limit)
+    else:
+        return create_search_response(filter_artifacts(query, artifacts), limit)
 
 
 def search_for_related_artifacts(
@@ -26,7 +26,6 @@ def search_for_related_artifacts(
         target_id: str,
         query: str,
         limit: int):
-
     traced_artifacts = get_traced_artifacts(dataset, target_type, target_id)
     if isinstance(traced_artifacts, dict) and "error" in traced_artifacts.keys():
         return traced_artifacts
@@ -34,9 +33,7 @@ def search_for_related_artifacts(
         default_items = create_default_search_items(traced_artifacts, limit)
         return default_items
     similarities = compare_target_to_artifacts(query, traced_artifacts)
-    search_items = create_search_items(traced_artifacts, similarities, limit)
-
-    return search_items
+    return create_sorted_response(traced_artifacts, similarities, limit)
 
 
 """
@@ -62,17 +59,16 @@ def get_all_artifacts(dataset: str):
 def create_default_search_items(artifacts, limit: int):
     sorted_artifacts = sorted(artifacts, key=lambda i: (
         i['type'], i['id']), reverse=True)
-    return create_search_items(sorted_artifacts, pd.Series([0.0] * len(artifacts)), limit)
+    return create_search_response(sorted_artifacts, limit)
 
 
-def create_search_items(artifacts, similarities, limit: int):
+def create_sorted_response(artifacts, similarities, limit: int):
     searchItems = []
     limit = None if limit == -1 else limit
     for itemIndex in similarities.sort_values(ascending=False).index:
-        searchItems.append(
-            {
-                "similarity": similarities[itemIndex],
-                "artifact": artifacts[itemIndex]
-            }
-        )
-    return {"searchItems": searchItems[:limit]}
+        searchItems.append(artifacts[itemIndex])
+    return create_search_response(searchItems, limit)
+
+
+def create_search_response(artifacts, limit):
+    return {"searchItems": artifacts[:limit]}

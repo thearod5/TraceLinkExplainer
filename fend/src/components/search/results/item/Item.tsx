@@ -33,10 +33,10 @@ export default function SearchResultItem(props: SearchResultProps) {
   const onClick = () => {
     setChecked(!checked);
     const clickCallback = checked ? props.selectArtifact : props.removeArtifact;
-    clickCallback(props.result.artifact);
+    clickCallback(props.result);
   };
 
-  const { id } = props.result.artifact;
+  const { id } = props.result;
   return (
     <ItemContainer>
       <AccordionSummary
@@ -56,7 +56,7 @@ export default function SearchResultItem(props: SearchResultProps) {
       <ItemBody>
         <ItemDetails>
           <DisplayContainer>
-            {getDefaultArtifactDisplay(props.result.artifact, false)}
+            {getDefaultArtifactDisplay(props.result, false)}
           </DisplayContainer>
         </ItemDetails>
         <ZoomButtonContainer>
@@ -69,8 +69,8 @@ export default function SearchResultItem(props: SearchResultProps) {
       <ItemPopup
         handleClose={handleClose}
         open={open}
-        artifact={props.result.artifact}
-        selectSource={() => props.selectArtifact(props.result.artifact)}
+        artifact={props.result}
+        selectSource={() => props.selectArtifact(props.result)}
       />
     </ItemContainer>
   );

@@ -1,10 +1,7 @@
-import numpy as np
-import pandas as pd
 from sklearn.preprocessing import minmax_scale
 
-from data.DataLoader import get_artifact_in_dataset
-from preprocessing.Cleaners import (clean_doc, get_camel_case_words,
-                                    replace_alpha_charater, to_lower)
+from loader.DataLoader import get_artifact_in_dataset
+from preprocessing.Cleaners import (clean_doc, get_camel_case_words)
 from vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
 
 word_splitters = [".", "\n", "\t", " ", "(", ")", ":", ",",
@@ -83,7 +80,7 @@ def create_root_weight_mapping(source_root_words: [str], target_root_words: [str
 
     # 2. Sum weight matrices
     summed_term_weight_matrix = (
-        source_term_weight_matrix + target_term_weight_matrix)
+            source_term_weight_matrix + target_term_weight_matrix)
 
     # 3.
     word_weight_mapping = create_word_weight_dictionary(
@@ -145,12 +142,10 @@ def create_dictionary_from_values(source: dict, keys: [str], values: [str]):
 Tests
 """
 
-
 # TODO assert False, create_root_weight_mapping(
 #     ["the pig danced"], ["the dancing kim"])
 
 assert get_words_in_string_doc("dispatchQueueManager.getGroundStationId()") == [
     "dispatch", "Queue", "Manager", ".", "get", "Ground", "Station", "Id", "(", ")"]
-
 
 assert create_dictionary_from_values({}, ["foo"], ["bar"]) == {"foo": "bar"}

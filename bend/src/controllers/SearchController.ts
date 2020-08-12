@@ -1,3 +1,4 @@
+import { getStepsInQuery, isValidQuery } from '../../../fend/src/shared/query/QueryValidator'
 import { SearchItem, SearchSourceRoutePayload, SearchTargetRoutePayload } from '../../../fend/src/shared/types/Search'
 import { runFunction } from '../python/controllers/PythonController'
 
@@ -9,14 +10,17 @@ export async function searchForSourceArtifact (
     query,
     limit
   } = searchRequest
-  return runFunction<SearchItem[]>(
-    'Search.py',
-    'search_for_artifact',
-    {
-      arguments: [datasetName, query, limit]
+  return new Promise((resolve, reject) => {
+    const [isValid, error] = isValidQuery(query)
+    if (!isValid) {
+      return reject(error)
     }
-  ).catch((e) => {
-    throw e
+
+    resolve(runFunction<SearchItem[]>('Search.py', 'search_for_artifact', {
+      arguments: [datasetName, getStepsInQuery(query), limit]
+    }).catch((e) => {
+      throw e
+    }))
   })
 }
 

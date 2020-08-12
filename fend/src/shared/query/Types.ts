@@ -9,7 +9,7 @@ export const CATEGORICAL_OPERATIONS = [
   "is",
   "is not",
 ];
-export const COMBINATORS = ["AND", "NOT", "ORDER BY"];
+export const COMBINATORS = ["and", "not", "order by"];
 
 const TypeAttribute = {
   fieldName: "type",

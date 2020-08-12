@@ -5,6 +5,14 @@ import {
 
 test("- : isValidStep : value", () => {
   const [isValid, error] = isValidCommandStep(
+    ["fuzzy", "=", '"state transitions"'],
+    0
+  );
+  expect(isValid).toBe(false);
+});
+
+test("- : isValidStep : value", () => {
+  const [isValid, error] = isValidCommandStep(
     ["body", "contains", "hello word"],
     2
   );
