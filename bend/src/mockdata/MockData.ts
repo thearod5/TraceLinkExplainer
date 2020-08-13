@@ -2,7 +2,7 @@ import classes from '../../../data/Drone/Classes.json'
 import designs from '../../../data/Drone/Designs.json'
 import requirements from '../../../data/Drone/Requirements.json'
 import tasks from '../../../data/Drone/Tasks.json'
-import { Dataset } from '../../../shared/Dataset'
+import { Dataset } from '../../../fend/src/shared/types/Dataset'
 
 const artifacts = [
   ...requirements.artifacts,
@@ -13,6 +13,5 @@ const artifacts = [
 
 export const mockDataset: Dataset = {
   name: 'Drone',
-  summary: '...placeholder description about drone dataset...',
-  artifacts: artifacts
+  summary: '...placeholder description about drone dataset...'
 }

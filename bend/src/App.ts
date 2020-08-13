@@ -1,22 +1,20 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
-import {
-  isSearchRoutePayload,
-  isTraceTrievealPayload,
-  objectContainsKeys
-} from '../../fend/src/util/TypeUtil'
-import { SearchItem } from '../../shared/Dataset'
+import { isSearchSourceRoutePayload, isSearchTargetRoutePayload, SearchItem } from '../../fend/src/shared/types/Search'
+import { isTraceRetrievealPayload } from '../../fend/src/shared/types/Trace'
 import {
   getDatasetByName,
   getDatasetNames
 } from './controllers/DatasetController'
-import { makePredictionsForArtifact, searchForArtifact } from './controllers/PredictionController'
+import { searchForSourceArtifact, searchForTracedArtifacts } from './controllers/SearchController'
 import { handleTestRoute } from './controllers/TestRouteController'
-import { getInitialTraceInformation } from './controllers/TraceController'
+import { getTrace } from './controllers/TraceController'
 import { DATASET_MAIN_ROUTE, GET_DATASET_NAMES_ROUTE, GET_TRACE_ROUTE, SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE, TEST_ROUTE } from './routes'
 
 const app = express()
+
+const INVALID_PAYLOAD = 'INVALID_PAYLOAD'
 
 /*
  * MIDDLEWARE
@@ -36,48 +34,32 @@ app.get(`${DATASET_MAIN_ROUTE}/:datasetName`, (req: Request, res: Response) =>
 )
 app.post(SEARCH_SOURCE_ROUTE,
   async (req: Request, res: Response, next) => {
-    const requiredFields = ['datasetName', 'query', 'limit']
-    if (!objectContainsKeys(requiredFields, req.body)) {
-      return sendError(
-        res,
-      `Missing One of Required Fields: ${requiredFields}`
-      )
+    if (!isSearchSourceRoutePayload(req.body)) {
+      return sendError(res, INVALID_PAYLOAD)
     }
-    const data = searchForArtifact(
-      req.body.datasetName,
-      req.body.query,
-      req.body.limit
-    )
+    const data = searchForSourceArtifact(req.body)
     handleError<SearchItem[]>(res, data)
   })
 
 app.post(
   SEARCH_TARGET_ROUTE,
   async (req: Request, res: Response, next) => {
-    if (!isSearchRoutePayload(req.body, true)) { return sendError(res, `Expected SearchRoutePayload receied: ${JSON.stringify(req.body)}`) }
-    const dataPromise = makePredictionsForArtifact(
-      req.body.datasetName,
-      req.body.sourceType,
-      req.body.sourceId,
-      req.body.query,
-      req.body.limit
+    if (!isSearchTargetRoutePayload(req.body, true)) {
+      return sendError(res, INVALID_PAYLOAD)
+    }
+
+    const dataPromise = searchForTracedArtifacts(
+      req.body
     )
     handleError(res, dataPromise)
   })
 
 app.post(GET_TRACE_ROUTE, async (req: Request, res: Response, next) => {
-  if (!isTraceTrievealPayload(req.body, true)) {
-    return sendError(
-      res,
-      `Expected SearchRoutePayload receied: ${JSON.stringify(req.body)}`
-    )
+  if (!isTraceRetrievealPayload(req.body, true)) {
+    return sendError(res, INVALID_PAYLOAD)
   }
-  const dataPromise = getInitialTraceInformation(
-    req.body.datasetName,
-    req.body.sourceType,
-    req.body.sourceId,
-    req.body.targetType,
-    req.body.targetId
+  const dataPromise = getTrace(
+    req.body
   )
   handleError(res, dataPromise)
 })

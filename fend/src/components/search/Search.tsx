@@ -1,109 +1,83 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import { Artifact, Dataset, SearchItem } from "../../../../shared/Dataset";
-import { RootState } from "../../redux";
-import { ArtifactMutatorActionType } from "../../redux/actions";
-import { PAGE_NAP_HEIGHT } from "../nav/PageTitle";
-import { getSelectedItems } from "./filtering/filterSearchResults";
-import { getNumberOfResults } from "./filtering/searchOptionsCreator";
-import ItemDisplay from "./items/ItemDisplay";
-import SearchBar from "./searchbar/SearchBar";
-import SearchSnackBar from "./snackbar/SearchSnackBar";
-import TabBar from "./tabbar/TabBar";
-import { Tabs } from "./tabbar/types";
+import { changeStep, setError } from "../../redux/actions";
+import { getCurrentStep, getError } from "../../redux/selectors";
+import { ArtifactMutatorActionType } from "../../redux/types";
+import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
+import { Artifact } from "../../shared/types/Dataset";
+import { SearchItem } from "../../shared/types/Search";
+import SearchBar from "./bar/SearchBar";
+import SearchResults from "./results/SearchResults";
 import { SuggestionFunctionType } from "./types";
 
-const DEFAULT_INDEX = 0;
-const SEARCH_LIMIT = -1; //TODO: Fix buffer overflow
-
-//TODO: Fix empty query not returning results
-//TODO: Add loading symbol while initial query finishes
-
+const SEARCH_LIMIT = 10;
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
-  getSearchOptions: (selectedIndex: number) => string[];
-  dispatchEvent: (artifact: Artifact) => ArtifactMutatorActionType;
+  onArtifactSelected: (artifact: Artifact) => ArtifactMutatorActionType;
+  onArtifactRemoved: (artifact: Artifact) => ArtifactMutatorActionType;
 }
 
-//TODO: Separate Row Height from search bar and vertically center so that all matches the page header
 export default function Search(props: SearchProps) {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(DEFAULT_INDEX);
-  const [numberOfResults, setNumberOfResulst] = useState([0, 0, 0, 0]);
-  const [errorOccurred, setErrorOccurred] = useState(false);
-
-  const dataset: Dataset = useSelector((state: RootState) => state.dataset);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const error: string | undefined = useSelector(getError);
+  const currentStep: number = useSelector(getCurrentStep);
 
   /* Requeset API for search results
    * 1. Set as results state
    * 2. Count number of each type and set number of results
    */
-  const startSearch = (searchString: string) => {
-    props
-      .searchFunction(dataset.name, searchString, SEARCH_LIMIT)
-      .then((results: SearchItem[]) => {
-        setSearchResults(results);
-        const resultCounts = getNumberOfResults(results);
-        setNumberOfResulst(resultCounts);
-      })
-      .catch((e) => {
-        setErrorOccurred(true);
-      });
+
+  const startSearch = useCallback(
+    (searchString: string) => {
+      setLoading(true);
+      props
+        .searchFunction(searchString, SEARCH_LIMIT)
+        .then((results: SearchItem[]) => {
+          setSearchResults(results);
+          setLoading(false);
+        })
+        .catch((e) => {
+          dispatch(setError(e.toString()));
+          setLoading(false);
+        });
+    },
+    [props]
+  );
+
+  const handleStepCompleted = () => {
+    const nextStep = currentStep + 1;
+    const error = getStepChangeError(nextStep);
+    if (error === undefined) dispatch(changeStep(currentStep + 1));
+    else dispatch(setError(error));
   };
 
-  const createDispatchAction = (artifact: Artifact) => {
-    dispatch(props.dispatchEvent(artifact));
-  };
+  useEffect(() => startSearch(""), [startSearch]);
 
-  const handleSnackBarClose = () => {
-    setErrorOccurred(false);
-  };
+  const selectArtifact = (artifact: Artifact) =>
+    dispatch(props.onArtifactSelected(artifact));
 
-  const selectedItems = getSelectedItems(searchResults, selectedIndex);
-
-  /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  useEffect(() => startSearch(""), []);
+  const removeArtifact = (artifact: Artifact) =>
+    dispatch(props.onArtifactRemoved(artifact));
 
   return (
-    <SearchContainer>
-      <SearchRow style={{ height: `${PAGE_NAP_HEIGHT}px` }}>
+    <div className="flexColumn alignContentEnd padTopLight heightFull overflowYScroll">
+      <div className="flexRowContentLeft widthFull" style={{ height: "10%" }}>
         <SearchBar
-          onSubmit={startSearch}
-          searchOptions={props.getSearchOptions(selectedIndex)}
+          onSearch={startSearch}
+          onSubmit={handleStepCompleted} //Could fail
         />
-      </SearchRow>
-      <SearchRow>
-        <TabBar
-          selectedIndex={selectedIndex}
-          setSelectedIndex={setSelectedIndex}
-          tabs={Tabs}
-          numberOfResults={numberOfResults}
+      </div>
+      <div className="flexRowContentLeft widthFull" style={{ height: "90%" }}>
+        <SearchResults
+          loading={loading}
+          results={searchResults}
+          selectArtifact={selectArtifact}
+          removeArtifact={removeArtifact}
         />
-      </SearchRow>
-      <SearchRow>
-        <ItemDisplay
-          results={selectedItems}
-          clickAction={createDispatchAction}
-        />
-      </SearchRow>
-      <SearchSnackBar open={errorOccurred} handleClose={handleSnackBarClose} />
-    </SearchContainer>
+      </div>
+    </div>
   );
 }
-
-const SearchContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-content: flex-end;
-  height: 100%;
-  overflow-y: scroll;
-`;
-
-const SearchRow = styled.div`
-  display: flex;
-  flex-direct: row;
-  justify-content: center;
-  width: 100%;
-`;

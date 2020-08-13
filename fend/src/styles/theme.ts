@@ -14,7 +14,7 @@ export default createMuiTheme({
           color: secondaryColor,
         },
         "&$active": {
-          color: fourthColor,
+          color: primaryColor,
         },
       },
       active: {},

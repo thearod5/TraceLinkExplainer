@@ -7,7 +7,7 @@ import { changeStep } from "../../redux/actions";
 import {
   SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
-} from "../../redux/stepmanager/constants";
+} from "../../shared/pagechanger/constants";
 
 interface PageTitleProps {
   title: string;
@@ -19,7 +19,7 @@ function PageTitle(props: PageTitleProps) {
 
   const deselectArtifact = () => {
     const lastStep = props.isSource ? SELECT_SOURCE_STEP : SELECT_TARGET_STEP;
-    dispatch(changeStep(lastStep, undefined));
+    dispatch(changeStep(lastStep));
   };
 
   return (
@@ -51,10 +51,7 @@ const TitleText = styled.h1`
   margin: 0px;
   width: 100%;
   text-align: center;
-  padding-top: ${TEXT_TOP_PADDING}px;
-  padding-bottom: ${TEXT_TOP_PADDING}px;
-  padding-left: ${TEXT_SIDE_PADDING}px;
-  padding-right: ${TEXT_SIDE_PADDING}px;
+  padding: ${TEXT_TOP_PADDING}px ${TEXT_SIDE_PADDING}px
   display: inline-block;
 `;
 

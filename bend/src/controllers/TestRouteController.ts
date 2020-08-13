@@ -1,7 +1,7 @@
 
 // eslint-disable-next-line no-unused-vars
 import { Request, Response } from 'express'
-import { runFunction } from './PythonController'
+import { runFunction } from '../python/controllers/PythonController'
 import { FunctionArguments } from './types'
 
 export const testKeyOne = 'keyOne'

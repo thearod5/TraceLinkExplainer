@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { Dataset } from '../../../shared/Dataset'
+import { Dataset } from '../../../fend/src/shared/types/Dataset'
 import { mockDataset } from '../mockdata/MockData'
 
 function getDatasetByName (res: Response<Dataset>, datasetName: string) {

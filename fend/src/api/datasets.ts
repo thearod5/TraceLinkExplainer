@@ -1,4 +1,4 @@
-import { Dataset } from "../../../shared/Dataset";
+import { Dataset } from "../shared/types/Dataset";
 import { BASE_URL, DATASET_ENDPOINT } from "./base";
 
 export async function getDatasetByName(datasetName: string): Promise<Dataset> {

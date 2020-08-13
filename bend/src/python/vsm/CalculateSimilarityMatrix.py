@@ -1,17 +1,10 @@
-import json
-import os
-import pathlib
-
-import pandas as pd
 from scipy.sparse import vstack
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import pairwise_distances
 from sklearn.preprocessing import minmax_scale
 
-from data.DataLoader import get_all_artifacts_for_dataset
-
-#import Cleaners
+# import Cleaners
 
 """
 A DistanceMatrix is a 

@@ -1,20 +1,11 @@
 import React from "react";
-import styled from "styled-components";
 
 const helpMessage = "No source artifact selected.";
 
 export default function NoSourceMessage() {
   return (
-    <NoSourceMessageContainer>
-      <NoSourceMessageText>{helpMessage}</NoSourceMessageText>
-    </NoSourceMessageContainer>
+    <div className="textAlignCenter">
+      <p className="verticallyCenter">{helpMessage}</p>
+    </div>
   );
 }
-
-const NoSourceMessageContainer = styled.div`
-  text-align: center;
-`;
-
-const NoSourceMessageText = styled.p`
-  padding: 50% 0px;
-`;

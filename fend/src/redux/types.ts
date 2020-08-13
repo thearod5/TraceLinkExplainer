@@ -1,8 +1,11 @@
-import { Artifact, Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../shared/types/Dataset";
 import {
   CHANGE_STEP_ACTION,
   CLEAR_DATA,
+  REMOVE_SELECTED_SOURCE_ACTION,
+  REMOVE_SELECTED_TARGET_ACTION,
   SELECT_DATASET,
+  SET_ERROR_ACTION,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
   UNSELECT_DATASET,
@@ -44,23 +47,25 @@ export type DatasetActionType =
  * Meta
  */
 
+export interface ArtifactMutatorActionType {
+  type: string;
+  payload: Artifact;
+}
+
 export interface MetaData {
   oldStep: number;
   currentStep: number;
   targetArtifact: Artifact;
   sourceArtifact: Artifact;
-}
 
-export type StepPayload = Dataset | Artifact | undefined;
-
-export interface StepChangePayload {
-  newStep: number;
-  stepPayload: StepPayload;
+  selectedSources: Artifact[];
+  selectedTargets: Artifact[];
+  error: string | undefined;
 }
 
 export interface ChangeStepAction {
   type: typeof CHANGE_STEP_ACTION;
-  payload: StepChangePayload;
+  payload: number;
 }
 
 export interface SetTargetArtifactAction {
@@ -73,7 +78,25 @@ export interface SetSourceArtifactAction {
   payload: Artifact;
 }
 
+export interface RemoveSelectedSource {
+  type: typeof REMOVE_SELECTED_SOURCE_ACTION;
+  payload: Artifact;
+}
+
+export interface RemoveSelectedTarget {
+  type: typeof REMOVE_SELECTED_TARGET_ACTION;
+  payload: Artifact;
+}
+
+export interface SetError {
+  type: typeof SET_ERROR_ACTION;
+  payload: string | undefined;
+}
+
 export type MetaActionType =
+  | RemoveSelectedSource
+  | RemoveSelectedTarget
   | SetTargetArtifactAction
   | SetSourceArtifactAction
+  | SetError
   | ClearDataAction;

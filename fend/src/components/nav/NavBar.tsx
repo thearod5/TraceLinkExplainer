@@ -17,22 +17,24 @@ export default function NavBar() {
   };
 
   return (
-    <NavBarContainer color="secondary" boxShadow={3}>
-      <NavBarTitle onClick={GoHomeClickHanlder}>
-        {activeStep == 0 ? WELCOME_MESSAGE : dataset}
-      </NavBarTitle>
+    <NavBarContainer
+      color="secondary"
+      boxShadow={3}
+      className="flexRowCenteredWidthFull"
+    >
+      <div className="centeredColumn">
+        <NavBarTitle onClick={GoHomeClickHanlder} className="padLight">
+          {activeStep === 0 ? WELCOME_MESSAGE : dataset}
+        </NavBarTitle>
+      </div>
     </NavBarContainer>
   );
 }
 
 const NavBarContainer = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
   background-color: ${secondaryColor};
 `;
 
 const NavBarTitle = styled.h1`
   color: ${theme.palette.primary.main};
-  padding: 10px;
 `;

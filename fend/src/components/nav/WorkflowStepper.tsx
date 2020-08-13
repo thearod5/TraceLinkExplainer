@@ -7,28 +7,26 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
+import { history } from "../../redux/store";
 import {
   getStepChangeError,
   PAGE_STEP_MAPPING,
-} from "../../redux/stepmanager/PageChanger";
-import store, { history } from "../../redux/store";
+} from "../../shared/pagechanger/PageChanger";
 import { primaryColor } from "../../styles/theme";
 
-interface StepperProps {}
-
-export default function WorkflowStepper(props: StepperProps) {
+export default function WorkflowStepper() {
   const dispatch = useDispatch();
   const activeStep = useSelector(getCurrentStep) - 1; //recreated index at 0, but remove select dataset move
   const steps = getSteps();
 
   const moveToStep = (step: number) => {
-    const error = getStepChangeError(store.getState(), step, undefined);
+    const error = getStepChangeError(step);
     if (error !== undefined) {
       alert(error);
     } else {
       const reIndexStep = step + 1;
       const nextPage = PAGE_STEP_MAPPING[reIndexStep]; //return to old index (with dataset as first step) for page mappings
-      dispatch(changeStep(reIndexStep, undefined));
+      dispatch(changeStep(reIndexStep));
       history.push(nextPage);
     }
   };
@@ -55,6 +53,10 @@ function getSteps() {
 }
 
 const StepperContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  height: 100%;
   width: 100%;
   background-color: ${primaryColor};
 `;

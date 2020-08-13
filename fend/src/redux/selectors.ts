@@ -8,3 +8,5 @@ export const getTargetArtifact = (state: RootState) =>
   state.metaData.targetArtifact;
 
 export const getCurrentStep = (state: RootState) => state.metaData.currentStep;
+
+export const getError = (state: RootState) => state.metaData.error;

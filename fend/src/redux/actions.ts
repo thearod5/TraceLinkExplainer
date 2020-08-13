@@ -1,9 +1,9 @@
-import { Artifact, Dataset } from "../../../shared/Dataset";
+import { Artifact, Dataset } from "../shared/types/Dataset";
 import { initializeEmptyDataset } from "./initializers";
 import {
+  ArtifactMutatorActionType,
   ClearDataAction,
   SelectDatasetAction,
-  StepPayload,
   UnselectDatasetAction,
 } from "./types";
 
@@ -46,24 +46,16 @@ export function unselectDataset(): UnselectDatasetAction {
 
 export const CHANGE_STEP_ACTION = "CHANGE_STEP";
 
-export function changeStep(newStep: number, stepPayload: StepPayload) {
+export function changeStep(newStep: number) {
   return {
     type: CHANGE_STEP_ACTION,
-    payload: {
-      newStep,
-      stepPayload,
-    },
+    payload: newStep,
   };
 }
 
 /*
  * Artifacts
  */
-
-export interface ArtifactMutatorActionType {
-  type: string;
-  payload: Artifact;
-}
 
 export const SET_SOURCE_ARTIFACT_ACTION = "SET_SOURCE_ARTIFACT_ACTION";
 
@@ -84,5 +76,44 @@ export function setTargetArtifact(
   return {
     type: SET_TARGET_ARTIFACT_ACTION,
     payload: targetArtifact,
+  };
+}
+
+export const REMOVE_SELECTED_SOURCE_ACTION = "REMOVE_SELECTED_SOURCE_ACTION";
+
+export function removeSelectedSource(
+  selectedArtifact: Artifact
+): ArtifactMutatorActionType {
+  return {
+    type: REMOVE_SELECTED_SOURCE_ACTION,
+    payload: selectedArtifact,
+  };
+}
+
+export const REMOVE_SELECTED_TARGET_ACTION = "REMOVE_SELECTED_TARGET_ACTION";
+
+export function removeSelectedTarget(
+  selectedArtifact: Artifact
+): ArtifactMutatorActionType {
+  return {
+    type: REMOVE_SELECTED_TARGET_ACTION,
+    payload: selectedArtifact,
+  };
+}
+
+/*
+ * error handling
+ */
+export const SET_ERROR_ACTION = "SET_ERROR_ACTION";
+
+export interface SetErrorType {
+  type: string;
+  payload: string | undefined;
+}
+
+export function setError(error: string | undefined): SetErrorType {
+  return {
+    type: SET_ERROR_ACTION,
+    payload: error,
   };
 }
