@@ -6,7 +6,11 @@ import { SearchItem, SearchResponse, SearchTargetRoutePayload } from '../../../f
 import app from '../App'
 import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../routes'
 
-test('search : source : use case : +', () => {
+/*
+ * Source
+ */
+
+test('search : source : default : +', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
     datasetName: 'Drone',
@@ -18,7 +22,7 @@ test('search : source : use case : +', () => {
   )
 })
 
-test('search :  source : invalid query : -', () => {
+test('search : source : invalid query : -', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
     datasetName: 'Drone',
@@ -31,7 +35,7 @@ test('search :  source : invalid query : -', () => {
   })
 })
 
-test('search :  source : query : +', () => {
+test('search : source : query : +', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
     datasetName: 'Drone',
@@ -44,7 +48,7 @@ test('search :  source : query : +', () => {
   })
 })
 
-test('search :  source : query combination: +', () => {
+test('search : source : query combination: +', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
     datasetName: 'Drone',
@@ -57,7 +61,11 @@ test('search :  source : query combination: +', () => {
   })
 })
 
-test('search :  target : use case : +', () => {
+/*
+ * Target
+ */
+
+test('search : target : default : +', () => {
   const TEST_LIMIT = 5
   const searchQuery: SearchTargetRoutePayload = {
     datasetName: 'Drone',
@@ -65,19 +73,6 @@ test('search :  target : use case : +', () => {
     limit: TEST_LIMIT,
     sourceId: 'RE-8',
     sourceType: 'Requirements'
-  }
-  return testSearchFunction(SEARCH_TARGET_ROUTE, searchQuery, (res) =>
-    expectSearchItems(res.body, TEST_LIMIT)
-  )
-})
-test('search : target : default : +', () => {
-  const TEST_LIMIT = 2
-  const searchQuery: SearchTargetRoutePayload = {
-    datasetName: 'Drone',
-    sourceType: 'Requirements',
-    sourceId: 'RE-8',
-    query: '',
-    limit: TEST_LIMIT
   }
   return testSearchFunction(SEARCH_TARGET_ROUTE, searchQuery, (res) =>
     expectSearchItems(res.body, TEST_LIMIT)
