@@ -37,10 +37,7 @@ export default function SearchResultItem(props: SearchResultProps) {
 
   const { id } = props.result;
   return (
-    <Accordion
-      className="fullWidth overflowYScroll"
-      style={{ maxHeight: "450px" }}
-    >
+    <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-label="Expand">
         <FormControlLabel
           aria-label="Select"

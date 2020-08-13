@@ -39,8 +39,16 @@ body,
   justify-content: left;
 }
 
+.justifyContentSpaceAround {
+  justify-content: space-around;
+}
+
 .alignContentEnd {
   align-content: flex-end;
+}
+
+.flexGrowTen {
+  flex-grow: 10;
 }
 
 .padNone {
@@ -49,6 +57,11 @@ body,
 
 .padLight {
   padding: 10px;
+}
+
+.padSideLight {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .padTopLight {
@@ -124,6 +137,11 @@ body,
 .flexRowCentered {
   @extend .flexRow;
   @extend .justifyContentCenter;
+}
+
+.flexRowSpaceAround {
+  @extend .flexRow;
+  @extend .justifyContentSpaceAround;
 }
 
 .flexRowWidthFull {

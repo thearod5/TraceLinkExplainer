@@ -16,7 +16,7 @@ interface SearchResultsProps {
 
 export default function SearchResults(props: SearchResultsProps) {
   return (
-    <SearchResultsDisplayContainer>
+    <div className="flexColumn sizeFull">
       <NumberResultsDisplay>
         {props.results.length + NUMBER_RESULTS_PROMPT}
       </NumberResultsDisplay>
@@ -30,16 +30,9 @@ export default function SearchResults(props: SearchResultsProps) {
           />
         );
       })}
-    </SearchResultsDisplayContainer>
+    </div>
   );
 }
-
-const SearchResultsDisplayContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-`;
 
 const NumberResultsDisplay = styled.div`
   width: 100%;

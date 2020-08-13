@@ -51,21 +51,20 @@ export default function Search(props: SearchProps) {
 
   return (
     <div className="flexColumn alignContentEnd padTopLight heightFull overflowYScroll">
-      <SearchRow style={{ height: "20%" }}>
+      <SearchRow style={{ height: "10%" }}>
         <SearchBar onSubmit={startSearch} />
       </SearchRow>
-
-      {loading ? (
-        <LinearProgress color="secondary" />
-      ) : (
-        <SearchRow>
+      <SearchRow style={{ height: "90%" }}>
+        {loading ? (
+          <LinearProgress color="secondary" />
+        ) : (
           <SearchResults
             results={searchResults}
             selectArtifact={selectArtifact}
             removeArtifact={removeArtifact}
           />
-        </SearchRow>
-      )}
+        )}
+      </SearchRow>
     </div>
   );
 }
