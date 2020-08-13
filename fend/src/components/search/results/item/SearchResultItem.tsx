@@ -36,9 +36,9 @@ export default function SearchResultItem(props: SearchResultProps) {
   };
 
   const handlePopupAccept = () => {
-    props.selectArtifact(props.result);
     setOpen(false);
     setChecked(true);
+    props.selectArtifact(props.result);
   };
 
   return (
@@ -46,7 +46,7 @@ export default function SearchResultItem(props: SearchResultProps) {
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-label="Expand">
         <FormControlLabel
           aria-label="Select"
-          onClick={(event) => event.stopPropagation()}
+          onClick={(event) => event.stopPropagation()} //stops opening of accordion
           onFocus={(event) => event.stopPropagation()}
           control={<Checkbox value={checked} onClick={onClick} />}
           label={props.result.id}
