@@ -45,19 +45,21 @@ export default function SearchBar(props: SearchBarProps) {
           id={SEARCH_BAR_ID}
           selectOnFocus
           clearOnBlur
+          clearOnEscape
+          autoHighlight
           handleHomeEndKeys
           options={getQueryRecommendations(query)}
           value={query}
           onChange={(event: any, newValue: any) => {
             setQuery(newValue === null ? "" : [query, newValue, ""].join(" "));
           }}
-          renderInput={(params: object) =>
-            SearchSuggestion(params, props.onSubmit)
-          }
-          inputValue={query}
           onInputChange={(event, newValue) => {
             setQuery(newValue);
           }}
+          inputValue={query}
+          renderInput={(params: object) =>
+            SearchSuggestion(params, props.onSubmit)
+          }
           size="small"
           fullWidth={true}
         />

@@ -2,7 +2,7 @@ import store from "../redux/store";
 import { Artifact } from "../shared/types/Dataset";
 import { SearchItem, SearchResponse } from "../shared/types/Search";
 import { BASE_URL, post } from "./base";
-import { createAlertMessage, CustomError, isError } from "./errors";
+import { CustomError, isError } from "./errors";
 
 interface SourceSearchPayload {
   datasetName: string;
@@ -24,7 +24,6 @@ export async function searchForSourceArtifact(
 ): Promise<SearchItem[]> {
   const searchUrl = [BASE_URL, "source"].join("/");
   const payload: SourceSearchPayload = { datasetName, query, limit };
-  console.log(payload);
   return baseSearchFunction(searchUrl, payload);
 }
 
@@ -54,12 +53,14 @@ async function baseSearchFunction(
   url: string,
   payload: SourceSearchPayload
 ): Promise<SearchItem[]> {
-  const response: ServerResponse = await (post(url, payload) as Promise<
-    SearchResponse
-  >);
-  if (isError(response)) {
-    alert(createAlertMessage(response));
-    return [];
-  }
-  return response.searchItems;
+  return new Promise((resolve, reject) => {
+    (post(url, payload) as Promise<SearchResponse>).then(
+      (response: ServerResponse) => {
+        if (isError(response)) {
+          return reject(response.error);
+        }
+        return resolve(response.searchItems);
+      }
+    );
+  });
 }

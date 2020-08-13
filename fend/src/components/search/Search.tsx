@@ -8,6 +8,7 @@ import { Artifact, Dataset } from "../../shared/types/Dataset";
 import { SearchItem } from "../../shared/types/Search";
 import SearchBar from "./bar/SearchBar";
 import SearchResults from "./results/SearchResults";
+import SearchSnackBar from "./snack/SearchSnackBar";
 import { SuggestionFunctionType } from "./types";
 
 const SEARCH_LIMIT = 30;
@@ -20,6 +21,7 @@ export interface SearchProps {
 export default function Search(props: SearchProps) {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
   const dispatch = useDispatch();
 
   const dataset: Dataset = useSelector((state: RootState) => state.dataset);
@@ -38,6 +40,7 @@ export default function Search(props: SearchProps) {
       })
       .catch((e) => {
         setLoading(false);
+        setError(e.toString());
       });
   };
 
@@ -65,6 +68,7 @@ export default function Search(props: SearchProps) {
           />
         )}
       </SearchRow>
+      <SearchSnackBar error={error} handleClose={() => setError(undefined)} />
     </div>
   );
 }

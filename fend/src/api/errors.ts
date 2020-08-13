@@ -6,7 +6,7 @@ export interface CustomError {
 }
 
 export function isError(obj: object): obj is CustomError {
-  const requiredKeys: string[] = ["error", "message"];
+  const requiredKeys: string[] = ["error"];
   return objectContainsKeys(requiredKeys, obj);
 }
 

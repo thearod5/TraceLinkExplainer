@@ -22,9 +22,11 @@ export default function NavBar() {
       boxShadow={3}
       className="flexRowCenteredWidthFull"
     >
-      <NavBarTitle onClick={GoHomeClickHanlder} className="padLight">
-        {activeStep === 0 ? WELCOME_MESSAGE : dataset}
-      </NavBarTitle>
+      <div className="centeredColumn">
+        <NavBarTitle onClick={GoHomeClickHanlder} className="padLight">
+          {activeStep === 0 ? WELCOME_MESSAGE : dataset}
+        </NavBarTitle>
+      </div>
     </NavBarContainer>
   );
 }
