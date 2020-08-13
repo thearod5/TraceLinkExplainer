@@ -48,6 +48,7 @@ export default function SearchBar(props: SearchBarProps) {
           clearOnBlur
           clearOnEscape
           handleHomeEndKeys
+          freeSolo
           options={getQueryRecommendations(query)}
           value={query}
           onChange={(event: any, newValue: any) => {

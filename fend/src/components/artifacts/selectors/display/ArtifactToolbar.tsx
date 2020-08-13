@@ -77,10 +77,11 @@ export default function ArtifactToolbar(props: ArtifactToolbarProps) {
       </TitleContainer>
 
       <CheckBoxContainer>
-        {ICONS.map((iconButton: IconButton) => {
+        {ICONS.map((iconButton: IconButton, index: number) => {
           const { checked, onChange } = iconButton;
           return (
             <Checkbox
+              key={index}
               checked={checked}
               color="primary"
               checkedIcon={<iconButton.iconElement color="primary" />} //Compains if iconElement moved to deconstruction

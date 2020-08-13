@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { SearchItem } from "../../../shared/types/Search";
 import { BORDER_LINE } from "../../../styles/constants";
 import { ArtifactClickAction } from "../types";
-import SearchResultItem from "./item/Item";
+import SearchResultItem from "./item/SearchResultItem";
 
 const NUMBER_RESULTS_PROMPT = " results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;

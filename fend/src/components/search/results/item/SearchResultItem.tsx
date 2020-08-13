@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { SearchItem } from "../../../../shared/types/Search";
 import { getDefaultArtifactDisplay } from "../../../artifacts/Artifacts";
 import { ArtifactClickAction } from "../../types";
-import ItemPopup from "./ItemPopup";
+import ItemPopup from "./SearchResultItemPopup";
 
 interface SearchResultProps {
   result: SearchItem;

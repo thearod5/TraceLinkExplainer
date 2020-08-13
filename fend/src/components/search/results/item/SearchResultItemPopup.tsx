@@ -48,11 +48,11 @@ export default function ItemPopup(props: ItemPopupProps) {
       <DialogContent dividers>{createBodyContainer}</DialogContent>
       <DialogActions>
         <ActionContainer>
-          <IconButton aria-label="exit">
-            <CloseIcon onClick={props.handleClose} />
+          <IconButton aria-label="exit" onClick={props.handleClose}>
+            <CloseIcon />
           </IconButton>
-          <IconButton aria-label="select">
-            <DoneIcon onClick={props.selectSource} />
+          <IconButton aria-label="select" onClick={props.selectSource}>
+            <DoneIcon />
           </IconButton>
         </ActionContainer>
       </DialogActions>
