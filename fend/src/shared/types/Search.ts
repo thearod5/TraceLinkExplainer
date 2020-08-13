@@ -1,4 +1,8 @@
-import { Artifact } from "./Dataset";
+import {
+  Artifact,
+  ArtifactIdentifier,
+  isArtifactIdentifierList,
+} from "./Dataset";
 import { objectContainsKeys } from "./TypeUtil";
 
 /*
@@ -12,8 +16,7 @@ export interface SearchSourceRoutePayload {
 }
 
 export interface SearchTargetRoutePayload extends SearchSourceRoutePayload {
-  sourceType: string;
-  sourceId: string;
+  sources: ArtifactIdentifier[];
 }
 
 export interface SearchResponse {
@@ -40,12 +43,13 @@ export function isSearchSourceRoutePayload(obj?: object, log = false) {
 }
 
 export function isSearchTargetRoutePayload(
-  obj?: object,
+  obj?: any,
   log = false
 ): obj is SearchTargetRoutePayload {
-  const requiredKeys = ["sourceType", "sourceId"];
+  const requiredKeys = ["sources"];
   return (
     isSearchSourceRoutePayload(obj, log) &&
-    objectContainsKeys(requiredKeys, obj, log)
+    objectContainsKeys(requiredKeys, obj, log) &&
+    isArtifactIdentifierList(obj.sources)
   );
 }

@@ -22,18 +22,26 @@ def search_for_artifact(dataset: str, query: [str], limit: int):
 
 def search_for_related_artifacts(
         dataset: str,
-        target_type: str,
-        target_id: str,
+        sources: [dict],
         query: str,
         limit: int):
-    traced_artifacts = get_traced_artifacts(dataset, target_type, target_id)
+    traced_artifacts = []
+    for source in sources:
+        target_type = source["type"]
+        target_id = source["id"]
+        traced_artifacts = traced_artifacts + get_traced_artifacts(dataset, target_type, target_id)
+
+    traced_artifacts = remove_duplicates(traced_artifacts)
     if isinstance(traced_artifacts, dict) and "error" in traced_artifacts.keys():
         return traced_artifacts
     if query.strip() == "":
         default_items = create_default_search_items(traced_artifacts, limit)
         return default_items
-    similarities = compare_target_to_artifacts(query, traced_artifacts)
-    return create_sorted_response(traced_artifacts, similarities, limit)
+    return create_search_response(traced_artifacts, limit)
+
+
+def remove_duplicates(l: dict):
+    return [dict(t) for t in {tuple(d.items()) for d in l}]
 
 
 """

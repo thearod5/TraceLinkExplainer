@@ -69,10 +69,9 @@ test('search : target : default : +', () => {
   const TEST_LIMIT = 5
   const searchQuery: SearchTargetRoutePayload = {
     datasetName: 'Drone',
+    sources: [{ id: 'RE-8', type: 'Requirements' }],
     query: 'diagrams',
-    limit: TEST_LIMIT,
-    sourceId: 'RE-8',
-    sourceType: 'Requirements'
+    limit: TEST_LIMIT
   }
   return testSearchFunction(SEARCH_TARGET_ROUTE, searchQuery, (res) =>
     expectSearchItems(res.body, TEST_LIMIT)

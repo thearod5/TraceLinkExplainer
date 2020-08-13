@@ -28,12 +28,12 @@ export async function searchForSourceArtifact (
 export async function searchForTracedArtifacts (
   searchQuery: SearchTargetRoutePayload
 ): Promise<SearchItem[]> {
-  const { datasetName, sourceType, sourceId, query, limit } = searchQuery
+  const { datasetName, sources, query, limit } = searchQuery
   return runFunction<SearchItem[]>(
     'Search.py',
     'search_for_related_artifacts',
     {
-      arguments: [datasetName, sourceType, sourceId, query, limit]
+      arguments: [datasetName, sources, query, limit]
     }
   ).catch((e) => {
     throw e

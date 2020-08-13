@@ -9,9 +9,12 @@ export interface Dataset {
   summary: string;
 }
 
-export interface Artifact {
+export interface ArtifactIdentifier {
   type: string;
   id: string;
+}
+
+export interface Artifact extends ArtifactIdentifier {
   body: string;
 }
 
@@ -35,6 +38,20 @@ export function isNonEmptyDataset(obj?: object): obj is Dataset {
 }
 
 export function isArtifact(obj?: object): obj is Artifact {
-  const requiredKeys = ["id", "body", "type"];
+  const requiredKeys = ["body"];
+  return isArtifactIdentifier(obj) && objectContainsKeys(requiredKeys, obj);
+}
+
+export function isArtifactIdentifier(obj?: object): obj is ArtifactIdentifier {
+  const requiredKeys = ["id", "type"];
   return objectContainsKeys(requiredKeys, obj);
+}
+
+export function isArtifactIdentifierList(
+  obj: object[]
+): obj is ArtifactIdentifier[] {
+  const isInvalid = obj
+    .map(isArtifactIdentifier)
+    .some((isValid) => isValid === false);
+  return !isInvalid;
 }

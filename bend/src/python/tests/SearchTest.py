@@ -1,6 +1,6 @@
 import unittest
 
-from controllers.Search import search_for_artifact
+from controllers.Search import search_for_artifact, search_for_related_artifacts
 
 
 class SearchTest(unittest.TestCase):
@@ -13,3 +13,20 @@ class SearchTest(unittest.TestCase):
     def test_empty_search(self):
         artifacts = search_for_artifact("Drone", [], 10)["searchItems"]
         self.assertEqual(10, len(artifacts))
+
+    def test_search_for_related_artifacts(self):
+        response = search_for_related_artifacts("Drone",
+                                                [{'id': "RE-8", "type": "Requirements"}],
+                                                "",
+                                                -1)
+        traced_artifacts = response["searchItems"]
+        self.assertEqual(6, len(traced_artifacts))
+
+    def test_search_for_related_artifacts(self):
+        response = search_for_related_artifacts("Drone",
+                                                [{'id': "RE-8", "type": "Requirements"},
+                                                 {'id': "RE-8", "type": "Requirements"}],
+                                                "",
+                                                -1)
+        traced_artifacts = response["searchItems"]
+        self.assertEqual(6, len(traced_artifacts))
