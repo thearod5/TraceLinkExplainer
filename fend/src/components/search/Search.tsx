@@ -50,7 +50,7 @@ export default function Search(props: SearchProps) {
     dispatch(props.onArtifactRemoved(artifact));
 
   return (
-    <SearchContainer>
+    <div className="flexColumn alignContentEnd padTopLight heightFull overflowYScroll">
       <SearchRow style={{ height: "20%" }}>
         <SearchBar onSubmit={startSearch} />
       </SearchRow>
@@ -66,19 +66,9 @@ export default function Search(props: SearchProps) {
           />
         </SearchRow>
       )}
-    </SearchContainer>
+    </div>
   );
 }
-
-const SearchContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-content: flex-end;
-  height: 100%;
-  overflow-y: scroll;
-  padding-top: 10px;
-`;
-
 const SearchRow = styled.div`
   display: flex;
   flex-direct: row;

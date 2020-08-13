@@ -24,7 +24,7 @@ function combineStrings(words: string[]) {
 
     if (subWords.length > 3) {
       throw Error(TOO_MANY_QUOTES);
-    } else if (subWords.length == 3) {
+    } else if (subWords.length === 3) {
       combinedWords.push(subWords[1]);
       continue;
     } else {
@@ -91,7 +91,7 @@ function processSubWordIndex(
   }
 }
 function containsEndQuote(str: string) {
-  return str[str.length - 1] == '"';
+  return str[str.length - 1] === '"';
 }
 function quotesInWord(str: string) {
   return str.split('"').length - 1;

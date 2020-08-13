@@ -17,8 +17,12 @@ export default function NavBar() {
   };
 
   return (
-    <NavBarContainer color="secondary" boxShadow={3}>
-      <NavBarTitle onClick={GoHomeClickHanlder}>
+    <NavBarContainer
+      color="secondary"
+      boxShadow={3}
+      className="flexRowCenteredWidthFull"
+    >
+      <NavBarTitle onClick={GoHomeClickHanlder} className="padLight">
         {activeStep === 0 ? WELCOME_MESSAGE : dataset}
       </NavBarTitle>
     </NavBarContainer>
@@ -26,14 +30,9 @@ export default function NavBar() {
 }
 
 const NavBarContainer = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
   background-color: ${secondaryColor};
 `;
 
 const NavBarTitle = styled.h1`
-  line-height: 100%;
   color: ${theme.palette.primary.main};
-  padding: 10px;
 `;

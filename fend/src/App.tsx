@@ -12,6 +12,7 @@ import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
 import WorkflowStepper from "./components/nav/WorkflowStepper";
 import { getCurrentStep } from "./redux/selectors";
 import { history, persistor, store } from "./redux/store";
+import "./styles/App.scss";
 import theme from "./styles/theme";
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
                 <NavBar />
               </AppHeader>
 
-              <AppContent>
+              <AppContent className="flexColumn">
                 <Switch>
                   <Route path={SELECT_ARTIFACTS_ROUTE}>
                     <ArtifactSelector />
@@ -71,8 +72,6 @@ const AppHeader = styled.header`
 `;
 
 const AppContent = styled.main`
-  display: flex;
-  flex-direction: column;
   min-height: 80%;
   max-height: 80%;
   width: 100%;

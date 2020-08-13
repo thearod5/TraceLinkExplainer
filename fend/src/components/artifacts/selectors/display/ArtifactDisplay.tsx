@@ -1,4 +1,3 @@
-import { Box } from "@material-ui/core";
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
@@ -72,7 +71,7 @@ export default function ArtifactDisplay(props: ArtifactDisplayProps) {
   );
 
   return (
-    <ArtifactDisplayContainer>
+    <div className="flexColumn sizeFull">
       {props.showToolbar ? (
         <ToolbarContainer>
           <ArtifactToolbar
@@ -87,34 +86,17 @@ export default function ArtifactDisplay(props: ArtifactDisplayProps) {
         </ToolbarContainer>
       ) : null}
 
-      <WordContainer boxShadow={3}>
-        <div className="paddingContainer">{body}</div>
-      </WordContainer>
-    </ArtifactDisplayContainer>
+      <div className="textAlignLeft">
+        <div className="sizeFull padLight overflowScroll">{body}</div>
+      </div>
+    </div>
   );
 }
 
 const ToolbarHeightPercentage = 15;
 
-const ArtifactDisplayContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-`;
-
 const ToolbarContainer = styled.div`
   height: ${ToolbarHeightPercentage}%;
-`;
-
-const WordContainer = styled(Box)`
-  font-size: 1em;
-  text-align: left;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  word-wrap: initial;
-  border-radius: 5px;
 `;
 
 const Word = styled.pre`

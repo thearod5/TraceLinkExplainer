@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import "../../styles/App.css";
 import DatasetChooser from "../datasets/DatasetChooser";
 
 export default function Home() {

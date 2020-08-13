@@ -10,7 +10,6 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
-import styled from "styled-components";
 import { SearchItem } from "../../../../shared/types/Search";
 import { getDefaultArtifactDisplay } from "../../../artifacts/Artifacts";
 import { ArtifactClickAction } from "../../types";
@@ -38,33 +37,34 @@ export default function SearchResultItem(props: SearchResultProps) {
 
   const { id } = props.result;
   return (
-    <ItemContainer>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-label="Expand"
-        aria-controls="additional-actions1-content"
-        id="additional-actions1-header"
-      >
+    <Accordion
+      className="fullWidth overflowYScroll"
+      style={{ maxHeight: "450px" }}
+    >
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-label="Expand">
         <FormControlLabel
-          aria-label="Acknowledge"
+          aria-label="Select"
           onClick={(event) => event.stopPropagation()}
           onFocus={(event) => event.stopPropagation()}
           control={<Checkbox value={checked} onClick={onClick} />}
           label={id}
         />
       </AccordionSummary>
-      <ItemBody>
-        <ItemDetails>
-          <DisplayContainer>
-            {getDefaultArtifactDisplay(props.result, false)}
-          </DisplayContainer>
-        </ItemDetails>
-        <ZoomButtonContainer>
+
+      <AccordionDetails style={{ maxHeight: "300px" }}>
+        <Box
+          className="overflowScroll roundBorder"
+          style={{ width: "90%", maxHeight: "300px" }}
+          boxShadow={3}
+        >
+          {getDefaultArtifactDisplay(props.result, false)}
+        </Box>
+        <div className="centeredColumn" style={{ width: "10%" }}>
           <IconButton aria-label="expand" onClick={() => setOpen(!open)}>
             <FullscreenIcon />
           </IconButton>
-        </ZoomButtonContainer>
-      </ItemBody>
+        </div>
+      </AccordionDetails>
 
       <ItemPopup
         handleClose={handleClose}
@@ -72,34 +72,6 @@ export default function SearchResultItem(props: SearchResultProps) {
         artifact={props.result}
         selectSource={() => props.selectArtifact(props.result)}
       />
-    </ItemContainer>
+    </Accordion>
   );
 }
-
-const ItemContainer = styled(Accordion)`
-  width: 100%;
-  overflow-y: scroll;
-  margin: 1px;
-  max-height: 450px;
-`;
-
-const ItemDetails = styled(AccordionDetails)`
-  display: flex;
-  flex-direction: column;
-`;
-
-const ItemBody = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-`;
-
-const DisplayContainer = styled(Box)`
-  max-height: 300px;
-`;
-
-const ZoomButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;

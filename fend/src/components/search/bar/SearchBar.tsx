@@ -4,7 +4,6 @@ import CheckIcon from "@material-ui/icons/Check";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { getQueryRecommendations } from "../../../shared/query/QueryRecommender";
 import { isValidQuery } from "../../../shared/query/QueryValidator";
 
@@ -13,7 +12,7 @@ const ENTER_KEY_CODE = 13;
 const PLACE_HOLDER_TEXT = "...search for a source artifact...";
 
 type SubmitFuncType = (query: string) => void;
-interface SearchBarProps {
+export interface SearchBarProps {
   onSubmit: SubmitFuncType;
 }
 
@@ -21,6 +20,7 @@ export default function SearchBar(props: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [validQuery, setValidQuery] = useState(true);
   const [queryError, setQueryError] = useState("");
+  const [advancedSearch, setAdvancedSearch] = useState(true);
 
   useEffect(() => {
     const [isValid, error] = isValidQuery(query);
@@ -29,16 +29,20 @@ export default function SearchBar(props: SearchBarProps) {
   }, [query]);
 
   return (
-    <SearchBarContainer>
-      <StyledSearchBarRow>
-        {validQuery ? (
-          <CheckIcon color="secondary" style={IconStyle} />
-        ) : (
-          <Tooltip title={queryError}>
-            <ReportProblemIcon color="action" style={IconStyle} />
-          </Tooltip>
-        )}
-        <StyledSearchBar
+    <div className="flexColumn justifyContentCenter fullWidth">
+      <div className="flexRowCenteredWidthFull">
+        <div className="centeredColumn padLight">
+          {validQuery ? (
+            <CheckIcon color="secondary" className="heightFull" />
+          ) : (
+            <Tooltip title={queryError}>
+              <ReportProblemIcon color="action" className="heightFull" />
+            </Tooltip>
+          )}
+        </div>
+
+        <Autocomplete
+          className="roundBorder"
           id={SEARCH_BAR_ID}
           selectOnFocus
           clearOnBlur
@@ -65,8 +69,16 @@ export default function SearchBar(props: SearchBarProps) {
         >
           Search
         </Button>
-      </StyledSearchBarRow>
-    </SearchBarContainer>
+
+        <Button
+          style={{ margin: "5px" }}
+          color="secondary"
+          onClick={() => setAdvancedSearch(!advancedSearch)}
+        >
+          {advancedSearch ? "Basic" : "Advanced"}
+        </Button>
+      </div>
+    </div>
   );
 }
 
@@ -90,33 +102,10 @@ const SEARCH_BAR_MAX_WIDTH = 1000;
 const SEARCH_BAR_HEIGHT = 55;
 const SEARCH_BAR_SIDE_PADDING = 10;
 
-const SearchBarContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-`;
-
-const StyledSearchBar = styled(Autocomplete)`
-  border-radius: 5px;
-`;
-
-const StyledSearchBarRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-`;
-
 const SearchBarStyle = {
   maxWidth: `${SEARCH_BAR_MAX_WIDTH}px`,
   minWidth: `${SEARCH_BAR_MIN_WIDTH}px`,
   width: `${SEARCH_BAR_WIDTH}px`,
   height: `${SEARCH_BAR_HEIGHT}px;`,
   paddingLeft: `${SEARCH_BAR_SIDE_PADDING}px`,
-};
-
-const IconStyle = {
-  height: "100%",
-  padding: "1px",
 };

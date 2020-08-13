@@ -12,7 +12,6 @@ import {
 
 const COMBINATOR_ERROR_HELP =
   'Note, multi-word values are expected to wrapped in quotation marks (e.g "[TEXT]")';
-const UNDEFINED_PREVIOUS_STEP = "previous step not defined";
 const MISSING_ATTRIBUTE_ERROR = `Missing Attribute to operate on. Attribute are: ${ATTRIBUTE_VALUES}`;
 
 type isValidResponse = [boolean, string];
@@ -44,7 +43,7 @@ export function isValidOperation(
 }
 
 export function isValidValue(command: string): isValidResponse {
-  if (command.length == 0) return [false, "Value cannot be empty string."];
+  if (command.length === 0) return [false, "Value cannot be empty string."];
   if (command.includes('"'))
     return [false, "Value multi-space string could not be parsed."];
 

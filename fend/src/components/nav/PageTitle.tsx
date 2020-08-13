@@ -51,10 +51,7 @@ const TitleText = styled.h1`
   margin: 0px;
   width: 100%;
   text-align: center;
-  padding-top: ${TEXT_TOP_PADDING}px;
-  padding-bottom: ${TEXT_TOP_PADDING}px;
-  padding-left: ${TEXT_SIDE_PADDING}px;
-  padding-right: ${TEXT_SIDE_PADDING}px;
+  padding: ${TEXT_TOP_PADDING}px ${TEXT_SIDE_PADDING}px
   display: inline-block;
 `;
 
