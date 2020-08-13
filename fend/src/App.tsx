@@ -10,7 +10,7 @@ import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
 import WorkflowStepper from "./components/nav/WorkflowStepper";
-import SearchSnackBar from "./components/snack/SearchSnackBar";
+import AppSnackBar from "./components/snack/AppSnackBar";
 import { setError } from "./redux/actions";
 import { getCurrentStep, getError } from "./redux/selectors";
 import { history, persistor, store } from "./redux/store";
@@ -51,7 +51,7 @@ function App() {
                 {activeStep >= 0 ? <WorkflowStepper /> : null}
               </AppFooter>
             </AppContainer>
-            <SearchSnackBar error={error} handleClose={handleClose} />
+            <AppSnackBar error={error} handleClose={handleClose} />
           </MuiThemeProvider>
         </Router>
       </PersistGate>

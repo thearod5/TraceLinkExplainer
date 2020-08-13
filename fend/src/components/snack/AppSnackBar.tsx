@@ -8,7 +8,7 @@ interface SearchSnackBarProps {
   handleClose: () => void;
 }
 
-export default function SearchSnackBar(props: SearchSnackBarProps) {
+export default function AppSnackBar(props: SearchSnackBarProps) {
   return (
     <Snackbar
       anchorOrigin={{
