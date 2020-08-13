@@ -13,13 +13,17 @@ export default function SearchSnackBar(props: SearchSnackBarProps) {
     <Snackbar
       anchorOrigin={{
         vertical: "bottom",
-        horizontal: "left",
+        horizontal: "center",
       }}
       open={props.error !== undefined}
-      autoHideDuration={3000}
+      autoHideDuration={10000}
       onClose={props.handleClose}
-      action={
+    >
+      <Alert severity="error" style={{ width: "100%" }}>
+        {props.error}
+
         <IconButton
+          className="padSideLight"
           size="small"
           aria-label="close"
           color="inherit"
@@ -27,9 +31,7 @@ export default function SearchSnackBar(props: SearchSnackBarProps) {
         >
           <CloseIcon fontSize="small" />
         </IconButton>
-      }
-    >
-      <Alert severity="warning">{props.error}</Alert>
+      </Alert>
     </Snackbar>
   );
 }

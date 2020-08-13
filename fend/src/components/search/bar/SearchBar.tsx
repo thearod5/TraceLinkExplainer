@@ -14,7 +14,8 @@ const PLACE_HOLDER_TEXT = "...search for a source artifact...";
 
 type SubmitFuncType = (query: string) => void;
 export interface SearchBarProps {
-  onSubmit: SubmitFuncType;
+  onSearch: SubmitFuncType;
+  onSubmit: () => void;
 }
 
 export default function SearchBar(props: SearchBarProps) {
@@ -46,7 +47,6 @@ export default function SearchBar(props: SearchBarProps) {
           selectOnFocus
           clearOnBlur
           clearOnEscape
-          autoHighlight
           handleHomeEndKeys
           options={getQueryRecommendations(query)}
           value={query}
@@ -58,7 +58,7 @@ export default function SearchBar(props: SearchBarProps) {
           }}
           inputValue={query}
           renderInput={(params: object) =>
-            SearchSuggestion(params, props.onSubmit)
+            SearchSuggestion(params, props.onSearch)
           }
           size="small"
           fullWidth={true}
@@ -72,7 +72,7 @@ export default function SearchBar(props: SearchBarProps) {
             className="padLight"
             color="primary"
             variant="contained"
-            onClick={(event: any) => props.onSubmit(query)}
+            onClick={(event: any) => props.onSearch(query)}
           >
             Search
           </Button>
@@ -90,7 +90,8 @@ export default function SearchBar(props: SearchBarProps) {
             size="small"
             className="padLight"
             color="secondary"
-            aria-label="add to shopping cart"
+            aria-label="find traces"
+            onClick={() => props.onSubmit()}
           >
             <KeyboardTabIcon />
           </IconButton>

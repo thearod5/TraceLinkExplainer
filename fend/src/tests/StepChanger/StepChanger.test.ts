@@ -91,6 +91,7 @@ test("+ : setDataset", () => {
 
 test("+ : selectSourceArtifact", () => {
   let currentState: RootState = store.getState();
+  expect(currentState.metaData.selectedSources.length).toEqual(0);
 
   //Test
   store.dispatch(setSourceArtifact(mockArtifact));

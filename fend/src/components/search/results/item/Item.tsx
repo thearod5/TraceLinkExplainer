@@ -31,11 +31,16 @@ export default function SearchResultItem(props: SearchResultProps) {
 
   const onClick = () => {
     setChecked(!checked);
-    const clickCallback = checked ? props.selectArtifact : props.removeArtifact;
+    const clickCallback = checked ? props.removeArtifact : props.selectArtifact;
     clickCallback(props.result);
   };
 
-  const { id } = props.result;
+  const handlePopupAccept = () => {
+    props.selectArtifact(props.result);
+    setOpen(false);
+    setChecked(true);
+  };
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-label="Expand">
@@ -44,7 +49,7 @@ export default function SearchResultItem(props: SearchResultProps) {
           onClick={(event) => event.stopPropagation()}
           onFocus={(event) => event.stopPropagation()}
           control={<Checkbox value={checked} onClick={onClick} />}
-          label={id}
+          label={props.result.id}
         />
       </AccordionSummary>
 
@@ -67,7 +72,7 @@ export default function SearchResultItem(props: SearchResultProps) {
         handleClose={handleClose}
         open={open}
         artifact={props.result}
-        selectSource={() => props.selectArtifact(props.result)}
+        selectSource={handlePopupAccept}
       />
     </Accordion>
   );

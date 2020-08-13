@@ -5,6 +5,7 @@ import {
 } from "../../components/nav/routes";
 import { RootState } from "../../redux";
 import { initializeEmptyMetaData } from "../../redux/initializers";
+import store from "../../redux/store";
 import { isNonEmptyDataset } from "../types/Dataset";
 import { SELECT_DATASET_STEP, SELECT_SOURCE_STEP } from "./constants";
 
@@ -26,7 +27,7 @@ export function getNewStepState(
   requestedStep: number
 ): RootState | string {
   //Step step if an error is found
-  const error = getStepChangeError(currentState, requestedStep); //validation
+  const error = getStepChangeError(requestedStep, currentState); //validation
   if (error !== undefined) return error;
 
   //All Code assumes valid step change.
@@ -51,13 +52,14 @@ export function getNewStepState(
 }
 
 export function getStepChangeError(
-  state: RootState,
-  requestedStep: number
+  requestedStep: number,
+  currentState?: RootState
 ): string | undefined {
+  const state = currentState === undefined ? store.getState() : currentState;
   const requestedEndpoint = PAGE_STEP_MAPPING[requestedStep];
   const datasetSelected = isNonEmptyDataset(state.dataset);
-  const sourceSelected = state.metaData.sourceArtifact.id !== "";
-  const targetSelected = state.metaData.sourceArtifact.id !== "";
+  const sourceSelected = state.metaData.selectedSources.length > 0;
+  const targetSelected = state.metaData.selectedTargets.length > 0;
 
   switch (requestedEndpoint) {
     case HOME_ROUTE:

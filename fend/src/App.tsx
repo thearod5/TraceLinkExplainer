@@ -1,6 +1,6 @@
 import { MuiThemeProvider } from "@material-ui/core";
 import React from "react";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import styled from "styled-components";
@@ -10,14 +10,19 @@ import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
 import WorkflowStepper from "./components/nav/WorkflowStepper";
-import { getCurrentStep } from "./redux/selectors";
+import SearchSnackBar from "./components/snack/SearchSnackBar";
+import { setError } from "./redux/actions";
+import { getCurrentStep, getError } from "./redux/selectors";
 import { history, persistor, store } from "./redux/store";
 import "./styles/App.scss";
 import theme from "./styles/theme";
 
 function App() {
+  const dispatch = useDispatch();
+  const error = useSelector(getError);
   const activeStep = useSelector(getCurrentStep) - 1; //recreated index at 0, but remove select dataset move
 
+  const handleClose = () => dispatch(setError(undefined));
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -46,6 +51,7 @@ function App() {
                 {activeStep >= 0 ? <WorkflowStepper /> : null}
               </AppFooter>
             </AppContainer>
+            <SearchSnackBar error={error} handleClose={handleClose} />
           </MuiThemeProvider>
         </Router>
       </PersistGate>

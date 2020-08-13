@@ -18,6 +18,7 @@ export function initializeEmptyMetaData(): MetaData {
 
     selectedSources: [],
     selectedTargets: [],
+    error: undefined,
   };
 }
 

@@ -60,6 +60,7 @@ function createButtons(clickHandler: ButtonClickCallback): JSX.Element[] {
     let itemContent: ModalItemContent = MODAL_ITEMS[modalDescription];
     return (
       <Button
+        key={itemContent.route}
         startIcon={<itemContent.icon />}
         onClick={() => clickHandler(itemContent.route)}
       >

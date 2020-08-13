@@ -64,6 +64,11 @@ body,
   padding-right: 10px;
 }
 
+.padSideMedium {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .padTopLight {
   padding-top: 10px;
 }
@@ -134,9 +139,15 @@ body,
  * Row
  */
 
+//TODO: Rename this
 .flexRowCentered {
   @extend .flexRow;
   @extend .justifyContentCenter;
+}
+
+.flexRowContentLeft {
+  @extend .flexRow;
+  @extend .justifyContentLeft;
 }
 
 .flexRowSpaceAround {

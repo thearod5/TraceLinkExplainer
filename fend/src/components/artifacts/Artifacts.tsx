@@ -66,8 +66,6 @@ function createFamilyColors(families: string[]): FamilyColors {
   return familyColors;
 }
 
-//TODO: Vertically center text asking to selecting a source
-
 export default function ArtifactSelector() {
   const sourceArtifact: Artifact = useSelector(getSourceArtifact);
   const targetArtifact: Artifact = useSelector(getTargetArtifact);

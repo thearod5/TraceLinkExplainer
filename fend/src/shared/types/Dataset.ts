@@ -55,3 +55,14 @@ export function isArtifactIdentifierList(
     .some((isValid) => isValid === false);
   return !isInvalid;
 }
+
+/*
+ * Type conversions
+ */
+
+export function getArtifactIdentifierInformation(
+  artifact: Artifact
+): ArtifactIdentifier {
+  const { id, type } = artifact;
+  return { id, type };
+}

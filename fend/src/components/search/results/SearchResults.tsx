@@ -1,3 +1,4 @@
+import { LinearProgress } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { SearchItem } from "../../../shared/types/Search";
@@ -9,6 +10,7 @@ const NUMBER_RESULTS_PROMPT = " results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
 
 interface SearchResultsProps {
+  loading: boolean;
   results: SearchItem[];
   selectArtifact: ArtifactClickAction;
   removeArtifact: ArtifactClickAction;
@@ -17,9 +19,13 @@ interface SearchResultsProps {
 export default function SearchResults(props: SearchResultsProps) {
   return (
     <div className="flexColumn sizeFull">
-      <NumberResultsDisplay>
-        {props.results.length + NUMBER_RESULTS_PROMPT}
-      </NumberResultsDisplay>
+      {props.loading ? (
+        <LinearProgress color="secondary" />
+      ) : (
+        <NumberResultsDisplay>
+          {props.results.length + NUMBER_RESULTS_PROMPT}
+        </NumberResultsDisplay>
+      )}
       {props.results.map((searchItem) => {
         return (
           <SearchResultItem

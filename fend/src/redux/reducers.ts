@@ -5,6 +5,7 @@ import {
   REMOVE_SELECTED_SOURCE_ACTION,
   REMOVE_SELECTED_TARGET_ACTION,
   SELECT_DATASET,
+  SET_ERROR_ACTION,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
   UNSELECT_DATASET,
@@ -66,6 +67,11 @@ export function metaDataReducer(
         targetArtifact: artifactsAreEqual(state.targetArtifact, action.payload)
           ? initializeEmptyArtifact()
           : state.targetArtifact,
+      };
+    case SET_ERROR_ACTION:
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;

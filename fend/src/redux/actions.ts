@@ -1,6 +1,7 @@
 import { Artifact, Dataset } from "../shared/types/Dataset";
 import { initializeEmptyDataset } from "./initializers";
 import {
+  ArtifactMutatorActionType,
   ClearDataAction,
   SelectDatasetAction,
   UnselectDatasetAction,
@@ -56,11 +57,6 @@ export function changeStep(newStep: number) {
  * Artifacts
  */
 
-export interface ArtifactMutatorActionType {
-  type: string;
-  payload: Artifact;
-}
-
 export const SET_SOURCE_ARTIFACT_ACTION = "SET_SOURCE_ARTIFACT_ACTION";
 
 export function setSourceArtifact(
@@ -102,5 +98,22 @@ export function removeSelectedTarget(
   return {
     type: REMOVE_SELECTED_TARGET_ACTION,
     payload: selectedArtifact,
+  };
+}
+
+/*
+ * error handling
+ */
+export const SET_ERROR_ACTION = "SET_ERROR_ACTION";
+
+export interface SetErrorType {
+  type: string;
+  payload: string | undefined;
+}
+
+export function setError(error: string | undefined): SetErrorType {
+  return {
+    type: SET_ERROR_ACTION,
+    payload: error,
   };
 }

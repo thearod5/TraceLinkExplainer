@@ -5,6 +5,7 @@ import {
   REMOVE_SELECTED_SOURCE_ACTION,
   REMOVE_SELECTED_TARGET_ACTION,
   SELECT_DATASET,
+  SET_ERROR_ACTION,
   SET_SOURCE_ARTIFACT_ACTION,
   SET_TARGET_ARTIFACT_ACTION,
   UNSELECT_DATASET,
@@ -46,6 +47,11 @@ export type DatasetActionType =
  * Meta
  */
 
+export interface ArtifactMutatorActionType {
+  type: string;
+  payload: Artifact;
+}
+
 export interface MetaData {
   oldStep: number;
   currentStep: number;
@@ -54,6 +60,7 @@ export interface MetaData {
 
   selectedSources: Artifact[];
   selectedTargets: Artifact[];
+  error: string | undefined;
 }
 
 export interface ChangeStepAction {
@@ -81,9 +88,15 @@ export interface RemoveSelectedTarget {
   payload: Artifact;
 }
 
+export interface SetError {
+  type: typeof SET_ERROR_ACTION;
+  payload: string | undefined;
+}
+
 export type MetaActionType =
   | RemoveSelectedSource
   | RemoveSelectedTarget
   | SetTargetArtifactAction
   | SetSourceArtifactAction
+  | SetError
   | ClearDataAction;

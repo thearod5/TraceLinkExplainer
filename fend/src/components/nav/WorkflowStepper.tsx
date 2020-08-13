@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
-import store, { history } from "../../redux/store";
+import { history } from "../../redux/store";
 import {
   getStepChangeError,
   PAGE_STEP_MAPPING,
@@ -20,7 +20,7 @@ export default function WorkflowStepper() {
   const steps = getSteps();
 
   const moveToStep = (step: number) => {
-    const error = getStepChangeError(store.getState(), step);
+    const error = getStepChangeError(step);
     if (error !== undefined) {
       alert(error);
     } else {
