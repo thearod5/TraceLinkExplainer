@@ -82,7 +82,7 @@ test("- : isValidValue : contains quote", () => {
  */
 
 test("+ : isValidCombinator : default", () => {
-  const combinator = "and";
+  const combinator = "or";
   const [isValid, error] = isValidCombinator(combinator);
   expect(isValid).toBe(true);
 });
@@ -145,17 +145,23 @@ test("+ : isValidStep : combinator", () => {
  * isValidQuery
  */
 
+test("+ : isValidQuery : empty", () => {
+  const query = "";
+  const [isValid, error] = isValidQuery(query);
+  expect(isValid).toBe(true);
+});
+
+test("+ : isValidQuery : empty", () => {
+  const query = "id is RE-8 or type is classes";
+  const [isValid, error] = isValidQuery(query);
+  expect(isValid).toBe(true);
+});
+
 test("- : isValidQuery : step parse error", () => {
   const query = 'body contains "hello';
   const [isValid, error] = isValidQuery(query);
   expect(isValid).toBe(false);
   expect(error).toContain("closing quote");
-});
-
-test("+ : isValidQuery : empty", () => {
-  const query = "";
-  const [isValid, error] = isValidQuery(query);
-  expect(isValid).toBe(true);
 });
 
 test("- : isValidQuery : some step fails", () => {
