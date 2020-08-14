@@ -16,12 +16,15 @@ interface SearchFooterProps {
 }
 
 export function SearchFooter(props: SearchFooterProps) {
-  const previousPageButton =
-    props.page === 1 ? null : (
-      <IconButton onClick={props.onPreviousPage}>
-        <ArrowBackIosIcon></ArrowBackIosIcon>
-      </IconButton>
-    );
+  const previousPageButton = (
+    <IconButton
+      color="secondary"
+      disabled={props.page === 1}
+      onClick={props.onPreviousPage}
+    >
+      <ArrowBackIosIcon></ArrowBackIosIcon>
+    </IconButton>
+  );
   const pageLabel = (
     <div className="centeredColumn padLight">
       <label className="bold">
@@ -29,15 +32,19 @@ export function SearchFooter(props: SearchFooterProps) {
       </label>
     </div>
   );
-  const nextPageButton =
-    props.page === props.totalPages ? null : (
-      <IconButton onClick={props.onNextPage}>
-        <ArrowForwardIosIcon></ArrowForwardIosIcon>
-      </IconButton>
-    );
+  const nextPageButton = (
+    <IconButton
+      color="secondary"
+      disabled={props.page === props.totalPages}
+      onClick={props.onNextPage}
+    >
+      <ArrowForwardIosIcon></ArrowForwardIosIcon>
+    </IconButton>
+  );
 
   const nextStepButton = (
     <FormControlLabel
+      className="padLight"
       control={
         <Checkbox
           checked={props.completed}
@@ -46,6 +53,7 @@ export function SearchFooter(props: SearchFooterProps) {
         />
       }
       label={props.message}
+      labelPlacement="start"
     />
   );
 

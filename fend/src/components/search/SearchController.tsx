@@ -119,6 +119,8 @@ export default function SearchController(props: SearchProps) {
   };
 
   const handleStepCompleted = () => {
+    if (selectedArtifacts.length === 0)
+      return dispatch(setError("No artifacts selected."));
     dispatch(props.onArtifactsSelected(selectedArtifacts));
     const nextStep = currentStep + 1;
     const error = getStepChangeError(nextStep);

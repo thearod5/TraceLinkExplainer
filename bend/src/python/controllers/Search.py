@@ -29,8 +29,11 @@ def search_for_related_artifacts(
     for source in sources:
         target_type = source["type"]
         target_id = source["id"]
-        traced_artifacts = traced_artifacts + \
-                           get_traced_artifacts(dataset, target_type, target_id)
+        source_traced_artifacts = get_traced_artifacts(dataset, target_type, target_id)
+        if isinstance(source_traced_artifacts, dict):
+            continue
+        else:
+            traced_artifacts = traced_artifacts + source_traced_artifacts
 
     traced_artifacts = remove_duplicates(traced_artifacts)
     if isinstance(traced_artifacts, dict) and "error" in traced_artifacts.keys():
