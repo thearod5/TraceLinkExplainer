@@ -30,9 +30,9 @@ export default function SearchResultItem(props: SearchResultProps) {
   };
 
   const onClick = () => {
-    setChecked(!checked);
     const clickCallback = checked ? props.removeArtifact : props.selectArtifact;
     clickCallback(props.result);
+    setChecked(!checked);
   };
 
   const handlePopupAccept = () => {

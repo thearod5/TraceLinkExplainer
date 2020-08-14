@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { getTraceInformation } from "../../api/trace";
 import {
   getCurrentStep,
-  getSourceArtifact,
-  getTargetArtifact,
+  getSelectedSources,
+  getSelectedTargets,
 } from "../../redux/selectors";
 import {
   createDefaultWords,
@@ -67,11 +67,14 @@ function createFamilyColors(families: string[]): FamilyColors {
 }
 
 export default function ArtifactSelector() {
-  const sourceArtifact: Artifact = useSelector(getSourceArtifact);
-  const targetArtifact: Artifact = useSelector(getTargetArtifact);
+  const selectedSources: Artifact[] = useSelector(getSelectedSources);
+  const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
+
+  const sourceArtifact = selectedSources[0];
+  const targetArtifact = selectedTargets[0];
 
   useEffect(() => {
     switch (currentStep) {
@@ -84,7 +87,7 @@ export default function ArtifactSelector() {
         setRightPanel(<TargetArtifactSearch />);
         break;
       case VIEW_TRACE_STEP:
-        getTraceInformation("Drone", sourceArtifact, targetArtifact)
+        getTraceInformation("Drone", sourceArtifact, targetArtifact) // change with state index
           .then((traceInformation) => {
             const familyColors = createFamilyColors(traceInformation.families);
 
@@ -106,9 +109,9 @@ export default function ArtifactSelector() {
           .catch((e) => console.error(e));
         break;
       default:
-        setLeftPanel(<NoSourceMessage />);
-        setRightPanel(<NoSourceMessage />);
-        break;
+        throw Error(
+          "Expected state to be at least step 1. Give: " + currentStep
+        );
     }
   }, [currentStep, sourceArtifact, targetArtifact]);
 
@@ -127,4 +130,5 @@ const ArtifactsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
+  padding: 0px;
 `;

@@ -3,9 +3,18 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
-import { RootState } from "../../redux";
-import { changeStep, clearData, selectDataset } from "../../redux/actions";
+import {
+  changeStep,
+  clearData,
+  selectDataset,
+  setError,
+} from "../../redux/actions";
+import { getCurrentStep, getDataset } from "../../redux/selectors";
+import { appHistory } from "../../redux/store";
+import { FIRST_STEP_IN_WIZARD } from "../../shared/pagechanger/constants";
+import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
 import { Dataset } from "../../shared/types/Dataset";
+import { SELECT_ARTIFACTS_ROUTE } from "../nav/routes";
 import DatasetItem from "./item/DatasetItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
@@ -13,7 +22,8 @@ const UNIMPLEMENTED_NEW_DATASET_ERROR =
   "Adding a new dataset is not yet implemented.";
 
 function DatasetChooser() {
-  const dataset = useSelector((state: RootState) => state.dataset);
+  const dataset = useSelector(getDataset);
+  const currentStep = useSelector(getCurrentStep);
   const dispatch = useDispatch();
 
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
@@ -35,15 +45,27 @@ function DatasetChooser() {
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
-    getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
-      dispatch(selectDataset(dataset));
-    });
+    getDatasetByName(clickedDatasetName).then((dataset: Dataset) =>
+      dispatch(selectDataset(dataset))
+    );
   };
 
   const deselectDataset = () => {
     dispatch(clearData());
     setIndexSelected(DEFAULT_INDEX_SELECTED);
   };
+
+  const onRouteSelected = (route: string) => {
+    if (route === SELECT_ARTIFACTS_ROUTE) {
+      const error = getStepChangeError(FIRST_STEP_IN_WIZARD);
+      if (error === undefined) {
+        dispatch(changeStep(FIRST_STEP_IN_WIZARD));
+        appHistory.push(route);
+      } else dispatch(setError(error));
+    }
+  };
+
+  console.log("CURRENT STEP: ", currentStep);
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
     <DatasetItem
@@ -52,11 +74,12 @@ function DatasetChooser() {
       isSelected={currentIndex === indexSelected}
       select={() => selectDatasetAtIndex(currentIndex)}
       deselect={() => deselectDataset}
+      onRouteSelected={onRouteSelected}
     />
   ));
 
   return (
-    <DatasetChooserContainer boxShadow={3}>
+    <Box className="roundBorder" boxShadow={3}>
       <Title>Datasets</Title>
       <DatasetItemContainer>
         {datasets.length === 0 ? (
@@ -76,21 +99,9 @@ function DatasetChooser() {
           New Dataset
         </NewDatasetButton>
       </NewDatasetButtonContainer>
-    </DatasetChooserContainer>
+    </Box>
   );
 }
-
-//TODO: Remove manual top margin
-const DatasetChooserContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 5px;
-  height: 50%;
-  width: 20%;
-  margin-top: 10%;
-  overflow-y: scroll;
-`;
 
 const LoadingItem = styled.p`
   text-align: center;

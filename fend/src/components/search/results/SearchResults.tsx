@@ -2,7 +2,6 @@ import { LinearProgress } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { SearchItem } from "../../../shared/types/Search";
-import { BORDER_LINE } from "../../../styles/constants";
 import { ArtifactClickAction } from "../types";
 import SearchResultItem from "./item/SearchResultItem";
 
@@ -45,5 +44,4 @@ const NumberResultsDisplay = styled.div`
   text-align: center;
   padding-top: ${NUMBER_DISPLAY_VERTICAL_PADDING}px;
   padding-bottom: ${NUMBER_DISPLAY_VERTICAL_PADDING}px;
-  border-bottom: ${BORDER_LINE};
 `;

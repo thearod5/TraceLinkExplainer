@@ -3,8 +3,8 @@ import {
   removeSelectedSource,
   removeSelectedTarget,
   selectDataset,
-  setSourceArtifact,
-  setTargetArtifact,
+  setSelectedSources,
+  setSelectedTargets,
 } from "../../redux/actions";
 import { RootState } from "../../redux/index";
 import { createEmptyState } from "../../redux/reducers";
@@ -94,7 +94,7 @@ test("+ : selectSourceArtifact", () => {
   expect(currentState.metaData.selectedSources.length).toEqual(0);
 
   //Test
-  store.dispatch(setSourceArtifact(mockArtifact));
+  store.dispatch(setSelectedSources(mockArtifact));
 
   //Assertions
   currentState = store.getState();
@@ -109,7 +109,7 @@ test("+ : selectTargetArtifact", () => {
   let currentState: RootState = store.getState();
 
   //Test
-  store.dispatch(setTargetArtifact(mockArtifact));
+  store.dispatch(setSelectedTargets(mockArtifact));
 
   //Assertions
   currentState = store.getState();
@@ -127,7 +127,7 @@ test("+ : selectTargetArtifact", () => {
   let currentState: RootState = store.getState();
 
   //Test
-  store.dispatch(setTargetArtifact(mockArtifact));
+  store.dispatch(setSelectedTargets(mockArtifact));
   store.dispatch(removeSelectedTarget(mockArtifact));
 
   //Assertions
@@ -152,7 +152,7 @@ test("+ : selectTargetArtifact", () => {
   let currentState: RootState = store.getState();
 
   //Test
-  store.dispatch(setTargetArtifact(mockArtifact));
+  store.dispatch(setSelectedTargets(mockArtifact));
   store.dispatch(removeSelectedTarget(mockArtifact));
 
   //Assertions

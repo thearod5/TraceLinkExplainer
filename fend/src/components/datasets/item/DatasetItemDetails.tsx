@@ -4,11 +4,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import React, { JSXElementConstructor } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { changeStep } from "../../../redux/actions";
-import { history } from "../../../redux/store";
-import { FIRST_STEP_IN_WIZARD } from "../../../shared/pagechanger/constants";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "../../nav/routes";
 type ButtonClickCallback = (route: string) => void;
 
@@ -28,29 +24,21 @@ const MODAL_ITEMS: Record<string, ModalItemContent> = {
   },
 };
 
-interface ItemDetailsProps {}
+interface ItemDetailsProps {
+  onClick: (route: string) => void;
+}
 
 export default function DatasetItemDetails(props: ItemDetailsProps) {
-  const dispatch = useDispatch();
-
-  const handleItemClick: ButtonClickCallback = (route: string) => {
-    if (route === SELECT_ARTIFACTS_ROUTE) {
-      dispatch(changeStep(FIRST_STEP_IN_WIZARD));
-    }
-
-    history.push(route);
-  };
-
   return (
     <ItemContainer>
-      <ItemButtonGroup
+      <ButtonGroup
         orientation="vertical"
         color="primary"
         aria-label="vertical contained primary button group"
         variant="contained"
       >
-        {createButtons(handleItemClick)}
-      </ItemButtonGroup>
+        {createButtons(props.onClick)}
+      </ButtonGroup>
     </ItemContainer>
   );
 }
@@ -75,5 +63,3 @@ const ItemContainer = styled(AccordionDetails)`
   flex-direction: column;
   justify-content: center;
 `;
-
-const ItemButtonGroup = styled(ButtonGroup)``;

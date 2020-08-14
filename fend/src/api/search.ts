@@ -46,7 +46,7 @@ export async function searchForTargetArtifact(
       return reject(Error("Dataset not selected."));
     }
 
-    const sources: Artifact[] = store.getState().metaData.selectedSources;
+    const sources: Artifact[] = store.getState().selectedSources;
     if (sources.length === 0)
       return reject(
         Error(

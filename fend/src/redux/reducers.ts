@@ -1,103 +1,82 @@
-import { RootState } from ".";
 import { getNewStepState } from "../shared/pagechanger/PageChanger";
-import { Artifact } from "../shared/types/Dataset";
+import { areArtifacts, isDataset } from "../shared/types/Dataset";
 import {
-  REMOVE_SELECTED_SOURCE_ACTION,
-  REMOVE_SELECTED_TARGET_ACTION,
+  CHANGE_STEP_ACTION,
+  CLEAR_DATA,
+  CustomAction,
   SELECT_DATASET,
   SET_ERROR_ACTION,
-  SET_SOURCE_ARTIFACT_ACTION,
-  SET_TARGET_ARTIFACT_ACTION,
+  SET_SELECTED_SOURCES_ACTION,
+  SET_SELECTED_TARGETS_ACTION,
   UNSELECT_DATASET,
 } from "./actions";
-import {
-  initializeEmptyArtifact,
-  initializeEmptyDataset,
-  initializeEmptyMetaData,
-} from "./initializers";
-import { ChangeStepAction, DatasetActionType, MetaActionType } from "./types";
+import { initializeEmptyDataset } from "./initializers";
+import { createEmptyState } from "./store";
+import { RootState } from "./types";
 
-export function datasetReducer(
-  state = initializeEmptyDataset(),
-  action: DatasetActionType
-) {
+export default (
+  state = createEmptyState(),
+  action: CustomAction
+): RootState => {
   switch (action.type) {
     case SELECT_DATASET:
-      return action.payload;
+      if (isDataset(action.payload)) {
+        return {
+          ...state,
+          dataset: action.payload,
+        };
+      } else throw new Error(createReducerError("Dataset", action.payload));
+
     case UNSELECT_DATASET:
-      return action.payload;
-    default:
-      return state;
-  }
-}
+      return {
+        ...state,
+        dataset: initializeEmptyDataset(),
+      };
 
-export function metaDataReducer(
-  state = initializeEmptyMetaData(),
-  action: MetaActionType
-) {
-  switch (action.type) {
-    case SET_SOURCE_ARTIFACT_ACTION:
-      return {
-        ...state,
-        sourceArtifact: action.payload,
-        selectedSources: [...state.selectedSources, action.payload],
-      };
-    case SET_TARGET_ARTIFACT_ACTION:
-      return {
-        ...state,
-        targetArtifact: action.payload,
-        selectedTargets: [...state.selectedTargets, action.payload],
-      };
-    case REMOVE_SELECTED_SOURCE_ACTION:
-      return {
-        ...state,
-        selectedSources: state.selectedSources.filter(
-          (a) => !artifactsAreEqual(a, action.payload)
-        ),
-        sourceArtifact: artifactsAreEqual(state.sourceArtifact, action.payload)
-          ? initializeEmptyArtifact()
-          : state.sourceArtifact,
-      };
-    case REMOVE_SELECTED_TARGET_ACTION:
-      return {
-        ...state,
-        selectedTargets: state.selectedTargets.filter(
-          (a) => !artifactsAreEqual(a, action.payload)
-        ),
-        targetArtifact: artifactsAreEqual(state.targetArtifact, action.payload)
-          ? initializeEmptyArtifact()
-          : state.targetArtifact,
-      };
+    case CHANGE_STEP_ACTION:
+      const newStep = action.payload;
+      if (typeof newStep === "number") {
+        const result = getNewStepState(state, newStep);
+        return typeof result === "string"
+          ? { ...state, error: result }
+          : result;
+      } else throw new Error(createReducerError("Number", newStep));
+
+    case SET_SELECTED_SOURCES_ACTION:
+      if (areArtifacts(action.payload)) {
+        return {
+          ...state,
+          selectedSources: action.payload,
+        };
+      } else throw new Error(createReducerError("Artifact[]", action.payload));
+
+    case SET_SELECTED_TARGETS_ACTION:
+      if (areArtifacts(action.payload)) {
+        return {
+          ...state,
+          selectedTargets: action.payload,
+        };
+      } else throw new Error(createReducerError("Artifact[]", action.payload));
+
     case SET_ERROR_ACTION:
-      return {
-        ...state,
-        error: action.payload,
-      };
+      if (typeof action.payload === "string") {
+        return {
+          ...state,
+          error: action.payload,
+        };
+      } else if (action.payload === undefined) {
+        return { ...state, error: undefined };
+      } else {
+        throw new Error(createReducerError("string", action.payload));
+      }
+
+    case CLEAR_DATA:
+      return createEmptyState();
     default:
       return state;
   }
-}
+};
 
-export function createEmptyState(): RootState {
-  return {
-    metaData: initializeEmptyMetaData(),
-    dataset: initializeEmptyDataset(),
-  };
-}
-
-function artifactsAreEqual(a1: Artifact, a2: Artifact) {
-  return a1.type === a2.type && a1.id === a2.id;
-}
-
-export function changeStepReducer(
-  state: RootState,
-  action: ChangeStepAction
-): RootState {
-  const newStep = action.payload;
-  const result = getNewStepState(state, newStep);
-  if (typeof result === "string") {
-    alert(result); // this is an error now
-    return state;
-  }
-  return result;
+function createReducerError(error: string, payload: any) {
+  return `Expected a ${error}. Given: ${payload}.`;
 }

@@ -1,19 +1,12 @@
 import React from "react";
-import styled from "styled-components";
 import DatasetChooser from "../datasets/DatasetChooser";
 
 export default function Home() {
   return (
-    <HomeContainer>
-      <DatasetChooser />
-    </HomeContainer>
+    <div className="flexRowCentered sizeFull">
+      <div className="centeredColumn">
+        <DatasetChooser />
+      </div>
+    </div>
   );
 }
-
-const HomeContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-`;
