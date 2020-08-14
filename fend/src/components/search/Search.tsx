@@ -38,7 +38,7 @@ export default function Search(props: SearchProps) {
   const currentStep: number = useSelector(getCurrentStep);
 
   const startSearch = useCallback(
-    (searchString: string) => {
+    (searchString: string, limit: number = SEARCH_LIMIT) => {
       setLoading(true);
       props
         .searchFunction(searchString, SEARCH_LIMIT)
@@ -86,11 +86,11 @@ export default function Search(props: SearchProps) {
   return (
     <div className="flexColumn alignContentEnd heightFull overflowYScroll">
       <div className="flexRowContentLeft widthFull padVerticalLight">
-        <SearchBar onSearch={startSearch} />
+        <SearchBar onSearch={(query: string) => startSearch(query, -1)} />
       </div>
       <div
         className="flexRowContentLeft widthFull overflowYScroll"
-        style={{ height: selectedArtifacts.length == 0 ? "90%" : "81%" }}
+        style={{ height: selectedArtifacts.length === 0 ? "90%" : "81%" }}
       >
         <SearchResults
           loading={loading}
