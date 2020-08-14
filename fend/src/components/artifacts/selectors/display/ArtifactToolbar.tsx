@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../../../redux/actions";
 import { getCurrentStep } from "../../../../redux/selectors";
-import { fitfthColor, primaryColor } from "../../../../styles/theme";
+import { primaryColor, secondaryColor } from "../../../../styles/theme";
 
 interface ArtifactToolbarProps {
   sizeSelected: boolean;
@@ -84,7 +84,7 @@ export default function ArtifactToolbar(props: ArtifactToolbarProps) {
               key={index}
               checked={checked}
               color="primary"
-              checkedIcon={<iconButton.iconElement color="primary" />} //Compains if iconElement moved to deconstruction
+              checkedIcon={<iconButton.iconElement color="secondary" />} //Compains if iconElement moved to deconstruction
               icon={<iconButton.iconElement color="action" />}
               onChange={onChange}
             />
@@ -100,7 +100,7 @@ const ContainerToolBar = styled(Box)`
   flex-direction: column;
   align-content: center;
   justify-content: center;
-  background-color: ${fitfthColor};
+  background-color: ${primaryColor};
   height: 100%;
   width: 100%;
 `;
@@ -112,7 +112,7 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${primaryColor};
+  color: ${secondaryColor};
 `;
 
 const CheckBoxContainer = styled.div`
