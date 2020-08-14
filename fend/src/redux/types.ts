@@ -1,4 +1,4 @@
-import { Artifact, Dataset } from "../shared/types/Dataset";
+import { Artifact, ArtifactIdentifier, Dataset } from "../shared/types/Dataset";
 
 export interface RootState {
   dataset: Dataset;
@@ -10,7 +10,7 @@ export interface RootState {
 
 export interface ArtifactMutatorActionType {
   type: string;
-  payload: Artifact[];
+  payload: ArtifactIdentifier[];
 }
 
 export interface MetaData {

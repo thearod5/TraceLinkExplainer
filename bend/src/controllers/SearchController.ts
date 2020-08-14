@@ -1,11 +1,12 @@
 import { getStepsInQuery } from '../../../fend/src/shared/query/QueryStepParser'
 import { isValidQuery } from '../../../fend/src/shared/query/QueryValidator'
-import { SearchItem, SearchSourceRoutePayload, SearchTargetRoutePayload } from '../../../fend/src/shared/types/Search'
+import { Artifact } from '../../../fend/src/shared/types/Dataset'
+import { SearchSourceRoutePayload, SearchTargetRoutePayload } from '../../../fend/src/shared/types/Search'
 import { runFunction } from '../python/controllers/PythonController'
 
 export async function searchForSourceArtifact (
   searchRequest: SearchSourceRoutePayload
-): Promise<SearchItem[]> {
+): Promise<Artifact[]> {
   const {
     datasetName,
     query,
@@ -17,7 +18,7 @@ export async function searchForSourceArtifact (
       return reject(error)
     }
 
-    resolve(runFunction<SearchItem[]>('Search.py', 'search_for_artifact', {
+    resolve(runFunction<Artifact[]>('Search.py', 'search_for_artifact', {
       arguments: [datasetName, getStepsInQuery(query), limit]
     }).catch((e) => {
       throw e
@@ -27,9 +28,9 @@ export async function searchForSourceArtifact (
 
 export async function searchForTracedArtifacts (
   searchQuery: SearchTargetRoutePayload
-): Promise<SearchItem[]> {
+): Promise<Artifact[]> {
   const { datasetName, sources, query, limit } = searchQuery
-  return runFunction<SearchItem[]>(
+  return runFunction<Artifact[]>(
     'Search.py',
     'search_for_related_artifacts',
     {

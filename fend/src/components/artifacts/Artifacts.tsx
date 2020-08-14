@@ -9,7 +9,7 @@ import {
   getSelectedTargets,
 } from "../../redux/selectors";
 import {
-  createDefaultWords,
+  createDefaultWordDescriptors,
   getDefaultFamilyColors,
 } from "../../shared/artifacts/WordCreator";
 import {
@@ -17,22 +17,24 @@ import {
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP,
 } from "../../shared/pagechanger/constants";
-import { Artifact } from "../../shared/types/Dataset";
+import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
 import { FamilyColors, WordDescriptors } from "../../shared/types/Trace";
 import NoSourceMessage from "./NoSourceMessage";
-import ArtifactDisplay from "./selectors/display/ArtifactDisplay";
+import ArtifactDisplayController from "./selectors/display/ArtifactDisplayController";
 import SourceArtifactSearch from "./selectors/SourceArtifactSearch";
 import TargetArtifactSearch from "./selectors/TargetArtifactSearch";
 
 const colors = ["DarkSeaGreen", "CornFlowerBlue", "DarkSalmon"]; //TODO: Add to theme
 
+//createDefaultWords(artifact.body)
 export function getDefaultArtifactDisplay(
-  artifact: Artifact,
+  artifact: ArtifactIdentifier,
+  words: WordDescriptors,
   showToolbar = true
 ) {
   return (
-    <ArtifactDisplay
-      words={createDefaultWords(artifact.body)}
+    <ArtifactDisplayController
+      words={words}
       artifactId={artifact.id}
       artifactType={artifact.type}
       familyColors={getDefaultFamilyColors()}
@@ -48,7 +50,7 @@ function getTraceArtifactDisplay(
   showToolbar = true
 ) {
   return (
-    <ArtifactDisplay
+    <ArtifactDisplayController
       words={artifactWords}
       artifactId={artifact.id}
       artifactType={artifact.type}
@@ -83,7 +85,12 @@ export default function ArtifactSelector() {
         setRightPanel(<NoSourceMessage />);
         break;
       case SELECT_TARGET_STEP:
-        setLeftPanel(getDefaultArtifactDisplay(sourceArtifact));
+        setLeftPanel(
+          getDefaultArtifactDisplay(
+            sourceArtifact,
+            createDefaultWordDescriptors(sourceArtifact.body)
+          )
+        );
         setRightPanel(<TargetArtifactSearch />);
         break;
       case VIEW_TRACE_STEP:

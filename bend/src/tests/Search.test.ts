@@ -1,8 +1,8 @@
 /* eslint-disable jest/expect-expect */
 
 import request from 'supertest'
-import { isArtifact } from '../../../fend/src/shared/types/Dataset'
-import { SearchItem, SearchResponse, SearchTargetRoutePayload } from '../../../fend/src/shared/types/Search'
+import { Artifact, isArtifact } from '../../../fend/src/shared/types/Dataset'
+import { SearchResponse, SearchTargetRoutePayload } from '../../../fend/src/shared/types/Search'
 import app from '../App'
 import { SEARCH_SOURCE_ROUTE, SEARCH_TARGET_ROUTE } from '../routes'
 
@@ -98,7 +98,7 @@ function testSearchFunction (
 function expectSearchItems (body: any, expectedLimit: number) {
   expect(body).toHaveProperty('searchItems')
   expect(body.searchItems.length).toStrictEqual(expectedLimit)
-  body.searchItems.forEach((element: SearchItem) => {
+  body.searchItems.forEach((element: Artifact) => {
     expect(isArtifact(element)).toStrictEqual(true)
   })
 }

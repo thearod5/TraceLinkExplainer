@@ -1,3 +1,4 @@
+import { Words } from "./Trace";
 import { objectContainsKeys } from "./TypeUtil";
 
 /*
@@ -22,6 +23,11 @@ export interface ArtifactQuery {
   id: string;
   body: string;
   type: string;
+}
+
+export interface ArtifactDisplayModel {
+  artifact: Artifact;
+  words: Words;
 }
 
 /*
@@ -71,9 +77,7 @@ export function artifactsAreEqual(a1: Artifact, a2: Artifact) {
  * Type conversions
  */
 
-export function getArtifactIdentifierInformation(
-  artifact: Artifact
-): ArtifactIdentifier {
+export function getArtifactIdentifier(artifact: Artifact): ArtifactIdentifier {
   const { id, type } = artifact;
   return { id, type };
 }

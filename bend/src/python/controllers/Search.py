@@ -5,7 +5,6 @@ from loader.DataLoader import (get_all_artifacts_for_dataset,
                                get_traced_artifacts)
 from vsm.CalculateSimilarityMatrix import calculate_similarity_matrix
 
-
 """
  Source - search_for_artifact
  Target - search_for_related_artifact
@@ -31,7 +30,7 @@ def search_for_related_artifacts(
         target_type = source["type"]
         target_id = source["id"]
         traced_artifacts = traced_artifacts + \
-            get_traced_artifacts(dataset, target_type, target_id)
+                           get_traced_artifacts(dataset, target_type, target_id)
 
     traced_artifacts = remove_duplicates(traced_artifacts)
     if isinstance(traced_artifacts, dict) and "error" in traced_artifacts.keys():
@@ -81,4 +80,5 @@ def create_sorted_response(artifacts, similarities, limit: int):
 
 
 def create_search_response(artifacts, limit):
+    limit = None if limit == -1 else limit
     return {"searchItems": artifacts[:limit]}

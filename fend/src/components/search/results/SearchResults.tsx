@@ -1,35 +1,34 @@
-import { LinearProgress } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { SearchItem } from "../../../shared/types/Search";
+import { ArtifactDisplayModel } from "../../../shared/types/Dataset";
 import { ArtifactClickAction } from "../types";
 import SearchResultItem from "./item/SearchResultItem";
 
-const NUMBER_RESULTS_PROMPT = " results were found";
+const NUMBER_RESULTS_PROMPT = " total results were found";
 const NUMBER_DISPLAY_VERTICAL_PADDING = 10;
 
 interface SearchResultsProps {
-  loading: boolean;
-  results: SearchItem[];
+  numberOfTotalResults: number;
+  results: ArtifactDisplayModel[];
   selectArtifact: ArtifactClickAction;
   removeArtifact: ArtifactClickAction;
 }
 
 export default function SearchResults(props: SearchResultsProps) {
+  const numberOfTotalResults = props.numberOfTotalResults;
   return (
     <div className="flexColumn sizeFull">
-      {props.loading ? (
-        <LinearProgress color="secondary" />
-      ) : (
-        <NumberResultsDisplay>
-          {props.results.length + NUMBER_RESULTS_PROMPT}
-        </NumberResultsDisplay>
-      )}
+      <NumberResultsDisplay>
+        {numberOfTotalResults === 0
+          ? ""
+          : numberOfTotalResults + NUMBER_RESULTS_PROMPT}
+      </NumberResultsDisplay>
       {props.results.map((searchItem) => {
         return (
           <SearchResultItem
-            key={searchItem.id}
-            result={searchItem}
+            key={searchItem.artifact.id}
+            result={searchItem.artifact}
+            words={searchItem.words}
             selectArtifact={props.selectArtifact}
             removeArtifact={props.removeArtifact}
           />

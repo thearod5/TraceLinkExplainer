@@ -20,10 +20,8 @@ export interface SearchTargetRoutePayload extends SearchSourceRoutePayload {
 }
 
 export interface SearchResponse {
-  searchItems: SearchItem[];
+  searchItems: Artifact[];
 }
-
-export type SearchItem = Artifact;
 
 export interface SearchFilter {
   attribute: string;

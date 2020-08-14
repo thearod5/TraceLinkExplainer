@@ -1,5 +1,5 @@
 import {
-  createDefaultWords,
+  createDefaultWordDescriptors,
   KeyWordType,
   splitWordsByDelimiter,
   SyntaxWordType,
@@ -12,7 +12,7 @@ test("dummy test", () => {
   const requiredFamilies = [SyntaxWordType, KeyWordType, ""];
 
   //Body
-  const words: WordDescriptor[] = createDefaultWords(document);
+  const words: WordDescriptor[] = createDefaultWordDescriptors(document);
 
   //Assertions
   const familiesInWords = [];

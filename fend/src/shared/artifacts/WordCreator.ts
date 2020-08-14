@@ -1,4 +1,11 @@
-import { FamilyColors, WordDescriptor } from "../types/Trace";
+import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
+import {
+  FamilyColors,
+  Word,
+  WordDescriptor,
+  WordDescriptors,
+  Words,
+} from "../types/Trace";
 
 export const SyntaxWordType = "#SYNTAX";
 export const KeyWordType = "#KEYWORD";
@@ -40,7 +47,30 @@ export function getDefaultFamilyColors(): FamilyColors {
   return colors;
 }
 
-export function createDefaultWords(body: string): WordDescriptor[] {
+export function createArtifactDisplayModel(
+  artifact: Artifact,
+  sizeSelected: boolean = true,
+  colorSelected: boolean = true,
+  defaultSize: number = 1,
+  familyColors: FamilyColors = getDefaultFamilyColors(),
+  defaultColor: string = "black"
+): ArtifactDisplayModel {
+  const wordDescriptors = createDefaultWordDescriptors(artifact.body);
+  const words = createWords(
+    wordDescriptors,
+    sizeSelected,
+    colorSelected,
+    defaultSize,
+    familyColors,
+    defaultColor
+  );
+  return {
+    artifact,
+    words,
+  };
+}
+
+export function createDefaultWordDescriptors(body: string): WordDescriptors {
   return separateWords(body).map((bodyWord) => {
     return {
       family: getWordFamily(bodyWord),
@@ -48,6 +78,58 @@ export function createDefaultWords(body: string): WordDescriptor[] {
       weight: 0,
     };
   });
+}
+
+export function createWords(
+  descriptors: WordDescriptors,
+  sizeSelected: boolean,
+  colorSelected: boolean,
+  defaultSize: number,
+  familyColors: FamilyColors,
+  defaultColor: string = "black"
+): Words {
+  const createWordFromDescriptor = (descriptor: WordDescriptor) =>
+    createWord(
+      descriptor,
+      sizeSelected,
+      colorSelected,
+      defaultSize,
+      familyColors,
+      defaultColor
+    );
+  return descriptors.map(createWordFromDescriptor);
+}
+
+export function createWord(
+  descriptor: WordDescriptor,
+  sizeSelected: boolean,
+  colorSelected: boolean,
+  defaultSize: number,
+  familyColors: FamilyColors,
+  defaultColor: string = "black"
+): Word {
+  const wordSize = calculateWordSize(
+    descriptor.weight,
+    sizeSelected,
+    defaultSize
+  );
+  const wordColor =
+    descriptor.family in familyColors && colorSelected
+      ? familyColors[descriptor.family]
+      : defaultColor;
+  return {
+    word: descriptor.word,
+    size: wordSize,
+    color: wordColor,
+  };
+}
+
+function calculateWordSize(
+  weight: number,
+  sizeSelected: boolean,
+  defaultSize: number
+) {
+  return sizeSelected ? weight + defaultSize : defaultSize;
 }
 
 function getWordFamily(word: string) {

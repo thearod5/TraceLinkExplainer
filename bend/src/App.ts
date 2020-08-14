@@ -1,7 +1,8 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
-import { isSearchSourceRoutePayload, isSearchTargetRoutePayload, SearchItem } from '../../fend/src/shared/types/Search'
+import { Artifact } from '../../fend/src/shared/types/Dataset'
+import { isSearchSourceRoutePayload, isSearchTargetRoutePayload } from '../../fend/src/shared/types/Search'
 import { isTraceRetrievealPayload } from '../../fend/src/shared/types/Trace'
 import {
   getDatasetByName,
@@ -38,7 +39,7 @@ app.post(SEARCH_SOURCE_ROUTE,
       return sendError(res, INVALID_PAYLOAD)
     }
     const data = searchForSourceArtifact(req.body)
-    handleError<SearchItem[]>(res, data)
+    handleError<Artifact[]>(res, data)
   })
 
 app.post(
