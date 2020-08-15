@@ -28,6 +28,14 @@ export interface WordDescriptor {
   weight: number;
 }
 
+export interface Word {
+  word: string;
+  size: number;
+  color: string;
+}
+
+export type Words = Word[];
+
 /*
  * Type Definitions
  */

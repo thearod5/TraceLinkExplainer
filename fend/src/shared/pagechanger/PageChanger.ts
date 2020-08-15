@@ -3,11 +3,10 @@ import {
   SELECT_ARTIFACTS_ROUTE,
   TRACE_VIEW_ROUTE,
 } from "../../components/nav/routes";
-import { RootState } from "../../redux";
-import { initializeEmptyMetaData } from "../../redux/initializers";
 import store from "../../redux/store";
+import { RootState } from "../../redux/types";
 import { isNonEmptyDataset } from "../types/Dataset";
-import { SELECT_DATASET_STEP, SELECT_SOURCE_STEP } from "./constants";
+import { SELECT_SOURCE_STEP } from "./constants";
 
 const DATASET_NOT_SELECTED_ERROR =
   "You must select a dataset before proceeding.";
@@ -29,26 +28,7 @@ export function getNewStepState(
   //Step step if an error is found
   const error = getStepChangeError(requestedStep, currentState); //validation
   if (error !== undefined) return error;
-
-  //All Code assumes valid step change.
-  const currentMetaData = currentState.metaData;
-  switch (requestedStep) {
-    case SELECT_DATASET_STEP:
-      return {
-        dataset: currentState.dataset,
-        metaData: initializeEmptyMetaData(),
-      };
-
-    default:
-      return {
-        ...currentState,
-        metaData: {
-          ...currentMetaData,
-          currentStep: requestedStep,
-          oldStep: currentMetaData.currentStep,
-        },
-      };
-  }
+  return { ...currentState, currentStep: requestedStep };
 }
 
 export function getStepChangeError(
@@ -58,8 +38,8 @@ export function getStepChangeError(
   const state = currentState === undefined ? store.getState() : currentState;
   const requestedEndpoint = PAGE_STEP_MAPPING[requestedStep];
   const datasetSelected = isNonEmptyDataset(state.dataset);
-  const sourceSelected = state.metaData.selectedSources.length > 0;
-  const targetSelected = state.metaData.selectedTargets.length > 0;
+  const sourceSelected = state.selectedSources.length > 0;
+  const targetSelected = state.selectedTargets.length > 0;
 
   switch (requestedEndpoint) {
     case HOME_ROUTE:

@@ -1,19 +1,25 @@
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
-import { RootState } from "../../redux";
-import { changeStep, clearData, selectDataset } from "../../redux/actions";
+import {
+  changeStep,
+  clearData,
+  selectDataset,
+  setError,
+} from "../../redux/actions";
+import { getDataset } from "../../redux/selectors";
+import { appHistory } from "../../redux/store";
+import { FIRST_STEP_IN_WIZARD } from "../../shared/pagechanger/constants";
+import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
 import { Dataset } from "../../shared/types/Dataset";
+import { SELECT_ARTIFACTS_ROUTE } from "../nav/routes";
 import DatasetItem from "./item/DatasetItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
-const UNIMPLEMENTED_NEW_DATASET_ERROR =
-  "Adding a new dataset is not yet implemented.";
 
 function DatasetChooser() {
-  const dataset = useSelector((state: RootState) => state.dataset);
+  const dataset = useSelector(getDataset);
   const dispatch = useDispatch();
 
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
@@ -35,14 +41,24 @@ function DatasetChooser() {
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
-    getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
-      dispatch(selectDataset(dataset));
-    });
+    getDatasetByName(clickedDatasetName).then((dataset: Dataset) =>
+      dispatch(selectDataset(dataset))
+    );
   };
 
   const deselectDataset = () => {
     dispatch(clearData());
     setIndexSelected(DEFAULT_INDEX_SELECTED);
+  };
+
+  const onRouteSelected = (route: string) => {
+    if (route === SELECT_ARTIFACTS_ROUTE) {
+      const error = getStepChangeError(FIRST_STEP_IN_WIZARD);
+      if (error === undefined) {
+        dispatch(changeStep(FIRST_STEP_IN_WIZARD));
+        appHistory.push(route);
+      } else dispatch(setError(error));
+    }
   };
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
@@ -52,78 +68,33 @@ function DatasetChooser() {
       isSelected={currentIndex === indexSelected}
       select={() => selectDatasetAtIndex(currentIndex)}
       deselect={() => deselectDataset}
+      onRouteSelected={onRouteSelected}
     />
   ));
 
   return (
-    <DatasetChooserContainer boxShadow={3}>
-      <Title>Datasets</Title>
-      <DatasetItemContainer>
+    <Box className="roundBorder padMedium" boxShadow={3}>
+      <h2 className="textAlignCenter">Datasets</h2>
+      <div className="flexColumn padLight">
         {datasets.length === 0 ? (
-          <LoadingItem>...loading....</LoadingItem>
+          <LinearProgress color="secondary" />
         ) : (
           datasetItems
         )}
-      </DatasetItemContainer>
-      <NewDatasetButtonContainer>
-        <NewDatasetButton
-          size="large"
+      </div>
+      <div className="flexRowCentered padMedium">
+        <Button
+          disabled
+          size="medium"
           color="primary"
           variant="contained"
-          onClick={() => alert(UNIMPLEMENTED_NEW_DATASET_ERROR)}
           // TODO: Functionality for this
         >
           New Dataset
-        </NewDatasetButton>
-      </NewDatasetButtonContainer>
-    </DatasetChooserContainer>
+        </Button>
+      </div>
+    </Box>
   );
 }
 
-//TODO: Remove manual top margin
-const DatasetChooserContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 5px;
-  height: 50%;
-  width: 20%;
-  margin-top: 10%;
-  overflow-y: scroll;
-`;
-
-const LoadingItem = styled.p`
-  text-align: center;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: normal;
-  padding: 10px;
-`;
-
-const DatasetItemContainer = styled.div`
-  display: flex;
-  flex-grow: 4;
-  flex-direction: column;
-  padding: 10px;
-`;
-
-//TODO: Make so its 10px or something FROM the bottom
-const NewDatasetButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-content: center;
-  margin-bottom: 20px;
-`;
-
-const NEW_DATASET_BUTTON_WIDTH = 100;
-const NEW_DATASET_BUTTON_HEIGHT = 100;
-
-const NewDatasetButton = styled(Button)`
-  height: ${NEW_DATASET_BUTTON_HEIGHT}px;
-  width: ${NEW_DATASET_BUTTON_WIDTH}px;
-`;
 export default DatasetChooser;

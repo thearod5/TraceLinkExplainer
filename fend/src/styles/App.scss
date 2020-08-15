@@ -43,8 +43,16 @@ body,
   justify-content: space-around;
 }
 
+.justifyContentSpaceBetween {
+  justify-content: space-between;
+}
+
 .alignContentEnd {
   align-content: flex-end;
+}
+
+.flexGrowEight {
+  flex-grow: 8;
 }
 
 .flexGrowTen {
@@ -57,6 +65,15 @@ body,
 
 .padLight {
   padding: 10px;
+}
+
+.padMedium {
+  padding: 20px;
+}
+
+.padVerticalLight {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .padSideLight {
@@ -87,7 +104,7 @@ body,
 }
 
 .roundBorder {
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .textAlignCenter {
@@ -135,6 +152,16 @@ body,
   @extend .overflowXScroll;
   @extend .overflowYScroll;
 }
+
+.overflowHidden {
+  @extend .overflowXHidden;
+  @extend .overflowYHidden;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 /*
  * Row
  */
@@ -180,6 +207,7 @@ body,
   @extend .heightFull;
 }
 
+//TODO: Rename this
 .centeredColumn {
   @extend .flexColumn;
   @extend .justifyContentCenter;

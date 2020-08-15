@@ -1,14 +1,11 @@
 import {
   clearData,
-  removeSelectedSource,
-  removeSelectedTarget,
   selectDataset,
-  setSourceArtifact,
-  setTargetArtifact,
+  setSelectedSources,
+  setSelectedTargets,
 } from "../../redux/actions";
-import { RootState } from "../../redux/index";
-import { createEmptyState } from "../../redux/reducers";
-import store from "../../redux/store";
+import store, { createEmptyState } from "../../redux/store";
+import { RootState } from "../../redux/types";
 import { SELECT_SOURCE_STEP } from "../../shared/pagechanger/constants";
 import { getNewStepState } from "../../shared/pagechanger/PageChanger";
 import { Artifact, Dataset } from "../../shared/types/Dataset";
@@ -69,12 +66,10 @@ test("- : getStepChangeError : select an empty dataset", () => {
 
 test("+ : getStepChangeError : select a dataset", () => {
   const currentState: RootState = store.getState();
-  expect(currentState.metaData.oldStep).toEqual(-1);
-  expect(currentState.metaData.currentStep).toEqual(0);
-  expect(currentState.metaData.selectedSources.length).toEqual(0);
-  expect(currentState.metaData.selectedTargets.length).toEqual(0);
-  assertEmptyArtifact(currentState.metaData.sourceArtifact);
-  assertEmptyArtifact(currentState.metaData.targetArtifact);
+  expect(currentState.currentStep).toEqual(0);
+  expect(currentState.selectedSources.length).toEqual(0);
+  expect(currentState.selectedTargets.length).toEqual(0);
+
   expect(currentState.dataset.name).toBe("");
   expect(currentState.dataset.summary).toBe("");
 });
@@ -89,88 +84,31 @@ test("+ : setDataset", () => {
   expect(currentState.dataset.name).toEqual(mockDataset.name);
 });
 
-test("+ : selectSourceArtifact", () => {
+test("+ : setSelectedSources: default", () => {
   let currentState: RootState = store.getState();
-  expect(currentState.metaData.selectedSources.length).toEqual(0);
+  expect(currentState.selectedSources.length).toEqual(0);
 
   //Test
-  store.dispatch(setSourceArtifact(mockArtifact));
+  store.dispatch(setSelectedSources([mockArtifact]));
 
   //Assertions
   currentState = store.getState();
-  assertEqualToMock(currentState.metaData.sourceArtifact);
-  expect(currentState.metaData.selectedSources.length).toEqual(1);
-
-  assertEmptyArtifact(currentState.metaData.targetArtifact);
-  expect(currentState.metaData.selectedTargets.length).toEqual(0);
+  assertEqualToMock(currentState.selectedSources[0]);
+  expect(currentState.selectedSources.length).toEqual(1);
+  expect(currentState.selectedTargets.length).toEqual(0);
 });
 
-test("+ : selectTargetArtifact", () => {
+test("+ : selectTargetArtifacts : default", () => {
   let currentState: RootState = store.getState();
 
   //Test
-  store.dispatch(setTargetArtifact(mockArtifact));
+  store.dispatch(setSelectedTargets([mockArtifact]));
 
   //Assertions
   currentState = store.getState();
-  assertEqualToMock(currentState.metaData.targetArtifact);
-  expect(currentState.metaData.selectedTargets.length).toEqual(1);
-  assertEmptyArtifact(currentState.metaData.sourceArtifact);
-  expect(currentState.metaData.selectedSources.length).toEqual(0);
-});
-
-/*
- * Remove selected artifacts
- */
-
-test("+ : selectTargetArtifact", () => {
-  let currentState: RootState = store.getState();
-
-  //Test
-  store.dispatch(setTargetArtifact(mockArtifact));
-  store.dispatch(removeSelectedTarget(mockArtifact));
-
-  //Assertions
-  currentState = store.getState();
-  assertEmptyArtifact(currentState.metaData.targetArtifact);
-  expect(currentState.metaData.selectedTargets.length).toEqual(0);
-});
-
-test("+ : selectTargetArtifact: remove nonexistent artifact", () => {
-  let currentState: RootState = store.getState();
-
-  //Test
-  store.dispatch(removeSelectedSource(mockArtifact));
-
-  //Assertions
-  currentState = store.getState();
-  assertEmptyArtifact(currentState.metaData.sourceArtifact);
-  expect(currentState.metaData.selectedSources.length).toEqual(0);
-});
-
-test("+ : selectTargetArtifact", () => {
-  let currentState: RootState = store.getState();
-
-  //Test
-  store.dispatch(setTargetArtifact(mockArtifact));
-  store.dispatch(removeSelectedTarget(mockArtifact));
-
-  //Assertions
-  currentState = store.getState();
-  assertEmptyArtifact(currentState.metaData.targetArtifact);
-  expect(currentState.metaData.selectedTargets.length).toEqual(0);
-});
-
-test("+ : selectTargetArtifact: remove nonexistent artifact", () => {
-  let currentState: RootState = store.getState();
-
-  //Test
-  store.dispatch(removeSelectedSource(mockArtifact));
-
-  //Assertions
-  currentState = store.getState();
-  assertEmptyArtifact(currentState.metaData.sourceArtifact);
-  expect(currentState.metaData.selectedSources.length).toEqual(0);
+  assertEqualToMock(currentState.selectedTargets[0]);
+  expect(currentState.selectedTargets.length).toEqual(1);
+  expect(currentState.selectedSources.length).toEqual(0);
 });
 
 function assertEmptyArtifact(artifact: Artifact) {

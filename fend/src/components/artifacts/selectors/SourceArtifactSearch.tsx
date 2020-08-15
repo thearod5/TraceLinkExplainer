@@ -1,17 +1,13 @@
 import React from "react";
 import { searchForSourceArtifact } from "../../../api/search";
-import {
-  removeSelectedSource,
-  setSourceArtifact,
-} from "../../../redux/actions";
-import Search from "../../search/Search";
+import { setSelectedSources } from "../../../redux/actions";
+import SearchController from "../../search/SearchController";
 
 export default function SourceArtifactSearch() {
   return (
-    <Search
+    <SearchController
       searchFunction={searchForSourceArtifact}
-      onArtifactSelected={setSourceArtifact}
-      onArtifactRemoved={removeSelectedSource}
+      onArtifactsSelected={setSelectedSources}
     />
   );
 }

@@ -1,7 +1,6 @@
-import { Button, IconButton, Tooltip } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import CheckIcon from "@material-ui/icons/Check";
-import KeyboardTabIcon from "@material-ui/icons/KeyboardTab";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useEffect, useState } from "react";
@@ -15,7 +14,6 @@ const PLACE_HOLDER_TEXT = "...search for a source artifact...";
 type SubmitFuncType = (query: string) => void;
 export interface SearchBarProps {
   onSearch: SubmitFuncType;
-  onSubmit: () => void;
 }
 
 export default function SearchBar(props: SearchBarProps) {
@@ -86,16 +84,6 @@ export default function SearchBar(props: SearchBarProps) {
           >
             {advancedSearch ? "Basic" : "Advanced"}
           </Button>
-
-          <IconButton
-            size="small"
-            className="padLight"
-            color="secondary"
-            aria-label="find traces"
-            onClick={() => props.onSubmit()}
-          >
-            <KeyboardTabIcon />
-          </IconButton>
         </div>
       </div>
     </div>

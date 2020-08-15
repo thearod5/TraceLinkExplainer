@@ -8,10 +8,9 @@ import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { changeStep } from "../../../../redux/actions";
 import { getCurrentStep } from "../../../../redux/selectors";
-import { fitfthColor, primaryColor } from "../../../../styles/theme";
+import { primaryColor, secondaryColor } from "../../../../styles/theme";
 
 interface ArtifactToolbarProps {
   sizeSelected: boolean;
@@ -71,12 +70,18 @@ export default function ArtifactToolbar(props: ArtifactToolbarProps) {
   ];
 
   return (
-    <ContainerToolBar boxShadow={3}>
-      <TitleContainer>
-        <Title onClick={clickHandler}>{props.title}</Title>
-      </TitleContainer>
+    <Box
+      boxShadow={3}
+      className="centeredColumn sizeFull"
+      style={{ backgroundColor: primaryColor }}
+    >
+      <div className="textAlignCenter overflowXScroll widthFull">
+        <h2 onClick={clickHandler} style={{ color: secondaryColor }}>
+          {props.title}
+        </h2>
+      </div>
 
-      <CheckBoxContainer>
+      <div className="flexRowCentered overflowXScroll widthFull">
         {ICONS.map((iconButton: IconButton, index: number) => {
           const { checked, onChange } = iconButton;
           return (
@@ -84,41 +89,13 @@ export default function ArtifactToolbar(props: ArtifactToolbarProps) {
               key={index}
               checked={checked}
               color="primary"
-              checkedIcon={<iconButton.iconElement color="primary" />} //Compains if iconElement moved to deconstruction
+              checkedIcon={<iconButton.iconElement color="secondary" />} //Compains if iconElement moved to deconstruction
               icon={<iconButton.iconElement color="action" />}
               onChange={onChange}
             />
           );
         })}
-      </CheckBoxContainer>
-    </ContainerToolBar>
+      </div>
+    </Box>
   );
 }
-
-const ContainerToolBar = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  background-color: ${fitfthColor};
-  height: 100%;
-  width: 100%;
-`;
-
-const TitleContainer = styled.div`
-  width: 100%;
-  text-align: center;
-  overflow-x: scroll;
-`;
-
-const Title = styled.h2`
-  color: ${primaryColor};
-`;
-
-const CheckBoxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  overflow-x: scroll;
-  width: 100%;
-`;

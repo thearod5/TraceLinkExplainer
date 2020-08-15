@@ -1,12 +1,7 @@
-import { RootState } from "./index";
+import { RootState } from "./types";
 
-// TODO: Find and replace everywhere
 export const getDataset = (state: RootState) => state.dataset;
-export const getSourceArtifact = (state: RootState) =>
-  state.metaData.sourceArtifact;
-export const getTargetArtifact = (state: RootState) =>
-  state.metaData.targetArtifact;
-
-export const getCurrentStep = (state: RootState) => state.metaData.currentStep;
-
-export const getError = (state: RootState) => state.metaData.error;
+export const getSelectedSources = (state: RootState) => state.selectedSources;
+export const getSelectedTargets = (state: RootState) => state.selectedTargets;
+export const getCurrentStep = (state: RootState) => state.currentStep;
+export const getError = (state: RootState) => state.error;

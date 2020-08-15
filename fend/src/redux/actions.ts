@@ -1,30 +1,30 @@
 import { Artifact, Dataset } from "../shared/types/Dataset";
-import { initializeEmptyDataset } from "./initializers";
-import {
-  ArtifactMutatorActionType,
-  ClearDataAction,
-  SelectDatasetAction,
-  UnselectDatasetAction,
-} from "./types";
+import { ArtifactMutatorActionType } from "./types";
 
 /*
  * All
  */
 
-export const CLEAR_DATA = "CLEAR_DATA";
-
-export function clearData(): ClearDataAction {
-  return {
-    type: CLEAR_DATA,
-    payload: null,
-  };
-}
+export type CustomAction =
+  | SelectDatasetAction
+  | UnselectDatasetAction
+  | SetSelectedTargetsAction
+  | SetSelectedSourcesAction
+  | ChangeStepAction
+  | SetError
+  | ClearDataAction
+  | ClearDataAction
+  | ArtifactMutatorActionType;
 
 /*
  * Datasets
  */
 export const SELECT_DATASET = "SELECT_DATASET";
-export const UNSELECT_DATASET = "UNSELECT_DATASET";
+
+export interface SelectDatasetAction {
+  type: typeof SELECT_DATASET;
+  payload: Dataset;
+}
 
 export function selectDataset(dataset: Dataset): SelectDatasetAction {
   return {
@@ -33,10 +33,17 @@ export function selectDataset(dataset: Dataset): SelectDatasetAction {
   };
 }
 
+export const UNSELECT_DATASET = "UNSELECT_DATASET";
+
+export interface UnselectDatasetAction {
+  type: typeof UNSELECT_DATASET;
+  payload: undefined;
+}
+
 export function unselectDataset(): UnselectDatasetAction {
   return {
     type: UNSELECT_DATASET,
-    payload: initializeEmptyDataset(),
+    payload: undefined,
   };
 }
 
@@ -45,6 +52,11 @@ export function unselectDataset(): UnselectDatasetAction {
  */
 
 export const CHANGE_STEP_ACTION = "CHANGE_STEP";
+
+export interface ChangeStepAction {
+  type: typeof CHANGE_STEP_ACTION;
+  payload: number;
+}
 
 export function changeStep(newStep: number) {
   return {
@@ -57,63 +69,65 @@ export function changeStep(newStep: number) {
  * Artifacts
  */
 
-export const SET_SOURCE_ARTIFACT_ACTION = "SET_SOURCE_ARTIFACT_ACTION";
+export const SET_SELECTED_SOURCES_ACTION = "SET_SOURCE_ARTIFACT_ACTION";
 
-export function setSourceArtifact(
-  sourceArtifact: Artifact
+export interface SetSelectedSourcesAction {
+  type: typeof SET_SELECTED_SOURCES_ACTION;
+  payload: Artifact;
+}
+
+export function setSelectedSources(
+  sourceArtifact: Artifact[]
 ): ArtifactMutatorActionType {
   return {
-    type: SET_SOURCE_ARTIFACT_ACTION,
+    type: SET_SELECTED_SOURCES_ACTION,
     payload: sourceArtifact,
   };
 }
 
-export const SET_TARGET_ARTIFACT_ACTION = "SET_TARGET_ARTIFACT_ACTION";
+export const SET_SELECTED_TARGETS_ACTION = "SET_TARGET_ARTIFACT_ACTION";
 
-export function setTargetArtifact(
-  targetArtifact: Artifact
+export interface SetSelectedTargetsAction {
+  type: typeof SET_SELECTED_TARGETS_ACTION;
+  payload: Artifact;
+}
+
+export function setSelectedTargets(
+  targetArtifact: Artifact[]
 ): ArtifactMutatorActionType {
   return {
-    type: SET_TARGET_ARTIFACT_ACTION,
+    type: SET_SELECTED_TARGETS_ACTION,
     payload: targetArtifact,
   };
 }
 
-export const REMOVE_SELECTED_SOURCE_ACTION = "REMOVE_SELECTED_SOURCE_ACTION";
-
-export function removeSelectedSource(
-  selectedArtifact: Artifact
-): ArtifactMutatorActionType {
-  return {
-    type: REMOVE_SELECTED_SOURCE_ACTION,
-    payload: selectedArtifact,
-  };
-}
-
-export const REMOVE_SELECTED_TARGET_ACTION = "REMOVE_SELECTED_TARGET_ACTION";
-
-export function removeSelectedTarget(
-  selectedArtifact: Artifact
-): ArtifactMutatorActionType {
-  return {
-    type: REMOVE_SELECTED_TARGET_ACTION,
-    payload: selectedArtifact,
-  };
-}
-
 /*
- * error handling
+ * Meta
  */
 export const SET_ERROR_ACTION = "SET_ERROR_ACTION";
 
-export interface SetErrorType {
-  type: string;
+export interface SetError {
+  type: typeof SET_ERROR_ACTION;
   payload: string | undefined;
 }
 
-export function setError(error: string | undefined): SetErrorType {
+export function setError(error: string | undefined): SetError {
   return {
     type: SET_ERROR_ACTION,
     payload: error,
+  };
+}
+
+export const CLEAR_DATA = "CLEAR_DATA";
+
+export interface ClearDataAction {
+  type: typeof CLEAR_DATA;
+  payload: undefined;
+}
+
+export function clearData(): ClearDataAction {
+  return {
+    type: CLEAR_DATA,
+    payload: undefined,
   };
 }

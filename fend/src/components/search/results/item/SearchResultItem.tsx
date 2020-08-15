@@ -10,13 +10,15 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
-import { SearchItem } from "../../../../shared/types/Search";
-import { getDefaultArtifactDisplay } from "../../../artifacts/Artifacts";
+import { Artifact } from "../../../../shared/types/Dataset";
+import { Words } from "../../../../shared/types/Trace";
+import ArtifactWords from "../../../artifacts/selectors/display/ArtifactWords";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./SearchResultItemPopup";
 
 interface SearchResultProps {
-  result: SearchItem;
+  result: Artifact;
+  words: Words;
   selectArtifact: ArtifactClickAction;
   removeArtifact: ArtifactClickAction;
 }
@@ -30,9 +32,9 @@ export default function SearchResultItem(props: SearchResultProps) {
   };
 
   const onClick = () => {
-    setChecked(!checked);
     const clickCallback = checked ? props.removeArtifact : props.selectArtifact;
     clickCallback(props.result);
+    setChecked(!checked);
   };
 
   const handlePopupAccept = () => {
@@ -42,7 +44,7 @@ export default function SearchResultItem(props: SearchResultProps) {
   };
 
   return (
-    <Accordion>
+    <Accordion TransitionProps={{ unmountOnExit: true }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-label="Expand">
         <FormControlLabel
           aria-label="Select"
@@ -59,8 +61,9 @@ export default function SearchResultItem(props: SearchResultProps) {
           style={{ width: "90%", maxHeight: "300px" }}
           boxShadow={3}
         >
-          {getDefaultArtifactDisplay(props.result, false)}
+          <ArtifactWords words={props.words} />
         </Box>
+
         <div className="centeredColumn" style={{ width: "10%" }}>
           <IconButton aria-label="expand" onClick={() => setOpen(!open)}>
             <FullscreenIcon />

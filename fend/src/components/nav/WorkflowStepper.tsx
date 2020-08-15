@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { changeStep } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
-import { history } from "../../redux/store";
+import { appHistory } from "../../redux/store";
 import {
   getStepChangeError,
   PAGE_STEP_MAPPING,
@@ -27,7 +27,7 @@ export default function WorkflowStepper() {
       const reIndexStep = step + 1;
       const nextPage = PAGE_STEP_MAPPING[reIndexStep]; //return to old index (with dataset as first step) for page mappings
       dispatch(changeStep(reIndexStep));
-      history.push(nextPage);
+      appHistory.push(nextPage);
     }
   };
 

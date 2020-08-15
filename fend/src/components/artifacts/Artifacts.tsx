@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
-import styled from "styled-components";
 import { getTraceInformation } from "../../api/trace";
 import {
   getCurrentStep,
-  getSourceArtifact,
-  getTargetArtifact,
+  getSelectedSources,
+  getSelectedTargets,
 } from "../../redux/selectors";
 import {
-  createDefaultWords,
+  createDefaultWordDescriptors,
   getDefaultFamilyColors,
 } from "../../shared/artifacts/WordCreator";
 import {
@@ -17,22 +16,24 @@ import {
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP,
 } from "../../shared/pagechanger/constants";
-import { Artifact } from "../../shared/types/Dataset";
+import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
 import { FamilyColors, WordDescriptors } from "../../shared/types/Trace";
 import NoSourceMessage from "./NoSourceMessage";
-import ArtifactDisplay from "./selectors/display/ArtifactDisplay";
+import ArtifactDisplayController from "./selectors/display/ArtifactDisplayController";
 import SourceArtifactSearch from "./selectors/SourceArtifactSearch";
 import TargetArtifactSearch from "./selectors/TargetArtifactSearch";
 
 const colors = ["DarkSeaGreen", "CornFlowerBlue", "DarkSalmon"]; //TODO: Add to theme
 
+//createDefaultWords(artifact.body)
 export function getDefaultArtifactDisplay(
-  artifact: Artifact,
+  artifact: ArtifactIdentifier,
+  words: WordDescriptors,
   showToolbar = true
 ) {
   return (
-    <ArtifactDisplay
-      words={createDefaultWords(artifact.body)}
+    <ArtifactDisplayController
+      words={words}
       artifactId={artifact.id}
       artifactType={artifact.type}
       familyColors={getDefaultFamilyColors()}
@@ -48,7 +49,7 @@ function getTraceArtifactDisplay(
   showToolbar = true
 ) {
   return (
-    <ArtifactDisplay
+    <ArtifactDisplayController
       words={artifactWords}
       artifactId={artifact.id}
       artifactType={artifact.type}
@@ -67,11 +68,14 @@ function createFamilyColors(families: string[]): FamilyColors {
 }
 
 export default function ArtifactSelector() {
-  const sourceArtifact: Artifact = useSelector(getSourceArtifact);
-  const targetArtifact: Artifact = useSelector(getTargetArtifact);
+  const selectedSources: Artifact[] = useSelector(getSelectedSources);
+  const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
+
+  const sourceArtifact = selectedSources[0];
+  const targetArtifact = selectedTargets[0];
 
   useEffect(() => {
     switch (currentStep) {
@@ -80,11 +84,16 @@ export default function ArtifactSelector() {
         setRightPanel(<NoSourceMessage />);
         break;
       case SELECT_TARGET_STEP:
-        setLeftPanel(getDefaultArtifactDisplay(sourceArtifact));
+        setLeftPanel(
+          getDefaultArtifactDisplay(
+            sourceArtifact,
+            createDefaultWordDescriptors(sourceArtifact.body)
+          )
+        );
         setRightPanel(<TargetArtifactSearch />);
         break;
       case VIEW_TRACE_STEP:
-        getTraceInformation("Drone", sourceArtifact, targetArtifact)
+        getTraceInformation("Drone", sourceArtifact, targetArtifact) // change with state index
           .then((traceInformation) => {
             const familyColors = createFamilyColors(traceInformation.families);
 
@@ -106,25 +115,18 @@ export default function ArtifactSelector() {
           .catch((e) => console.error(e));
         break;
       default:
-        setLeftPanel(<NoSourceMessage />);
-        setRightPanel(<NoSourceMessage />);
-        break;
+        throw Error(
+          "Expected state to be at least step 1. Give: " + currentStep
+        );
     }
   }, [currentStep, sourceArtifact, targetArtifact]);
 
   return (
-    <ArtifactsContainer>
+    <div className="flexColumn heightFull overflowYHidden">
       <SplitPane split="vertical">
         {leftPanel}
         {rightPanel}
       </SplitPane>
-    </ArtifactsContainer>
+    </div>
   );
 }
-
-const ArtifactsContainer = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-`;

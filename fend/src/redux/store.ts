@@ -5,33 +5,29 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { CHANGE_STEP_ACTION, CLEAR_DATA } from "./actions";
-import createRootReducer, { RootState } from "./index";
-import { changeStepReducer, createEmptyState } from "./reducers";
-import { CustomAction } from "./types";
+import { initializeEmptyDataset } from "./initializers";
+import rootReducer from "./reducers";
+import { RootState } from "./types";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["dataset", "metaData"], // Top level store branches to persist
+  whitelist: ["dataset", "currentStep", "selectedSources", "selectedTargets"], // Top level store branches to persist
 };
 
-export const history = createBrowserHistory();
+export const appHistory = createBrowserHistory();
 
-const middleware = [thunk, routerMiddleware(history)];
+const middleware = [thunk, routerMiddleware(appHistory)];
 
-const appReducer = createRootReducer(history);
-
-const rootReducer = (state = createEmptyState(), action: CustomAction) => {
-  switch (action.type) {
-    case CLEAR_DATA:
-      return appReducer(undefined, action);
-    case CHANGE_STEP_ACTION:
-      return changeStepReducer(state, action);
-    default:
-      return appReducer(state, action);
-  }
-};
+export function createEmptyState(): RootState {
+  return {
+    currentStep: 0,
+    selectedSources: [],
+    selectedTargets: [],
+    error: undefined,
+    dataset: initializeEmptyDataset(),
+  };
+}
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

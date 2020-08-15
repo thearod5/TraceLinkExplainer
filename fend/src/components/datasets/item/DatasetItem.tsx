@@ -9,6 +9,7 @@ interface DataItemSummaryProps {
   isSelected: boolean;
   select: () => void;
   deselect: () => void;
+  onRouteSelected: (route: string) => void;
 }
 
 function DatasetItem(props: DataItemSummaryProps) {
@@ -22,9 +23,9 @@ function DatasetItem(props: DataItemSummaryProps) {
   return (
     <Accordion expanded={expanded} onClick={() => setExpanded(!expanded)}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        {props.dataset}
+        <h4>{props.dataset}</h4>
       </AccordionSummary>
-      <DatasetItemDetails />
+      <DatasetItemDetails onClick={props.onRouteSelected} />
     </Accordion>
   );
 }

@@ -1,20 +1,13 @@
 import React from "react";
-import styled from "styled-components";
 
-interface DatasetSummaryProps {}
-
-function DatasetViewer(props: DatasetSummaryProps) {
+function DatasetViewer() {
   return (
-    <div>
-      <Summary>[MARO's WORK]</Summary>
+    <div className="flexRowCentered sizeFull debug">
+      <div className="centeredColumn heightFull">
+        <h2 className="textAlignCenter">[MARO's WORK]</h2>
+      </div>
     </div>
   );
 }
-
-const Summary = styled.p`
-  font-size: 1.5em;
-  text-align: center;
-  padding: 50px;
-`;
 
 export default DatasetViewer;

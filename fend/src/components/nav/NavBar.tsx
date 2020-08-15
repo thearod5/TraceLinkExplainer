@@ -1,10 +1,9 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import { getCurrentStep, getDataset } from "../../redux/selectors";
-import { history } from "../../redux/store";
-import theme, { secondaryColor } from "../../styles/theme";
+import { appHistory } from "../../redux/store";
+import { primaryColor, secondaryColor } from "../../styles/theme";
 
 const WELCOME_MESSAGE = "TraceViewer";
 //TODO: Add button to view dataset. Also make a real nav bar looking thing.
@@ -13,28 +12,25 @@ export default function NavBar() {
   const dataset = useSelector(getDataset).name;
 
   const GoHomeClickHanlder = () => {
-    history.push("/");
+    appHistory.push("/");
   };
 
   return (
-    <NavBarContainer
+    <Box
       color="secondary"
       boxShadow={3}
-      className="flexRowCenteredWidthFull"
+      className="flexRowCentered sizeFull"
+      style={{ backgroundColor: `${secondaryColor}` }}
     >
       <div className="centeredColumn">
-        <NavBarTitle onClick={GoHomeClickHanlder} className="padLight">
+        <h1
+          onClick={GoHomeClickHanlder}
+          className="padLight"
+          style={{ color: primaryColor }}
+        >
           {activeStep === 0 ? WELCOME_MESSAGE : dataset}
-        </NavBarTitle>
+        </h1>
       </div>
-    </NavBarContainer>
+    </Box>
   );
 }
-
-const NavBarContainer = styled(Box)`
-  background-color: ${secondaryColor};
-`;
-
-const NavBarTitle = styled.h1`
-  color: ${theme.palette.primary.main};
-`;

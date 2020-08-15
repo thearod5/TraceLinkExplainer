@@ -1,19 +1,15 @@
 import React from "react";
 import { searchForTargetArtifact } from "../../../api/search";
-import {
-  removeSelectedSource,
-  setTargetArtifact,
-} from "../../../redux/actions";
-import Search from "../../search/Search";
+import { setSelectedTargets } from "../../../redux/actions";
+import SearchController from "../../search/SearchController";
 
 interface TargetArtifactSearchProps {}
 
 export default function TargetArtifactSearch(props: TargetArtifactSearchProps) {
   return (
-    <Search
-      searchFunction={searchForTargetArtifact} //TODO: Remove dummy functions after bend functionality
-      onArtifactSelected={setTargetArtifact}
-      onArtifactRemoved={removeSelectedSource}
+    <SearchController
+      searchFunction={searchForTargetArtifact}
+      onArtifactsSelected={setSelectedTargets}
     />
   );
 }

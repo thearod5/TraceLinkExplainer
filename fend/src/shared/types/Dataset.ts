@@ -1,3 +1,4 @@
+import { Words } from "./Trace";
 import { objectContainsKeys } from "./TypeUtil";
 
 /*
@@ -24,25 +25,37 @@ export interface ArtifactQuery {
   type: string;
 }
 
+export interface ArtifactDisplayModel {
+  artifact: Artifact;
+  words: Words;
+}
+
 /*
  * Type Checkers
  */
 
-export function isDataset(obj?: object): obj is Dataset {
+export function isDataset(obj?: any): obj is Dataset {
   const requiredKeys = ["name", "summary"]; // TODO: Automate generation of list of keys
   return objectContainsKeys(requiredKeys, obj);
 }
 
-export function isNonEmptyDataset(obj?: object): obj is Dataset {
+export function isNonEmptyDataset(obj?: any): obj is Dataset {
   return isDataset(obj) && obj.name !== "" && obj.summary !== "";
 }
 
-export function isArtifact(obj?: object): obj is Artifact {
+export function isArtifact(obj?: any): obj is Artifact {
   const requiredKeys = ["body"];
   return isArtifactIdentifier(obj) && objectContainsKeys(requiredKeys, obj);
 }
 
-export function isArtifactIdentifier(obj?: object): obj is ArtifactIdentifier {
+export function areArtifacts(obj: any): obj is Artifact[] {
+  if (Array.isArray(obj)) {
+    const containsError = obj.map(isArtifact).some((valid) => valid === false);
+    return !containsError;
+  } else return false;
+}
+
+export function isArtifactIdentifier(obj?: any): obj is ArtifactIdentifier {
   const requiredKeys = ["id", "type"];
   return objectContainsKeys(requiredKeys, obj);
 }
@@ -56,13 +69,15 @@ export function isArtifactIdentifierList(
   return !isInvalid;
 }
 
+export function artifactsAreEqual(a1: Artifact, a2: Artifact) {
+  return a1.type === a2.type && a1.id === a2.id;
+}
+
 /*
  * Type conversions
  */
 
-export function getArtifactIdentifierInformation(
-  artifact: Artifact
-): ArtifactIdentifier {
+export function getArtifactIdentifier(artifact: Artifact): ArtifactIdentifier {
   const { id, type } = artifact;
   return { id, type };
 }
