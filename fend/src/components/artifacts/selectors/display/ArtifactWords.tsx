@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { Word, Words } from "../../../../shared/types/Trace";
 
 interface ArtifactWordsProps {
@@ -9,7 +8,7 @@ interface ArtifactWordsProps {
 export default function ArtifactWords(props: ArtifactWordsProps) {
   const body = createWords(props.words);
   return (
-    <div className="textAlignLeft">
+    <div className="textAlignLeft overflowScroll">
       <div className="sizeFull padLight overflowScroll">{body}</div>
     </div>
   );
@@ -22,17 +21,17 @@ function createWords(words: Words) {
       return <br key={wordId}></br>;
     }
     return (
-      <ArtifactWordsContainer
+      <pre
         key={wordId}
-        style={{ fontSize: `${word.size}em`, color: word.color }}
+        style={{
+          fontSize: `${word.size}em`,
+          color: word.color,
+          display: "inline-block",
+          wordWrap: "initial",
+        }}
       >
         {word.word}
-      </ArtifactWordsContainer>
+      </pre>
     );
   });
 }
-
-const ArtifactWordsContainer = styled.pre`
-  display: inline-block;
-  word-wrap: initial;
-`;

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { createWords } from "../../../../shared/artifacts/WordCreator";
 import { FamilyColors, WordDescriptors } from "../../../../shared/types/Trace";
 import ArtifactToolbar from "./ArtifactToolbar";
@@ -15,6 +14,7 @@ interface ArtifactDisplayProps {
 
 export const defaultColor = "black";
 const fontSizeDelta = 0.2;
+const ToolbarHeightPercentage = 15;
 
 //TODO: Add field to props displaying if page header should be on left or right side.
 //TODO: Add line that continues all the way after the page header to replicate trace link.
@@ -36,7 +36,7 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
   return (
     <div className="flexColumn sizeFull">
       {props.showToolbar ? (
-        <ToolbarContainer>
+        <div style={{ height: `${ToolbarHeightPercentage}%` }}>
           <ArtifactToolbar
             title={props.artifactId}
             colorSelected={colorSelected}
@@ -46,16 +46,10 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
             handleZoomIn={() => setDefaultSize(defaultSize + fontSizeDelta)}
             handleZoomOut={() => setDefaultSize(defaultSize - fontSizeDelta)}
           />
-        </ToolbarContainer>
+        </div>
       ) : null}
 
       <ArtifactWords words={words} />
     </div>
   );
 }
-
-const ToolbarHeightPercentage = 15;
-
-const ToolbarContainer = styled.div`
-  height: ${ToolbarHeightPercentage}%;
-`;

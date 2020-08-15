@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { ArtifactDisplayModel } from "../../../shared/types/Dataset";
 import { NUMBER_RESULTS_PROMPT } from "../Constants";
 import { ArtifactClickAction } from "../types";
@@ -16,9 +15,9 @@ export default function SearchResults(props: SearchResultsProps) {
   const numberOfTotalResults = props.numberOfTotalResults;
   return (
     <div className="flexColumn sizeFull">
-      <NumberResultsDisplay className="padVerticalLight">
+      <label className="padVerticalLight widthFull textAlignCenter">
         {numberOfTotalResults + NUMBER_RESULTS_PROMPT}
-      </NumberResultsDisplay>
+      </label>
       {props.results.map((searchItem) => {
         return (
           <SearchResultItem
@@ -33,8 +32,3 @@ export default function SearchResults(props: SearchResultsProps) {
     </div>
   );
 }
-
-const NumberResultsDisplay = styled.div`
-  width: 100%;
-  text-align: center;
-`;

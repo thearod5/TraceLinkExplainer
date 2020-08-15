@@ -1,7 +1,6 @@
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { getDatasetByName, getDatasetNames } from "../../api/datasets";
 import {
   changeStep,
@@ -9,7 +8,7 @@ import {
   selectDataset,
   setError,
 } from "../../redux/actions";
-import { getCurrentStep, getDataset } from "../../redux/selectors";
+import { getDataset } from "../../redux/selectors";
 import { appHistory } from "../../redux/store";
 import { FIRST_STEP_IN_WIZARD } from "../../shared/pagechanger/constants";
 import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
@@ -18,12 +17,9 @@ import { SELECT_ARTIFACTS_ROUTE } from "../nav/routes";
 import DatasetItem from "./item/DatasetItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
-const UNIMPLEMENTED_NEW_DATASET_ERROR =
-  "Adding a new dataset is not yet implemented.";
 
 function DatasetChooser() {
   const dataset = useSelector(getDataset);
-  const currentStep = useSelector(getCurrentStep);
   const dispatch = useDispatch();
 
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
@@ -65,8 +61,6 @@ function DatasetChooser() {
     }
   };
 
-  console.log("CURRENT STEP: ", currentStep);
-
   const datasetItems = datasets.map((dataset, currentIndex) => (
     <DatasetItem
       key={dataset}
@@ -79,62 +73,28 @@ function DatasetChooser() {
   ));
 
   return (
-    <Box className="roundBorder" boxShadow={3}>
-      <Title>Datasets</Title>
-      <DatasetItemContainer>
+    <Box className="roundBorder padMedium" boxShadow={3}>
+      <h2 className="textAlignCenter">Datasets</h2>
+      <div className="flexColumn padLight">
         {datasets.length === 0 ? (
-          <LoadingItem>...loading....</LoadingItem>
+          <LinearProgress color="secondary" />
         ) : (
           datasetItems
         )}
-      </DatasetItemContainer>
-      <NewDatasetButtonContainer>
-        <NewDatasetButton
-          size="large"
+      </div>
+      <div className="flexRowCentered padMedium">
+        <Button
+          disabled
+          size="medium"
           color="primary"
           variant="contained"
-          onClick={() => alert(UNIMPLEMENTED_NEW_DATASET_ERROR)}
           // TODO: Functionality for this
         >
           New Dataset
-        </NewDatasetButton>
-      </NewDatasetButtonContainer>
+        </Button>
+      </div>
     </Box>
   );
 }
 
-const LoadingItem = styled.p`
-  text-align: center;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: normal;
-  padding: 10px;
-`;
-
-const DatasetItemContainer = styled.div`
-  display: flex;
-  flex-grow: 4;
-  flex-direction: column;
-  padding: 10px;
-`;
-
-//TODO: Make so its 10px or something FROM the bottom
-const NewDatasetButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-content: center;
-  margin-bottom: 20px;
-`;
-
-const NEW_DATASET_BUTTON_WIDTH = 100;
-const NEW_DATASET_BUTTON_HEIGHT = 100;
-
-const NewDatasetButton = styled(Button)`
-  height: ${NEW_DATASET_BUTTON_HEIGHT}px;
-  width: ${NEW_DATASET_BUTTON_WIDTH}px;
-`;
 export default DatasetChooser;

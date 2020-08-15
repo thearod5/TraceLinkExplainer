@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
-import styled from "styled-components";
 import { getTraceInformation } from "../../api/trace";
 import {
   getCurrentStep,
@@ -123,19 +122,11 @@ export default function ArtifactSelector() {
   }, [currentStep, sourceArtifact, targetArtifact]);
 
   return (
-    <ArtifactsContainer>
+    <div className="flexColumn heightFull overflowYHidden">
       <SplitPane split="vertical">
         {leftPanel}
         {rightPanel}
       </SplitPane>
-    </ArtifactsContainer>
+    </div>
   );
 }
-
-const ArtifactsContainer = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-  padding: 0px;
-`;

@@ -23,7 +23,7 @@ function DatasetItem(props: DataItemSummaryProps) {
   return (
     <Accordion expanded={expanded} onClick={() => setExpanded(!expanded)}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        {props.dataset}
+        <h4>{props.dataset}</h4>
       </AccordionSummary>
       <DatasetItemDetails onClick={props.onRouteSelected} />
     </Accordion>

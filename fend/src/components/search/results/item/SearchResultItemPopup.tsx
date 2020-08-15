@@ -10,7 +10,6 @@ import DoneIcon from "@material-ui/icons/Done";
 import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import styled from "styled-components";
 import { Artifact } from "../../../../shared/types/Dataset";
 
 interface ItemPopupProps {
@@ -31,7 +30,7 @@ export default function ItemPopup(props: ItemPopupProps) {
       {props.artifact.body}
     </SyntaxHighlighter>
   ) : (
-    <RegularTextContainer>{props.artifact.body}</RegularTextContainer>
+    <p style={{ whiteSpace: "pre-wrap" }}>{props.artifact.body}</p>
   );
 
   return (
@@ -47,26 +46,15 @@ export default function ItemPopup(props: ItemPopupProps) {
       </DialogTitle>
       <DialogContent dividers>{createBodyContainer}</DialogContent>
       <DialogActions>
-        <ActionContainer>
+        <div className="flexRowSpaceAround widthFull">
           <IconButton aria-label="exit" onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
           <IconButton aria-label="select" onClick={props.selectSource}>
             <DoneIcon />
           </IconButton>
-        </ActionContainer>
+        </div>
       </DialogActions>
     </Dialog>
   );
 }
-
-const ActionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 100%;
-`;
-
-const RegularTextContainer = styled.p`
-  white-space: pre-wrap;
-`;
