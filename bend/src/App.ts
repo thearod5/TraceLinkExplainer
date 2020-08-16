@@ -34,7 +34,7 @@ app.get(`${DATASET_MAIN_ROUTE}/:datasetName`, (req: Request, res: Response) =>
   getDatasetByName(res, req.params.datasetName)
 )
 app.post(SEARCH_SOURCE_ROUTE,
-  async (req: Request, res: Response, next) => {
+  async (req: Request, res: Response) => {
     if (!isSearchSourceRoutePayload(req.body)) {
       return sendError(res, INVALID_PAYLOAD)
     }
@@ -44,7 +44,7 @@ app.post(SEARCH_SOURCE_ROUTE,
 
 app.post(
   SEARCH_TARGET_ROUTE,
-  async (req: Request, res: Response, next) => {
+  async (req: Request, res: Response) => {
     if (!isSearchTargetRoutePayload(req.body, true)) {
       return sendError(res, INVALID_PAYLOAD)
     }
@@ -55,7 +55,7 @@ app.post(
     handleError(res, dataPromise)
   })
 
-app.post(GET_TRACE_ROUTE, async (req: Request, res: Response, next) => {
+app.post(GET_TRACE_ROUTE, async (req: Request, res: Response) => {
   if (!isTraceRetrievealPayload(req.body, true)) {
     return sendError(res, INVALID_PAYLOAD)
   }
@@ -65,13 +65,13 @@ app.post(GET_TRACE_ROUTE, async (req: Request, res: Response, next) => {
   handleError(res, dataPromise)
 })
 
-function handleError<T> (res: Response, data: Promise<T>) {
+function handleError<T>(res: Response, data: Promise<T>) {
   data.then(data => res.send(data)).catch(e => { // convention is to reject with error
     sendError(res, e)
   })
 }
 
-function sendError (res: Response, error: object | string) {
+function sendError(res: Response, error: object | string) {
   res.status(400)
   if (typeof error === 'string') res.send({ error })
   else res.send(error)
