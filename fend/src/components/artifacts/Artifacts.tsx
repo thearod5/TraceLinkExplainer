@@ -71,11 +71,15 @@ export default function ArtifactSelector() {
   const selectedSources: Artifact[] = useSelector(getSelectedSources);
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
+
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
 
+  //Remove Here
   const sourceArtifact = selectedSources[0];
   const targetArtifact = selectedTargets[0];
+
+
 
   useEffect(() => {
     switch (currentStep) {

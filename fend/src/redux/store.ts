@@ -5,7 +5,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { initializeEmptyDataset } from "./initializers";
 import rootReducer from "./reducers";
 import { RootState } from "./types";
 
@@ -18,16 +17,6 @@ const persistConfig = {
 export const appHistory = createBrowserHistory();
 
 const middleware = [thunk, routerMiddleware(appHistory)];
-
-export function createEmptyState(): RootState {
-  return {
-    currentStep: 0,
-    selectedSources: [],
-    selectedTargets: [],
-    error: undefined,
-    dataset: initializeEmptyDataset(),
-  };
-}
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -4,6 +4,8 @@ export interface RootState {
   dataset: Dataset;
   selectedSources: Artifact[];
   selectedTargets: Artifact[];
+  source: Artifact;
+  target: Artifact;
   error: string | undefined;
   currentStep: number;
 }
