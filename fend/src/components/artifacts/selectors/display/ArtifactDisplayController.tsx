@@ -3,6 +3,9 @@ import { createWords } from "../../../../shared/artifacts/WordCreator";
 import { FamilyColors, WordDescriptors } from "../../../../shared/types/Trace";
 import ArtifactToolbar from "./ArtifactToolbar";
 import ArtifactWords from "./ArtifactWords";
+import { AccordionDetails, AccordionSummary, Accordion } from "@material-ui/core";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { primaryColor } from "../../../../styles/theme";
 
 interface ArtifactDisplayProps {
   words: WordDescriptors;
@@ -34,9 +37,17 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
   );
 
   return (
-    <div className="flexColumn sizeFull">
+    <Accordion
+      className="flexColumn"
+    >
       {props.showToolbar ? (
-        <div style={{ height: `${ToolbarHeightPercentage}%` }}>
+        <AccordionSummary
+          style={{
+            height: `${ToolbarHeightPercentage}%`,
+            backgroundColor: primaryColor
+          }}
+          expandIcon={<ExpandMoreIcon />}
+        >
           <ArtifactToolbar
             title={props.artifactId}
             colorSelected={colorSelected}
@@ -46,10 +57,11 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
             handleZoomIn={() => setDefaultSize(defaultSize + fontSizeDelta)}
             handleZoomOut={() => setDefaultSize(defaultSize - fontSizeDelta)}
           />
-        </div>
+        </AccordionSummary>
       ) : null}
-
-      <ArtifactWords words={words} />
-    </div>
+      <AccordionDetails>
+        <ArtifactWords words={words} />
+      </AccordionDetails>
+    </Accordion>
   );
 }
