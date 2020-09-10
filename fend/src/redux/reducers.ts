@@ -10,11 +10,12 @@ import {
   SET_SELECTED_TARGETS_ACTION,
   UNSELECT_DATASET,
 } from "./actions";
-import { initializeEmptyDataset, initializeRootState } from "./initializers";
+import { initializeEmptyDataset } from "./initializers";
+import { createEmptyState } from "./store";
 import { RootState } from "./types";
 
 export default (
-  state = initializeRootState(),
+  state = createEmptyState(),
   action: CustomAction
 ): RootState => {
   switch (action.type) {
@@ -70,7 +71,7 @@ export default (
       }
 
     case CLEAR_DATA:
-      return initializeRootState();
+      return createEmptyState();
     default:
       return state;
   }

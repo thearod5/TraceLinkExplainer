@@ -4,14 +4,13 @@ import {
   setSelectedSources,
   setSelectedTargets,
 } from "../../redux/actions";
-import store from "../../redux/store";
+import store, { createEmptyState } from "../../redux/store";
 import { RootState } from "../../redux/types";
 import { SELECT_SOURCE_STEP } from "../../shared/pagechanger/constants";
 import { getNewStepState } from "../../shared/pagechanger/PageChanger";
 import { Artifact, Dataset } from "../../shared/types/Dataset";
-import { initializeRootState } from "../../redux/initializers";
 
-let mockState: RootState = initializeRootState();
+let mockState: RootState = createEmptyState();
 
 const mockDataset: Dataset = {
   name: "Test Dataset",
