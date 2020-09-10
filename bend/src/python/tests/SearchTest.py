@@ -4,8 +4,15 @@ from controllers.Search import search_for_artifact, search_for_related_artifacts
 
 
 class SearchTest(unittest.TestCase):
+    def runTest(self):
+        self.test_search_source()
+        self.test_empty_search()
+        self.test_search_for_related_artifacts()
+        self.test_search_for_related_artifacts_with_duplicates()
+
     def test_search_source(self):
-        artifacts = search_for_artifact("Drone", ["id", "is", "RE-8"], 10)["searchItems"]
+        artifacts = search_for_artifact(
+            "Drone", ["id", "is", "RE-8"], 10)["searchItems"]
 
         self.assertEqual(1, len(artifacts))
         self.assertEqual(artifacts[0]["id"], "RE-8")
@@ -16,17 +23,21 @@ class SearchTest(unittest.TestCase):
 
     def test_search_for_related_artifacts(self):
         response = search_for_related_artifacts("Drone",
-                                                [{'id': "RE-8", "type": "Requirements"}],
+                                                [{'id': "RE-8", "type": "requirements"}],
                                                 "",
                                                 -1)
         traced_artifacts = response["searchItems"]
-        self.assertEqual(6, len(traced_artifacts))
+        self.assertEqual(7, len(traced_artifacts))
 
-    def test_search_for_related_artifacts(self):
+    def test_search_for_related_artifacts_with_duplicates(self):
         response = search_for_related_artifacts("Drone",
-                                                [{'id': "RE-8", "type": "Requirements"},
-                                                 {'id': "RE-8", "type": "Requirements"}],
+                                                [{'id': "RE-8", "type": "requirements"},
+                                                 {'id': "RE-8", "type": "requirements"}],
                                                 "",
                                                 -1)
         traced_artifacts = response["searchItems"]
-        self.assertEqual(6, len(traced_artifacts))
+        self.assertEqual(7, len(traced_artifacts))
+
+
+def get_ids(artifacts):
+    return list(map(lambda a: a["id"], artifacts))

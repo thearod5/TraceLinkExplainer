@@ -65,13 +65,13 @@ app.post(GET_TRACE_ROUTE, async (req: Request, res: Response) => {
   handleError(res, dataPromise)
 })
 
-function handleError<T>(res: Response, data: Promise<T>) {
+function handleError<T> (res: Response, data: Promise<T>) {
   data.then(data => res.send(data)).catch(e => { // convention is to reject with error
     sendError(res, e)
   })
 }
 
-function sendError(res: Response, error: object | string) {
+function sendError (res: Response, error: object | string) {
   res.status(400)
   if (typeof error === 'string') res.send({ error })
   else res.send(error)

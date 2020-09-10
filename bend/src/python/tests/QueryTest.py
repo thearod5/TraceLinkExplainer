@@ -5,6 +5,12 @@ from controllers.Query import filter_artifacts
 
 class QueryTest(unittest.TestCase):
 
+    def runTest(self):
+        self.test_basic_filter()
+        self.test_exact_filter()
+        self.test_combined_filter()
+        self.test_combine_negative()
+
     def test_basic_filter(self):
         self.assertEqual(len(filter_artifacts([], [{"id": "RE-9"}])), 1)
         self.assertEqual(len(filter_artifacts(["id", "is", "RE-8"], [{"id": "RE-9"}])), 0)

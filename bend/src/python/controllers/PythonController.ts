@@ -7,7 +7,7 @@ const PATH_TO_BEND = path.join(__dirname, '..', '..', '..')
 
 // Relative Paths
 const PATH_TO_RUNNER = path.join(PATH_TO_BEND, 'src', 'python', 'ClassRunner.py')
-const PATH_TO_TEMP_FOLDER = path.join(PATH_TO_BEND, 'src', 'temp')
+const PATH_TO_TEMP_FOLDER = path.join(PATH_TO_BEND, 'temp')
 const PATH_TO_PYTHON = path.join(PATH_TO_BEND, 'env', 'bin', 'python3')
 
 // Errors

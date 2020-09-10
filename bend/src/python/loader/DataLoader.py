@@ -13,23 +13,23 @@ PATH_TO_DATA = get_path_to_data(CURRENT_PATH)
 assert os.path.isdir(PATH_TO_DATA), PATH_TO_DATA
 
 LINKED_MATRICES = {
-    "Requirements": [("Level_1_to_Level_2.csv", 0), ("Level_1_to_Level_3.csv", 0)],
-    "Designs": [("Level_1_to_Level_2.csv", 1), ("Level_2_to_Level_3.csv", 0)],
-    "Classes": [("Level_1_to_Level_3.csv", 1), ("Level_2_to_Level_3.csv", 1)]
+    "requirements": [("Level_1_to_Level_2.csv", 0), ("Level_1_to_Level_3.csv", 0)],
+    "designs": [("Level_1_to_Level_2.csv", 1), ("Level_2_to_Level_3.csv", 0)],
+    "classes": [("Level_1_to_Level_3.csv", 1), ("Level_2_to_Level_3.csv", 1)]
 }
 
 SOURCE_MATRICES = {
     "Level_1_to_Level_2.csv": {
-        0: "Requirements",
-        1: "Designs"
+        0: "requirements",
+        1: "designs"
     },
     "Level_1_to_Level_3.csv": {
-        0: "Requirements",
-        1: "Classes"
+        0: "requirements",
+        1: "classes"
     },
     "Level_2_to_Level_3.csv": {
-        0: "Designs",
-        1: "Classes"
+        0: "designs",
+        1: "classes"
     }
 }
 
@@ -39,16 +39,17 @@ ARTIFACT_NOT_FOUND_ERROR_TAG = "ARTIFACT_NOT_FOUND"
 def get_dataset_path(dataset_name: str):
     dataset_query = list(
         filter(lambda f: f[0] != ".", os.listdir(PATH_TO_DATA)))
-    assert dataset_name in dataset_query, 'Could not find dataset: %s in %s' % (dataset_name, PATH_TO_DATA)
+    assert dataset_name in dataset_query, 'Could not find dataset: %s in %s' % (
+        dataset_name, PATH_TO_DATA)
     return os.path.join(PATH_TO_DATA, dataset_name)
 
 
-def get_path_to_artifacts(dataset: str, artifact_type: str, hasExtension=False):
+def get_path_to_artifacts(dataset: str, artifact_type: str, has_extension=False):
     path_to_dataset = get_dataset_path(dataset)
     artifact_type_query = list(
         filter(lambda f: f[0] != ".", os.listdir(path_to_dataset)))
     artifact_type_file_name = artifact_type + \
-                              "" if hasExtension else artifact_type + ".json"
+                              "" if has_extension else artifact_type + ".json"
     assert artifact_type_file_name in artifact_type_query, "Could not find artifact set: %s" % artifact_type
     return os.path.join(path_to_dataset, artifact_type_file_name)
 
@@ -63,7 +64,7 @@ def get_path_to_trace_matrices(dataset: str):
 def get_traced_artifacts(dataset: str, source_artifact_type: str, source_artifact_id: str):
     global_traced_artifacts = []
     path_to_trace_matrices = get_path_to_trace_matrices(dataset)
-    linked_trace_matrices = LINKED_MATRICES[source_artifact_type]
+    linked_trace_matrices = LINKED_MATRICES[source_artifact_type.lower()]
 
     for trace_matrix_name, target_axis in linked_trace_matrices:
         # 1. Load paths
@@ -102,7 +103,7 @@ def create_error(id, message):
 
 def get_dataset_artifacts_for_type(dataset: str, artifact_type: str, hasExtension=False):
     path_to_artifacts = get_path_to_artifacts(
-        dataset, artifact_type, hasExtension=hasExtension)
+        dataset, artifact_type, has_extension=hasExtension)
     data = None
     with open(path_to_artifacts) as json_file:
         data = json.load(json_file)

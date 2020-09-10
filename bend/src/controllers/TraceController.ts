@@ -16,7 +16,7 @@ export function getTrace (
       'TraceExplanation.py',
       'get_trace_information',
       {
-        arguments: [datasetName, sourceType, sourceId, targetType, targetId]
+        arguments: [datasetName, sourceType.toLowerCase(), sourceId, targetType.toLowerCase(), targetId]
       }
     )
       .then((result) => {
