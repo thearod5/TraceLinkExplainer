@@ -19,9 +19,6 @@ export const defaultColor = "black";
 const fontSizeDelta = 0.2;
 const ToolbarHeightPercentage = 15;
 
-//TODO: Add field to props displaying if page header should be on left or right side.
-//TODO: Add line that continues all the way after the page header to replicate trace link.
-
 export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
   const [sizeSelected, setSizeSelected] = useState(true);
   const [colorSelected, setColorSelected] = useState(true);
