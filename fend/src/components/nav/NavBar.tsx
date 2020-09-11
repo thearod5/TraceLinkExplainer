@@ -12,6 +12,7 @@ export default function NavBar() {
   const dataset = useSelector(getDataset).name;
 
   const GoHomeClickHanlder = () => {
+    console.log("GOING HOME!!")
     appHistory.push("/");
   };
 
@@ -28,7 +29,7 @@ export default function NavBar() {
           className="padLight"
           style={{ color: primaryColor }}
         >
-          {activeStep === 0 ? WELCOME_MESSAGE : dataset}
+          {activeStep === 0 ? dataset : WELCOME_MESSAGE }
         </h1>
       </div>
     </Box>

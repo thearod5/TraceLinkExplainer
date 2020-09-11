@@ -1,3 +1,5 @@
+import { setError } from "../redux/actions";
+import store from "../redux/store";
 import { Artifact } from "../shared/types/Dataset";
 import { TraceInformation, TraceRetrievalPayload } from "../shared/types/Trace";
 import { BASE_URL, post } from "./base";
@@ -20,7 +22,7 @@ export function getTraceInformation(
   return new Promise((resolve, reject) => {
     post(TRACE_URL, body).then((response) => {
       if (isError(response)) {
-        alert(`Error occurred on backend: ${response.error}`);
+        store.dispatch(setError(`Error occurred on backend: ${response.error}`))
         reject(response.message);
       } else resolve(response as TraceInformation);
     });

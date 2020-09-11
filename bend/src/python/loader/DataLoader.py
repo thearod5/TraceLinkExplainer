@@ -48,8 +48,8 @@ def get_path_to_artifacts(dataset: str, artifact_type: str, has_extension=False)
     path_to_dataset = get_dataset_path(dataset)
     artifact_type_query = list(
         filter(lambda f: f[0] != ".", os.listdir(path_to_dataset)))
-    artifact_type_file_name = artifact_type + \
-                              "" if has_extension else artifact_type + ".json"
+    artifact_type_file_name = artifact_type.lower() + \
+                              "" if has_extension else artifact_type.lower() + ".json"
     assert artifact_type_file_name in artifact_type_query, "Could not find artifact set: %s" % artifact_type
     return os.path.join(path_to_dataset, artifact_type_file_name)
 

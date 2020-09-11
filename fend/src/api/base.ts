@@ -1,3 +1,6 @@
+import { setError } from "../redux/actions";
+import store from "../redux/store";
+
 export const BASE_URL = "http://localhost:5000";
 const TEST_ENDPOINT = "test";
 export const DATASET_ENDPOINT = "dataset";
@@ -24,6 +27,6 @@ export async function post(url: string, data: object): Promise<any> {
   })
     .then((res) => res.json())
     .catch((e) => {
-      alert(e);
+      store.dispatch(setError(e));
     });
 }

@@ -24,6 +24,8 @@ export function createEmptyState(): RootState {
     currentStep: 0,
     selectedSources: [],
     selectedTargets: [],
+    sourceIndex: 0,
+    targetIndex: 0,
     error: undefined,
     dataset: initializeEmptyDataset(),
   };

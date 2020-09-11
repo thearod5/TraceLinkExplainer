@@ -1,7 +1,7 @@
 import unittest
 
 from preprocessing.Cleaners import clean_doc, split_chained_calls, separate_camel_case, \
-    remove_non_alphanumeric_characters, remove_stop_words, stem_doc, to_lower
+    remove_non_alphanumeric_characters, remove_stop_words, stem_doc, to_lower, get_camel_case_words
 
 
 class TestCleanDoc(unittest.TestCase):
@@ -24,6 +24,27 @@ class TestCleanDoc(unittest.TestCase):
         doc = "GUIAnagraficaLaboratorioHandler"
         cleaned_doc = separate_camel_case(doc)
         self.assertEqual("GUI Anagrafica Laboratorio Handler", cleaned_doc)
+
+    def test_separate_camel_case_none_found(self):
+        doc = "hello world"
+        cleaned_doc = separate_camel_case(doc)
+        self.assertEqual(doc, cleaned_doc)
+
+    def test_get_camel_case_words(self):
+        doc = "hello world"
+        words = get_camel_case_words(doc)
+        self.assertEqual("hello world", words[0])
+
+    def test_get_camel_case_words_code(self):
+        doc = "dispatchQueueManager.getGroundStationId()"
+        words = get_camel_case_words(doc)
+        print(words)
+        self.assertEqual("dispatch", words[0])
+        self.assertEqual("Queue", words[1])
+        self.assertEqual("Manager.get", words[2])
+        self.assertEqual("Ground", words[3])
+        self.assertEqual("Station", words[4])
+        self.assertEqual("Id()", words[5])
 
     def test_remove_non_alphanumeric(self):
         doc = "123helloWorld!.thisMyThing"

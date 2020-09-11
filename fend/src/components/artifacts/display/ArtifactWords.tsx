@@ -1,5 +1,5 @@
 import React from "react";
-import { Word, Words } from "../../../../shared/types/Trace";
+import { Word, Words } from "../../../shared/types/Trace";
 
 interface ArtifactWordsProps {
   words: Words;

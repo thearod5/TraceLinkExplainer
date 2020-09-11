@@ -3,26 +3,23 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStep, setError } from "../../redux/actions";
 import { getCurrentStep } from "../../redux/selectors";
-import { appHistory } from "../../redux/store";
 import { ArtifactMutatorActionType } from "../../redux/types";
 import { createArtifactDisplayModel } from "../../shared/artifacts/WordCreator";
 import {
-  SELECT_SOURCE_STEP,
-  VIEW_TRACE_STEP,
+  SELECT_SOURCE_STEP, VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
 import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
 import {
   Artifact,
   ArtifactDisplayModel,
-  artifactsAreEqual,
+  artifactsAreEqual
 } from "../../shared/types/Dataset";
-import { TRACE_VIEW_ROUTE } from "../nav/routes";
 import SearchBar from "./bar/SearchBar";
 import {
   SEARCH_DISPLAY_LIMIT,
   SEARCH_LIMIT,
   SELECT_SOURCE_MESSAGE,
-  SELECT_TARGET_MESSAGE,
+  SELECT_TARGET_MESSAGE
 } from "./Constants";
 import SearchResults from "./results/SearchResults";
 import { SearchFooter } from "./SearchFooter";
@@ -121,21 +118,20 @@ export default function SearchController(props: SearchProps) {
   const handleStepCompleted = () => {
     if (selectedArtifacts.length === 0)
       return dispatch(setError("No artifacts selected."));
+    if (currentStep >= VIEW_TRACE_STEP)
+      return;
+
     dispatch(props.onArtifactsSelected(selectedArtifacts));
+
     const nextStep = currentStep + 1;
     const error = getStepChangeError(nextStep);
+
     if (error === undefined) {
       setCompleted(true); //changes made, results not up-to-date
       dispatch(changeStep(nextStep));
+      console.log("Changing to step: ", nextStep)
     } else dispatch(setError(error));
   };
-
-  /*
-   * Effects
-   */
-  useEffect(() => {
-    if (currentStep === VIEW_TRACE_STEP) appHistory.push(TRACE_VIEW_ROUTE);
-  }, [currentStep]);
 
   useEffect(() => startSearch(""), [startSearch]);
 

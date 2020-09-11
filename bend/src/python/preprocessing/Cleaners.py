@@ -1,5 +1,4 @@
 import functools
-import re
 
 from nltk.stem import PorterStemmer
 
@@ -18,10 +17,18 @@ def split_chained_calls(line):
     return line.replace(".", " ").strip()
 
 
-def get_camel_case_words(doc: str):
-    word = re.sub('([A-Z][a-z]+)', r' \1',
-                  re.sub('([A-Z]+)', r' \1', doc)).split()
-    return word
+def get_camel_case_words(line):
+    words = []
+    start_index = 0
+    i = 0
+    for i in range(0, len(line)):
+        current_char = line[i]
+        if i != 0 and current_char.isupper() and not line[i - 1].isupper() and line[i - 1] != " ":
+            words.append(line[start_index:i])
+            start_index = i
+    if start_index != i:
+        words.append(line[start_index: i + 1])
+    return words
 
 
 def separate_camel_case(doc: str):
