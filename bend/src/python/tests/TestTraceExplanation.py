@@ -10,9 +10,9 @@ class TestTraceExplanation(unittest.TestCase):
                                                   "Classes",
                                                   "AFAssignRouteComponent.java",
                                                   "Designs",
-                                                  "DD-113")
+                                                  "DD-352")
         families = trace_information["families"]
-        print(families)
+        print("families: ", families)
 
     def test_get_words_in_string_doc(self):
         words = get_words_in_string_doc("hello world")
@@ -34,7 +34,7 @@ class TestTraceExplanation(unittest.TestCase):
         self.assertEqual("Id", words[7])
         self.assertEqual("(", words[8])
         self.assertEqual(")", words[9])
-    
+
     def test_create_root_weight_mapping(self):
         a_words = ["UAV", "state"]
         b_words = ["UAV", "transition"]

@@ -79,12 +79,12 @@ def create_root_weight_mapping(source_root_words: [str], target_root_words: [str
         [source_doc], [target_doc], True)  # TODO : replace with all artifacts for more accurate description
 
     # 2. Sum weight matrices
-    summed_term_weight_matrix = (
-            source_term_weight_matrix + target_term_weight_matrix)
+    summed_term_weight_matrix = source_term_weight_matrix.multiply(
+        target_term_weight_matrix)
 
     # 3.
     word_weight_mapping = create_word_weight_dictionary(
-        vectorizer.vocabulary_, summed_term_weight_matrix.toarray(), cutoff=0.5)
+        vectorizer.vocabulary_, summed_term_weight_matrix.toarray(), cutoff=0)
 
     return word_weight_mapping
 
