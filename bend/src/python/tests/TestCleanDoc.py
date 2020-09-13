@@ -1,7 +1,8 @@
 import unittest
 
 from preprocessing.Cleaners import clean_doc, split_chained_calls, separate_camel_case, \
-    remove_non_alphanumeric_characters, remove_stop_words, stem_doc, to_lower, get_camel_case_words
+    remove_non_alphanumeric_characters, remove_stop_words, stem_doc, to_lower, get_camel_case_words, \
+    get_words_in_string_doc
 
 
 class TestCleanDoc(unittest.TestCase):
@@ -75,3 +76,24 @@ class TestCleanDoc(unittest.TestCase):
         doc = "123helloWorld!.thisMyThing"
         actual = clean_doc(doc)
         self.assertEqual("hello world thing", actual)
+
+    def test_get_words_in_string_doc_code(self):
+        doc = "dispatchQueueManager.getGroundStationId()"
+        words = get_words_in_string_doc(doc)
+        self.assertEqual("dispatch", words[0])
+        self.assertEqual("Queue", words[1])
+        self.assertEqual("Manager", words[2])
+        self.assertEqual(".", words[3])
+        self.assertEqual("get", words[4])
+        self.assertEqual("Ground", words[5])
+        self.assertEqual("Station", words[6])
+        self.assertEqual("Id", words[7])
+        self.assertEqual("(", words[8])
+        self.assertEqual(")", words[9])
+
+    def test_get_words_in_string_doc(self):
+        words = get_words_in_string_doc("hello world")
+
+        self.assertEqual("hello", words[0])
+        self.assertEqual(" ", words[1])
+        self.assertEqual("world", words[2])

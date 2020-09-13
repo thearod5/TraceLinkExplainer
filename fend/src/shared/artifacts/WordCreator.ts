@@ -1,14 +1,14 @@
 import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
 import {
+  Families,
   FamilyColors,
+  KeyWordType,
+  SyntaxWordType,
   Word,
   WordDescriptor,
   WordDescriptors,
   Words
 } from "../types/Trace";
-
-export const SyntaxWordType = "#SYNTAX";
-export const KeyWordType = "#KEYWORD";
 
 const syntaxDelimiters = ["{", "}", "(", ")", "[", "]"];
 const lineDelimiters = [" ", "\n", "\t"].concat(syntaxDelimiters);
@@ -39,6 +39,22 @@ const keyWordDelimiters = [
   "string",
 ];
 
+export function getDefaultFamilies(): Families {
+  const families: Families = {}
+  families[SyntaxWordType] = {
+    weight: 0,
+    concepts: syntaxDelimiters,
+    type: SyntaxWordType
+  }
+  families[KeyWordType] = {
+    weight: 0,
+    concepts: keyWordDelimiters,
+    type: KeyWordType
+  }
+
+  return families
+}
+
 export function getDefaultFamilyColors(): FamilyColors {
   const colors: FamilyColors = {};
   colors[SyntaxWordType] = "#FF8C00";
@@ -49,8 +65,7 @@ export function getDefaultFamilyColors(): FamilyColors {
 
 export function createArtifactDisplayModel(
   artifact: Artifact,
-  sizeSelected: boolean = true,
-  colorSelected: boolean = true,
+  families: Families = getDefaultFamilies(),
   defaultSize: number = 1,
   familyColors: FamilyColors = getDefaultFamilyColors(),
   defaultColor: string = "black"
@@ -58,8 +73,7 @@ export function createArtifactDisplayModel(
   const wordDescriptors = createDefaultWordDescriptors(artifact.body);
   const words = createWords(
     wordDescriptors,
-    sizeSelected,
-    colorSelected,
+    families,
     defaultSize,
     familyColors,
     defaultColor
@@ -70,20 +84,31 @@ export function createArtifactDisplayModel(
   };
 }
 
+/*
+ * Default
+ */
+
 export function createDefaultWordDescriptors(body: string): WordDescriptors {
   return separateWords(body).map((bodyWord) => {
     return {
-      family: getWordFamily(bodyWord),
+      families: getWordFamilies(bodyWord),
       word: bodyWord,
-      weight: 0,
     };
   });
 }
 
+function getWordFamilies(word: string): string[] {
+  if (syntaxDelimiters.includes(word)) return [SyntaxWordType];
+  if (keyWordDelimiters.includes(word)) return [KeyWordType];
+  else return [];
+}
+
+/*
+ * Custom Words
+ */
 export function createWords(
   descriptors: WordDescriptors,
-  sizeSelected: boolean,
-  colorSelected: boolean,
+  families: Families,
   defaultSize: number,
   familyColors: FamilyColors,
   defaultColor: string = "black"
@@ -91,8 +116,7 @@ export function createWords(
   const createWordFromDescriptor = (descriptor: WordDescriptor) =>
     createWord(
       descriptor,
-      sizeSelected,
-      colorSelected,
+      families,
       defaultSize,
       familyColors,
       defaultColor
@@ -102,50 +126,36 @@ export function createWords(
 
 export function createWord(
   descriptor: WordDescriptor,
-  sizeSelected: boolean,
-  colorSelected: boolean,
+  families: Families,
   defaultSize: number,
   familyColors: FamilyColors,
-  defaultColor: string = "black"
+  defaultColor: string
 ): Word {
-  const wordSize = calculateWordSize(
-    descriptor.weight,
-    sizeSelected,
-    defaultSize
-  );
-  const wordColor =
-    descriptor.family in familyColors && colorSelected
-      ? familyColors[descriptor.family]
-      : defaultColor;
+  const hasFamily = descriptor.families.length > 0
+  let wordSize, wordColor;
+  if (hasFamily) {
+    const mainFamilyId: string = descriptor.families[0]
+    const mainFamily = families[mainFamilyId]
+
+    wordSize = mainFamily.weight + defaultSize
+    wordColor =
+      mainFamilyId in familyColors
+        ? familyColors[mainFamilyId]
+        : defaultColor;
+  } else {
+    wordSize = defaultSize
+    wordColor = defaultColor
+  }
+
   return {
     word: descriptor.word,
     size: wordSize,
     color: wordColor,
-    description: createWordDescription(descriptor),
-    family: descriptor.family
+    families: descriptor.families
   };
 }
 
-function createWordDescription(descriptor: WordDescriptor) {
-  //newlines are separated inside of ArtifactWords.tsx
-  if (descriptor.weight === 0) //TODO: Fells dirty
-    return ""
-  return `Family: ${descriptor.family}\nWeight: ${descriptor.weight}`
-}
 
-function calculateWordSize(
-  weight: number,
-  sizeSelected: boolean,
-  defaultSize: number
-) {
-  return sizeSelected ? weight + defaultSize : defaultSize;
-}
-
-function getWordFamily(word: string) {
-  if (syntaxDelimiters.includes(word)) return SyntaxWordType;
-  if (keyWordDelimiters.includes(word)) return KeyWordType;
-  else return "";
-}
 
 export function separateWords(body: string): string[] {
   let words: string[] = [body];

@@ -3,7 +3,7 @@ import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
-import { FamilyColors, WordDescriptors } from "../../../shared/types/Trace";
+import { Families, FamilyColors, WordDescriptors } from "../../../shared/types/Trace";
 import { primaryColor, secondaryColor } from "../../../styles/theme";
 import ArtifactTitle from "./ArtifactToolbar";
 import ArtifactWords from "./ArtifactWords";
@@ -15,14 +15,15 @@ interface IconButton {
   onChange: (event: any) => void;
 }
 
-export const defaultColor = "black";
+export const DEFAULT_FONT_COLOR = "black";
 const fontSizeDelta = 0.2;
 const ToolbarHeightPercentage = 15;
 
 interface ArtifactDisplayProps {
-  words: WordDescriptors;
   artifactType: string;
   artifactId: string;
+  words: WordDescriptors;
+  families: Families;
   familyColors: FamilyColors;
   expanded: boolean;
   onExpand: () => void;
@@ -32,19 +33,18 @@ interface ArtifactDisplayProps {
 export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
   const [sizeSelected, setSizeSelected] = useState(true);
   const [colorSelected, setColorSelected] = useState(true);
-  const [defaultSize, setDefaultSize] = useState(1);
+  const [fontSize, setFontSize] = useState(1);
 
   const words = createWords(
     props.words,
-    sizeSelected,
-    colorSelected,
-    defaultSize,
+    props.families,
+    fontSize,
     props.familyColors,
-    defaultColor
+    DEFAULT_FONT_COLOR
   );
 
-  const handleZoomIn = () => setDefaultSize(defaultSize + fontSizeDelta);
-  const handleZoomOut = () => setDefaultSize(defaultSize - fontSizeDelta)
+  const handleZoomIn = () => setFontSize(fontSize + fontSizeDelta);
+  const handleZoomOut = () => setFontSize(fontSize - fontSizeDelta)
 
   const icons = generateIcons(handleZoomIn,
     handleZoomOut,
@@ -94,7 +94,13 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
           style={{ backgroundColor: secondaryColor }}>
           {iconCheckboxes}
         </div>
-        <ArtifactWords words={words} />
+        <ArtifactWords
+          words={words}
+          families={props.families}
+          colorSelected={colorSelected}
+          sizeSelected={sizeSelected}
+          defaultSize={fontSize}
+        />
       </AccordionDetails>
     </Accordion>
   );

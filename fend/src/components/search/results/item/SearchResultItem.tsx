@@ -5,13 +5,13 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-  IconButton,
+  IconButton
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
 import { Artifact } from "../../../../shared/types/Dataset";
-import { Words } from "../../../../shared/types/Trace";
+import { Families, Words } from "../../../../shared/types/Trace";
 import ArtifactWords from "../../../artifacts/display/ArtifactWords";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./SearchResultItemPopup";
@@ -19,6 +19,7 @@ import ItemPopup from "./SearchResultItemPopup";
 interface SearchResultProps {
   result: Artifact;
   words: Words;
+  families: Families;
   selectArtifact: ArtifactClickAction;
   removeArtifact: ArtifactClickAction;
 }
@@ -61,7 +62,13 @@ export default function SearchResultItem(props: SearchResultProps) {
           style={{ width: "90%", maxHeight: "300px" }}
           boxShadow={3}
         >
-          <ArtifactWords words={props.words} />
+          <ArtifactWords
+            words={props.words}
+            families={props.families}
+            colorSelected={true}
+            sizeSelected={false}
+            defaultSize={1}
+          />
         </Box>
 
         <div className="centeredColumn" style={{ width: "10%" }}>

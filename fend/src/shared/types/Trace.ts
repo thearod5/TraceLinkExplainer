@@ -1,5 +1,8 @@
 import { objectContainsKeys } from "./TypeUtil";
 
+export const SyntaxWordType: string = "#SYNTAX";
+export const KeyWordType: string = "#KEYWORD";
+
 /*
  * Type Definitions
  */
@@ -13,20 +16,28 @@ export interface TraceRetrievalPayload {
 }
 
 export interface TraceInformation {
-  families: string[];
-  sourceWords: WordDescriptors;
-  targetWords: WordDescriptors;
+  families: Families;
+  sourceDescriptors: WordDescriptors;
+  targetDescriptors: WordDescriptors;
   traceType: string;
-  score: number;
+  score: number; // similarities score for when estimations are calculated
 }
+
+export type RelatedConcepts = string[];
+export interface Family {
+  weight: number
+  concepts: RelatedConcepts
+  type: "ROOT" | "CONCEPT" | typeof SyntaxWordType | typeof KeyWordType
+}
+
+export type Families = Record<string, Family>
 
 export type WordDescriptors = WordDescriptor[];
 
 //BEND Version of Word
 export interface WordDescriptor {
   word: string;
-  weight: number;
-  family: string;
+  families: string[]
 }
 
 //FEND version of WordDescriptor
@@ -34,8 +45,7 @@ export interface Word {
   word: string;
   size: number;
   color: string;
-  description: string;
-  family: string;
+  families: string[]
 }
 
 export type Words = Word[];
@@ -64,25 +74,25 @@ export function isTraceInformation(
 ): obj is TraceInformation {
   const requiredKeys = [
     "families",
-    "sourceWords",
-    "targetWords",
+    "sourceDescriptors",
+    "targetDescriptors",
     "traceType",
     "score",
   ];
   return (
     objectContainsKeys(requiredKeys, obj, log) &&
-    isWordDescriptors(obj.sourceWords, log) &&
-    isWordDescriptors(obj.targetWords, log)
+    isWordDescriptors(obj.sourceDescriptors, log) &&
+    isWordDescriptors(obj.targetDescriptors, log)
   );
 }
 
 function isWordDescriptor(obj?: any, log = false): obj is WordDescriptor {
-  const requiredKeys = ["word", "family", "weight"];
+  const requiredKeys = ["word", "families"];
   const result =
     objectContainsKeys(requiredKeys, obj, log) &&
-    typeof obj.weight === "number" &&
     typeof obj.word === "string" &&
-    typeof obj.family === "string";
+    typeof obj.families === "object" &&
+    obj.families.length >= 0;
   if (log && !result) console.log("Failed: ", obj);
   return result;
 }
@@ -97,4 +107,4 @@ export function isWordDescriptors(
     .includes(false);
 }
 
-export type FamilyColors = Record<string, string>;
+export type FamilyColors = Record<string, string>; //id to color mapping

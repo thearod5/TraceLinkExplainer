@@ -4,6 +4,9 @@ from nltk.stem import PorterStemmer
 
 from Paths import PATH_TO_STOP_WORDS
 
+word_splitters = [".", "\n", "\t", " ", "(", ")", ":", ",",
+                  ";", "[", "]", "{", "}", "\'", "\"", "|", "&", "*", "_"]
+
 ps = PorterStemmer()
 
 stop_words = None
@@ -88,3 +91,28 @@ CLEANING_PIPELINE = [
 def clean_doc(doc, stop_at_index=None):
     pipeline = CLEANING_PIPELINE[:stop_at_index]
     return functools.reduce(lambda acc, value: value(acc), pipeline, doc)
+
+
+def get_words_in_string_doc(doc: str, word_splitters=word_splitters, append_word_splitter=True):
+    """
+    Continously splits words on every string in word_splitters and returns a list of words (containing the word_splitters).
+    : param: doc - The string to split on
+    : param: word_splitters - List of strings to split on
+    : param: append_word_splitter - Whether to add back in the word splitters are splitting
+    """
+    words = get_camel_case_words(doc)
+
+    for word_splitter in word_splitters:
+        new_words = []
+        for word in words:
+            if word == "":
+                continue
+            split_words = word.split(word_splitter)
+            last_item_index = len(split_words) - 1
+
+            for new_word_index, new_word in enumerate(split_words):
+                new_words.append(new_word)
+                if new_word_index < last_item_index and append_word_splitter:
+                    new_words.append(word_splitter)
+        words = new_words.copy()
+    return words

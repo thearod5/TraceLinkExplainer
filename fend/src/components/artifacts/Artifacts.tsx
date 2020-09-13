@@ -1,3 +1,4 @@
+import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
@@ -17,7 +18,7 @@ import {
   VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
 import { Artifact } from "../../shared/types/Dataset";
-import { WordDescriptors } from "../../shared/types/Trace";
+import { Families, WordDescriptors } from "../../shared/types/Trace";
 import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./ArtifactDisplayFactory";
 import NoSourceMessage from "./NoSourceMessage";
 import SourceArtifactSearch from "./search/SourceArtifactSearch";
@@ -28,12 +29,14 @@ export default function ArtifactSelector() {
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
 
+  const [loading, setLoading] = useState(false);
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
   const [sourceIndex, setSourceIndex] = useState(0);
   const [targetIndex, setTargetIndex] = useState(0);
   const [targetWords, setTargetWords] = useState<WordDescriptors | null>(null);
   const [sourceWords, setSourceWords] = useState<WordDescriptors | null>(null);
+  const [families, setFamilies] = useState<Families | null>(null);
   const [traceFamilyColors, setTraceFamilyColors] = useState<Record<string, string> | null>(null);
 
   useEffect(() => {
@@ -77,14 +80,20 @@ export default function ArtifactSelector() {
       targetIndex > -1) {
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
+      setLoading(true)
       getTraceInformation("Drone", sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
-          const familyColors = createFamilyColors(traceInformation.families);
+          const familyColors = createFamilyColors(Object.keys(traceInformation.families));
           setTraceFamilyColors(familyColors)
-          setSourceWords(traceInformation.sourceWords)
-          setTargetWords(traceInformation.targetWords)
+          setSourceWords(traceInformation.sourceDescriptors)
+          setTargetWords(traceInformation.targetDescriptors)
+          setFamilies(traceInformation.families)
+          setLoading(false)
         })
-        .catch((e) => console.error(e));
+        .catch((e) => {
+          setLoading(false)
+          console.error(e)
+        });
     }
   }, [currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);
 
@@ -95,10 +104,12 @@ export default function ArtifactSelector() {
     if (
       currentStep >= VIEW_TRACE_STEP &&
       sourceWords !== null &&
-      traceFamilyColors !== null
+      traceFamilyColors !== null &&
+      families !== null
     ) {
       const leftTracePanel = createTraceArtifactDisplays(
         selectedSources,
+        families,
         sourceIndex,
         sourceWords,
         traceFamilyColors,
@@ -109,7 +120,7 @@ export default function ArtifactSelector() {
     } else {
       setError(`SourceWords: ${sourceWords === null}`)
     }
-  }, [currentStep, selectedSources, sourceIndex, sourceWords, traceFamilyColors]);
+  }, [currentStep, selectedSources, sourceIndex, sourceWords, traceFamilyColors, families]);
 
   /*
   * Asyncronously sets the RIGHT PANEL
@@ -118,10 +129,12 @@ export default function ArtifactSelector() {
     if (
       currentStep >= VIEW_TRACE_STEP &&
       targetWords !== null &&
-      traceFamilyColors !== null
+      traceFamilyColors !== null &&
+      families !== null
     ) {
       const rightTracePanel = createTraceArtifactDisplays(
         selectedTargets,
+        families,
         targetIndex,
         targetWords,
         traceFamilyColors,
@@ -130,16 +143,19 @@ export default function ArtifactSelector() {
         rightTracePanel
       );
     }
-  }, [currentStep, selectedTargets, targetIndex, targetWords, traceFamilyColors]);
+  }, [currentStep, selectedTargets, targetIndex, targetWords, traceFamilyColors, families]);
 
-  console.log(sourceWords)
 
+  const body = <SplitPane split="vertical">
+    {leftPanel}
+    {rightPanel}
+  </SplitPane>
+  const loadingBar = <div className="flexColumn heightFull justifyContentCenter">
+    <div className="flexRow justifyContentCenter"><CircularProgress color="secondary" size="10rem" /></div>
+  </div>
   return (
     <div className="flexColumn heightFull overflowYHidden">
-      <SplitPane split="vertical">
-        {leftPanel}
-        {rightPanel}
-      </SplitPane>
+      {loading ? loadingBar : body}
     </div>
   );
 }

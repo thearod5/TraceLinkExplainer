@@ -1,7 +1,7 @@
 import React from "react";
-import { createDefaultWordDescriptors, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
+import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
-import { FamilyColors, WordDescriptors } from "../../shared/types/Trace";
+import { Families, FamilyColors, WordDescriptors } from "../../shared/types/Trace";
 import ArtifactDisplayController from "./display/ArtifactDisplayController";
 
 export const colors = ["CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "Khaki", "BlueViolet", "FireBrick", "LightGreen", "Maroon",
@@ -18,9 +18,10 @@ export function getDefaultArtifactDisplay(
   return (
     <ArtifactDisplayController
       key={`${artifact.type}:${artifact.id}`}
-      words={words}
       artifactId={artifact.id}
       artifactType={artifact.type}
+      words={words}
+      families={getDefaultFamilies()}
       familyColors={getDefaultFamilyColors()}
       expanded={expanded}
       onExpand={onExpand}
@@ -31,6 +32,7 @@ export function getDefaultArtifactDisplay(
 
 function getTraceArtifactDisplay(
   artifactWords: WordDescriptors,
+  families: Families,
   artifact: Artifact,
   familyColors: FamilyColors,
   expanded: boolean,
@@ -40,24 +42,27 @@ function getTraceArtifactDisplay(
   return (
     <ArtifactDisplayController
       key={`${artifact.type}:${artifact.id}`}
-      words={artifactWords}
       artifactId={artifact.id}
       artifactType={artifact.type}
+      words={artifactWords}
+      families={families}
       familyColors={familyColors}
       expanded={expanded}
       onExpand={onExpand}
       onShrink={onShrink} />
   );
 }
-export function createFamilyColors(families: string[]): FamilyColors {
+export function createFamilyColors(familyIds: string[]): FamilyColors {
   const familyColors: FamilyColors = {};
-  families.forEach((family, index) => {
+  familyIds.forEach((family, index) => {
     familyColors[family] = colors[index % colors.length];
   });
   return familyColors;
 }
+
 export function createTraceArtifactDisplays(
   artifacts: Artifact[],
+  families: Families,
   selectedIndex: number,
   traceWords: WordDescriptors,
   familyColors: Record<string, string>,
@@ -67,6 +72,7 @@ export function createTraceArtifactDisplays(
       if (index === selectedIndex) {
         return getTraceArtifactDisplay(
           traceWords,
+          families,
           artifact,
           familyColors,
           true,

@@ -4,6 +4,9 @@ import sys
 import unittest
 
 # For Running from Command Line
+from tests.TestRootFamilies import TestRootFamilies
+from tests.TestUtil import TestUtil
+
 PATH_TO_TEST_FOLDER = pathlib.Path(__file__).parent.absolute()
 PATH_TO_PYTHON_MODULE = os.path.join(PATH_TO_TEST_FOLDER, "..")
 sys.path.insert(0, PATH_TO_PYTHON_MODULE)
@@ -18,7 +21,9 @@ if __name__ == "__main__":
     classes_to_test = [
         SearchTest,
         QueryTest,
-        TestCleanDoc
+        TestCleanDoc,
+        TestRootFamilies,
+        TestUtil
     ]
 
     for c_to_test in classes_to_test:

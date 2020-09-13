@@ -2,7 +2,7 @@ import {
   createDefaultWordDescriptors,
   KeyWordType,
   splitWordsByDelimiter,
-  SyntaxWordType,
+  SyntaxWordType
 } from "../../shared/artifacts/WordCreator";
 import { WordDescriptor } from "../../shared/types/Trace";
 
@@ -19,10 +19,10 @@ test("dummy test", () => {
   for (let wordIndex in words) {
     const word: WordDescriptor = words[wordIndex];
 
-    expect(word.weight).toEqual(0);
     expect(word.word).not.toStrictEqual("");
     expect(documentWords).toContain(word.word);
-    familiesInWords.push(word.family);
+    for (let wordFamilyIndex in word.families)
+      familiesInWords.push(word.families[wordFamilyIndex]);
   }
 
   for (let requiredFamilyIndex in requiredFamilies) {

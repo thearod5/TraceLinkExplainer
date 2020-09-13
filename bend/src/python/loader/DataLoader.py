@@ -101,9 +101,9 @@ def create_error(id, message):
     }
 
 
-def get_dataset_artifacts_for_type(dataset: str, artifact_type: str, hasExtension=False):
+def get_dataset_artifacts_for_type(dataset: str, artifact_type: str, has_extension=False):
     path_to_artifacts = get_path_to_artifacts(
-        dataset, artifact_type, has_extension=hasExtension)
+        dataset, artifact_type, has_extension=has_extension)
     data = None
     with open(path_to_artifacts) as json_file:
         data = json.load(json_file)
