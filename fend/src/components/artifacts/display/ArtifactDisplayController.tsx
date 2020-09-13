@@ -9,9 +9,6 @@ import ArtifactTitle from "./ArtifactToolbar";
 import ArtifactWords from "./ArtifactWords";
 import { generateIcons } from "./ToolbarIcons";
 
-
-
-
 interface IconButton {
   iconElement: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   checked: boolean;

@@ -22,16 +22,20 @@ export interface TraceInformation {
 
 export type WordDescriptors = WordDescriptor[];
 
+//BEND Version of Word
 export interface WordDescriptor {
   word: string;
-  family: string;
   weight: number;
+  family: string;
 }
 
+//FEND version of WordDescriptor
 export interface Word {
   word: string;
   size: number;
   color: string;
+  description: string;
+  family: string;
 }
 
 export type Words = Word[];

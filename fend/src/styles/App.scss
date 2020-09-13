@@ -117,7 +117,6 @@ body,
 
 .debug {
   border: 1px solid red;
-  width: 100%;
 }
 
 .debugBlue {
@@ -219,4 +218,8 @@ body,
 
 .maxHeightHalf {
   max-height: 450px;
+}
+
+.displayInlineBlock {
+  display: inline-block;
 }

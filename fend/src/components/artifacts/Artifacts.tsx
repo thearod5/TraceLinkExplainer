@@ -132,6 +132,8 @@ export default function ArtifactSelector() {
     }
   }, [currentStep, selectedTargets, targetIndex, targetWords, traceFamilyColors]);
 
+  console.log(sourceWords)
+
   return (
     <div className="flexColumn heightFull overflowYHidden">
       <SplitPane split="vertical">

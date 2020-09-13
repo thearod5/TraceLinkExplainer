@@ -4,7 +4,7 @@ import {
   Word,
   WordDescriptor,
   WordDescriptors,
-  Words,
+  Words
 } from "../types/Trace";
 
 export const SyntaxWordType = "#SYNTAX";
@@ -121,7 +121,16 @@ export function createWord(
     word: descriptor.word,
     size: wordSize,
     color: wordColor,
+    description: createWordDescription(descriptor),
+    family: descriptor.family
   };
+}
+
+function createWordDescription(descriptor: WordDescriptor) {
+  //newlines are separated inside of ArtifactWords.tsx
+  if (descriptor.weight === 0) //TODO: Fells dirty
+    return ""
+  return `Family: ${descriptor.family}\nWeight: ${descriptor.weight}`
 }
 
 function calculateWordSize(
