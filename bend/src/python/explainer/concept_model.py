@@ -1,6 +1,10 @@
+import os
 from typing import List, Dict
-from igraph import Graph, OUT
+
 import pandas as pd
+from igraph import Graph, OUT
+
+from Paths import PATH_TO_DATA
 
 ANC = "ancestor"
 CHILD = "child"
@@ -41,6 +45,7 @@ def to_groups(term_relations: Dict):
 class ConceptModel:
     def __init__(self):
         self.ig = Graph()  # use igraph to find path cause it is faster
+        self.vertex_names = []
 
     def add_concepts(self, tsv_path):
         """
@@ -56,6 +61,7 @@ class ConceptModel:
             left_terms.append(" ".join(lt.split("_")))
             right_terms.append(" ".join(rt.split("_")))
         self._add_concepts(rels, left_terms, right_terms)
+        self.vertex_names = self.ig.vs.get_attribute_values("name")
 
     def _add_concepts(self, relationships: List, left_terms: List, right_terms: List):
         """
@@ -74,6 +80,12 @@ class ConceptModel:
                 self.ig.add_edge(lt, rt, label=ANC)
                 self.ig.add_edge(rt, lt, lable=CHILD)
 
+    def get_neighborhood(self, w1):
+        if w1 not in self.vertex_names:
+            return []
+        neighbor_hood_indices = self.ig.neighbors(w1)
+        return pd.Series(self.vertex_names)[set(neighbor_hood_indices)]
+
     def get_path(self, w1, w2):
         """
         Path from w1 to w2. If no path exist then will return empty list.
@@ -83,6 +95,9 @@ class ConceptModel:
         :param w2:
         :return:
         """
+
+        if w1 not in self.vertex_names or w2 not in self.vertex_names:
+            return []
         res = []
         if w1 and w2:
             path = self.ig.shortest_paths(w1, w2, mode=OUT)
@@ -108,10 +123,9 @@ class ConceptModel:
         return all_path
 
 
-if __name__ == "__main__":
-    concept_files = "../data/dronology_data/ontology/database-relation.txt"
+def get_concept_model_for_dataset(dataset_name: str):
+    dataset_paths = {"Drone": "dronology_data/ontology/database-relation.txt"}
+    path_to_concept_file = os.path.join(PATH_TO_DATA, dataset_paths[dataset_name])
     cm = ConceptModel()
-    cm.add_concepts(concept_files)
-    print(cm.get_path("federal aviation administration", "FAA"))
-    p = cm.get_path_for_all("unmanned aerial vehicles", ["UAV", "UAVs"])
-    print(p)
+    cm.add_concepts(path_to_concept_file)
+    return cm

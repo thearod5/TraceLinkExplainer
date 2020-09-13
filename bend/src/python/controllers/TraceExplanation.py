@@ -1,11 +1,12 @@
 from sklearn.preprocessing import minmax_scale
 
+from explainer.concept_model import get_concept_model_for_dataset
 from loader.DataLoader import get_artifact_in_dataset
 from preprocessing.Cleaners import (clean_doc, get_camel_case_words)
 from vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
 
 word_splitters = [".", "\n", "\t", " ", "(", ")", ":", ",",
-                  ";", "[", "]", "{", "}", "\'", "\"", "|", "&", "*"]
+                  ";", "[", "]", "{", "}", "\'", "\"", "|", "&", "*", "_"]
 
 
 def get_trace_information(dataset: str, source_type: str, source_id: str, target_type: str, target_id: str):
@@ -14,7 +15,7 @@ def get_trace_information(dataset: str, source_type: str, source_id: str, target
     target_words = get_words_in_artifact(dataset, target_type, target_id)
 
     families, source_word_weight_list, target_word_weight_list = create_mappings(
-        source_words, target_words)
+        dataset, source_words, target_words)
 
     return {
         "families": families,
@@ -31,7 +32,7 @@ def get_words_in_artifact(dataset: str, artifact_type: str, artifact_id: str):
     return get_words_in_string_doc(artifact)
 
 
-def create_mappings(source_words: [str], target_words: [str]):
+def create_mappings(dataset: str, source_words: [str], target_words: [str]):
     # 1. Create cleaned words (for VSM)
     source_cleaned_words = list(map(clean_doc, source_words))
     target_cleaned_words = list(map(clean_doc, target_words))
@@ -45,14 +46,22 @@ def create_mappings(source_words: [str], target_words: [str]):
     root_weight_mapping = create_root_weight_mapping(
         source_cleaned_words, target_cleaned_words)
 
-    source_word_weight_list = create_word_weight_list(
+    source_weights = create_word_weight_list(
         source_words, word_root_mapping, root_weight_mapping)
-    target_word_weight_list = create_word_weight_list(
+    target_weights = create_word_weight_list(
         target_words, word_root_mapping, root_weight_mapping)
 
     families = list(set(root_weight_mapping.keys()))
 
-    return families, source_word_weight_list, target_word_weight_list
+    # Concept Model injection
+    return add_concept_model_relationships(dataset, families, source_weights, target_weights)
+
+
+def add_concept_model_relationships(dataset: str, families, source_weights, target_weights):
+    new_source_weights = source_weights.copy()
+    new_target_weights = target_weights.copy()
+    concept_model = get_concept_model_for_dataset(dataset)
+    return families, new_source_weights, new_target_weights
 
 
 def create_word_weight_list(words: [str],

@@ -39,7 +39,4 @@ class TestTraceExplanation(unittest.TestCase):
         a_words = ["UAV", "state"]
         b_words = ["UAV", "transition"]
         result = create_root_weight_mapping(a_words, b_words, -1)
-        print(result)
-        self.assertEqual(0, result["state"]["weight"])
-        self.assertEqual(0, result["state"]["transition"])
         self.assertEqual(1, round(result["uav"]['weight'], 2))

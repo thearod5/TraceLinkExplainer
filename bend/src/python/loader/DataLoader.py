@@ -118,12 +118,9 @@ def get_all_artifacts_for_dataset(dataset: str):
 
 
 def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):
-    path_to_artifacts = get_path_to_artifacts(dataset, artifact_type)
-    data = None
-    with open(path_to_artifacts) as json_file:
-        data = json.load(json_file)
+    artifacts = get_dataset_artifacts_for_type(dataset, artifact_type)
     query = list(
-        filter(lambda artifact: artifact["id"] == artifact_id, data["artifacts"]))
+        filter(lambda artifact: artifact["id"] == artifact_id, artifacts["artifacts"]))
     assert len(
         query) == 1, "Expected a single match but found: %d matches" % len(query)
     return query[0]

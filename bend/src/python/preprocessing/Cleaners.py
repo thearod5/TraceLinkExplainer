@@ -20,14 +20,24 @@ def split_chained_calls(line):
 def get_camel_case_words(line):
     words = []
     start_index = 0
-    i = 0
-    for i in range(0, len(line)):
+    i = 1
+
+    for i in range(1, len(line) - 1):
+        next_char = line[i + 1]
         current_char = line[i]
-        if i != 0 and current_char.isupper() and not line[i - 1].isupper() and line[i - 1] != " ":
+        previous_char = line[i - 1]
+
+        # ex: helloWorld -> [hello, World]
+        if current_char.isupper() and previous_char.islower() and previous_char != " ":
             words.append(line[start_index:i])
             start_index = i
-    if start_index != i:
-        words.append(line[start_index: i + 1])
+        # ex: UAVDispatch -> [UAV, Dispatch]
+        elif previous_char.isupper() and current_char.isupper() and next_char.islower():
+            words.append(line[start_index:i])
+            start_index = i
+
+    if start_index < i:
+        words.append(line[start_index:])
     return words
 
 

@@ -30,15 +30,15 @@ class TestCleanDoc(unittest.TestCase):
         cleaned_doc = separate_camel_case(doc)
         self.assertEqual(doc, cleaned_doc)
 
-    def test_get_camel_case_words(self):
-        doc = "hello world"
-        words = get_camel_case_words(doc)
-        self.assertEqual("hello world", words[0])
+    def test_get_camel_case_words_with_acronym(self):
+        words = get_camel_case_words("UAVDispatch")
+        self.assertEqual(2, len(words))
+        self.assertEqual("UAV", words[0])
+        self.assertEqual("Dispatch", words[1])
 
     def test_get_camel_case_words_code(self):
         doc = "dispatchQueueManager.getGroundStationId()"
         words = get_camel_case_words(doc)
-        print(words)
         self.assertEqual("dispatch", words[0])
         self.assertEqual("Queue", words[1])
         self.assertEqual("Manager.get", words[2])
@@ -46,13 +46,18 @@ class TestCleanDoc(unittest.TestCase):
         self.assertEqual("Station", words[4])
         self.assertEqual("Id()", words[5])
 
+    def test_get_camel_case_words_single_acronym(self):
+        doc = "UI"
+        words = get_camel_case_words(doc)
+        self.assertEqual(doc, words[0])
+
     def test_remove_non_alphanumeric(self):
         doc = "123helloWorld!.thisMyThing"
         cleaned_doc = remove_non_alphanumeric_characters(doc)
         self.assertEqual("helloWorldthisMyThing", cleaned_doc)
 
     def test_remove_stop_words(self):
-        doc = "the cow jumped over the moon"
+        doc = "the cow jumped over the moon set move"
         cleaned_doc = remove_stop_words(doc)
         self.assertEqual("cow jumped moon", cleaned_doc)
 
@@ -68,5 +73,5 @@ class TestCleanDoc(unittest.TestCase):
 
     def test_clean_doc_basic(self):
         doc = "123helloWorld!.thisMyThing"
-        actual = clean_doc(doc, -1)
+        actual = clean_doc(doc)
         self.assertEqual("hello world thing", actual)
