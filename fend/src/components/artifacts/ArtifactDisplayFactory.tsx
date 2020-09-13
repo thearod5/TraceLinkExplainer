@@ -4,7 +4,8 @@ import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
 import { FamilyColors, WordDescriptors } from "../../shared/types/Trace";
 import ArtifactDisplayController from "./display/ArtifactDisplayController";
 
-export const colors = ["CornFlowerBlue", "DarkSeaGreen", "BlueViolet", "DarkSalmon"]; //TODO: Add to theme
+export const colors = ["CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "Khaki", "BlueViolet", "FireBrick", "LightGreen", "Maroon",
+  "DeepSkyBlue", "MediumOrchid", "Olive", "SpringGreen"]; //TODO: Add to theme
 
 
 export function getDefaultArtifactDisplay(
