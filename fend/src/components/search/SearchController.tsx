@@ -21,8 +21,8 @@ import {
   SELECT_SOURCE_MESSAGE,
   SELECT_TARGET_MESSAGE
 } from "./Constants";
-import SearchResults from "./SearchResults";
 import { SearchFooter } from "./SearchFooter";
+import SearchResults from "./SearchResults";
 import { SuggestionFunctionType } from "./types";
 
 /*
@@ -116,8 +116,12 @@ export default function SearchController(props: SearchProps) {
   };
 
   const handleStepCompleted = () => {
-    if (selectedArtifacts.length === 0)
+    console.log("handling step completed")
+    if (selectedArtifacts.length === 0) {
+      console.log("NO ARTIFACT SELECTED!")
       return dispatch(setError("No artifacts selected."));
+    }
+
     if (currentStep >= VIEW_TRACE_STEP)
       return;
 

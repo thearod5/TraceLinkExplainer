@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, IconButton } from "@material-ui/core";
+import { Box, Checkbox, IconButton } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import KeyboardTabIcon from "@material-ui/icons/KeyboardTab";
@@ -43,18 +43,15 @@ export function SearchFooter(props: SearchFooterProps) {
   );
 
   const nextStepButton = (
-    <FormControlLabel
-      className="padLight"
-      control={
-        <Checkbox
-          checked={props.completed}
-          color="primary"
-          icon={<KeyboardTabIcon color={"secondary"} />}
-        />
-      }
-      label={props.message}
-      labelPlacement="start"
-    />
+    <div className="flexRowCentered" onClick={props.onStepCompleted}>
+      <div className="centeredColumn"><p>{props.message}</p></div>
+      <Checkbox
+        checked={props.completed}
+        color="primary"
+        icon={<KeyboardTabIcon color={"secondary"} />}
+      />
+    </div>
+
   );
 
   return (
@@ -72,9 +69,7 @@ export function SearchFooter(props: SearchFooterProps) {
           {nextPageButton}
         </div>
 
-        <div className="flexRowCentered" onClick={props.onStepCompleted}>
-          {nextStepButton}
-        </div>
+        {nextStepButton}
       </div>
     </Box>
   );

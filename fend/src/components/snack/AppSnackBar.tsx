@@ -2,32 +2,34 @@ import { IconButton, Snackbar } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setError } from "../../redux/actions";
+import { getError } from "../../redux/selectors";
 
-interface SearchSnackBarProps {
-  error: string | undefined;
-  handleClose: () => void;
-}
+export default function AppSnackBar() {
+  const error = useSelector(getError);
+  const dispatch = useDispatch();
 
-export default function AppSnackBar(props: SearchSnackBarProps) {
+  const handleClose = () => dispatch(setError(undefined));
   return (
     <Snackbar
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "center",
       }}
-      open={props.error !== undefined}
+      open={error !== undefined}
       autoHideDuration={10000}
-      onClose={props.handleClose}
+      onClose={handleClose}
     >
       <Alert severity="error" style={{ width: "100%" }}>
-        {props.error}
+        {error}
 
         <IconButton
           className="padSideLight"
           size="small"
           aria-label="close"
           color="inherit"
-          onClick={props.handleClose}
+          onClick={handleClose}
         >
           <CloseIcon fontSize="small" />
         </IconButton>

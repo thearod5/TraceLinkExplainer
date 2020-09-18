@@ -1,6 +1,6 @@
 import { MuiThemeProvider } from "@material-ui/core";
 import React from "react";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import ArtifactSelector from "./components/artifacts/Artifacts";
@@ -9,17 +9,12 @@ import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
 import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
 import AppSnackBar from "./components/snack/AppSnackBar";
-import { setError } from "./redux/actions";
-import { getError } from "./redux/selectors";
 import { appHistory, persistor, store } from "./redux/store";
 import "./styles/App.scss";
 import theme from "./styles/theme";
 
 function App() {
-  const dispatch = useDispatch();
-  const error = useSelector(getError);
 
-  const handleClose = () => dispatch(setError(undefined));
   return (
     <div
       id="app"
@@ -46,7 +41,7 @@ function App() {
                     <Home />
                   </Route>
                 </Switch>
-                <AppSnackBar error={error} handleClose={handleClose} />
+                <AppSnackBar />
               </main>
             </MuiThemeProvider>
           </Router>
