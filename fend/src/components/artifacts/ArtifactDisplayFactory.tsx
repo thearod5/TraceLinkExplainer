@@ -2,7 +2,7 @@ import React from "react";
 import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
 import { Families, FamilyColors, WordDescriptors } from "../../shared/types/Trace";
-import ArtifactDisplayController from "./display/ArtifactDisplayController";
+import ArtifactAccordion from "./accordion/ArtifactAccordion";
 
 export const colors = ["CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "Khaki", "BlueViolet", "FireBrick", "LightGreen", "Maroon",
   "DeepSkyBlue", "MediumOrchid", "Olive", "SpringGreen"]; //TODO: Add to theme
@@ -16,7 +16,7 @@ export function getDefaultArtifactDisplay(
   onShrink: () => void
 ) {
   return (
-    <ArtifactDisplayController
+    <ArtifactAccordion
       key={`${artifact.type}:${artifact.id}`}
       artifactId={artifact.id}
       artifactType={artifact.type}
@@ -40,7 +40,7 @@ function getTraceArtifactDisplay(
   onShrink: () => void
 ) {
   return (
-    <ArtifactDisplayController
+    <ArtifactAccordion
       key={`${artifact.type}:${artifact.id}`}
       artifactId={artifact.id}
       artifactType={artifact.type}

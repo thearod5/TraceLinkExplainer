@@ -3,7 +3,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from "react";
 import { Families, Family, Word, Words } from "../../../shared/types/Trace";
-import { DEFAULT_FONT_COLOR } from "./ArtifactDisplayController";
+import { DEFAULT_FONT_COLOR } from "./ArtifactAccordion";
 
 interface ArtifactWordsProps {
   words: Words;

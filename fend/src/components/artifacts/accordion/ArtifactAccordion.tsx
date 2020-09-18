@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
 import { Families, FamilyColors, WordDescriptors } from "../../../shared/types/Trace";
 import { primaryColor, secondaryColor } from "../../../styles/theme";
-import ArtifactTitle from "./ArtifactToolbar";
+import ArtifactTitle from "./ArtifactTitle";
 import ArtifactWords from "./ArtifactWords";
 import { generateIcons } from "./ToolbarIcons";
 
@@ -30,7 +30,7 @@ interface ArtifactDisplayProps {
   onShrink: () => void;
 }
 
-export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
+export default function ArtifactAccordion(props: ArtifactDisplayProps) {
   const [sizeSelected, setSizeSelected] = useState(true);
   const [colorSelected, setColorSelected] = useState(true);
   const [fontSize, setFontSize] = useState(1);
@@ -46,10 +46,13 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
   const handleZoomIn = () => setFontSize(fontSize + fontSizeDelta);
   const handleZoomOut = () => setFontSize(fontSize - fontSizeDelta)
 
-  const icons = generateIcons(handleZoomIn,
+  const icons = generateIcons(
+    handleZoomIn,
     handleZoomOut,
-    colorSelected, setColorSelected,
-    sizeSelected, setSizeSelected)
+    colorSelected,
+    setColorSelected,
+    sizeSelected,
+    setSizeSelected)
 
   const iconCheckboxes = icons.map((iconButton: IconButton, index: number) => {
     const { checked, onChange } = iconButton;
@@ -88,19 +91,26 @@ export default function ArtifactDisplayController(props: ArtifactDisplayProps) {
           title={props.artifactId}
         />
       </AccordionSummary>
-      <AccordionDetails className="flexColumn">
-        <div
-          className="flexRow justifyContentCenter roundBorder"
-          style={{ backgroundColor: secondaryColor }}>
-          {iconCheckboxes}
+      <AccordionDetails
+        className="flexRow heightFull debugBlue"
+        style={{ maxHeight: "500px" }}
+      >
+        <div className="centeredColumn debug">
+          <div
+            className="flexColumn justifyContentCenter roundBorder"
+            style={{ backgroundColor: secondaryColor }}>
+            {iconCheckboxes}
+          </div>
         </div>
-        <ArtifactWords
-          words={words}
-          families={props.families}
-          colorSelected={colorSelected}
-          sizeSelected={sizeSelected}
-          defaultSize={fontSize}
-        />
+        <div className="heightFull debugThick overflowScroll">
+          <ArtifactWords
+            words={words}
+            families={props.families}
+            colorSelected={colorSelected}
+            sizeSelected={sizeSelected}
+            defaultSize={fontSize}
+          />
+        </div>
       </AccordionDetails>
     </Accordion>
   );

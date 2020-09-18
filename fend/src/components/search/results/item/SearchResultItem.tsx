@@ -12,7 +12,7 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
 import { Artifact } from "../../../../shared/types/Dataset";
 import { Families, Words } from "../../../../shared/types/Trace";
-import ArtifactWords from "../../../artifacts/display/ArtifactWords";
+import ArtifactWords from "../../../artifacts/accordion/ArtifactWords";
 import { ArtifactClickAction } from "../../types";
 import ItemPopup from "./SearchResultItemPopup";
 
