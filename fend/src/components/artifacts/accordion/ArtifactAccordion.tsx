@@ -1,11 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, IconButton, SvgIconTypeMap } from "@material-ui/core";
+import { Accordion, AccordionDetails, Checkbox, IconButton, SvgIconTypeMap } from "@material-ui/core";
 import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
 import { Families, FamilyColors, Word, WordDescriptors } from "../../../shared/types/Trace";
 import { primaryColor, secondaryColor } from "../../../styles/theme";
-import ArtifactTitle from "./ArtifactTitle";
+import ArtifactAccordionSummary from "./ArtifactAccordionSummary";
 import ArtifactWords from "./ArtifactWords";
 import { generateIcons } from "./ToolbarIcons";
 
@@ -82,17 +82,14 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
       expanded={props.expanded}
       onChange={handleChange}
     >
-      <AccordionSummary
+      <ArtifactAccordionSummary
         style={{
           height: `${ToolbarHeightPercentage}%`,
           backgroundColor: primaryColor
         }}
         expandIcon={<ExpandMoreIcon />}
-      >
-        <ArtifactTitle
-          title={props.artifactId}
-        />
-      </AccordionSummary>
+        title={props.artifactId}
+      />
       <AccordionDetails
         className="flexColumn"
         style={{ maxHeight: `${ACCORDION_MAX_HEIGHT}px` }}

@@ -1,3 +1,4 @@
+import { AccordionSummary } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStep } from "../../../redux/actions";
@@ -6,9 +7,11 @@ import { secondaryColor } from "../../../styles/theme";
 
 interface ArtifactToolbarProps {
   title: string;
+  style: React.CSSProperties;
+  expandIcon: React.ReactNode;
 }
 
-export default function ArtifactTitle(props: ArtifactToolbarProps) {
+export default function ArtifactAccordionSummary(props: ArtifactToolbarProps) {
   const currentStep = useSelector(getCurrentStep);
   const dispatch = useDispatch();
 
@@ -17,14 +20,13 @@ export default function ArtifactTitle(props: ArtifactToolbarProps) {
   };
 
   return (
-    <div
-      className="centeredColumn"
+    <AccordionSummary
+      style={props.style}
+      expandIcon={props.expandIcon}
     >
-      <div className="textAlignCenter overflowXScroll">
-        <h3 onClick={clickHandler} style={{ color: secondaryColor }}>
-          {props.title}
-        </h3>
-      </div>
-    </div>
+      <h3 onClick={clickHandler} style={{ color: secondaryColor }}>
+        {props.title}
+      </h3>
+    </AccordionSummary>
   );
 }
