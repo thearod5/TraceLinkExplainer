@@ -1,25 +1,26 @@
-import { Accordion, AccordionDetails, Checkbox, IconButton, SvgIconTypeMap } from "@material-ui/core";
-import { OverridableComponent } from "@material-ui/core/OverridableComponent";
+import { Accordion } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
-import { Families, FamilyColors, Word, WordDescriptors } from "../../../shared/types/Trace";
-import { primaryColor, secondaryColor } from "../../../styles/theme";
+import { Families, FamilyColors, Word, WordDescriptors, Words } from "../../../shared/types/Trace";
+import { primaryColor } from "../../../styles/theme";
+import ArtifactAccordionDetails from "./ArtifactAccordionDetails";
 import ArtifactAccordionSummary from "./ArtifactAccordionSummary";
-import ArtifactWords from "./ArtifactWords";
-import { generateIcons } from "./ToolbarIcons";
+import { createToolbarIcons } from "./ToolbarIcons";
 
-interface IconButton {
-  iconElement: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
-  checked: boolean;
-  onChange: (event: any) => void;
-}
+/*
+ * Accordion for TraceInformation. Manages state changes in accordion.
+ */
 
 export const DEFAULT_FONT_COLOR = "black";
-const fontSizeDelta = 0.2;
-const ToolbarHeightPercentage = 15;
+const FONT_SIZE_DELTA = 0.2;
+const ACCORDION_MAX_HEIGHT = 500 //px
+const SUMMARY_HEIGHT_PERCENTAGE = 15;
+const DEFAULT_FONT_SIZE = 1;
+const SIZE_SELECTED_DEFAULT_VALUE = true;
+const COLOR_SELECTED_DEFAULT_VALUE = true;
 
-interface ArtifactDisplayProps {
+interface ArtifactAccordionProps {
   artifactType: string;
   artifactId: string;
   words: WordDescriptors;
@@ -30,24 +31,16 @@ interface ArtifactDisplayProps {
   onShrink: () => void;
 }
 
-export default function ArtifactAccordion(props: ArtifactDisplayProps) {
-  const [sizeSelected, setSizeSelected] = useState(true);
-  const [colorSelected, setColorSelected] = useState(true);
-  const [fontSize, setFontSize] = useState(1);
+export default function ArtifactAccordion(props: ArtifactAccordionProps) {
+  const [sizeSelected, setSizeSelected] = useState(SIZE_SELECTED_DEFAULT_VALUE);
+  const [colorSelected, setColorSelected] = useState(COLOR_SELECTED_DEFAULT_VALUE);
+  const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
   const [selectedWord, setSelectedWord] = useState<Word | null>(null)
 
-  const words = createWords(
-    props.words,
-    props.families,
-    fontSize,
-    props.familyColors,
-    DEFAULT_FONT_COLOR
-  );
+  const handleZoomIn = () => setFontSize(fontSize + FONT_SIZE_DELTA);
+  const handleZoomOut = () => setFontSize(fontSize - FONT_SIZE_DELTA)
 
-  const handleZoomIn = () => setFontSize(fontSize + fontSizeDelta);
-  const handleZoomOut = () => setFontSize(fontSize - fontSizeDelta)
-
-  const icons = generateIcons(
+  const toolbarIcons: JSX.Element[] = createToolbarIcons(
     handleZoomIn,
     handleZoomOut,
     colorSelected,
@@ -55,65 +48,45 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
     sizeSelected,
     setSizeSelected)
 
-  const iconCheckboxes = icons.map((iconButton: IconButton, index: number) => {
-    const { checked, onChange } = iconButton;
-    return (
-      <Checkbox
-        key={index}
-        checked={checked}
-        color="primary"
-        checkedIcon={<iconButton.iconElement color="primary" />} //Compains if iconElement moved to deconstruction
-        icon={<iconButton.iconElement color="action" />}
-        onChange={onChange}
-      />
-    );
-  })
+  const words: Words = createWords(
+    props.words,
+    props.families,
+    fontSize,
+    props.familyColors,
+    DEFAULT_FONT_COLOR
+  );
 
-  const handleChange = (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
+  const handleAccordionExpandClick = (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
     const callBack = newExpanded ? props.onExpand : props.onShrink
     callBack()
   };
-  const ACCORDION_MAX_HEIGHT = 500 //px
 
   return (
     <Accordion
       className="flexColumn"
       TransitionProps={{ unmountOnExit: true }}
       expanded={props.expanded}
-      onChange={handleChange}
+      onChange={handleAccordionExpandClick}
     >
       <ArtifactAccordionSummary
         style={{
-          height: `${ToolbarHeightPercentage}%`,
+          height: `${SUMMARY_HEIGHT_PERCENTAGE}%`,
           backgroundColor: primaryColor
         }}
         expandIcon={<ExpandMoreIcon />}
         title={props.artifactId}
       />
-      <AccordionDetails
-        className="flexColumn"
+      <ArtifactAccordionDetails
         style={{ maxHeight: `${ACCORDION_MAX_HEIGHT}px` }}
-      >
-        <div className="flexRowCentered justifyContentCenter padLight">
-          <div
-            className="flexRowCentered justifyContentCenter roundBorderHard"
-            style={{ backgroundColor: secondaryColor }}>
-            {iconCheckboxes}
-          </div>
-        </div>
-
-        <div className="overflowScroll" style={{}}>
-          <ArtifactWords
-            words={words}
-            families={props.families}
-            colorSelected={colorSelected}
-            sizeSelected={sizeSelected}
-            defaultSize={fontSize}
-            selectedWord={selectedWord}
-            setSelectedWord={setSelectedWord}
-          />
-        </div>
-      </AccordionDetails>
+        words={words}
+        families={props.families}
+        colorSelected={colorSelected}
+        sizeSelected={sizeSelected}
+        fontSize={fontSize}
+        selectedWord={selectedWord}
+        setSelectedWord={setSelectedWord}
+        toolbarIcons={toolbarIcons}
+      />
     </Accordion>
   );
 }

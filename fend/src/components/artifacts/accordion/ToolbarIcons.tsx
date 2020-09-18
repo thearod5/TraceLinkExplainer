@@ -1,16 +1,25 @@
+import { Checkbox, SvgIconTypeMap } from "@material-ui/core";
+import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
 import InvertColorsOffIcon from "@material-ui/icons/InvertColorsOff";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
+import React from "react";
 
-export function generateIcons(
+export interface ToolbarButton {
+  iconElement: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
+  checked: boolean;
+  onChange: (event: any) => void;
+}
+
+export function createToolbarIcons(
   handleZoomIn: any,
   handleZoomOut: any,
   colorSelected: any,
   setColorSelected: (arg0: boolean) => void,
   sizeSelected: any,
   setSizeSelected: (arg0: boolean) => void) {
-  return [
+  const icons = [
     {
       iconElement: ZoomInIcon,
       checked: true,
@@ -32,4 +41,17 @@ export function generateIcons(
       onChange: (event: any) => setColorSelected(event.target.checked),
     }
   ];
+  return icons.map((iconButton: ToolbarButton, index: number) => {
+    const { checked, onChange } = iconButton;
+    return (
+      <Checkbox
+        key={index}
+        checked={checked}
+        color="primary"
+        checkedIcon={<iconButton.iconElement color="primary" />} //Compains if iconElement moved to deconstruction
+        icon={<iconButton.iconElement color="action" />}
+        onChange={onChange}
+      />
+    );
+  })
 }
