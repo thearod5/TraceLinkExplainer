@@ -117,10 +117,8 @@ export default function SearchController(props: SearchProps) {
 
   const handleStepCompleted = () => {
     console.log("handling step completed")
-    if (selectedArtifacts.length === 0) {
-      console.log("NO ARTIFACT SELECTED!")
+    if (selectedArtifacts.length === 0)
       return dispatch(setError("No artifacts selected."));
-    }
 
     if (currentStep >= VIEW_TRACE_STEP)
       return;
