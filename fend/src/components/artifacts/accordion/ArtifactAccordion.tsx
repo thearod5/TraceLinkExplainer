@@ -92,21 +92,18 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
           title={props.artifactId}
         />
       </AccordionSummary>
-      <AccordionDetails>
-        hello
-      </AccordionDetails>
       <AccordionDetails
-        className="flexRow heightFull debugBlue"
-        style={{ maxHeight: "500px" }}
+        className="flexRow"
+        style={{ maxHeight: "300px" }}
       >
-        <div className="centeredColumn debug">
+        <div className="centeredColumn padLight" style={{ width: "40px" }}>
           <div
             className="flexColumn justifyContentCenter roundBorder"
             style={{ backgroundColor: secondaryColor }}>
             {iconCheckboxes}
           </div>
         </div>
-        <div className="heightFull debugThick overflowScroll">
+        <div className="overflowScroll" style={{}}>
           <ArtifactWords
             words={words}
             families={props.families}
