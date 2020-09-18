@@ -5,7 +5,7 @@ import { secondaryColor } from '../../../styles/theme';
 import ArtifactWords from './ArtifactWords';
 
 /*
- * The body of the accordion in charge of displaying trace information.
+ * Container for body of accordion when displaying trace information.
  */
 
 interface ArtifactAccordionDetailsProps {
@@ -26,14 +26,6 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
       className="flexColumn"
       style={props.style}
     >
-      <div className="flexRowCentered justifyContentCenter padLight">
-        <div
-          className="flexRowCentered justifyContentCenter roundBorderHard"
-          style={{ backgroundColor: secondaryColor }}>
-          {props.toolbarIcons}
-        </div>
-      </div>
-
       <div className="overflowScroll" style={{}}>
         <ArtifactWords
           words={props.words}
@@ -44,6 +36,13 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
           selectedWord={props.selectedWord}
           setSelectedWord={props.setSelectedWord}
         />
+      </div>
+      <div className="flexRowCentered justifyContentCenter padLight">
+        <div
+          className="flexRowCentered justifyContentCenter roundBorderHard"
+          style={{ backgroundColor: secondaryColor }}>
+          {props.toolbarIcons}
+        </div>
       </div>
     </AccordionDetails>)
 }

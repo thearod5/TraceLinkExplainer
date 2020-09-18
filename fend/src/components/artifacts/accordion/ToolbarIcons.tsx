@@ -6,7 +6,7 @@ import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 import React from "react";
 
-export interface ToolbarButton {
+export interface ToolbarButtonProps {
   iconElement: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   checked: boolean;
   onChange: (event: any) => void;
@@ -41,7 +41,7 @@ export function createToolbarIcons(
       onChange: (event: any) => setColorSelected(event.target.checked),
     }
   ];
-  return icons.map((iconButton: ToolbarButton, index: number) => {
+  return icons.map((iconButton: ToolbarButtonProps, index: number) => {
     const { checked, onChange } = iconButton;
     return (
       <Checkbox

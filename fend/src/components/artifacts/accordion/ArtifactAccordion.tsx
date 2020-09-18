@@ -15,7 +15,6 @@ import { createToolbarIcons } from "./ToolbarIcons";
 export const DEFAULT_FONT_COLOR = "black";
 const FONT_SIZE_DELTA = 0.2;
 const ACCORDION_MAX_HEIGHT = 500 //px
-const SUMMARY_HEIGHT_PERCENTAGE = 15;
 const DEFAULT_FONT_SIZE = 1;
 const SIZE_SELECTED_DEFAULT_VALUE = true;
 const COLOR_SELECTED_DEFAULT_VALUE = true;
@@ -69,10 +68,7 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
       onChange={handleAccordionExpandClick}
     >
       <ArtifactAccordionSummary
-        style={{
-          height: `${SUMMARY_HEIGHT_PERCENTAGE}%`,
-          backgroundColor: primaryColor
-        }}
+        style={{ backgroundColor: primaryColor }}
         expandIcon={<ExpandMoreIcon />}
         title={props.artifactId}
       />
