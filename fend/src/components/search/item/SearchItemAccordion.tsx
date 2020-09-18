@@ -10,10 +10,10 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
-import { Artifact } from "../../../../shared/types/Dataset";
-import { Families, Words } from "../../../../shared/types/Trace";
-import ArtifactWords from "../../../artifacts/accordion/ArtifactWords";
-import { ArtifactClickAction } from "../../types";
+import { Artifact } from "../../../shared/types/Dataset";
+import { Families, Words } from "../../../shared/types/Trace";
+import ArtifactWords from "../../artifacts/accordion/ArtifactWords";
+import { ArtifactClickAction } from "../types";
 import ItemPopup from "./SearchResultItemPopup";
 
 interface SearchResultProps {
@@ -24,7 +24,7 @@ interface SearchResultProps {
   removeArtifact: ArtifactClickAction;
 }
 
-export default function SearchResultItem(props: SearchResultProps) {
+export default function SearchItemAccordion(props: SearchResultProps) {
   const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
 

@@ -21,23 +21,23 @@ import {
   SELECT_SOURCE_MESSAGE,
   SELECT_TARGET_MESSAGE
 } from "./Constants";
-import SearchResults from "./results/SearchResults";
+import SearchResults from "./SearchResults";
 import { SearchFooter } from "./SearchFooter";
 import { SuggestionFunctionType } from "./types";
 
+/*
+ * In charge of managing the state of the search panel.
+ */
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
   onArtifactsSelected: (artifact: Artifact[]) => ArtifactMutatorActionType;
 }
 
 export default function SearchController(props: SearchProps) {
-  const [completed, setCompleted] = useState(false);
-  const [searchResults, setSearchResults] = useState<ArtifactDisplayModel[]>(
-    []
-  );
+  const [areArtifactSelected, setAreArtifactSelected] = useState(false);
+  const [searchResults, setSearchResults] = useState<ArtifactDisplayModel[]>([]);
   const [resultsIndexStart, setResultsIndexStart] = useState(0);
-
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedArtifacts, setSelectedArtifacts] = useState<Artifact[]>([]);
 
   const dispatch = useDispatch();
@@ -60,11 +60,11 @@ export default function SearchController(props: SearchProps) {
       : SELECT_TARGET_MESSAGE;
 
   /*
-   * Search
+   * Search API call
    */
   const startSearch = useCallback(
     (searchString: string, limit: number = SEARCH_LIMIT) => {
-      setLoading(true);
+      setIsLoading(true);
       props
         .searchFunction(searchString, limit)
         .then((results: Artifact[]) => {
@@ -72,11 +72,11 @@ export default function SearchController(props: SearchProps) {
             (a: Artifact) => createArtifactDisplayModel(a)
           );
           setSearchResults(displayModels);
-          setLoading(false);
+          setIsLoading(false);
         })
         .catch((e) => {
           dispatch(setError(e.toString()));
-          setLoading(false);
+          setIsLoading(false);
         });
     },
     // eslint-disable-next-line
@@ -92,9 +92,9 @@ export default function SearchController(props: SearchProps) {
     if (startIndex >= numberOfResults)
       return dispatch(setError("Reached end of results."));
 
-    setLoading(true);
+    setIsLoading(true);
     setResultsIndexStart(startIndex);
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const onNextPage = () =>
@@ -105,14 +105,14 @@ export default function SearchController(props: SearchProps) {
 
   const selectArtifact = (artifact: Artifact) => {
     setSelectedArtifacts([...selectedArtifacts, artifact]);
-    setCompleted(false); //changes made, results not up-to-date
+    setAreArtifactSelected(false); //changes made, results not up-to-date
   };
 
   const removeArtifact = (artifact: Artifact) => {
     setSelectedArtifacts(
       selectedArtifacts.filter((a) => !artifactsAreEqual(a, artifact))
     );
-    setCompleted(false); //changes made, results not up-to-date
+    setAreArtifactSelected(false); //changes made, results not up-to-date
   };
 
   const handleStepCompleted = () => {
@@ -125,11 +125,10 @@ export default function SearchController(props: SearchProps) {
 
     const nextStep = currentStep + 1;
     const error = getStepChangeError(nextStep);
-
-    if (error === undefined) {
-      setCompleted(true); //changes made, results not up-to-date
+    const wasSuccessful = error === undefined
+    if (wasSuccessful) {
+      setAreArtifactSelected(true); //changes made, results not up-to-date
       dispatch(changeStep(nextStep));
-      console.log("Changing to step: ", nextStep)
     } else dispatch(setError(error));
   };
 
@@ -151,7 +150,7 @@ export default function SearchController(props: SearchProps) {
       page={currentPage}
       totalPages={totalPages}
       message={footerMessage}
-      completed={completed}
+      completed={areArtifactSelected}
       onStepCompleted={handleStepCompleted}
       onNextPage={onNextPage}
       onPreviousPage={onPreviousPage}
@@ -184,7 +183,7 @@ export default function SearchController(props: SearchProps) {
       >
         {searchBar}
       </div>
-      {loading ? loadingBar : body}
+      {isLoading ? loadingBar : body}
     </div>
   );
 }

@@ -10,7 +10,7 @@ import DoneIcon from "@material-ui/icons/Done";
 import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Artifact } from "../../../../shared/types/Dataset";
+import { Artifact } from "../../../shared/types/Dataset";
 
 interface ItemPopupProps {
   selectSource: () => void;

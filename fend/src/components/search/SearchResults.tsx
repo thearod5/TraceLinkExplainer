@@ -1,9 +1,9 @@
 import React from "react";
-import { getDefaultFamilies } from "../../../shared/artifacts/WordCreator";
-import { ArtifactDisplayModel } from "../../../shared/types/Dataset";
-import { NUMBER_RESULTS_PROMPT } from "../Constants";
-import { ArtifactClickAction } from "../types";
-import SearchResultItem from "./item/SearchResultItem";
+import { getDefaultFamilies } from "../../shared/artifacts/WordCreator";
+import { ArtifactDisplayModel } from "../../shared/types/Dataset";
+import { NUMBER_RESULTS_PROMPT } from "./Constants";
+import { ArtifactClickAction } from "./types";
+import SearchItemAccordion from "./item/SearchItemAccordion";
 
 interface SearchResultsProps {
   numberOfTotalResults: number;
@@ -21,7 +21,7 @@ export default function SearchResults(props: SearchResultsProps) {
       </label>
       {props.results.map((searchItem) => {
         return (
-          <SearchResultItem
+          <SearchItemAccordion
             key={searchItem.artifact.id}
             result={searchItem.artifact}
             words={searchItem.words}
