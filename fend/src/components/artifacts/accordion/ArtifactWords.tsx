@@ -11,26 +11,27 @@ interface ArtifactWordsProps {
   colorSelected: boolean;
   sizeSelected: boolean;
   defaultSize: number;
+  selectedWord: Word | null;
+  setSelectedWord: ((newValue: null | Word) => void) | null
 }
 
 export default function ArtifactWords(props: ArtifactWordsProps) {
-  const [selectedWord, setSelectedWord] = useState<null | Word>(null)
 
-  const handleClose = () => setSelectedWord(null)
+  const handleClose = () => props.setSelectedWord !== null ? props.setSelectedWord(null) : () => null
 
   const body = createWords(
     props.words,
-    selectedWord,
+    props.selectedWord,
     props.colorSelected,
     props.sizeSelected,
     props.defaultSize,
-    setSelectedWord,
+    props.setSelectedWord,
     handleClose);
-  const open = selectedWord !== null
+  const open = props.selectedWord !== null
   return (
     <div className="textAlignLeft overflowScroll">
       <div className="sizeFull padLight overflowScroll">{body}</div>
-      {createWordModal(open, handleClose, selectedWord, props.families)}
+      {createWordModal(open, handleClose, props.selectedWord, props.families)}
     </div>
   );
 }
@@ -43,7 +44,7 @@ function createWords(
   colorSelected: boolean,
   sizeSelected: boolean,
   defaultSize: number,
-  clickHandler: WordCallback,
+  clickHandler: WordCallback | null,
   handleClose: () => void
 ) {
   return words.map((word: Word, wordIndex: number) => WordComponent({
@@ -58,13 +59,12 @@ interface WordProps {
   defaultSize: number
   selectedWord: Word | null
   wordIndex: number
-  clickHandler: WordCallback
+  clickHandler: WordCallback | null;
   handleClose: () => void
 }
 
 function WordComponent(props: WordProps) { //TODO: Rename to Word after BEND model renamed from Word 
   const HAS_FAMILY = props.word.families.length > 0
-  const [hover, setHover] = useState(false);
 
   const wordId = `${props.word.word}:${props.wordIndex}`;
   if (props.word.word === "\n") {
@@ -76,9 +76,7 @@ function WordComponent(props: WordProps) { //TODO: Rename to Word after BEND mod
 
   const WORD_COLOR = props.word.color
   let border;
-  if ((hover && HAS_FAMILY)) {
-    border = `3px solid ${WORD_COLOR}`
-  } else if (isSelectedWord) {
+  if (isSelectedWord) {
     border = `3px solid ${WORD_COLOR}`
   } else if (isSelectedFamily) {
     border = `1px solid ${WORD_COLOR}`
@@ -98,9 +96,7 @@ function WordComponent(props: WordProps) { //TODO: Rename to Word after BEND mod
         wordWrap: "initial",
         borderBottom: border
       }}
-      onClick={() => HAS_FAMILY ? props.clickHandler(props.word) : null}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onClick={() => HAS_FAMILY && props.clickHandler !== null ? props.clickHandler(props.word) : null}
     >
       {props.word.word}
     </pre>

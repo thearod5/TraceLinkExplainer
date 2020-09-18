@@ -3,9 +3,10 @@ import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
-import { Families, FamilyColors, WordDescriptors } from "../../../shared/types/Trace";
-import { primaryColor } from "../../../styles/theme";
+import { Families, FamilyColors, Word, WordDescriptors } from "../../../shared/types/Trace";
+import { primaryColor, secondaryColor } from "../../../styles/theme";
 import ArtifactTitle from "./ArtifactTitle";
+import ArtifactWords from "./ArtifactWords";
 import { generateIcons } from "./ToolbarIcons";
 
 interface IconButton {
@@ -33,6 +34,7 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
   const [sizeSelected, setSizeSelected] = useState(true);
   const [colorSelected, setColorSelected] = useState(true);
   const [fontSize, setFontSize] = useState(1);
+  const [selectedWord, setSelectedWord] = useState<Word | null>(null)
 
   const words = createWords(
     props.words,
@@ -93,7 +95,7 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
       <AccordionDetails>
         hello
       </AccordionDetails>
-      {/* <AccordionDetails
+      <AccordionDetails
         className="flexRow heightFull debugBlue"
         style={{ maxHeight: "500px" }}
       >
@@ -111,9 +113,11 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
             colorSelected={colorSelected}
             sizeSelected={sizeSelected}
             defaultSize={fontSize}
+            selectedWord={selectedWord}
+            setSelectedWord={setSelectedWord}
           />
         </div>
-      </AccordionDetails> */}
+      </AccordionDetails>
     </Accordion>
   );
 }
