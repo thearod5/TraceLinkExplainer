@@ -34,6 +34,9 @@ export default function ArtifactSelector() {
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
   const [sourceIndex, setSourceIndex] = useState(0);
   const [targetIndex, setTargetIndex] = useState(0);
+  const [lastSelectedSourceIndex, setLastSelectedSourceIndex] = useState(-1);
+  const [lastSelectedTargetIndex, setLastSelectedTargetIndex] = useState(-1);
+
   const [targetWords, setTargetWords] = useState<WordDescriptors | null>(null);
   const [sourceWords, setSourceWords] = useState<WordDescriptors | null>(null);
   const [families, setFamilies] = useState<Families | null>(null);
@@ -46,6 +49,18 @@ export default function ArtifactSelector() {
     }
   }, [currentStep])
 
+  const setSelectedSourceIndexAdapter = (index: number) => {
+    if (sourceIndex !== -1)
+      setLastSelectedSourceIndex(sourceIndex)
+    setSourceIndex(index);
+  }
+
+  const setSelectedTargetIndexAdapter = (index: number) => {
+    if (targetIndex !== -1)
+      setLastSelectedTargetIndex(targetIndex)
+    setTargetIndex(index);
+  }
+
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
       setLeftPanel(
@@ -55,8 +70,8 @@ export default function ArtifactSelector() {
               artifact,
               createDefaultWordDescriptors(artifact.body),
               index === sourceIndex,
-              () => setSourceIndex(index),
-              () => setSourceIndex(-1)
+              () => setSelectedSourceIndexAdapter(sourceIndex),
+              () => setSelectedSourceIndexAdapter(-1)
             ))}
         </div>
       )
@@ -69,16 +84,20 @@ export default function ArtifactSelector() {
     }
   }, [currentStep])
 
-
   /*
    * Makes Async API call for both panels defined below
    * BUG: SourceIndex is set to -1 and change being detected
    */
+  console.log("Source:", sourceIndex, lastSelectedSourceIndex)
+  console.log("Target:", targetIndex, lastSelectedTargetIndex)
+
   useEffect(() => {
     if (
       currentStep === VIEW_TRACE_STEP &&
       sourceIndex > -1 &&
-      targetIndex > -1) {
+      targetIndex > -1 &&
+      (sourceIndex !== lastSelectedSourceIndex &&
+        targetIndex !== lastSelectedTargetIndex)) {
       console.log("RELOADING API: ", sourceIndex, targetIndex)
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
@@ -115,7 +134,7 @@ export default function ArtifactSelector() {
         sourceIndex,
         sourceWords,
         traceFamilyColors,
-        setSourceIndex)
+        setSelectedSourceIndexAdapter)
       setLeftPanel(
         leftTracePanel
       );
@@ -140,7 +159,7 @@ export default function ArtifactSelector() {
         targetIndex,
         targetWords,
         traceFamilyColors,
-        setTargetIndex)
+        setSelectedTargetIndexAdapter)
       setRightPanel(
         rightTracePanel
       );

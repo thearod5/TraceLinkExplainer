@@ -73,6 +73,7 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
     const callBack = newExpanded ? props.onExpand : props.onShrink
     callBack()
   };
+  const ACCORDION_MAX_HEIGHT = 500 //px
 
   return (
     <Accordion
@@ -94,7 +95,7 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
       </AccordionSummary>
       <AccordionDetails
         className="flexRow"
-        style={{ maxHeight: "300px" }}
+        style={{ maxHeight: `${ACCORDION_MAX_HEIGHT}px` }}
       >
         <div className="centeredColumn padLight" style={{ width: "40px" }}>
           <div
