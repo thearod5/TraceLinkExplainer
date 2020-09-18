@@ -80,7 +80,7 @@ export default function SearchItemAccordion(props: SearchResultProps) {
           />
         </Box>
 
-        <div className="centeredColumn" >
+        <div className="centeredColumn padLight" >
           <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
             <FullscreenIcon />
           </IconButton>

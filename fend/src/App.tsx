@@ -13,8 +13,8 @@ import { appHistory, persistor, store } from "./redux/store";
 import "./styles/App.scss";
 import theme from "./styles/theme";
 
-function App() {
 
+function App() {
   return (
     <div
       id="app"

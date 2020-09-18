@@ -7,7 +7,7 @@ export function objectContainsKeys(
   for (let requiredKeyIndex in requiredKeys) {
     let requiredKey: string = requiredKeys[requiredKeyIndex];
     if (!(requiredKey in obj)) {
-      if (log) console.log(`Could not find key: ${requiredKey}`);
+      if (log) console.error(`Could not find key: ${requiredKey}`);
       return false;
     }
   }

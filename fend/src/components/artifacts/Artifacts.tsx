@@ -1,6 +1,6 @@
 import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
 import { getTraceInformation } from "../../api/trace";
 import { setError } from "../../redux/actions";
@@ -41,6 +41,8 @@ export default function ArtifactSelector() {
   const [sourceWords, setSourceWords] = useState<WordDescriptors | null>(null);
   const [families, setFamilies] = useState<Families | null>(null);
   const [traceFamilyColors, setTraceFamilyColors] = useState<Record<string, string> | null>(null);
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (currentStep === SELECT_SOURCE_STEP) {
@@ -95,7 +97,6 @@ export default function ArtifactSelector() {
       targetIndex > -1 &&
       (sourceIndex !== lastSelectedSourceIndex &&
         targetIndex !== lastSelectedTargetIndex)) {
-      console.log("RELOADING API: ", sourceIndex, targetIndex)
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
       setLoading(true)
@@ -110,7 +111,7 @@ export default function ArtifactSelector() {
         })
         .catch((e) => {
           setLoading(false)
-          console.error(e)
+          dispatch(setError(e))
         });
     }
   }, [currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);

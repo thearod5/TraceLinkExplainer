@@ -93,7 +93,7 @@ function isWordDescriptor(obj?: any, log = false): obj is WordDescriptor {
     typeof obj.word === "string" &&
     typeof obj.families === "object" &&
     obj.families.length >= 0;
-  if (log && !result) console.log("Failed: ", obj);
+  if (log && !result) console.error("Failed: ", obj);
   return result;
 }
 
