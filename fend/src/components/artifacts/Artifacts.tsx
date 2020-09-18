@@ -72,12 +72,14 @@ export default function ArtifactSelector() {
 
   /*
    * Makes Async API call for both panels defined below
+   * BUG: SourceIndex is set to -1 and change being detected
    */
   useEffect(() => {
     if (
       currentStep === VIEW_TRACE_STEP &&
       sourceIndex > -1 &&
       targetIndex > -1) {
+      console.log("RELOADING API: ", sourceIndex, targetIndex)
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
       setLoading(true)
@@ -150,9 +152,17 @@ export default function ArtifactSelector() {
     {leftPanel}
     {rightPanel}
   </SplitPane>
-  const loadingBar = <div className="flexColumn heightFull justifyContentCenter">
-    <div className="flexRow justifyContentCenter"><CircularProgress color="secondary" size="10rem" /></div>
-  </div>
+  const loadingBar =
+    <div className="flexColumn heightFull justifyContentCenter">
+      <div className="flexRow justifyContentCenter">
+        <div className="flexColumn justifyContentCenter">
+          <h1 className="padLight" style={{ paddingBottom: "100px" }}>Retrieving trace information...</h1>
+          <div className="flexRowCentered">
+            <CircularProgress color="secondary" size="10rem" />
+          </div>
+        </div>
+      </div>
+    </div>
   return (
     <div className="flexColumn heightFull overflowYHidden">
       {loading ? loadingBar : body}

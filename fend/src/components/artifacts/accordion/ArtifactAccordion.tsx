@@ -4,9 +4,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
 import { Families, FamilyColors, WordDescriptors } from "../../../shared/types/Trace";
-import { primaryColor, secondaryColor } from "../../../styles/theme";
+import { primaryColor } from "../../../styles/theme";
 import ArtifactTitle from "./ArtifactTitle";
-import ArtifactWords from "./ArtifactWords";
 import { generateIcons } from "./ToolbarIcons";
 
 interface IconButton {
@@ -91,7 +90,10 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
           title={props.artifactId}
         />
       </AccordionSummary>
-      <AccordionDetails
+      <AccordionDetails>
+        hello
+      </AccordionDetails>
+      {/* <AccordionDetails
         className="flexRow heightFull debugBlue"
         style={{ maxHeight: "500px" }}
       >
@@ -111,7 +113,7 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
             defaultSize={fontSize}
           />
         </div>
-      </AccordionDetails>
+      </AccordionDetails> */}
     </Accordion>
   );
 }
