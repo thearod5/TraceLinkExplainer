@@ -175,7 +175,7 @@ export default function ArtifactSelector() {
     <div className="flexColumn heightFull justifyContentCenter">
       <div className="flexRow justifyContentCenter">
         <div className="flexColumn justifyContentCenter">
-          <h1 className="padLight" style={{ paddingBottom: "100px" }}>Retrieving trace information...</h1>
+          <h1 className="padLight" style={{ paddingBottom: "100px" }}>Retrieving Trace Information...</h1>
           <div className="flexRowCentered">
             <CircularProgress color="secondary" size="10rem" />
           </div>

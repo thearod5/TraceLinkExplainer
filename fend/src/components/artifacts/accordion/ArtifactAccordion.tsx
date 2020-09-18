@@ -94,16 +94,17 @@ export default function ArtifactAccordion(props: ArtifactDisplayProps) {
         />
       </AccordionSummary>
       <AccordionDetails
-        className="flexRow"
+        className="flexColumn"
         style={{ maxHeight: `${ACCORDION_MAX_HEIGHT}px` }}
       >
-        <div className="centeredColumn padLight" style={{ width: "40px" }}>
+        <div className="flexRowCentered justifyContentCenter padLight">
           <div
-            className="flexColumn justifyContentCenter roundBorder"
+            className="flexRowCentered justifyContentCenter roundBorderHard"
             style={{ backgroundColor: secondaryColor }}>
             {iconCheckboxes}
           </div>
         </div>
+
         <div className="overflowScroll" style={{}}>
           <ArtifactWords
             words={words}

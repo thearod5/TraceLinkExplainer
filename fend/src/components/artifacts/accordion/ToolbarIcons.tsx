@@ -17,9 +17,9 @@ export function generateIcons(
       onChange: handleZoomIn,
     },
     {
-      iconElement: InvertColorsOffIcon,
-      checked: colorSelected,
-      onChange: (event: any) => setColorSelected(event.target.checked),
+      iconElement: ZoomOutIcon,
+      checked: true,
+      onChange: handleZoomOut,
     },
     {
       iconElement: FullscreenExitIcon,
@@ -27,9 +27,9 @@ export function generateIcons(
       onChange: (event: any) => setSizeSelected(event.target.checked),
     },
     {
-      iconElement: ZoomOutIcon,
-      checked: true,
-      onChange: handleZoomOut,
+      iconElement: InvertColorsOffIcon,
+      checked: colorSelected,
+      onChange: (event: any) => setColorSelected(event.target.checked),
     }
   ];
 }
