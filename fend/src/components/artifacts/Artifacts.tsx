@@ -86,10 +86,7 @@ export default function ArtifactSelector() {
 
   /*
    * Makes Async API call for both panels defined below
-   * BUG: SourceIndex is set to -1 and change being detected
    */
-  console.log("Source:", sourceIndex, lastSelectedSourceIndex)
-  console.log("Target:", targetIndex, lastSelectedTargetIndex)
 
   useEffect(() => {
     if (
