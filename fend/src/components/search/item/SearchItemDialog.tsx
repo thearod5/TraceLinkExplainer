@@ -3,7 +3,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
+  IconButton
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
@@ -12,14 +12,14 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { Artifact } from "../../../shared/types/Dataset";
 
-interface ItemPopupProps {
+interface SearchItemDialogProps {
   selectSource: () => void;
   handleClose: () => void;
   open: boolean;
   artifact: Artifact;
 }
 
-export default function ItemPopup(props: ItemPopupProps) {
+export default function SearchItemDialog(props: SearchItemDialogProps) {
   const isCode = props.artifact.type === "Classes";
   const createBodyContainer = isCode ? (
     <SyntaxHighlighter
@@ -30,8 +30,8 @@ export default function ItemPopup(props: ItemPopupProps) {
       {props.artifact.body}
     </SyntaxHighlighter>
   ) : (
-    <p style={{ whiteSpace: "pre-wrap" }}>{props.artifact.body}</p>
-  );
+      <p style={{ whiteSpace: "pre-wrap" }}>{props.artifact.body}</p>
+    );
 
   return (
     <Dialog

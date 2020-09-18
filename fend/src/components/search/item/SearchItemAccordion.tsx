@@ -14,7 +14,7 @@ import { Artifact } from "../../../shared/types/Dataset";
 import { Families, Words } from "../../../shared/types/Trace";
 import ArtifactWords from "../../artifacts/accordion/ArtifactWords";
 import { ArtifactClickAction } from "../types";
-import ItemPopup from "./SearchResultItemPopup";
+import SearchItemDialog from "./SearchItemDialog";
 
 interface SearchResultProps {
   result: Artifact;
@@ -25,11 +25,13 @@ interface SearchResultProps {
 }
 
 export default function SearchItemAccordion(props: SearchResultProps) {
+  const [expanded, setExpanded] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClose = () => {
-    setOpen(false);
+    setDialogOpen(false);
+    setExpanded(false);
   };
 
   const onClick = () => {
@@ -38,27 +40,32 @@ export default function SearchItemAccordion(props: SearchResultProps) {
     setChecked(!checked);
   };
 
-  const handlePopupAccept = () => {
-    setOpen(false);
+  const handleDialogAccept = () => {
+    setDialogOpen(false);
+    setExpanded(false);
     setChecked(true);
     props.selectArtifact(props.result);
   };
 
   return (
-    <Accordion TransitionProps={{ unmountOnExit: true }}>
+    <Accordion
+      TransitionProps={{ unmountOnExit: true }}
+      expanded={expanded}
+      onChange={() => setExpanded(!expanded)}
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-label="Expand">
         <FormControlLabel
           aria-label="Select"
           onClick={(event) => event.stopPropagation()} //stops opening of accordion
           onFocus={(event) => event.stopPropagation()}
-          control={<Checkbox value={checked} onClick={onClick} />}
+          control={<Checkbox checked={checked} onClick={onClick} />}
           label={props.result.id}
         />
       </AccordionSummary>
 
       <AccordionDetails style={{ maxHeight: "300px" }}>
         <Box
-          className="overflowScroll roundBorder"
+          className="overflowScroll roundBorder padLight"
           style={{ width: "90%", maxHeight: "300px" }}
           boxShadow={3}
         >
@@ -73,18 +80,18 @@ export default function SearchItemAccordion(props: SearchResultProps) {
           />
         </Box>
 
-        <div className="centeredColumn" style={{ width: "10%" }}>
-          <IconButton aria-label="expand" onClick={() => setOpen(!open)}>
+        <div className="centeredColumn" >
+          <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
             <FullscreenIcon />
           </IconButton>
         </div>
       </AccordionDetails>
 
-      <ItemPopup
+      <SearchItemDialog
         handleClose={handleClose}
-        open={open}
+        open={dialogOpen}
         artifact={props.result}
-        selectSource={handlePopupAccept}
+        selectSource={handleDialogAccept}
       />
     </Accordion>
   );
