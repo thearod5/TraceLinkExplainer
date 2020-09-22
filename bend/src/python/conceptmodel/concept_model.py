@@ -123,7 +123,7 @@ class ConceptModel:
         return all_path
 
 
-def get_concept_model_for_dataset(dataset_name: str):
+def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
     dataset_paths = {"Drone": "dronology_data/ontology/database-relation.txt"}
     path_to_concept_file = os.path.join(PATH_TO_DATA, dataset_paths[dataset_name])
     cm = ConceptModel()

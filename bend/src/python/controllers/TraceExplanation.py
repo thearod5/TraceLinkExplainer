@@ -1,10 +1,10 @@
-from explainer.ConceptModelRelationships import add_concept_families
+from conceptmodel.ConceptModelRelationships import add_concept_families
 from loader.DataLoader import get_artifact_in_dataset
 from models.TracePayload import TracePayload, TraceRelationships, TracePayloadDict
 from models.WordDescriptor import WordDescriptor
 from preprocessing.Cleaners import (get_words_in_string_doc)
 from util.DictHelper import list_as_dict, export_object_as_dict
-from vsm.VSMRelationships import add_root_families
+from vsm.WordRootRelationships import add_root_families
 
 
 def get_trace_information(
