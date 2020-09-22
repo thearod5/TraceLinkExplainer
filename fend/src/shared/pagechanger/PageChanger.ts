@@ -1,7 +1,7 @@
 import {
   HOME_ROUTE,
   SELECT_ARTIFACTS_ROUTE,
-  TRACE_VIEW_ROUTE,
+  TRACE_VIEW_ROUTE
 } from "../../components/nav/routes";
 import store from "../../redux/store";
 import { RootState } from "../../redux/types";
