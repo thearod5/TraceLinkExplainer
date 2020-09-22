@@ -12,6 +12,12 @@ SIB = "sibling"
 SYN = "synonym"
 
 
+class WordRelationship:
+    def __init__(self, word: str, relationship: str):
+        self.word = word
+        self.relationship = relationship
+
+
 def to_groups(term_relations: Dict):
     """
     Establish word groups by applying BFS on term relation graph
@@ -53,13 +59,14 @@ class ConceptModel:
         :param tsv_path:
         :return:
         """
-        df = pd.read_csv(tsv_path, delimiter='\t', encoding='utf-8')
+        df = pd.read_csv(tsv_path)
+        df.to_csv(tsv_path, index=False)
         rels, left_terms, right_terms = [], [], []
         for index, row in df.iterrows():
             rel, lt, rt = row[0], row[1], row[2]
             rels.append(rel)
-            left_terms.append(" ".join(lt.split("_")))
-            right_terms.append(" ".join(rt.split("_")))
+            left_terms.append(lt)
+            right_terms.append(rt)
         self._add_concepts(rels, left_terms, right_terms)
         self.vertex_names = self.ig.vs.get_attribute_values("name")
 
@@ -78,13 +85,16 @@ class ConceptModel:
                 self.ig.add_edge(rt, lt, label=SYN)
             if type == ANC:
                 self.ig.add_edge(lt, rt, label=ANC)
-                self.ig.add_edge(rt, lt, lable=CHILD)
+                self.ig.add_edge(rt, lt, label=CHILD)
 
     def get_neighborhood(self, w1):
         if w1 not in self.vertex_names:
             return []
         neighbor_hood_indices = self.ig.neighbors(w1)
         return pd.Series(self.vertex_names)[set(neighbor_hood_indices)]
+
+    def contains_vertex(self, vertex_name):
+        return vertex_name in self.vertex_names
 
     def get_path(self, w1, w2):
         """
@@ -105,6 +115,24 @@ class ConceptModel:
                 res.append(self.ig.vs[n]['name'])
         return res
 
+    def get_word_relationships(self, a, b: [str]) -> [[WordRelationship]]:
+        targets = list(filter(lambda v: self.contains_vertex(v), b))
+        edge_vertices = self.ig.get_shortest_paths(a, targets, output="epath")
+        path: [WordRelationship] = []
+        last_word = a
+        if len(edge_vertices) == 0:
+            return [[]]
+        for edge_indices_in_path in edge_vertices:
+            path_relationships = []
+            for edge in self.ig.es[edge_indices_in_path]:
+                target_name = self.ig.vs[edge.target]["name"]
+                source_name = self.ig.vs[edge.source]["name"]
+                new_vertex_name = target_name if source_name == last_word else source_name
+                path_relationships.append(WordRelationship(new_vertex_name, edge["label"]))
+                last_word = new_vertex_name
+            path.append(path_relationships)
+        return path
+
     def get_path_for_all(self, w1, w2_list, cutoff=5):
         """
         Return the simple path from w1 to all concepts in w2. All possible paths will be returned
@@ -123,8 +151,13 @@ class ConceptModel:
         return all_path
 
 
+dataset_paths = {
+    "Drone": "dronology_data/ontology/database-relation.csv",
+    "test": "dronology_data/ontology/test-relation.csv"
+}
+
+
 def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
-    dataset_paths = {"Drone": "dronology_data/ontology/database-relation.txt"}
     path_to_concept_file = os.path.join(PATH_TO_DATA, dataset_paths[dataset_name])
     cm = ConceptModel()
     cm.add_concepts(path_to_concept_file)
