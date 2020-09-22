@@ -22,7 +22,7 @@ def get_trace_information(
 
     payload = TracePayload(trace_relationships, "MANUAL", 0)
     return {
-        "families": export_object_as_dict(payload.families),
+        "families": export_object_as_dict(payload.relationships),
         "sourceDescriptors": list_as_dict(payload.source_descriptors),
         "targetDescriptors": list_as_dict(payload.target_descriptors),
         "traceType": "Manual",

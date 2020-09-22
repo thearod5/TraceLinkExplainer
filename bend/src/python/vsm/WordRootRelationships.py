@@ -13,7 +13,7 @@ VSM_RELATIONSHIP_NAME = "ROOT"
 
 
 def add_root_families(dataset, trace_relationships: TraceRelationships, cutoff=0):
-    families: dict[str, Family] = trace_relationships.families
+    families: dict[str, Family] = trace_relationships.relationships
     source_descriptors = trace_relationships.source_descriptors
     target_descriptors = trace_relationships.target_descriptors
 

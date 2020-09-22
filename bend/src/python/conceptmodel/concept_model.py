@@ -115,11 +115,12 @@ class ConceptModel:
                 res.append(self.ig.vs[n]['name'])
         return res
 
-    def get_word_relationships(self, a, b: [str]) -> [[WordRelationship]]:
-        targets = list(filter(lambda v: self.contains_vertex(v), b))
-        edge_vertices = self.ig.get_shortest_paths(a, targets, output="epath")
+    def get_word_relationships(self, source_word, target_words: [str]) -> [[WordRelationship]]:
+        # TODO: Return dictionary containing target words as keys and [WordRelationship] as value
+        targets = list(filter(lambda v: self.contains_vertex(v), target_words))
+        edge_vertices = self.ig.get_shortest_paths(source_word, targets, output="epath")
         path: [WordRelationship] = []
-        last_word = a
+        last_word = source_word
         if len(edge_vertices) == 0:
             return [[]]
         for edge_indices_in_path in edge_vertices:

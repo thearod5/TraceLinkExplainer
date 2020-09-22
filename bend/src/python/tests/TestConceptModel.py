@@ -1,6 +1,7 @@
 import unittest
 
 from conceptmodel.concept_model import get_concept_model_for_dataset
+from controllers.TraceExplanation import get_words_in_artifact
 
 
 class TestConceptModel(unittest.TestCase):
@@ -47,3 +48,12 @@ class TestConceptModel(unittest.TestCase):
 
         self.assertEqual(second_path[1].word, "micro air vehicle")
         self.assertEqual(second_path[1].relationship, "synonym")
+
+    def test_time(self):
+        source_words = get_words_in_artifact("Drone", "classes", "AFAssignRouteComponent.java")
+        target_words = get_words_in_artifact("Drone", "designs", "DD-352")
+        relationships = []
+        for word in source_words:
+            new_relationships = self.concept_model.get_word_relationships(word, target_words)
+            print(new_relationships)
+            relationships = relationships + new_relationships
