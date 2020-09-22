@@ -11,7 +11,12 @@ const artifacts = [
   ...classes.artifacts
 ]
 
-export const mockDataset: Dataset = {
+export const mockDroneDataset: Dataset = {
   name: 'Drone',
   summary: '...placeholder description about drone dataset...'
+}
+
+export const mockTestDataset: Dataset = {
+  name: 'test',
+  summary: 'made up dataset used for unit tests'
 }

@@ -6,6 +6,7 @@ import { getTraceInformation } from "../../api/trace";
 import { setError } from "../../redux/actions";
 import {
   getCurrentStep,
+  getDataset,
   getSelectedSources,
   getSelectedTargets
 } from "../../redux/selectors";
@@ -17,7 +18,7 @@ import {
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
-import { Artifact } from "../../shared/types/Dataset";
+import { Artifact, Dataset } from "../../shared/types/Dataset";
 import { Relationships, WordDescriptors } from "../../shared/types/Trace";
 import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./ArtifactDisplayFactory";
 import NoSourceMessage from "./NoSourceMessage";
@@ -25,6 +26,7 @@ import SourceArtifactSearch from "./search/SourceArtifactSearch";
 import TargetArtifactSearch from "./search/TargetArtifactSearch";
 
 export default function ArtifactSelector() {
+  const dataset: Dataset = useSelector(getDataset);
   const selectedSources: Artifact[] = useSelector(getSelectedSources);
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
@@ -78,6 +80,7 @@ export default function ArtifactSelector() {
         </div>
       )
     }
+    // eslint-disable-next-line
   }, [currentStep, selectedSources, sourceIndex])
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export default function ArtifactSelector() {
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
       setLoading(true)
-      getTraceInformation("Drone", sourceArtifact, targetArtifact) // change with state index
+      getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
           const familyColors = createFamilyColors(Object.keys(traceInformation.relationships));
           setTraceFamilyColors(familyColors)
@@ -114,7 +117,8 @@ export default function ArtifactSelector() {
           dispatch(setError(e))
         });
     }
-  }, [currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);
+    // eslint-disable-next-line
+  }, [dataset.name, currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);
 
   /*
    * Asyncronously sets the LEFT PANEL
@@ -139,6 +143,7 @@ export default function ArtifactSelector() {
     } else {
       setError(`SourceWords: ${sourceWords === null}`)
     }
+    // eslint-disable-next-line
   }, [currentStep, selectedSources, sourceIndex, sourceWords, traceFamilyColors, families]);
 
   /*
@@ -162,6 +167,7 @@ export default function ArtifactSelector() {
         rightTracePanel
       );
     }
+    // eslint-disable-next-line
   }, [currentStep, selectedTargets, targetIndex, targetWords, traceFamilyColors, families]);
 
 
