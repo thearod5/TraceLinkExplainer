@@ -2,7 +2,7 @@ import { Accordion } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
-import { Families, FamilyColors, Word, WordDescriptors, Words } from "../../../shared/types/Trace";
+import { FamilyColors, Relationships, Word, WordDescriptors, Words } from "../../../shared/types/Trace";
 import { primaryColor } from "../../../styles/theme";
 import ArtifactAccordionDetails from "./ArtifactAccordionDetails";
 import ArtifactAccordionSummary from "./ArtifactAccordionSummary";
@@ -23,7 +23,7 @@ interface ArtifactAccordionProps {
   artifactType: string;
   artifactId: string;
   words: WordDescriptors;
-  families: Families;
+  families: Relationships;
   familyColors: FamilyColors;
   expanded: boolean;
   onExpand: () => void;

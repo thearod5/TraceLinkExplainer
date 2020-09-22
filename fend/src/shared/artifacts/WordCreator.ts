@@ -1,8 +1,9 @@
 import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
 import {
-  Families,
   FamilyColors,
-  KeyWordType,
+  KeyWordType, Relationships,
+
+
   SyntaxWordType,
   Word,
   WordDescriptor,
@@ -39,18 +40,18 @@ const keyWordDelimiters = [
   "string",
 ];
 
-export function getDefaultFamilies(): Families {
-  const families: Families = {}
-  families[SyntaxWordType] = {
-    weight: 0,
-    concepts: syntaxDelimiters,
-    type: SyntaxWordType
-  }
-  families[KeyWordType] = {
-    weight: 0,
-    concepts: keyWordDelimiters,
-    type: KeyWordType
-  }
+export function getDefaultFamilies(): Relationships {
+  const families: Relationships = [
+    {
+      weight: 0,
+      nodes: syntaxDelimiters.map(word => { return { word, nodeType: "SIBLING" } }),
+      title: SyntaxWordType
+    }, {
+      weight: 0,
+      title: KeyWordType,
+      nodes: keyWordDelimiters.map(word => { return { word, nodeType: "SIBLING" } }),
+    }
+  ]
 
   return families
 }
@@ -65,7 +66,7 @@ export function getDefaultFamilyColors(): FamilyColors {
 
 export function createArtifactDisplayModel(
   artifact: Artifact,
-  families: Families = getDefaultFamilies(),
+  families: Relationships = getDefaultFamilies(),
   defaultSize: number = 1,
   familyColors: FamilyColors = getDefaultFamilyColors(),
   defaultColor: string = "black"
@@ -91,7 +92,7 @@ export function createArtifactDisplayModel(
 export function createDefaultWordDescriptors(body: string): WordDescriptors {
   return separateWords(body).map((bodyWord) => {
     return {
-      families: getWordFamilies(bodyWord),
+      relationshipIds: getWordFamilies(bodyWord),
       word: bodyWord,
     };
   });
@@ -108,7 +109,7 @@ function getWordFamilies(word: string): string[] {
  */
 export function createWords(
   descriptors: WordDescriptors,
-  families: Families,
+  families: Relationships,
   defaultSize: number,
   familyColors: FamilyColors,
   defaultColor: string = "black"
@@ -126,16 +127,16 @@ export function createWords(
 
 export function createWord(
   descriptor: WordDescriptor,
-  families: Families,
+  families: Relationships,
   defaultSize: number,
   familyColors: FamilyColors,
   defaultColor: string
 ): Word {
-  const hasFamily = descriptor.families.length > 0
+  const hasFamily = descriptor.relationshipIds.length > 0
   let wordSize, wordColor;
   if (hasFamily) {
-    const mainFamilyId: string = descriptor.families[0]
-    const mainFamily = families[mainFamilyId]
+    const mainFamilyId: string = descriptor.relationshipIds[0]
+    const mainFamily = families.filter(family => family.title === mainFamilyId)[0]
 
     wordSize = mainFamily.weight + defaultSize
     wordColor =
@@ -151,7 +152,7 @@ export function createWord(
     word: descriptor.word,
     size: wordSize,
     color: wordColor,
-    families: descriptor.families
+    relationshipIds: descriptor.relationshipIds
   };
 }
 

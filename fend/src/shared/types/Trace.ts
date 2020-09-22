@@ -15,29 +15,35 @@ export interface TraceRetrievalPayload {
   targetType: string;
 }
 
+//BEND Version of Word
+export interface WordDescriptor {
+  word: string;
+  relationshipIds: string[]
+}
+
+export type WordDescriptors = WordDescriptor[];
+
+export interface WordRelationshipNode {
+  word: string
+  nodeType: "SIBLING" | "ANCESTOR" | "CHILD" | "SYNONYM"
+}
+
+export type WordRelationshipNodes = WordRelationshipNode[];
+
+export interface Relationship {
+  title: string
+  nodes: WordRelationshipNodes
+  weight: number
+}
+
+export type Relationships = Relationship[]
+
 export interface TraceInformation {
-  families: Families;
+  relationships: Relationships;
   sourceDescriptors: WordDescriptors;
   targetDescriptors: WordDescriptors;
   traceType: string;
   score: number; // similarities score for when estimations are calculated
-}
-
-export type RelatedConcepts = string[];
-export interface Family {
-  weight: number
-  concepts: RelatedConcepts
-  type: "ROOT" | "CONCEPT" | typeof SyntaxWordType | typeof KeyWordType
-}
-
-export type Families = Record<string, Family>
-
-export type WordDescriptors = WordDescriptor[];
-
-//BEND Version of Word
-export interface WordDescriptor {
-  word: string;
-  families: string[]
 }
 
 //FEND version of WordDescriptor
@@ -45,7 +51,7 @@ export interface Word {
   word: string;
   size: number;
   color: string;
-  families: string[]
+  relationshipIds: string[]
 }
 
 export type Words = Word[];
@@ -73,7 +79,7 @@ export function isTraceInformation(
   log = false
 ): obj is TraceInformation {
   const requiredKeys = [
-    "families",
+    "relationships",
     "sourceDescriptors",
     "targetDescriptors",
     "traceType",
@@ -87,7 +93,7 @@ export function isTraceInformation(
 }
 
 function isWordDescriptor(obj?: any, log = false): obj is WordDescriptor {
-  const requiredKeys = ["word", "families"];
+  const requiredKeys = ["word", "relationshipIds"];
   const result =
     objectContainsKeys(requiredKeys, obj, log) &&
     typeof obj.word === "string" &&

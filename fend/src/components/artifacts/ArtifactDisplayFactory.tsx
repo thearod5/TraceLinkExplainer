@@ -1,8 +1,9 @@
 import React from "react";
 import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
-import { Families, FamilyColors, WordDescriptors } from "../../shared/types/Trace";
+import { FamilyColors, Relationships, WordDescriptors } from "../../shared/types/Trace";
 import ArtifactAccordion from "./accordion/ArtifactAccordion";
+
 
 export const colors = ["CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "Khaki", "BlueViolet", "FireBrick", "LightGreen", "Maroon",
   "DeepSkyBlue", "MediumOrchid", "Olive", "SpringGreen"]; //TODO: Add to theme
@@ -32,7 +33,7 @@ export function getDefaultArtifactDisplay(
 
 function getTraceArtifactDisplay(
   artifactWords: WordDescriptors,
-  families: Families,
+  families: Relationships,
   artifact: Artifact,
   familyColors: FamilyColors,
   expanded: boolean,
@@ -62,7 +63,7 @@ export function createFamilyColors(familyIds: string[]): FamilyColors {
 
 export function createTraceArtifactDisplays(
   artifacts: Artifact[],
-  families: Families,
+  families: Relationships,
   selectedIndex: number,
   traceWords: WordDescriptors,
   familyColors: Record<string, string>,

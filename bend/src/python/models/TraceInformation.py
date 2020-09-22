@@ -4,10 +4,10 @@ from typing_extensions import TypedDict
 
 from models.WordDescriptor import WordDescriptor, WordDescriptorDict
 
-ANC = "ancestor"
-CHILD = "child"
-SIB = "sibling"
-SYN = "synonym"
+ANC = "ANCESTOR"
+CHILD = "CHILD"
+SIB = "SIBLING"
+SYN = "SYNONYM"
 
 
 class WordRelationshipNode:

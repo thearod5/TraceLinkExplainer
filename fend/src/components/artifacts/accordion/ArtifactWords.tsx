@@ -2,12 +2,12 @@ import { Backdrop, Dialog, DialogTitle } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from "react";
-import { Families, Family, Word, Words } from "../../../shared/types/Trace";
+import { Relationships, Word, Words } from "../../../shared/types/Trace";
 import { DEFAULT_FONT_COLOR } from "./ArtifactAccordion";
 
 interface ArtifactWordsProps {
   words: Words;
-  families: Families;
+  families: Relationships;
   colorSelected: boolean;
   sizeSelected: boolean;
   defaultSize: number;
@@ -64,13 +64,13 @@ interface WordProps {
 }
 
 function WordComponent(props: WordProps) { //TODO: Rename to Word after BEND model renamed from Word 
-  const HAS_FAMILY = props.word.families.length > 0
+  const HAS_FAMILY = props.word.relationshipIds.length > 0
 
   const wordId = `${props.word.word}:${props.wordIndex}`;
   if (props.word.word === "\n") {
     return <br key={wordId}></br>;
   }
-  const familyIntersection = props.selectedWord !== null ? props.selectedWord.families.filter(value => props.word.families.includes(value)) : []
+  const familyIntersection = props.selectedWord !== null ? props.selectedWord.relationshipIds.filter(value => props.word.relationshipIds.includes(value)) : []
   const isSelectedWord = props.selectedWord !== null && (props.word.word === props.selectedWord.word)
   const isSelectedFamily = familyIntersection.length > 0
 
@@ -107,7 +107,7 @@ function createWordModal(
   open: boolean,
   handleClose: () => void,
   word: Word | null,
-  families: Families
+  families: Relationships
 ) {
   if (word === null)
     return null
@@ -125,28 +125,15 @@ function createWordModal(
       <HoverClose handleClose={handleClose} />
       <DialogTitle className="displayInlineBlock textAlignCenter">{word.word}</DialogTitle>
       <div className="padLight">
-        {word.families.map((familyId, familyIndex) => {
-          return createRelationshipDescription(familyId, families[familyId], familyIndex + 1)
-        })}
+        {createRelationshipDescription(families.filter(family => word.relationshipIds.includes(family.title)))}
       </div>
     </Dialog >
   )
 }
 
-function createRelationshipDescription(familyId: string, family: Family, index: number) {
-  const concepts = family.concepts.join(", ")
-  let message;
-  switch (family.type) {
-    case "ROOT":
-      message = <p>{index}. has the same root (<b>{familyId}</b>) as other words in the documents: {concepts}</p>
-      break;
-    case "CONCEPT":
-      message = <p>{index}. is related to {concepts}</p>
-      break;
-    default:
-      throw Error(`Unexpected type: ${family.type}`)
-  }
-  return <p className="padLight ">{message}</p>
+function createRelationshipDescription(family: Relationships) {
+
+  return <p className="padLight ">test</p>
 }
 
 interface HoverCloseProps {

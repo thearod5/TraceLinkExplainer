@@ -18,7 +18,7 @@ import {
   VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
 import { Artifact } from "../../shared/types/Dataset";
-import { Families, WordDescriptors } from "../../shared/types/Trace";
+import { Relationships, WordDescriptors } from "../../shared/types/Trace";
 import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./ArtifactDisplayFactory";
 import NoSourceMessage from "./NoSourceMessage";
 import SourceArtifactSearch from "./search/SourceArtifactSearch";
@@ -39,7 +39,7 @@ export default function ArtifactSelector() {
 
   const [targetWords, setTargetWords] = useState<WordDescriptors | null>(null);
   const [sourceWords, setSourceWords] = useState<WordDescriptors | null>(null);
-  const [families, setFamilies] = useState<Families | null>(null);
+  const [families, setFamilies] = useState<Relationships | null>(null);
   const [traceFamilyColors, setTraceFamilyColors] = useState<Record<string, string> | null>(null);
 
   const dispatch = useDispatch()
@@ -102,11 +102,11 @@ export default function ArtifactSelector() {
       setLoading(true)
       getTraceInformation("Drone", sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
-          const familyColors = createFamilyColors(Object.keys(traceInformation.families));
+          const familyColors = createFamilyColors(Object.keys(traceInformation.relationships));
           setTraceFamilyColors(familyColors)
           setSourceWords(traceInformation.sourceDescriptors)
           setTargetWords(traceInformation.targetDescriptors)
-          setFamilies(traceInformation.families)
+          setFamilies(traceInformation.relationships)
           setLoading(false)
         })
         .catch((e) => {

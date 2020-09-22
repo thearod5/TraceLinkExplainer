@@ -1,6 +1,6 @@
 import { AccordionDetails } from '@material-ui/core';
 import React from 'react';
-import { Families, Word, Words } from '../../../shared/types/Trace';
+import { Relationships, Word, Words } from '../../../shared/types/Trace';
 import { secondaryColor } from '../../../styles/theme';
 import ArtifactWords from './ArtifactWords';
 
@@ -10,7 +10,7 @@ import ArtifactWords from './ArtifactWords';
 
 interface ArtifactAccordionDetailsProps {
   words: Words;
-  families: Families;
+  families: Relationships;
   colorSelected: boolean;
   sizeSelected: boolean;
   fontSize: number;
