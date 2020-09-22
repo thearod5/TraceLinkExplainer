@@ -2,9 +2,9 @@ import unittest
 
 import numpy as np
 
-from models.TracePayload import TraceRelationships
+from models.TraceInformation import TraceExplanation, Relationship
 from models.WordDescriptor import WordDescriptor
-from vsm.WordRootRelationships import add_root_families, get_vsm_weights, create_word_similarity_dictionary
+from vsm.WordRootRelationships import add_root_relationships, get_vsm_weights, create_word_similarity_dictionary
 
 
 class TestRootFamilies(unittest.TestCase):
@@ -19,23 +19,39 @@ class TestRootFamilies(unittest.TestCase):
         source_words = ["unman", "plane", "car"]
         target_words = ["unman", "plane", "train"]
 
-        families = {}
-        initial_relationships = TraceRelationships(families,
-                                                   list(map(WordDescriptor, source_words)),
-                                                   list(map(WordDescriptor, target_words)))
-        relationships = add_root_families("Drone", initial_relationships, -1)
+        initial_explanation = TraceExplanation(list(map(WordDescriptor, source_words)),
+                                               list(map(WordDescriptor, target_words)))
+        explanation_with_roots: TraceExplanation = add_root_relationships("Drone", initial_explanation, -1)
 
-        families = relationships.families
-        self.assertEqual(1, families["unman"].weight)
-        self.assertEqual("unman", families["unman"].concepts[0])
-        self.assertEqual(1, families["plane"].weight)
-        self.assertEqual(0, families["car"].weight)
-        self.assertEqual(0, families["train"].weight)
+        relationships: [Relationship] = explanation_with_roots.relationships
 
-        source_descriptors = relationships.source_descriptors
+        self.assertEqual(4, len(relationships))
+
+        # unman relationship
+        r_0: Relationship = relationships[0]
+        self.assertEqual("unman", r_0.title)
+        self.assertEqual(1, r_0.weight)
+        self.assertEqual(1, len(r_0.nodes))
+        self.assertEqual("unman", r_0.nodes[0].word)
+
+        r_1: Relationship = relationships[1]
+        self.assertEqual(1, r_1.weight)
+        self.assertEqual("plane", r_1.title)
+
+        r_2: Relationship = relationships[2]
+        self.assertEqual(0, r_2.weight)
+        self.assertEqual("car", r_2.title)
+
+        r_3: Relationship = relationships[3]
+        self.assertEqual(0, r_3.weight)
+        self.assertEqual("train", r_3.title)
+
+        # Word Descriptors
+        source_descriptors = explanation_with_roots.source_descriptors
         source_word = source_descriptors[0]
         self.assertEqual("unman", source_word.word)
-        self.assertEqual(["unman"], source_word.families)
+        self.assertEqual(1, len(source_word.relationship_ids))
+        self.assertEqual("unman", source_word.relationship_ids[0])
 
     def test_get_vsm_weights(self):
         source_root_words = ["unman", "plane", "car"]

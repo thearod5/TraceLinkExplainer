@@ -1,10 +1,9 @@
-from conceptmodel.ConceptModelRelationships import add_concept_families
+from conceptmodel.concept_model import add_concept_families
 from loader.DataLoader import get_artifact_in_dataset
-from models.TracePayload import TracePayload, TraceRelationships, TracePayloadDict
+from models.TraceInformation import TraceInformation, TraceExplanation, TracePayloadDict
 from models.WordDescriptor import WordDescriptor
 from preprocessing.Cleaners import (get_words_in_string_doc)
-from util.DictHelper import list_as_dict, export_object_as_dict
-from vsm.WordRootRelationships import add_root_families
+from vsm.WordRootRelationships import add_root_relationships
 
 
 def get_trace_information(
@@ -17,17 +16,11 @@ def get_trace_information(
     source_words = get_words_in_artifact(dataset, source_type, source_id)
     target_words = get_words_in_artifact(dataset, target_type, target_id)
 
-    trace_relationships = create_trace_payload(
+    trace_explanation: TraceExplanation = create_trace_payload(
         dataset, source_words, target_words)
 
-    payload = TracePayload(trace_relationships, "MANUAL", 0)
-    return {
-        "families": export_object_as_dict(payload.relationships),
-        "sourceDescriptors": list_as_dict(payload.source_descriptors),
-        "targetDescriptors": list_as_dict(payload.target_descriptors),
-        "traceType": "Manual",
-        "score": 1
-    }
+    payload = TraceInformation(trace_explanation, "MANUAL", 0)
+    return payload.to_dict()
 
 
 def get_words_in_artifact(dataset: str, artifact_type: str, artifact_id: str):
@@ -36,15 +29,15 @@ def get_words_in_artifact(dataset: str, artifact_type: str, artifact_id: str):
     return get_words_in_string_doc(artifact)
 
 
-def create_trace_payload(dataset: str, source_words: [str], target_words: [str]) -> TraceRelationships:
+def create_trace_payload(dataset: str, source_words: [str], target_words: [str]) -> TraceExplanation:
     source_word_descriptors = list(map(WordDescriptor, source_words))
     target_word_descriptors = list(map(WordDescriptor, target_words))
-    families = {}
+    explanation = TraceExplanation(source_word_descriptors, target_word_descriptors)
 
-    relationships = TraceRelationships(families, source_word_descriptors, target_word_descriptors)
-
-    pipeline = [add_root_families, add_concept_families]
+    pipeline = [add_root_relationships, add_concept_families]
     for pipeline_function in pipeline:
-        relationships = pipeline_function(dataset, relationships)
+        explanation = pipeline_function(dataset, explanation)
 
-    return relationships
+    explanation.relationships = sorted(explanation.relationships, key=lambda x: x.weight, reverse=True)
+
+    return explanation

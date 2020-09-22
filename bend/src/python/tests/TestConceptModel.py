@@ -1,30 +1,56 @@
 import unittest
 
-from conceptmodel.concept_model import get_concept_model_for_dataset
+from conceptmodel.concept_model import get_concept_model_for_dataset, add_concept_families
 from controllers.TraceExplanation import get_words_in_artifact
+from models.TraceInformation import TraceExplanation, CHILD
+from models.WordDescriptor import WordDescriptor
 
 
 class TestConceptModel(unittest.TestCase):
     concept_model = get_concept_model_for_dataset("test")
 
-    def test_simple(self):
+    def runTest(self):
+        self.test_ex_test_dataset()
+        self.test_basic()
+        self.test_empty()
+        self.test_multiple_words()
+
+    def test_ex_test_dataset(self):
+        dataset = "test"
+        source_words = get_words_in_artifact(dataset, "classes", "AFAssignRouteComponent.java")
+        target_words = get_words_in_artifact(dataset, "designs", "DD-352")
+
+        source_word_descriptors = list(map(WordDescriptor, source_words))
+        target_word_descriptors = list(map(WordDescriptor, target_words))
+
+        explanation = TraceExplanation(source_word_descriptors, target_word_descriptors)
+        result = add_concept_families(dataset, explanation)
+        relationships = result.relationships
+        self.assertEqual(1, len(relationships))
+        relationship = relationships[0]
+        self.assertEqual("add->transmit", relationship.title)
+        self.assertEqual(1, len(relationship.nodes))
+        self.assertEqual(CHILD, relationship.nodes[0].node_type)
+
+    def test_basic(self):
         word_1 = "micro uav"
         word_2 = ["micro air vehicle"]
 
-        relationship = self.concept_model.get_word_relationships(word_1, word_2)
-        result = relationship[0]
-        self.assertEqual(result[0].word, "MAV")
-        self.assertEqual(result[0].relationship, "synonym")
+        relationships = self.concept_model.get_word_relationships(word_1, word_2)
+        relationship = relationships[0]
+        self.assertTrue(word_1 in relationship.title)
+        self.assertTrue(word_2[0] in relationship.title)
+        self.assertEqual(relationship.nodes[0].word, "MAV")
+        self.assertEqual(relationship.nodes[0].node_type, "synonym")
 
-        self.assertEqual(result[1].word, "micro air vehicle")
-        self.assertEqual(result[1].relationship, "synonym")
+        self.assertEqual(relationship.nodes[1].word, "micro air vehicle")
+        self.assertEqual(relationship.nodes[1].node_type, "synonym")
 
     def test_empty(self):
         word_1 = "micro uav"
         word_2 = ["something"]
-        result = self.concept_model.get_word_relationships(word_1, word_2)
-        self.assertEqual(len(result), 1)
-        self.assertEqual(len(result[0]), 0)
+        relationships = self.concept_model.get_word_relationships(word_1, word_2)
+        self.assertEqual(len(relationships), 0)
 
     def test_multiple_words(self):
         word_1 = "micro uav"
@@ -32,28 +58,19 @@ class TestConceptModel(unittest.TestCase):
 
         relationships = self.concept_model.get_word_relationships(word_1, word_2)
         first_path = relationships[0]
-        self.assertEqual(len(first_path), 3)
-        self.assertEqual(first_path[0].word, "MAV")
-        self.assertEqual(first_path[0].relationship, "synonym")
+        self.assertEqual(len(first_path.nodes), 3)
+        self.assertEqual(first_path.nodes[0].word, "MAV")
+        self.assertEqual(first_path.nodes[0].node_type, "synonym")
 
-        self.assertEqual(first_path[1].word, "vehicle")
-        self.assertEqual(first_path[1].relationship, "child")
+        self.assertEqual(first_path.nodes[1].word, "vehicle")
+        self.assertEqual(first_path.nodes[1].node_type, "child")
 
-        self.assertEqual(first_path[2].word, "car")
-        self.assertEqual(first_path[2].relationship, "synonym")
+        self.assertEqual(first_path.nodes[2].word, "car")
+        self.assertEqual(first_path.nodes[2].node_type, "synonym")
 
         second_path = relationships[1]
-        self.assertEqual(second_path[0].word, "MAV")
-        self.assertEqual(second_path[0].relationship, "synonym")
+        self.assertEqual(second_path.nodes[0].word, "MAV")
+        self.assertEqual(second_path.nodes[0].node_type, "synonym")
 
-        self.assertEqual(second_path[1].word, "micro air vehicle")
-        self.assertEqual(second_path[1].relationship, "synonym")
-
-    def test_time(self):
-        source_words = get_words_in_artifact("Drone", "classes", "AFAssignRouteComponent.java")
-        target_words = get_words_in_artifact("Drone", "designs", "DD-352")
-        relationships = []
-        for word in source_words:
-            new_relationships = self.concept_model.get_word_relationships(word, target_words)
-            print(new_relationships)
-            relationships = relationships + new_relationships
+        self.assertEqual(second_path.nodes[1].word, "micro air vehicle")
+        self.assertEqual(second_path.nodes[1].node_type, "synonym")

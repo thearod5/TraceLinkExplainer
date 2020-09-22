@@ -9,6 +9,8 @@ def create_dictionary_from_values(source: dict, keys: [str], values: [str]):
 
 
 def export_object_as_dict(obj):
+    if type(obj) == list:
+        return list(map(export_object_as_dict, obj))
     if type(obj) == dict:
         new_object = {}
         for key, value in obj.items():

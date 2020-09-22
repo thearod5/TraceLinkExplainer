@@ -5,17 +5,11 @@ import pandas as pd
 from igraph import Graph, OUT
 
 from Paths import PATH_TO_DATA
+from models.TraceInformation import TraceExplanation, WordRelationshipNode, Relationship, SYN, ANC, CHILD
+from models.WordDescriptor import WordDescriptor
+from preprocessing.Cleaners import clean_doc
 
-ANC = "ancestor"
-CHILD = "child"
-SIB = "sibling"
-SYN = "synonym"
-
-
-class WordRelationship:
-    def __init__(self, word: str, relationship: str):
-        self.word = word
-        self.relationship = relationship
+CONCEPT_MODEL_WEIGHT = 1
 
 
 def to_groups(term_relations: Dict):
@@ -115,23 +109,32 @@ class ConceptModel:
                 res.append(self.ig.vs[n]['name'])
         return res
 
-    def get_word_relationships(self, source_word, target_words: [str]) -> [[WordRelationship]]:
-        # TODO: Return dictionary containing target words as keys and [WordRelationship] as value
-        targets = list(filter(lambda v: self.contains_vertex(v), target_words))
-        edge_vertices = self.ig.get_shortest_paths(source_word, targets, output="epath")
-        path: [WordRelationship] = []
+    def get_word_relationships(self, source_word, target_words: [str]) -> [Relationship]:
+        """
+        Returns
+        :param source_word:
+        :param target_words:
+        :return:
+        """
+        if not self.contains_vertex(source_word):
+            return []
+        defined_target_vertices = list(filter(lambda v: self.contains_vertex(v), target_words))
+        if len(defined_target_vertices) == 0:
+            return []
+
+        path_to_target_words = self.ig.get_shortest_paths(source_word, defined_target_vertices, output="epath")
+
+        path: [WordRelationshipNode] = []
         last_word = source_word
-        if len(edge_vertices) == 0:
-            return [[]]
-        for edge_indices_in_path in edge_vertices:
-            path_relationships = []
+        for target_node_index, edge_indices_in_path in enumerate(path_to_target_words):
+            relationship_nodes = []
             for edge in self.ig.es[edge_indices_in_path]:
-                target_name = self.ig.vs[edge.target]["name"]
-                source_name = self.ig.vs[edge.source]["name"]
-                new_vertex_name = target_name if source_name == last_word else source_name
-                path_relationships.append(WordRelationship(new_vertex_name, edge["label"]))
-                last_word = new_vertex_name
-            path.append(path_relationships)
+                word_node = get_word_node(self.ig.vs, edge, last_word)
+                relationship_nodes.append(word_node)
+                last_word = word_node.word
+            title = "%s->%s" % (source_word, defined_target_vertices[target_node_index])
+
+            path.append(Relationship(title, relationship_nodes, CONCEPT_MODEL_WEIGHT))
         return path
 
     def get_path_for_all(self, w1, w2_list, cutoff=5):
@@ -152,9 +155,16 @@ class ConceptModel:
         return all_path
 
 
+def get_word_node(vertices, edge, last_word: str):
+    target_name = vertices[edge.target]["name"]
+    source_name = vertices[edge.source]["name"]
+    new_vertex_name = target_name if source_name == last_word else source_name
+    return WordRelationshipNode(new_vertex_name, edge["label"])
+
+
 dataset_paths = {
-    "Drone": "dronology_data/ontology/database-relation.csv",
-    "test": "dronology_data/ontology/test-relation.csv"
+    "Drone": "Drone/ontology/database-relation.csv",
+    "test": "test/ontology/test-relation.csv"
 }
 
 
@@ -163,3 +173,23 @@ def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
     cm = ConceptModel()
     cm.add_concepts(path_to_concept_file)
     return cm
+
+
+def add_concept_families(dataset: str, explanation: TraceExplanation) -> TraceExplanation:
+    relationships = explanation.relationships
+    source_descriptors: [WordDescriptor] = explanation.source_descriptors
+    target_descriptors = explanation.target_descriptors
+    source_words = list(map(lambda w_d: clean_doc(w_d.word), source_descriptors))
+    source_words = list(set(source_words))
+    source_words = list(filter(lambda w: len(w) != 0, source_words))
+
+    target_words = list(map(lambda w_d: clean_doc(w_d.word), target_descriptors))
+    target_words = list(set(target_words))
+    target_words = list(filter(lambda w: len(w) != 0, target_words))
+    concept_model = get_concept_model_for_dataset(dataset)
+
+    for source_word in source_words:
+        word_relationships = concept_model.get_word_relationships(source_word, target_words)
+        relationships = relationships + word_relationships
+    explanation.relationships = relationships
+    return explanation
