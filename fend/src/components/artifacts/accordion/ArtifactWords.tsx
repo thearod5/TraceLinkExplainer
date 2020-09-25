@@ -2,6 +2,7 @@ import { Backdrop, Dialog, DialogTitle } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from "react";
+import Graph from "react-graph-vis";
 import { Relationships, Word, Words } from "../../../shared/types/Trace";
 import { DEFAULT_FONT_COLOR } from "./ArtifactAccordion";
 
@@ -131,10 +132,60 @@ function createWordModal(
   )
 }
 
-function createRelationshipDescription(family: Relationships) {
 
-  return <p className="padLight ">test</p>
+
+function createRelationshipDescription(families: Relationships) {
+  console.log(families.length)
+  const nodes = getNodesInFamilies(families)
+  const edges = getEdgesInFamilies(families)
+  console.log(nodes)
+  console.log(edges)
+  const graph = { nodes, edges };
+
+  const options = {
+    edges: {
+      color: "#000000"
+    },
+    width: "300px",
+    height: "300px"
+  };
+
+  return <div className="fullSize debug">
+    <Graph
+      graph={graph}
+      options={options}
+    /></div>
 }
+
+
+function getNodesInFamilies(families: Relationships) {
+  const nodes: object[] = []
+  families.map(family => {
+    family.nodes.map(node => {
+      nodes.push({ id: node.word, label: node.word })
+    })
+  })
+  return nodes
+}
+
+function getEdgesInFamilies(families: Relationships) {
+  const edges: object[] = []
+  families.map(family => {
+    let to = family.nodes[0].word
+    for (let edgeIndex = 0; edgeIndex < family.nodes.length; edgeIndex++) {
+      let currentNode = family.nodes[edgeIndex]
+      if (edgeIndex === 0)
+        continue
+      edges.push({
+        from: currentNode.word,
+        to: to
+      })
+      to = currentNode.nodeType === "SIBLING" ? to : currentNode.word
+    }
+  })
+  return edges
+}
+
 
 interface HoverCloseProps {
   handleClose: () => void

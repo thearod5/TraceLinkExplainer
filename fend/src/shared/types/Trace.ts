@@ -25,7 +25,7 @@ export type WordDescriptors = WordDescriptor[];
 
 export interface WordRelationshipNode {
   word: string
-  nodeType: "SIBLING" | "ANCESTOR" | "CHILD" | "SYNONYM"
+  nodeType: "SIBLING" | "ANCESTOR" | "CHILD" | "SYNONYM" | "SOURCE"
 }
 
 export type WordRelationshipNodes = WordRelationshipNode[];

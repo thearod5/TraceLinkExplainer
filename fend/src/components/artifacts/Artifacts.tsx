@@ -20,10 +20,10 @@ import {
 } from "../../shared/pagechanger/constants";
 import { Artifact, Dataset } from "../../shared/types/Dataset";
 import { Relationships, WordDescriptors } from "../../shared/types/Trace";
+import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
+import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
 import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./ArtifactDisplayFactory";
 import NoSourceMessage from "./NoSourceMessage";
-import SourceArtifactSearch from "./search/SourceArtifactSearch";
-import TargetArtifactSearch from "./search/TargetArtifactSearch";
 
 export default function ArtifactSelector() {
   const dataset: Dataset = useSelector(getDataset);
