@@ -8,6 +8,7 @@ ANC = "ANCESTOR"
 CHILD = "CHILD"
 SIB = "SIBLING"
 SYN = "SYNONYM"
+SOURCE = "SOURCE"
 
 
 class WordRelationshipNode:

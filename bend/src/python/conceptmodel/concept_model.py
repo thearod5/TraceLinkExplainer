@@ -74,10 +74,10 @@ class ConceptModel:
         for type, lt, rt in zip(relationships, left_terms, right_terms):
             self.ig.add_vertex(lt)
             self.ig.add_vertex(rt)
-            if type == SYN:
+            if type.upper() == SYN:
                 self.ig.add_edge(lt, rt, label=SYN)
                 self.ig.add_edge(rt, lt, label=SYN)
-            if type == ANC:
+            if type.upper() == ANC:
                 self.ig.add_edge(lt, rt, label=ANC)
                 self.ig.add_edge(rt, lt, label=CHILD)
 
@@ -124,18 +124,18 @@ class ConceptModel:
 
         path_to_target_words = self.ig.get_shortest_paths(source_word, defined_target_vertices, output="epath")
 
-        path: [WordRelationshipNode] = []
+        relationships: [WordRelationshipNode] = []
         last_word = source_word
         for target_node_index, edge_indices_in_path in enumerate(path_to_target_words):
-            relationship_nodes = []
+            relationship_nodes = [WordRelationshipNode(source_word, "SOURCE")]
             for edge in self.ig.es[edge_indices_in_path]:
                 word_node = get_word_node(self.ig.vs, edge, last_word)
                 relationship_nodes.append(word_node)
                 last_word = word_node.word
             title = "%s->%s" % (source_word, defined_target_vertices[target_node_index])
 
-            path.append(Relationship(title, relationship_nodes, CONCEPT_MODEL_WEIGHT))
-        return path
+            relationships.append(Relationship(title, relationship_nodes, CONCEPT_MODEL_WEIGHT))
+        return relationships
 
     def get_path_for_all(self, w1, w2_list, cutoff=5):
         """
