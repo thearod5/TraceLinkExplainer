@@ -6,7 +6,7 @@ import {
   changeStep,
   clearData,
   selectDataset,
-  setError,
+  setError
 } from "../../redux/actions";
 import { getDataset } from "../../redux/selectors";
 import { appHistory } from "../../redux/store";
@@ -41,8 +41,9 @@ function DatasetChooser() {
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const clickedDatasetName = datasets[indexToSelect];
-    getDatasetByName(clickedDatasetName).then((dataset: Dataset) =>
+    getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
       dispatch(selectDataset(dataset))
+    }
     );
   };
 
@@ -79,8 +80,8 @@ function DatasetChooser() {
         {datasets.length === 0 ? (
           <LinearProgress color="secondary" />
         ) : (
-          datasetItems
-        )}
+            datasetItems
+          )}
       </div>
       <div className="flexRowCentered padMedium">
         <Button
@@ -88,7 +89,7 @@ function DatasetChooser() {
           size="medium"
           color="primary"
           variant="contained"
-          // TODO: Functionality for this
+        // TODO: Functionality for this
         >
           New Dataset
         </Button>

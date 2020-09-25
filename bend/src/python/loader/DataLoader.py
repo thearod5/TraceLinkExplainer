@@ -122,5 +122,5 @@ def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):
     query = list(
         filter(lambda artifact: artifact["id"] == artifact_id, artifacts["artifacts"]))
     assert len(
-        query) == 1, "Expected a single match but found: %d matches" % len(query)
+        query) == 1, "Expected a single match for %s but found: %d matches" % (artifact_id, len(query))
     return query[0]

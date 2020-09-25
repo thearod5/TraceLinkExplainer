@@ -3,8 +3,7 @@ from typing import Dict
 from scipy.sparse import csr_matrix
 from sklearn.preprocessing import minmax_scale
 
-from models.Family import Family
-from models.TracePayload import TraceRelationships
+from models.TraceInformation import TraceExplanation, Relationship, WordRelationshipNode, SIB
 from models.WordDescriptor import WordDescriptor
 from preprocessing.Cleaners import clean_doc
 from vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
@@ -12,8 +11,8 @@ from vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
 VSM_RELATIONSHIP_NAME = "ROOT"
 
 
-def add_root_families(dataset, trace_relationships: TraceRelationships, cutoff=0):
-    families: dict[str, Family] = trace_relationships.families
+def add_root_relationships(dataset, trace_relationships: TraceExplanation, cutoff=0) -> TraceExplanation:
+    relationships: [Relationship] = trace_relationships.relationships
     source_descriptors = trace_relationships.source_descriptors
     target_descriptors = trace_relationships.target_descriptors
 
@@ -24,15 +23,35 @@ def add_root_families(dataset, trace_relationships: TraceRelationships, cutoff=0
     target_words_cleaned = list(map(clean_doc, target_words))
 
     root_weight_mapping = get_vsm_weights(source_words_cleaned, target_words_cleaned, cutoff)
-    add_root_family(source_descriptors, source_words_cleaned, root_weight_mapping.keys())
-    add_root_family(target_descriptors, target_words_cleaned, root_weight_mapping.keys())
+    add_relationship_ids(source_descriptors, source_words_cleaned, root_weight_mapping.keys())
+    add_relationship_ids(target_descriptors, target_words_cleaned, root_weight_mapping.keys())
 
     for root, weight in root_weight_mapping.items():
         related_words = get_related_words(source_words, source_words_cleaned, root) + \
                         get_related_words(target_words, target_words_cleaned, root)
-        families[root] = Family(weight, list(set(related_words)), VSM_RELATIONSHIP_NAME)
+        related_words = list(set(related_words))
+        related_word_nodes = list(map(lambda word: WordRelationshipNode(word, SIB), related_words))
+        relationships.append(Relationship(root, related_word_nodes, weight))
 
-    return TraceRelationships(families, source_descriptors, target_descriptors)
+    return TraceExplanation(source_descriptors, target_descriptors, relationships)
+
+
+def add_relationship_ids(
+        word_descriptors: [WordDescriptor],
+        word_roots: [str],
+        valid_roots: [str]):
+    """
+    For each word descriptor, add its stemmed root (which is the relationship id), to list of linked
+    relationships for that word.
+    :param word_descriptors:
+    :param word_roots: 1-1 mapping to word_descriptors containing its morphological root
+    :param valid_roots: represents the set of word roots that have a non-zero weight in VSM weighting scheme.
+    :return:
+    """
+    for wd_index, wd in enumerate(word_descriptors):
+        word_root = word_roots[wd_index]
+        if word_root in valid_roots:
+            wd.add_family(word_roots[wd_index])
 
 
 def get_related_words(words, word_roots, root_target):
@@ -42,13 +61,6 @@ def get_related_words(words, word_roots, root_target):
         if root == root_target:
             related_words.append(words[root_index])
     return related_words
-
-
-def add_root_family(word_descriptors: [WordDescriptor], roots: [str], selected_roots: [str]):
-    for wd_index, wd in enumerate(word_descriptors):
-        word_root = roots[wd_index]
-        if word_root in selected_roots:
-            wd.add_family(roots[wd_index])
 
 
 def get_vsm_weights(source_root_words: [str],

@@ -1,0 +1,10 @@
+{
+  "name": "Designs",
+  "artifacts": [
+    {
+      "id": "DD-352",
+      "body": "Transmit new route assignments to UI Middleware When routes are assigned to a UAV a request shall be sent to the _UIMiddleware_ to update the assignment in Dronology.",
+      "type": "Designs"
+    }
+  ]
+}

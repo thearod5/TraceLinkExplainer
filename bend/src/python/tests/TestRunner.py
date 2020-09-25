@@ -4,6 +4,7 @@ import sys
 import unittest
 
 # For Running from Command Line
+from tests.TestConceptModel import TestConceptModel
 from tests.TestRootFamilies import TestRootFamilies
 from tests.TestUtil import TestUtil
 
@@ -23,6 +24,7 @@ if __name__ == "__main__":
         QueryTest,
         TestCleanDoc,
         TestRootFamilies,
+        TestConceptModel,
         TestUtil
     ]
 

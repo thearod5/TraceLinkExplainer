@@ -1,5 +1,0 @@
-RELATION,LEFTTERM,RIGHTTERM,COUNT
-synonym,MAV,micro uav,2
-synonym,micro air vehicle,MAV,2
-ancestor,MAV,vehicle,2
-synonym,vehicle,car,2

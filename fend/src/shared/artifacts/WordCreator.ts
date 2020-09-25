@@ -1,11 +1,13 @@
 import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
 import {
-  Families,
   FamilyColors,
-  KeyWordType,
+  KeyWordType, Relationships,
+
+
   SyntaxWordType,
-  Word,
-  WordDescriptor,
+
+  WordDescriptor, WordDescriptorDisplay,
+
   WordDescriptors,
   Words
 } from "../types/Trace";
@@ -39,18 +41,18 @@ const keyWordDelimiters = [
   "string",
 ];
 
-export function getDefaultFamilies(): Families {
-  const families: Families = {}
-  families[SyntaxWordType] = {
-    weight: 0,
-    concepts: syntaxDelimiters,
-    type: SyntaxWordType
-  }
-  families[KeyWordType] = {
-    weight: 0,
-    concepts: keyWordDelimiters,
-    type: KeyWordType
-  }
+export function getDefaultFamilies(): Relationships {
+  const families: Relationships = [
+    {
+      weight: 0,
+      nodes: syntaxDelimiters.map(word => { return { word, nodeType: "SIBLING" } }),
+      title: SyntaxWordType
+    }, {
+      weight: 0,
+      title: KeyWordType,
+      nodes: keyWordDelimiters.map(word => { return { word, nodeType: "SIBLING" } }),
+    }
+  ]
 
   return families
 }
@@ -65,7 +67,7 @@ export function getDefaultFamilyColors(): FamilyColors {
 
 export function createArtifactDisplayModel(
   artifact: Artifact,
-  families: Families = getDefaultFamilies(),
+  families: Relationships = getDefaultFamilies(),
   defaultSize: number = 1,
   familyColors: FamilyColors = getDefaultFamilyColors(),
   defaultColor: string = "black"
@@ -91,7 +93,7 @@ export function createArtifactDisplayModel(
 export function createDefaultWordDescriptors(body: string): WordDescriptors {
   return separateWords(body).map((bodyWord) => {
     return {
-      families: getWordFamilies(bodyWord),
+      relationshipIds: getWordFamilies(bodyWord),
       word: bodyWord,
     };
   });
@@ -108,7 +110,7 @@ function getWordFamilies(word: string): string[] {
  */
 export function createWords(
   descriptors: WordDescriptors,
-  families: Families,
+  families: Relationships,
   defaultSize: number,
   familyColors: FamilyColors,
   defaultColor: string = "black"
@@ -126,16 +128,20 @@ export function createWords(
 
 export function createWord(
   descriptor: WordDescriptor,
-  families: Families,
+  families: Relationships,
   defaultSize: number,
   familyColors: FamilyColors,
   defaultColor: string
-): Word {
-  const hasFamily = descriptor.families.length > 0
+): WordDescriptorDisplay {
+  const hasFamily = descriptor.relationshipIds.length > 0
   let wordSize, wordColor;
   if (hasFamily) {
-    const mainFamilyId: string = descriptor.families[0]
-    const mainFamily = families[mainFamilyId]
+    const mainFamilyId: string = descriptor.relationshipIds[0]
+    const mainFamilyQuery = families.filter(family => family.title === mainFamilyId)
+
+    if (mainFamilyQuery.length === 0)
+      throw Error(`Could not find family: ${mainFamilyId}`)
+    const mainFamily = mainFamilyQuery[0]
 
     wordSize = mainFamily.weight + defaultSize
     wordColor =
@@ -151,7 +157,7 @@ export function createWord(
     word: descriptor.word,
     size: wordSize,
     color: wordColor,
-    families: descriptor.families
+    relationshipIds: descriptor.relationshipIds
   };
 }
 
@@ -188,4 +194,39 @@ export function splitWordsByDelimiter(
     }
   }
   return delimiterWords;
+}
+
+export function getNodesInFamilies(families: Relationships) {
+  const result = families.map(family => family.nodes.map(node => {
+    return { id: node.word, label: node.word }
+  })).flat()
+  return result
+}
+
+export function getEdgesInFamilies(families: Relationships) {
+  const edges: object[] = []
+  for (let familyIndex = 0; familyIndex < families.length; familyIndex++) {
+    const family = families[familyIndex]
+    let from = family.nodes[0].word
+    for (let edgeIndex = 0; edgeIndex < family.nodes.length; edgeIndex++) {
+      const currentNode = family.nodes[edgeIndex]
+      if (edgeIndex === 0)
+        continue
+      edges.push({
+        from,
+        to: currentNode.word,
+        label: `is a ${titleCase(currentNode.nodeType)} of `
+      })
+      from = currentNode.nodeType === "SIBLING" ? from : currentNode.word
+    }
+  }
+  return edges
+}
+
+function titleCase(str: string) {
+  var sentence = str.toLowerCase().split(" ");
+  for (var i = 0; i < sentence.length; i++) {
+    sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+  }
+  return sentence
 }

@@ -1,8 +1,8 @@
 import { AccordionDetails } from '@material-ui/core';
 import React from 'react';
-import { Families, Word, Words } from '../../../shared/types/Trace';
+import { Relationships, WordDescriptorDisplay, Words } from '../../../shared/types/Trace';
 import { secondaryColor } from '../../../styles/theme';
-import ArtifactWords from './ArtifactWords';
+import ArtifactAccordionWords from './words/ArtifactAccordionWords';
 
 /*
  * Container for body of accordion when displaying trace information.
@@ -10,12 +10,12 @@ import ArtifactWords from './ArtifactWords';
 
 interface ArtifactAccordionDetailsProps {
   words: Words;
-  families: Families;
+  families: Relationships;
   colorSelected: boolean;
   sizeSelected: boolean;
   fontSize: number;
-  selectedWord: Word | null
-  setSelectedWord: React.Dispatch<React.SetStateAction<Word | null>>
+  selectedWord: WordDescriptorDisplay | null
+  setSelectedWord: React.Dispatch<React.SetStateAction<WordDescriptorDisplay | null>>
   toolbarIcons: JSX.Element[]
   style: React.CSSProperties;
 }
@@ -27,7 +27,7 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
       style={props.style}
     >
       <div className="overflowScroll" style={{}}>
-        <ArtifactWords
+        <ArtifactAccordionWords
           words={props.words}
           families={props.families}
           colorSelected={props.colorSelected}

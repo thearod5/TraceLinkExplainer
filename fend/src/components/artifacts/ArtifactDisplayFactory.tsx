@@ -1,8 +1,9 @@
 import React from "react";
 import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
-import { Families, FamilyColors, WordDescriptors } from "../../shared/types/Trace";
+import { FamilyColors, Relationships, WordDescriptors } from "../../shared/types/Trace";
 import ArtifactAccordion from "./accordion/ArtifactAccordion";
+
 
 export const colors = ["CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "Khaki", "BlueViolet", "FireBrick", "LightGreen", "Maroon",
   "DeepSkyBlue", "MediumOrchid", "Olive", "SpringGreen"]; //TODO: Add to theme
@@ -32,7 +33,7 @@ export function getDefaultArtifactDisplay(
 
 function getTraceArtifactDisplay(
   artifactWords: WordDescriptors,
-  families: Families,
+  families: Relationships,
   artifact: Artifact,
   familyColors: FamilyColors,
   expanded: boolean,
@@ -52,17 +53,11 @@ function getTraceArtifactDisplay(
       onShrink={onShrink} />
   );
 }
-export function createFamilyColors(familyIds: string[]): FamilyColors {
-  const familyColors: FamilyColors = {};
-  familyIds.forEach((family, index) => {
-    familyColors[family] = colors[index % colors.length];
-  });
-  return familyColors;
-}
+
 
 export function createTraceArtifactDisplays(
   artifacts: Artifact[],
-  families: Families,
+  families: Relationships,
   selectedIndex: number,
   traceWords: WordDescriptors,
   familyColors: Record<string, string>,
@@ -89,4 +84,16 @@ export function createTraceArtifactDisplays(
         );
       }
     })}</div>;
+}
+
+/*
+ * Factory utilities functions
+ */
+
+export function createFamilyColors(familyIds: string[]): FamilyColors {
+  const familyColors: FamilyColors = {};
+  familyIds.forEach((family, index) => {
+    familyColors[family] = colors[index % colors.length];
+  });
+  return familyColors;
 }

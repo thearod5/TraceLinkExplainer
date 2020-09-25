@@ -116,7 +116,6 @@ export default function SearchController(props: SearchProps) {
   };
 
   const handleStepCompleted = () => {
-    console.log("handling step completed")
     if (selectedArtifacts.length === 0)
       return dispatch(setError("No artifacts selected."));
 

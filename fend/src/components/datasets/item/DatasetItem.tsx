@@ -18,7 +18,8 @@ function DatasetItem(props: DataItemSummaryProps) {
   useEffect(() => {
     const callback = expanded ? props.select : props.deselect;
     callback();
-  }, [expanded, props.select, props.deselect]);
+    // eslint-disable-next-line
+  }, [expanded]);
 
   return (
     <Accordion expanded={expanded} onClick={() => setExpanded(!expanded)}>

@@ -5,17 +5,16 @@ import pandas as pd
 from igraph import Graph, OUT
 
 from Paths import PATH_TO_DATA
+from models.TraceInformation import TraceExplanation, WordRelationshipNode, Relationship, SYN, ANC, CHILD
+from models.WordDescriptor import WordDescriptor
+from preprocessing.Cleaners import clean_doc
 
-ANC = "ancestor"
-CHILD = "child"
-SIB = "sibling"
-SYN = "synonym"
+CONCEPT_MODEL_WEIGHT = 1
 
-
-class WordRelationship:
-    def __init__(self, word: str, relationship: str):
-        self.word = word
-        self.relationship = relationship
+ONTOLOGY_RELATION_PATHS = {
+    "Drone": "Drone/ontology/database-relation.csv",
+    "test": "test/ontology/test-relation.csv"
+}
 
 
 def to_groups(term_relations: Dict):
@@ -80,10 +79,10 @@ class ConceptModel:
         for type, lt, rt in zip(relationships, left_terms, right_terms):
             self.ig.add_vertex(lt)
             self.ig.add_vertex(rt)
-            if type == SYN:
+            if type.upper() == SYN:
                 self.ig.add_edge(lt, rt, label=SYN)
                 self.ig.add_edge(rt, lt, label=SYN)
-            if type == ANC:
+            if type.upper() == ANC:
                 self.ig.add_edge(lt, rt, label=ANC)
                 self.ig.add_edge(rt, lt, label=CHILD)
 
@@ -115,23 +114,33 @@ class ConceptModel:
                 res.append(self.ig.vs[n]['name'])
         return res
 
-    def get_word_relationships(self, a, b: [str]) -> [[WordRelationship]]:
-        targets = list(filter(lambda v: self.contains_vertex(v), b))
-        edge_vertices = self.ig.get_shortest_paths(a, targets, output="epath")
-        path: [WordRelationship] = []
-        last_word = a
-        if len(edge_vertices) == 0:
-            return [[]]
-        for edge_indices_in_path in edge_vertices:
-            path_relationships = []
+    def get_word_relationships(self, source_word, target_words: [str]) -> [Relationship]:
+        """
+        Returns
+        :param source_word:
+        :param target_words:
+        :return:
+        """
+        if not self.contains_vertex(source_word):
+            return []
+        defined_target_vertices = list(filter(lambda v: self.contains_vertex(v), target_words))
+        if len(defined_target_vertices) == 0:
+            return []
+
+        path_to_target_words = self.ig.get_shortest_paths(source_word, defined_target_vertices, output="epath")
+
+        relationships: [WordRelationshipNode] = []
+        last_word = source_word
+        for target_node_index, edge_indices_in_path in enumerate(path_to_target_words):
+            relationship_nodes = [WordRelationshipNode(source_word, "SOURCE")]
             for edge in self.ig.es[edge_indices_in_path]:
-                target_name = self.ig.vs[edge.target]["name"]
-                source_name = self.ig.vs[edge.source]["name"]
-                new_vertex_name = target_name if source_name == last_word else source_name
-                path_relationships.append(WordRelationship(new_vertex_name, edge["label"]))
-                last_word = new_vertex_name
-            path.append(path_relationships)
-        return path
+                word_node = get_word_node(self.ig.vs, edge, last_word)
+                relationship_nodes.append(word_node)
+                last_word = word_node.word
+            title = "%s->%s" % (source_word, defined_target_vertices[target_node_index])
+
+            relationships.append(Relationship(title, relationship_nodes, CONCEPT_MODEL_WEIGHT))
+        return relationships
 
     def get_path_for_all(self, w1, w2_list, cutoff=5):
         """
@@ -151,14 +160,71 @@ class ConceptModel:
         return all_path
 
 
-dataset_paths = {
-    "Drone": "dronology_data/ontology/database-relation.csv",
-    "test": "dronology_data/ontology/test-relation.csv"
-}
+def get_word_node(vertices, edge, last_word: str):
+    target_name = vertices[edge.target]["name"]
+    source_name = vertices[edge.source]["name"]
+    new_vertex_name = target_name if source_name == last_word else source_name
+    return WordRelationshipNode(new_vertex_name, edge["label"])
 
 
 def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
-    path_to_concept_file = os.path.join(PATH_TO_DATA, dataset_paths[dataset_name])
+    path_to_concept_file = os.path.join(PATH_TO_DATA, ONTOLOGY_RELATION_PATHS[dataset_name])
     cm = ConceptModel()
     cm.add_concepts(path_to_concept_file)
     return cm
+
+
+def add_concept_families(dataset: str, explanation: TraceExplanation) -> TraceExplanation:
+    concept_model = get_concept_model_for_dataset(dataset)
+
+    source_words_cleaned = list(map(lambda w_d: clean_doc(w_d.word), explanation.source_descriptors))
+    source_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, source_words_cleaned)))
+
+    target_words_cleaned = list(map(lambda w: clean_doc(w.word), explanation.target_descriptors))
+    target_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, target_words_cleaned)))
+
+    concept_model_relationships = get_relationships_for_concept_model(concept_model,
+                                                                      source_words_cleaned_filtered,
+                                                                      target_words_cleaned_filtered)
+
+    add_relationships_to_word_descriptors(explanation,
+                                          concept_model_relationships,
+                                          source_words_cleaned,
+                                          target_words_cleaned)
+
+    explanation.relationships = explanation.relationships + concept_model_relationships
+    return explanation
+
+
+def get_relationships_for_concept_model(concept_model: ConceptModel,
+                                        source_words: [str],
+                                        target_words: [str]):
+    concept_model_relationships = []
+    for source_word in source_words:
+        word_relationships = concept_model.get_word_relationships(source_word,
+                                                                  target_words)
+        concept_model_relationships = concept_model_relationships + word_relationships
+    return concept_model_relationships
+
+
+def add_relationships_to_word_descriptors(explanation: TraceExplanation,
+                                          relationships: [Relationship],
+                                          source_words: [str],
+                                          target_words: [str]):
+    attach_relationship_ids_to_word_descriptors(source_words,
+                                                relationships,
+                                                explanation.source_descriptors)
+    attach_relationship_ids_to_word_descriptors(target_words,
+                                                relationships,
+                                                explanation.target_descriptors)
+
+
+def attach_relationship_ids_to_word_descriptors(
+        words: [str],
+        relationships: [Relationship],
+        descriptors: [WordDescriptor]):
+    for word_index, word in enumerate(words):
+        for word_relationship in relationships:
+            words_in_relationship = list(map(lambda node: node.word, word_relationship.nodes))
+            if word in words_in_relationship:
+                descriptors[word_index].relationship_ids.append(word_relationship.title)

@@ -1,0 +1,10 @@
+{
+  "name": "Requirements",
+  "artifacts": [
+    {
+      "id": "RE-8",
+      "body": "UAV State transitions When requested the _VehicleCore_ shall shall transition the UAV between states according to allowed state transitions as depicted in the UAV state transition diagram",
+      "type": "Requirements"
+    }
+  ]
+}
