@@ -1,17 +1,14 @@
-import { Button, Tooltip } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import CheckIcon from "@material-ui/icons/Check";
-import ReportProblemIcon from "@material-ui/icons/ReportProblem";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useEffect, useState } from "react";
-import { getQueryRecommendations } from "../../../shared/query/QueryRecommender";
 import { isValidQuery } from "../../../shared/query/QueryValidator";
+import AdvancedSearchBar from "./AdvancedSearchBar";
+import BasicSearchBar from "./BasicSearchBar";
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
 const ENTER_KEY_CODE = 13;
 const PLACE_HOLDER_TEXT = "...search for a source artifact...";
 
-type SubmitFuncType = (query: string) => void;
+export type SubmitFuncType = (query: string) => void;
 export interface SearchBarProps {
   onSearch: SubmitFuncType;
 }
@@ -20,7 +17,7 @@ export default function SearchBar(props: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [validQuery, setValidQuery] = useState(true);
   const [queryError, setQueryError] = useState("");
-  const [advancedSearch, setAdvancedSearch] = useState(true);
+  const [advancedSearch, setAdvancedSearch] = useState(false);
 
   useEffect(() => {
     const [isValid, error] = isValidQuery(query);
@@ -28,69 +25,29 @@ export default function SearchBar(props: SearchBarProps) {
     setQueryError(error);
   }, [query]);
 
-  return (
-    <div className="flexRowSpaceAround sizeFull">
-      <div className="centeredColumn padLight">
-        {validQuery ? (
-          <CheckIcon color="secondary" className="heightFull" />
-        ) : (
-          <Tooltip title={queryError}>
-            <ReportProblemIcon color="action" className="heightFull" />
-          </Tooltip>
-        )}
-      </div>
-      <div className="centeredColumn sizeFull roundBorder flexGrowTen">
-        <Autocomplete
-          id={SEARCH_BAR_ID}
-          selectOnFocus
-          clearOnBlur
-          clearOnEscape
-          handleHomeEndKeys
-          freeSolo
-          options={getQueryRecommendations(query)}
-          value={query}
-          onChange={(event: any, newValue: any) => {
-            setQuery(newValue === null ? "" : [query, newValue, ""].join(" "));
-          }}
-          onInputChange={(event, newValue) => {
-            setQuery(newValue);
-          }}
-          inputValue={query}
-          renderInput={(params: object) =>
-            SearchSuggestion(params, props.onSearch)
-          }
-          size="small"
-          fullWidth={true}
-        />
-      </div>
+  const advancedSearchBar = <AdvancedSearchBar
+    query={query}
+    setQuery={setQuery}
+    validQuery={validQuery}
+    queryError={queryError}
+    onSearch={() => props.onSearch(query)}
+    onChangeMode={() => setAdvancedSearch(!advancedSearch)}
+  />
 
-      <div className="centeredColumn">
-        <div className="flexRowCentered padSideLight" style={{ height: "70%" }}>
-          <Button
-            size="small"
-            className="padLight"
-            color="primary"
-            variant="contained"
-            onClick={(event: any) => props.onSearch(query)}
-          >
-            Search
-          </Button>
+  const basicSearchBar = <BasicSearchBar
+    query={query}
+    setQuery={setQuery}
+    validQuery={validQuery}
+    queryError={queryError}
+    onSearch={() => props.onSearch(query)}
+    onChangeMode={() => setAdvancedSearch(!advancedSearch)} />
 
-          <Button
-            size="small"
-            className="padLight"
-            color="secondary"
-            onClick={() => setAdvancedSearch(!advancedSearch)}
-          >
-            {advancedSearch ? "Basic" : "Advanced"}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+  const searchBar = advancedSearch ? advancedSearchBar : basicSearchBar;
+
+  return searchBar;
 }
 
-function SearchSuggestion(params: object, onSubmit: SubmitFuncType) {
+export function SearchSuggestion(params: object, onSubmit: SubmitFuncType) {
   return (
     <TextField
       {...params}
