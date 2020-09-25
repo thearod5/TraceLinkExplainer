@@ -1,11 +1,11 @@
+import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
 import { isValidQuery } from "../../../shared/query/QueryValidator";
 import AdvancedSearchBar from "./AdvancedSearchBar";
 import BasicSearchBar from "./BasicSearchBar";
 
-const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
-const ENTER_KEY_CODE = 13;
+export const ENTER_KEY_CODE = 13;
 const PLACE_HOLDER_TEXT = "...search for a source artifact...";
 
 export type SubmitFuncType = (query: string) => void;
@@ -44,7 +44,31 @@ export default function SearchBar(props: SearchBarProps) {
 
   const searchBar = advancedSearch ? advancedSearchBar : basicSearchBar;
 
-  return searchBar;
+  return (
+    <div className="flexRow widthFull justifyContentSpaceBetween">
+      {searchBar}
+      <div className="centeredColumn">
+        <div className="flexRowCentered padSideLight" style={{ height: "70%" }}>
+          <Button
+            size="small"
+            className="padLight"
+            color="primary"
+            variant="contained"
+            onClick={(event: any) => props.onSearch(query)}
+          >
+            Search
+          </Button>
+
+          <Button
+            size="small"
+            className="padLight"
+            color="secondary"
+            onClick={() => setAdvancedSearch(!advancedSearch)}
+          >
+            {"Basic"}
+          </Button>
+        </div>
+      </div></div>)
 }
 
 export function SearchSuggestion(params: object, onSubmit: SubmitFuncType) {

@@ -1,4 +1,4 @@
-import { Button, Tooltip } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -51,29 +51,6 @@ export default function AdvancedSearchBar(props: AdvancedSearchBarProps) {
         size="small"
         fullWidth={true}
       />
-    </div>
-
-    <div className="centeredColumn">
-      <div className="flexRowCentered padSideLight" style={{ height: "70%" }}>
-        <Button
-          size="small"
-          className="padLight"
-          color="primary"
-          variant="contained"
-          onClick={(event: any) => props.onSearch()}
-        >
-          Search
-          </Button>
-
-        <Button
-          size="small"
-          className="padLight"
-          color="secondary"
-          onClick={() => props.onChangeMode()}
-        >
-          {"Advanced"}
-        </Button>
-      </div>
     </div>
   </div>)
 }
