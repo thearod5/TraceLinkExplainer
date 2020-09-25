@@ -2,19 +2,13 @@ import { Backdrop, Dialog, DialogTitle } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from "react";
-import Graph from "react-graph-vis";
-import { getEdgesInFamilies, getNodesInFamilies } from "../../../shared/artifacts/WordCreator";
 import { Relationships, Word, Words } from "../../../shared/types/Trace";
 import { DEFAULT_FONT_COLOR } from "./ArtifactAccordion";
+import { TraceExplanation } from "./TraceExplanation";
 
-const NETWORK_GRAPH_OPTIONS = {
-  edges: {
-    color: "#000000"
-  },
-  width: "300px",
-  height: "300px",
-  clickToUse: true
-};
+
+
+
 
 interface ArtifactWordsProps {
   words: Words;
@@ -126,6 +120,8 @@ function createWordModal(
   return (
     <Dialog
       open={open}
+      fullWidth
+      maxWidth={"sm"}
       onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -136,23 +132,14 @@ function createWordModal(
       <HoverClose handleClose={handleClose} />
       <DialogTitle className="displayInlineBlock textAlignCenter">{word.word}</DialogTitle>
       <div className="padLight">
-        {createRelationshipDescription(families.filter(family => word.relationshipIds.includes(family.title)))}
+        <TraceExplanation families={families.filter(family => word.relationshipIds.includes(family.title))} />
       </div>
     </Dialog >
   )
 }
 
 
-function createRelationshipDescription(families: Relationships) {
-  const nodes = getNodesInFamilies(families)
-  const edges = getEdgesInFamilies(families)
 
-  return <div>
-    <Graph
-      graph={{ nodes, edges }}
-      options={NETWORK_GRAPH_OPTIONS}
-    /></div>
-}
 
 
 interface HoverCloseProps {
