@@ -5,8 +5,9 @@ import {
 
 
   SyntaxWordType,
-  Word,
-  WordDescriptor,
+
+  WordDescriptor, WordDescriptorDisplay,
+
   WordDescriptors,
   Words
 } from "../types/Trace";
@@ -131,14 +132,14 @@ export function createWord(
   defaultSize: number,
   familyColors: FamilyColors,
   defaultColor: string
-): Word {
+): WordDescriptorDisplay {
   const hasFamily = descriptor.relationshipIds.length > 0
   let wordSize, wordColor;
   if (hasFamily) {
     const mainFamilyId: string = descriptor.relationshipIds[0]
     const mainFamilyQuery = families.filter(family => family.title === mainFamilyId)
 
-    if (mainFamilyQuery.length == 0)
+    if (mainFamilyQuery.length === 0)
       throw Error(`Could not find family: ${mainFamilyId}`)
     const mainFamily = mainFamilyQuery[0]
 
@@ -196,21 +197,19 @@ export function splitWordsByDelimiter(
 }
 
 export function getNodesInFamilies(families: Relationships) {
-  const nodes: object[] = []
-  families.map(family => {
-    family.nodes.map(node => {
-      nodes.push({ id: node.word, label: node.word })
-    })
-  })
-  return nodes
+  const result = families.map(family => family.nodes.map(node => {
+    return { id: node.word, label: node.word }
+  })).flat()
+  return result
 }
 
 export function getEdgesInFamilies(families: Relationships) {
   const edges: object[] = []
-  families.map(family => {
+  for (let familyIndex = 0; familyIndex < families.length; familyIndex++) {
+    const family = families[familyIndex]
     let from = family.nodes[0].word
     for (let edgeIndex = 0; edgeIndex < family.nodes.length; edgeIndex++) {
-      let currentNode = family.nodes[edgeIndex]
+      const currentNode = family.nodes[edgeIndex]
       if (edgeIndex === 0)
         continue
       edges.push({
@@ -220,7 +219,7 @@ export function getEdgesInFamilies(families: Relationships) {
       })
       from = currentNode.nodeType === "SIBLING" ? from : currentNode.word
     }
-  })
+  }
   return edges
 }
 

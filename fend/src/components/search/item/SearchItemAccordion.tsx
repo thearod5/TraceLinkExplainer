@@ -12,7 +12,7 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
 import { Artifact } from "../../../shared/types/Dataset";
 import { Relationships, Words } from "../../../shared/types/Trace";
-import ArtifactWords from "../../artifacts/accordion/ArtifactWords";
+import ArtifactAccordionWords from "../../artifacts/accordion/words/ArtifactAccordionWords";
 import { ArtifactClickAction } from "../types";
 import SearchItemDialog from "./SearchItemDialog";
 
@@ -69,7 +69,7 @@ export default function SearchItemAccordion(props: SearchResultProps) {
           style={{ width: "90%", maxHeight: "300px" }}
           boxShadow={3}
         >
-          <ArtifactWords
+          <ArtifactAccordionWords
             words={props.words}
             families={props.families}
             colorSelected={true}

@@ -47,14 +47,14 @@ export interface TraceInformation {
 }
 
 //FEND version of WordDescriptor
-export interface Word {
+export interface WordDescriptorDisplay {
   word: string;
   size: number;
   color: string;
   relationshipIds: string[]
 }
 
-export type Words = Word[];
+export type Words = WordDescriptorDisplay[];
 
 /*
  * Type Definitions

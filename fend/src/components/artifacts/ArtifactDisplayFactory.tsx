@@ -53,13 +53,7 @@ function getTraceArtifactDisplay(
       onShrink={onShrink} />
   );
 }
-export function createFamilyColors(familyIds: string[]): FamilyColors {
-  const familyColors: FamilyColors = {};
-  familyIds.forEach((family, index) => {
-    familyColors[family] = colors[index % colors.length];
-  });
-  return familyColors;
-}
+
 
 export function createTraceArtifactDisplays(
   artifacts: Artifact[],
@@ -90,4 +84,16 @@ export function createTraceArtifactDisplays(
         );
       }
     })}</div>;
+}
+
+/*
+ * Factory utilities functions
+ */
+
+export function createFamilyColors(familyIds: string[]): FamilyColors {
+  const familyColors: FamilyColors = {};
+  familyIds.forEach((family, index) => {
+    familyColors[family] = colors[index % colors.length];
+  });
+  return familyColors;
 }
