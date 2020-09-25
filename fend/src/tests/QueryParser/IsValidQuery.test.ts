@@ -4,7 +4,7 @@ import {
   isValidCommandStep,
   isValidOperation,
   isValidQuery,
-  isValidValue,
+  isValidValue
 } from "../../shared/query/QueryValidator";
 
 /*
@@ -34,20 +34,20 @@ test("- : isValidAttibute : non attribute", () => {
  */
 
 test("+ : isValidOperation : categorical attribute", () => {
-  const operations = ["body", "contains"];
+  const operations = ["body", "~"];
   const [isValid, error] = isValidOperation(operations, 1);
   expect(isValid).toBe(true);
 });
 
 test("- : isValidOperation : no previous command", () => {
-  const operations = ["contains"];
+  const operations = ["~"];
   const [isValid, error] = isValidOperation(operations, 0);
   expect(isValid).toBe(false);
   expect(error.toLowerCase()).toContain("missing attribute");
 });
 
 test("- : isValidOperation : operation not found", () => {
-  const operations = ["body", "contains something like"];
+  const operations = ["body", "~ something like"];
   const [isValid, error] = isValidOperation(operations, 1);
   expect(isValid).toBe(false);
   expect(error.toLowerCase()).toContain("unknown operation");
@@ -82,13 +82,7 @@ test("- : isValidValue : contains quote", () => {
  */
 
 test("+ : isValidCombinator : default", () => {
-  const combinator = "or";
-  const [isValid, error] = isValidCombinator(combinator);
-  expect(isValid).toBe(true);
-});
-
-test("+ : isValidCombinator : default (case ignored)", () => {
-  const combinator = "AnD";
+  const combinator = "||";
   const [isValid, error] = isValidCombinator(combinator);
   expect(isValid).toBe(true);
 });
@@ -106,20 +100,20 @@ test("- : isValidCombinator : not a combinator", () => {
 
 test("- : isValidStep : index out of bounds", () => {
   expect(() =>
-    isValidCommandStep(['body contains "hello word"'], 2)
+    isValidCommandStep(['body ~ "hello word"'], 2)
   ).toThrowError("out-of-bounds");
 });
 
 test("+ : isValidStep : attribute", () => {
   const [isValid, error] = isValidCommandStep(
-    ["body", "contains", "state transitions"],
+    ["body", "~", "state transitions"],
     0
   );
   expect(isValid).toBe(true);
 });
 test("+ : isValidStep : operation", () => {
   const [isValid, error] = isValidCommandStep(
-    ["body", "contains", "state transitions"],
+    ["body", "~", "state transitions"],
     1
   );
   expect(isValid).toBe(true);
@@ -127,7 +121,7 @@ test("+ : isValidStep : operation", () => {
 
 test("+ : isValidStep : value", () => {
   const [isValid, error] = isValidCommandStep(
-    ["body", "contains", "state transitions"],
+    ["body", "~", "state transitions"],
     2
   );
   expect(isValid).toBe(true);
@@ -135,7 +129,7 @@ test("+ : isValidStep : value", () => {
 
 test("+ : isValidStep : combinator", () => {
   const [isValid, error] = isValidCommandStep(
-    ["body", "contains", "state transitions", "and"],
+    ["body", "~", "state transitions", "&&"],
     3
   );
   expect(isValid).toBe(true);
@@ -152,13 +146,13 @@ test("+ : isValidQuery : empty", () => {
 });
 
 test("+ : isValidQuery : empty", () => {
-  const query = "id is RE-8 or type is classes";
+  const query = "id = RE-8 || type = classes";
   const [isValid, error] = isValidQuery(query);
   expect(isValid).toBe(true);
 });
 
 test("- : isValidQuery : step parse error", () => {
-  const query = 'body contains "hello';
+  const query = 'body ~ "hello';
   const [isValid, error] = isValidQuery(query);
   expect(isValid).toBe(false);
   expect(error).toContain("closing quote");
@@ -172,13 +166,13 @@ test("- : isValidQuery : some step fails", () => {
 });
 
 test("- : isValidQuery : default", () => {
-  const query = 'body contains "hello"';
+  const query = 'body ~ "hello"';
   const [isValid, error] = isValidQuery(query);
   expect(isValid).toBe(true);
 });
 
 test("- : isValidQuery : missing value", () => {
-  const query = "body contains";
+  const query = "body ~";
   const [isValid, error] = isValidQuery(query);
   expect(isValid).toBe(false);
   expect(error.toLowerCase()).toContain("missing value");
@@ -192,7 +186,7 @@ test("- : isValidQuery : missing operation", () => {
 });
 
 test("- : isValidQuery : missing combinator right term", () => {
-  const query = 'body contains "hello" and';
+  const query = 'body ~ "hello" and';
   const [isValid, error] = isValidQuery(query);
   expect(isValid).toBe(false);
   expect(error.toLowerCase()).toContain("combinator");

@@ -1,15 +1,13 @@
 import {
   createDefaultWordDescriptors,
-  KeyWordType,
-  splitWordsByDelimiter,
-  SyntaxWordType
+  splitWordsByDelimiter
 } from "../../shared/artifacts/WordCreator";
-import { WordDescriptor } from "../../shared/types/Trace";
+import { KeyWordType, SyntaxWordType, WordDescriptor } from "../../shared/types/Trace";
 
 test("dummy test", () => {
   const document = "function(int count)";
   const documentWords = ["function", "(", "int", " ", "count", ")"];
-  const requiredFamilies = [SyntaxWordType, KeyWordType, ""];
+  const requiredFamilies = [SyntaxWordType, KeyWordType];
 
   //Body
   const words: WordDescriptor[] = createDefaultWordDescriptors(document);
@@ -21,8 +19,8 @@ test("dummy test", () => {
 
     expect(word.word).not.toStrictEqual("");
     expect(documentWords).toContain(word.word);
-    for (let wordFamilyIndex in word.families)
-      familiesInWords.push(word.families[wordFamilyIndex]);
+    for (let wordFamilyIndex in word.relationshipIds)
+      familiesInWords.push(word.relationshipIds[wordFamilyIndex]);
   }
 
   for (let requiredFamilyIndex in requiredFamilies) {

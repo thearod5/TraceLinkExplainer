@@ -21,11 +21,22 @@ export interface WordDescriptor {
   relationshipIds: string[]
 }
 
+const SYN_NODE_TYPE = "SYNONYM"
+const SIB_NODE_TYPE = "SIBLING"
+const ANC_NODE_TYPE = "ANCESTOR"
+const CHILD_NODE_TYPE = "CHILD"
+const SOURCE_NODE_TYPE = "SOURCE"
+
 export type WordDescriptors = WordDescriptor[];
 
 export interface WordRelationshipNode {
   word: string
-  nodeType: "SIBLING" | "ANCESTOR" | "CHILD" | "SYNONYM" | "SOURCE"
+  nodeType:
+  typeof SIB_NODE_TYPE |
+  typeof ANC_NODE_TYPE |
+  typeof CHILD_NODE_TYPE |
+  typeof SYN_NODE_TYPE |
+  typeof SOURCE_NODE_TYPE
 }
 
 export type WordRelationshipNodes = WordRelationshipNode[];

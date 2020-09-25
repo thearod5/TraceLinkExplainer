@@ -4,12 +4,14 @@ export interface AttributeDefinition {
 }
 
 export const CATEGORICAL_OPERATIONS = [
-  "contains",
-  "does not contain",
-  "is",
-  "is not",
+  "~",
+  "!~",
+  "=",
+  "!=",
+  ">",
+  "<"
 ];
-export const COMBINATORS = ["and", "or"];
+export const COMBINATORS = ["&&", "||"];
 
 const TypeAttribute = {
   fieldName: "type",
