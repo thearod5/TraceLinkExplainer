@@ -11,6 +11,11 @@ from preprocessing.Cleaners import clean_doc
 
 CONCEPT_MODEL_WEIGHT = 1
 
+ONTOLOGY_RELATION_PATHS = {
+    "Drone": "Drone/ontology/database-relation.csv",
+    "test": "test/ontology/test-relation.csv"
+}
+
 
 def to_groups(term_relations: Dict):
     """
@@ -162,51 +167,64 @@ def get_word_node(vertices, edge, last_word: str):
     return WordRelationshipNode(new_vertex_name, edge["label"])
 
 
-dataset_paths = {
-    "Drone": "Drone/ontology/database-relation.csv",
-    "test": "test/ontology/test-relation.csv"
-}
-
-
 def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
-    path_to_concept_file = os.path.join(PATH_TO_DATA, dataset_paths[dataset_name])
+    path_to_concept_file = os.path.join(PATH_TO_DATA, ONTOLOGY_RELATION_PATHS[dataset_name])
     cm = ConceptModel()
     cm.add_concepts(path_to_concept_file)
     return cm
 
 
 def add_concept_families(dataset: str, explanation: TraceExplanation) -> TraceExplanation:
-    # Step 1. Find all relationships
-    relationships = explanation.relationships
-    source_descriptors: [WordDescriptor] = explanation.source_descriptors
-    target_descriptors = explanation.target_descriptors
-    source_words = list(map(lambda w_d: w_d.word, source_descriptors))
-    source_words_cleaned = list(map(lambda w_d: clean_doc(w_d), source_words))
-    source_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, source_words_cleaned)))
-
-    target_words = list(map(lambda w_d: w_d.word, target_descriptors))
-    target_words_cleaned = list(map(lambda w: clean_doc(w), target_words))
-    target_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, target_words_cleaned)))
     concept_model = get_concept_model_for_dataset(dataset)
 
-    relationships_aggregate = []
-    for source_word_cleaned_filtered in source_words_cleaned_filtered:
-        word_relationships = concept_model.get_word_relationships(source_word_cleaned_filtered,
-                                                                  target_words_cleaned_filtered)
-        relationships_aggregate = relationships_aggregate + word_relationships
+    source_words_cleaned = list(map(lambda w_d: clean_doc(w_d.word), explanation.source_descriptors))
+    source_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, source_words_cleaned)))
 
-    # Step 2. All all words
-    for source_word_index, source_word in enumerate(source_words_cleaned):
-        for word_relationship in relationships_aggregate:
-            words_in_relationship = list(map(lambda node: node.word, word_relationship.nodes))
-            if source_word in words_in_relationship:
-                explanation.source_descriptors[source_word_index].relationship_ids.append(word_relationship.title)
+    target_words_cleaned = list(map(lambda w: clean_doc(w.word), explanation.target_descriptors))
+    target_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, target_words_cleaned)))
 
-    for target_word_index, target_word in enumerate(target_words_cleaned):
-        for word_relationship in relationships_aggregate:
-            words_in_relationship = list(map(lambda node: node.word, word_relationship.nodes))
-            if target_word in words_in_relationship:
-                explanation.target_descriptors[target_word_index].relationship_ids.append(word_relationship.title)
+    concept_model_relationships = get_relationships_for_concept_model(concept_model,
+                                                                      source_words_cleaned_filtered,
+                                                                      target_words_cleaned_filtered)
 
-    explanation.relationships = explanation.relationships + relationships_aggregate
+    add_relationships_to_word_descriptors(explanation,
+                                          concept_model_relationships,
+                                          source_words_cleaned,
+                                          target_words_cleaned)
+
+    explanation.relationships = explanation.relationships + concept_model_relationships
     return explanation
+
+
+def get_relationships_for_concept_model(concept_model: ConceptModel,
+                                        source_words: [str],
+                                        target_words: [str]):
+    concept_model_relationships = []
+    for source_word in source_words:
+        word_relationships = concept_model.get_word_relationships(source_word,
+                                                                  target_words)
+        concept_model_relationships = concept_model_relationships + word_relationships
+    return concept_model_relationships
+
+
+def add_relationships_to_word_descriptors(explanation: TraceExplanation,
+                                          relationships: [Relationship],
+                                          source_words: [str],
+                                          target_words: [str]):
+    attach_relationship_ids_to_word_descriptors(source_words,
+                                                relationships,
+                                                explanation.source_descriptors)
+    attach_relationship_ids_to_word_descriptors(target_words,
+                                                relationships,
+                                                explanation.target_descriptors)
+
+
+def attach_relationship_ids_to_word_descriptors(
+        words: [str],
+        relationships: [Relationship],
+        descriptors: [WordDescriptor]):
+    for word_index, word in enumerate(words):
+        for word_relationship in relationships:
+            words_in_relationship = list(map(lambda node: node.word, word_relationship.nodes))
+            if word in words_in_relationship:
+                descriptors[word_index].relationship_ids.append(word_relationship.title)
