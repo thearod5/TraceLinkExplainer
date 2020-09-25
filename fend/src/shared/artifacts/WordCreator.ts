@@ -135,7 +135,6 @@ export function createWord(
   const hasFamily = descriptor.relationshipIds.length > 0
   let wordSize, wordColor;
   if (hasFamily) {
-    console.log(descriptor)
     const mainFamilyId: string = descriptor.relationshipIds[0]
     const mainFamilyQuery = families.filter(family => family.title === mainFamilyId)
 
@@ -194,4 +193,41 @@ export function splitWordsByDelimiter(
     }
   }
   return delimiterWords;
+}
+
+export function getNodesInFamilies(families: Relationships) {
+  const nodes: object[] = []
+  families.map(family => {
+    family.nodes.map(node => {
+      nodes.push({ id: node.word, label: node.word })
+    })
+  })
+  return nodes
+}
+
+export function getEdgesInFamilies(families: Relationships) {
+  const edges: object[] = []
+  families.map(family => {
+    let from = family.nodes[0].word
+    for (let edgeIndex = 0; edgeIndex < family.nodes.length; edgeIndex++) {
+      let currentNode = family.nodes[edgeIndex]
+      if (edgeIndex === 0)
+        continue
+      edges.push({
+        from,
+        to: currentNode.word,
+        label: `is a ${titleCase(currentNode.nodeType)} of `
+      })
+      from = currentNode.nodeType === "SIBLING" ? from : currentNode.word
+    }
+  })
+  return edges
+}
+
+function titleCase(str: string) {
+  var sentence = str.toLowerCase().split(" ");
+  for (var i = 0; i < sentence.length; i++) {
+    sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+  }
+  return sentence
 }
