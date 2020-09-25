@@ -138,8 +138,7 @@ function createRelationshipDescription(families: Relationships) {
   console.log(families.length)
   const nodes = getNodesInFamilies(families)
   const edges = getEdgesInFamilies(families)
-  console.log(nodes)
-  console.log(edges)
+
   const graph = { nodes, edges };
 
   const options = {
@@ -150,7 +149,7 @@ function createRelationshipDescription(families: Relationships) {
     height: "300px"
   };
 
-  return <div className="fullSize debug">
+  return <div>
     <Graph
       graph={graph}
       options={options}

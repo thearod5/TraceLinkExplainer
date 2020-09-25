@@ -35,6 +35,8 @@ class TestConceptModel(unittest.TestCase):
         self.assertEqual(SOURCE, relationship.nodes[0].node_type)
         self.assertEqual(CHILD, relationship.nodes[1].node_type)
 
+        self.assertEqual("add->transmit", explanation.target_descriptors[0].relationship_ids[0])
+
     def test_basic(self):
         word_1 = "micro uav"
         word_2 = ["micro air vehicle"]

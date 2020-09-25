@@ -135,8 +135,13 @@ export function createWord(
   const hasFamily = descriptor.relationshipIds.length > 0
   let wordSize, wordColor;
   if (hasFamily) {
+    console.log(descriptor)
     const mainFamilyId: string = descriptor.relationshipIds[0]
-    const mainFamily = families.filter(family => family.title === mainFamilyId)[0]
+    const mainFamilyQuery = families.filter(family => family.title === mainFamilyId)
+
+    if (mainFamilyQuery.length == 0)
+      throw Error(`Could not find family: ${mainFamilyId}`)
+    const mainFamily = mainFamilyQuery[0]
 
     wordSize = mainFamily.weight + defaultSize
     wordColor =

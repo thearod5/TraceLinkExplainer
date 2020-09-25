@@ -96,7 +96,7 @@ class TraceInformation(TraceExplanation):
 
     def to_dict(self):
         super_dict = super(TraceInformation, self).to_dict()
-        super_dict["trace_type"] = self.trace_type
+        super_dict["traceType"] = self.trace_type
         super_dict["score"] = self.score
         return super_dict
 
