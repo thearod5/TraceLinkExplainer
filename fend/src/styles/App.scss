@@ -115,8 +115,12 @@ body,
   border-radius: 10px;
 }
 
-.roundBorderHard {
+.roundBorderMedium {
   border-radius: 25px;
+}
+
+.roundBorderHard {
+  border-radius: 50px;
 }
 
 .textAlignCenter {
@@ -125,6 +129,10 @@ body,
 
 .textAlignLeft {
   text-align: left;
+}
+
+.textDecorationUnderline {
+  text-decoration: underline;
 }
 
 .debug {

@@ -36,7 +36,7 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
       </div>
       <div className="flexRowCentered justifyContentCenter padSmall">
         <div
-          className="flexRowCentered justifyContentCenter roundBorderHard"
+          className="flexRowCentered justifyContentCenter roundBorderMedium"
           style={{ backgroundColor: secondaryColor }}>
           {props.toolbarIcons}
         </div>
