@@ -1,7 +1,5 @@
-import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SplitPane from "react-split-pane";
 import { getTraceInformation } from "../../api/trace";
 import { setError } from "../../redux/actions";
 import {
@@ -12,7 +10,6 @@ import {
   getTrace
 } from "../../redux/selectors";
 import {
-  SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
@@ -21,34 +18,32 @@ import { Trace } from "../../shared/types/Trace";
 import { NumberSetter } from "../constants";
 import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
-import { WordModal } from "./accordion/TraceExplanation";
 import NoSourceMessage from "./NoSourceMessage";
 import { TraceSourceArtifactDisplay } from "./PanelFactory";
+import { PanelView } from "./PanelView";
 import { handleTraceInformationRequest, updatePanel } from "./TraceArtifactController";
 
+
+
 export default function ArtifactSelector() {
+  const INITIAL_LEFT_PANEL = <SourceArtifactSearch />
+  const INITIAL_RIGHT_PANEL = <NoSourceMessage />
+
   const trace: Trace = useSelector(getTrace)
   const dataset: Dataset = useSelector(getDataset);
   const selectedSources: Artifact[] = useSelector(getSelectedSources);
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
 
-  const [loading, setLoading] = useState(false);
-  const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
-  const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
+  const [loading, setLoading] = useState(false)
+  const [leftPanel, setLeftPanel] = useState<JSX.Element>(INITIAL_LEFT_PANEL);
+  const [rightPanel, setRightPanel] = useState<JSX.Element>(INITIAL_RIGHT_PANEL);
   const [sourceIndex, setSourceIndex] = useState(0);
   const [targetIndex, setTargetIndex] = useState(0);
   const [lastSelectedSourceIndex, setLastSelectedSourceIndex] = useState(-1);
   const [lastSelectedTargetIndex, setLastSelectedTargetIndex] = useState(-1);
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (currentStep === SELECT_SOURCE_STEP) {
-      setLeftPanel(<SourceArtifactSearch />);
-      setRightPanel(<NoSourceMessage />);
-    }
-  }, [currentStep])
 
   const setSelectedSourceIndexAdapter: NumberSetter = (index: number) => {
     if (sourceIndex !== -1)
@@ -127,32 +122,15 @@ export default function ArtifactSelector() {
       setRightPanel)
   }, [currentStep, selectedTargets, targetIndex, trace]);
 
-  const body = <SplitPane split="vertical">
-    {leftPanel}
-    {rightPanel}
-  </SplitPane>
-  const loadingBar =
-    <div className="flexColumn heightFull justifyContentCenter">
-      <div className="flexRow justifyContentCenter">
-        <div className="flexColumn justifyContentCenter">
-          <h1 className="padLight" style={{ paddingBottom: "100px" }}>Retrieving Trace Information...</h1>
-          <div className="flexRowCentered">
-            <CircularProgress color="secondary" size="10rem" />
-          </div>
-        </div>
-      </div>
-    </div>
 
-  const open = trace.selectedWord !== null
-
-  let modal = trace.selectedWord === null ? null : <WordModal
-    open={open}
-  />
+  const modalOpen = trace.selectedWord !== null
 
   return (
-    <div className="flexColumn heightFull overflowYHidden">
-      {loading ? loadingBar : body}
-      {modal}
-    </div>
+    <PanelView
+      leftPanel={leftPanel}
+      rightPanel={rightPanel}
+      loading={loading}
+      modalOpen={modalOpen}
+    />
   );
 }

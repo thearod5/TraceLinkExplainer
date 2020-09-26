@@ -3,7 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
-import ArtifactSelector from "./components/artifacts/Artifacts";
+import ArtifactSelector from "./components/artifacts/PanelController";
 import DatasetViewer from "./components/datasets/DatasetView";
 import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
