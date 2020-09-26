@@ -1,6 +1,6 @@
 import React from "react";
-import { searchForTargetArtifact } from "../../api/search";
-import { setSelectedTargets } from "../../redux/actions";
+import { searchForTargetArtifact } from "../../../api/search";
+import { setSelectedTargets } from "../../../redux/actions";
 import SearchController from "./SearchController";
 
 interface TargetArtifactSearchProps {}

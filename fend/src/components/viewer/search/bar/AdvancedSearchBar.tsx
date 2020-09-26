@@ -3,7 +3,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from 'react';
-import { getQueryRecommendations } from "../../../shared/query/QueryRecommender";
+import { getQueryRecommendations } from "../../../../shared/query/QueryRecommender";
 import { SearchSuggestion, SubmitFuncType } from './SearchBar';
 
 const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";

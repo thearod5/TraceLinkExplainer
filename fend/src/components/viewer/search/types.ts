@@ -1,4 +1,4 @@
-import { Artifact } from "../../shared/types/Dataset";
+import { Artifact } from "../../../shared/types/Dataset";
 export type ArtifactClickAction = (artifact: Artifact) => void;
 
 export type SuggestionFunctionType = (

@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import React, { useEffect, useState } from "react";
-import { isValidQuery } from "../../../shared/query/QueryValidator";
+import { isValidQuery } from "../../../../shared/query/QueryValidator";
 import AdvancedSearchBar from "./AdvancedSearchBar";
 import BasicSearchBar from "./BasicSearchBar";
 

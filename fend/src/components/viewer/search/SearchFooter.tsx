@@ -3,7 +3,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import KeyboardTabIcon from "@material-ui/icons/KeyboardTab";
 import React from "react";
-import { primaryColor } from "../../styles/theme";
+import { primaryColor } from "../../../styles/theme";
 
 interface SearchFooterProps {
   page: number;

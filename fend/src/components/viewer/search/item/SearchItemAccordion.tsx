@@ -10,9 +10,9 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
-import { Artifact } from "../../../shared/types/Dataset";
-import { Relationships, Words } from "../../../shared/types/Trace";
-import ArtifactAccordionWords from "../../artifacts/accordion/words/ArtifactAccordionWords";
+import { Artifact } from "../../../../shared/types/Dataset";
+import { Relationships, Words } from "../../../../shared/types/Trace";
+import ArtifactAccordionWords from "../../accordion/words/ArtifactAccordionWords";
 import { ArtifactClickAction } from "../types";
 import SearchItemDialog from "./SearchItemDialog";
 
