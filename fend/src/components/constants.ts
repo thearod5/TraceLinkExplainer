@@ -16,7 +16,7 @@ export const FONT_SIZE_DELTA = 0.2;
 
 export type WordDescriptorDisplaySetter = React.Dispatch<React.SetStateAction<WordDescriptorDisplay | null>>
 export type NumberSetter = (num: number) => void
-export type ElementSetter = (value: React.SetStateAction<JSX.Element>) => void
+export type ElementSetter = (value: React.SetStateAction<JSX.Element | null>) => void
 
 export const SELECT_DATASET_STEP = 0;
 export const SELECT_SOURCE_STEP = 1;
@@ -30,4 +30,4 @@ export const SELECT_SOURCE_ARTIFACTS = "/selectsources";
 export const SELECT_TARGET_ARTIFACTS = "/selecttargets"
 export const TRACE_VIEW_ROUTE = "/trace"; //page 4
 
-export const FADE_TIMEOUT = 1000 //ms
+export const FADE_TIMEOUT = 500 //ms

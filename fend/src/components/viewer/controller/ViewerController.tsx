@@ -19,9 +19,6 @@ import { Viewer } from "../Viewer";
 import { DefaultTraceArtifactDisplay, handleTraceInformationRequest, updateTraceArtifactDisplayInPanel } from "./ViewerPanelManager";
 
 export default function ViewerController() {
-  const INITIAL_LEFT_PANEL = <SourceArtifactSearch />
-  const INITIAL_RIGHT_PANEL = <NoSourceMessage />
-
   const trace: Trace = useSelector(getTrace)
   const dataset: Dataset = useSelector(getDataset);
   const selectedSources: Artifact[] = useSelector(getSelectedSources);
@@ -29,8 +26,8 @@ export default function ViewerController() {
   const currentStep: number = useSelector(getCurrentStep);
 
   const [loading, setLoading] = useState(false)
-  const [leftPanel, setLeftPanel] = useState<JSX.Element>(INITIAL_LEFT_PANEL);
-  const [rightPanel, setRightPanel] = useState<JSX.Element>(INITIAL_RIGHT_PANEL);
+  const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
+  const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
   const [sourceIndex, setSourceIndex] = useState(0);
   const [targetIndex, setTargetIndex] = useState(0);
   const [lastSelectedSourceIndex, setLastSelectedSourceIndex] = useState(-1);
@@ -50,17 +47,16 @@ export default function ViewerController() {
     setTargetIndex(index);
   }, [targetIndex])
 
+
   /*
   * Step. 1 - select sources
   */
   useEffect(() => {
     if (currentStep === SELECT_SOURCE_STEP) {
-      setLeftPanel(INITIAL_LEFT_PANEL)
-      setRightPanel(INITIAL_RIGHT_PANEL)
+      setLeftPanel(<SourceArtifactSearch />)
+      setRightPanel(<NoSourceMessage />)
     }
   }, [currentStep])
-
-  console.log(currentStep)
 
   /*
   * Step. 2 - select targets
@@ -74,7 +70,8 @@ export default function ViewerController() {
           sourceIndex={sourceIndex}
         />)
     }
-  }, [currentStep, sourceIndex])
+    // eslint-disable-next-line
+  }, [currentStep, sourceIndex, selectedSources])
   //separate so reloading one does not affect the other
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
