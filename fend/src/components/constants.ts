@@ -17,3 +17,17 @@ export const FONT_SIZE_DELTA = 0.2;
 export type WordDescriptorDisplaySetter = React.Dispatch<React.SetStateAction<WordDescriptorDisplay | null>>
 export type NumberSetter = (num: number) => void
 export type ElementSetter = (value: React.SetStateAction<JSX.Element>) => void
+
+export const SELECT_DATASET_STEP = 0;
+export const SELECT_SOURCE_STEP = 1;
+export const SELECT_TARGET_STEP = 2;
+export const VIEW_TRACE_STEP = 3;
+export const FIRST_STEP_IN_WIZARD = SELECT_SOURCE_STEP;
+
+export const HOME_ROUTE = "/"; // page 0 (not defined in prototype)
+export const DATASET_ROUTE = "/dataset"; //page 1
+export const SELECT_SOURCE_ARTIFACTS = "/selectsources";
+export const SELECT_TARGET_ARTIFACTS = "/selecttargets"
+export const TRACE_VIEW_ROUTE = "/trace"; //page 4
+
+export const FADE_TIMEOUT = 1000 //ms

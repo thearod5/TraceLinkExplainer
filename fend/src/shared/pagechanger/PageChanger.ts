@@ -1,12 +1,8 @@
-import {
-  HOME_ROUTE,
-  SELECT_ARTIFACTS_ROUTE,
-  TRACE_VIEW_ROUTE
-} from "../../components/nav/routes";
+
+import { HOME_ROUTE, SELECT_SOURCE_ARTIFACTS, SELECT_SOURCE_STEP, SELECT_TARGET_ARTIFACTS, TRACE_VIEW_ROUTE, VIEW_TRACE_STEP } from "../../components/constants";
 import store from "../../redux/store";
 import { RootState } from "../../redux/types";
 import { isNonEmptyDataset } from "../types/Dataset";
-import { SELECT_SOURCE_STEP } from "./constants";
 
 const DATASET_NOT_SELECTED_ERROR =
   "You must select a dataset before proceeding.";
@@ -15,8 +11,8 @@ const TARGET_NOT_SELECTED_ERROR = "You must select a target artifact.";
 
 export const PAGE_STEP_MAPPING: Record<number, string> = {
   0: HOME_ROUTE,
-  1: SELECT_ARTIFACTS_ROUTE,
-  2: SELECT_ARTIFACTS_ROUTE,
+  1: SELECT_SOURCE_ARTIFACTS,
+  2: SELECT_TARGET_ARTIFACTS,
   3: TRACE_VIEW_ROUTE,
 };
 
@@ -28,6 +24,9 @@ export function getNewStepState(
   //Step step if an error is found
   const error = getStepChangeError(requestedStep, currentState); //validation
   if (error !== undefined) return error;
+  if (currentState.currentStep !== requestedStep && currentState.currentStep === VIEW_TRACE_STEP) {
+    return { ...currentState, currentStep: requestedStep, trace: { ...currentState.trace, relationshipColors: null } }
+  }
   return { ...currentState, currentStep: requestedStep };
 }
 
@@ -44,7 +43,7 @@ export function getStepChangeError(
   switch (requestedEndpoint) {
     case HOME_ROUTE:
       return undefined;
-    case SELECT_ARTIFACTS_ROUTE:
+    case SELECT_SOURCE_ARTIFACTS:
       if (!datasetSelected) return DATASET_NOT_SELECTED_ERROR;
       else if (!sourceSelected && requestedStep > SELECT_SOURCE_STEP)
         return SOURCE_NOT_SELECTED_ERROR;

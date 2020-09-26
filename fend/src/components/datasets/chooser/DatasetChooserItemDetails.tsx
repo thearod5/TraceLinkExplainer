@@ -5,7 +5,7 @@ import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import React, { JSXElementConstructor } from "react";
 import styled from "styled-components";
-import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "../../nav/routes";
+import { DATASET_ROUTE, SELECT_SOURCE_ARTIFACTS } from "../../constants";
 type ButtonClickCallback = (route: string) => void;
 
 interface ModalItemContent {
@@ -15,7 +15,7 @@ interface ModalItemContent {
 
 const MODAL_ITEMS: Record<string, ModalItemContent> = {
   "Link Explanation": {
-    route: SELECT_ARTIFACTS_ROUTE,
+    route: SELECT_SOURCE_ARTIFACTS,
     icon: AccountTreeIcon,
   },
   "View Dataset": {

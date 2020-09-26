@@ -9,18 +9,15 @@ import {
   getSelectedTargets,
   getTrace
 } from "../../../redux/selectors";
-import {
-  SELECT_TARGET_STEP,
-  VIEW_TRACE_STEP
-} from "../../../shared/pagechanger/constants";
 import { Artifact, Dataset } from "../../../shared/types/Dataset";
 import { Trace } from "../../../shared/types/Trace";
-import { NumberSetter } from "../../constants";
+import { NumberSetter, SELECT_SOURCE_STEP, SELECT_TARGET_STEP, VIEW_TRACE_STEP } from "../../constants";
+import NoSourceMessage from "../intermediate/NoSourceMessage";
 import SourceArtifactSearch from "../search/containers/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/containers/TargetArtifactSearchContainer";
-import NoSourceMessage from "../intermediate/NoSourceMessage";
-import { Viewer } from "./Viewer";
+import { Viewer } from "../Viewer";
 import { handleTraceInformationRequest, TraceSourceArtifactDisplay, updatePanel } from "./ViewerPanelManager";
+
 
 
 
@@ -57,6 +54,13 @@ export default function ViewerController() {
   }, [targetIndex])
 
   useEffect(() => {
+    if (currentStep === SELECT_SOURCE_STEP) {
+      setLeftPanel(INITIAL_LEFT_PANEL)
+      setRightPanel(INITIAL_RIGHT_PANEL)
+    }
+  }, [currentStep])
+
+  useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
       setLeftPanel(
         <TraceSourceArtifactDisplay
@@ -65,8 +69,9 @@ export default function ViewerController() {
           sourceIndex={sourceIndex}
         />)
     }
-  }, [currentStep, selectedSources, sourceIndex, setSelectedSourceIndexAdapter])
 
+  }, [currentStep, selectedSources, sourceIndex, setSelectedSourceIndexAdapter])
+  //separate so reloading one does not affect the other
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
       setRightPanel(<TargetArtifactSearch />);
@@ -79,6 +84,10 @@ export default function ViewerController() {
   const stateIsCached = () =>
     sourceIndex === lastSelectedSourceIndex &&
     targetIndex === lastSelectedTargetIndex
+
+  console.log(stateIsCached())
+  console.log(sourceIndex, targetIndex)
+  console.log(lastSelectedSourceIndex, lastSelectedTargetIndex)
 
   useEffect(() => {
     if (
@@ -110,7 +119,9 @@ export default function ViewerController() {
       "SOURCE",
       sourceIndex,
       setSelectedSourceIndexAdapter,
-      setLeftPanel)
+      setLeftPanel,
+      [SELECT_TARGET_STEP, VIEW_TRACE_STEP]
+    )
   }, [currentStep, selectedSources, sourceIndex, trace, setSelectedSourceIndexAdapter]);
 
   useEffect(() => {
@@ -118,7 +129,9 @@ export default function ViewerController() {
       "TARGET",
       targetIndex,
       setSelectedTargetIndexAdapter,
-      setRightPanel)
+      setRightPanel,
+      [VIEW_TRACE_STEP]
+    )
   }, [currentStep, selectedTargets, targetIndex, trace, setSelectedTargetIndexAdapter]);
 
 

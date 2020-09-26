@@ -3,7 +3,6 @@ import { setTrace } from "../../../redux/actions";
 import { getTrace } from "../../../redux/selectors";
 import store from "../../../redux/store";
 import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCreator';
-import { VIEW_TRACE_STEP } from "../../../shared/pagechanger/constants";
 import { Artifact } from "../../../shared/types/Dataset";
 import { Trace, TraceInformation } from "../../../shared/types/Trace";
 import { ElementSetter, NumberSetter } from "../../constants";
@@ -56,7 +55,8 @@ export function updatePanel(
   type: "SOURCE" | "TARGET",
   selectedArtifactIndex: number,
   setSelectedArtifactIndex: NumberSetter,
-  setPanel: ElementSetter
+  setPanel: ElementSetter,
+  stepsRequired: number[]
 ) {
   const state = store.getState();
   const currentStep = store.getState().currentStep
@@ -72,16 +72,16 @@ export function updatePanel(
   const artifactWords = artifactWordsTuple[typeIndex]
 
   if (
-    currentStep >= VIEW_TRACE_STEP &&
+    stepsRequired.includes(currentStep) &&
     artifactWords !== null &&
     relationshipColors !== null &&
     relationships !== null
   ) {
     const tracePanel = createTraceArtifactDisplays(
-      selectedArtifacts,//artifacts
+      selectedArtifacts,
       relationships,
-      selectedArtifactIndex, //selectedArtifact
-      artifactWords, //
+      selectedArtifactIndex,
+      artifactWords,
       relationshipColors,
       setSelectedArtifactIndex
     )

@@ -30,7 +30,6 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
   const [colorSelected, setColorSelected] = useState(true);
   const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
 
-
   const handleZoomIn = () => setFontSize(fontSize + FONT_SIZE_DELTA);
   const handleZoomOut = () => setFontSize(fontSize - FONT_SIZE_DELTA)
 

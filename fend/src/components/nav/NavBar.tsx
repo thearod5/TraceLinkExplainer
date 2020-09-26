@@ -4,15 +4,16 @@ import { useSelector } from "react-redux";
 import { getCurrentStep, getDataset } from "../../redux/selectors";
 import { appHistory } from "../../redux/store";
 import { primaryColor, secondaryColor } from "../../styles/theme";
+import { HOME_ROUTE } from "../constants";
 
 const WELCOME_MESSAGE = "TraceViewer";
 //TODO: Add button to view dataset. Also make a real nav bar looking thing.
 export default function NavBar() {
-  const activeStep = useSelector(getCurrentStep) - 1; //recreated index at 0, but remove select dataset move
+  const currentStep = useSelector(getCurrentStep); //recreated index at 0, but remove select dataset move
   const dataset = useSelector(getDataset).name;
 
   const GoHomeClickHanlder = () => {
-    appHistory.push("/");
+    appHistory.push(HOME_ROUTE);
   };
 
   return (
@@ -28,7 +29,7 @@ export default function NavBar() {
           className="padLight"
           style={{ color: primaryColor }}
         >
-          {activeStep === 0 ? dataset : WELCOME_MESSAGE}
+          {currentStep === 0 ? WELCOME_MESSAGE : dataset}
         </h1>
       </div>
     </Box>

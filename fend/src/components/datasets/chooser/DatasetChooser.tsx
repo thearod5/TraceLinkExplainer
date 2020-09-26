@@ -1,4 +1,4 @@
-import { Box, Button, LinearProgress } from "@material-ui/core";
+import { Box, Button, Fade, LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDatasetByName, getDatasetNames } from "../../../api/datasets";
@@ -10,10 +10,9 @@ import {
 } from "../../../redux/actions";
 import { getDataset } from "../../../redux/selectors";
 import { appHistory } from "../../../redux/store";
-import { FIRST_STEP_IN_WIZARD } from "../../../shared/pagechanger/constants";
 import { getStepChangeError } from "../../../shared/pagechanger/PageChanger";
 import { Dataset } from "../../../shared/types/Dataset";
-import { SELECT_ARTIFACTS_ROUTE } from "../../nav/routes";
+import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCE_ARTIFACTS } from "../../constants";
 import DatasetChooserItem from "./DatasetChooserItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
@@ -53,7 +52,7 @@ export default function DatasetChooser() {
   };
 
   const onRouteSelected = (route: string) => {
-    if (route === SELECT_ARTIFACTS_ROUTE) {
+    if (route === SELECT_SOURCE_ARTIFACTS) {
       const error = getStepChangeError(FIRST_STEP_IN_WIZARD);
       if (error === undefined) {
         dispatch(changeStep(FIRST_STEP_IN_WIZARD));
@@ -74,27 +73,29 @@ export default function DatasetChooser() {
   ));
 
   return (
-    <Box className="roundBorder padMedium" boxShadow={3}>
-      <h2 className="textAlignCenter">Datasets</h2>
-      <div className="flexColumn padLight">
-        {datasets.length === 0 ? (
-          <LinearProgress color="secondary" />
-        ) : (
-            datasetItems
-          )}
-      </div>
-      <div className="flexRowCentered padMedium">
-        <Button
-          disabled
-          size="medium"
-          color="primary"
-          variant="contained"
-        // TODO: Functionality for this
-        >
-          New Dataset
+    <Fade in={true} timeout={FADE_TIMEOUT}>
+      <Box className="roundBorder padMedium" boxShadow={3}>
+        <h2 className="textAlignCenter">Datasets</h2>
+        <div className="flexColumn padLight">
+          {datasets.length === 0 ? (
+            <LinearProgress color="secondary" />
+          ) : (
+              datasetItems
+            )}
+        </div>
+        <div className="flexRowCentered padMedium">
+          <Button
+            disabled
+            size="medium"
+            color="primary"
+            variant="contained"
+          // TODO: Functionality for this
+          >
+            New Dataset
         </Button>
-      </div>
-    </Box>
+        </div>
+      </Box>
+    </Fade>
   );
 }
 

@@ -1,20 +1,44 @@
 import { MuiThemeProvider } from "@material-ui/core";
-import React from "react";
-import { Provider } from "react-redux";
+import React, { useEffect } from "react";
+import { Provider, useDispatch } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
-import ViewerController from "./components/viewer/controller/ViewerController";
+import { DATASET_ROUTE, HOME_ROUTE, SELECT_DATASET_STEP, SELECT_SOURCE_ARTIFACTS, SELECT_SOURCE_STEP, SELECT_TARGET_ARTIFACTS, SELECT_TARGET_STEP, TRACE_VIEW_ROUTE, VIEW_TRACE_STEP } from "./components/constants";
 import DatasetViewer from "./components/datasets/DatasetView";
+import AppSnackBar from "./components/footer/AppSnackBar";
 import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
-import { DATASET_ROUTE, SELECT_ARTIFACTS_ROUTE } from "./components/nav/routes";
-import AppSnackBar from "./components/footer/AppSnackBar";
+import ViewerController from "./components/viewer/controller/ViewerController";
+import { changeStep } from "./redux/actions";
 import { appHistory, persistor, store } from "./redux/store";
 import "./styles/App.scss";
 import theme from "./styles/theme";
 
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    appHistory.listen((location: any) => {
+      switch (location.pathname) {
+        case HOME_ROUTE:
+          dispatch(changeStep(SELECT_DATASET_STEP))
+          break;
+        case SELECT_SOURCE_ARTIFACTS:
+          dispatch(changeStep(SELECT_SOURCE_STEP))
+          break;
+        case SELECT_TARGET_ARTIFACTS:
+          dispatch(changeStep(SELECT_TARGET_STEP))
+          break;
+        case TRACE_VIEW_ROUTE:
+          dispatch(changeStep(VIEW_TRACE_STEP))
+          break;
+        default:
+          return;
+      }
+    });
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <div
       id="app"
@@ -31,7 +55,7 @@ function App() {
 
               <main className="flexColumn widthFull" style={{ height: "90%" }}>
                 <Switch>
-                  <Route path={SELECT_ARTIFACTS_ROUTE}>
+                  <Route path={[SELECT_SOURCE_ARTIFACTS, SELECT_TARGET_ARTIFACTS, TRACE_VIEW_ROUTE]}>
                     <ViewerController />
                   </Route>
                   <Route path={DATASET_ROUTE}>

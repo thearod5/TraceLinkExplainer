@@ -3,22 +3,21 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStep, setError } from "../../../redux/actions";
 import { getCurrentStep } from "../../../redux/selectors";
+import { appHistory } from "../../../redux/store";
 import { ArtifactMutatorActionType } from "../../../redux/types";
 import { createArtifactDisplayModel } from "../../../shared/artifacts/WordCreator";
-import {
-  SELECT_SOURCE_STEP, VIEW_TRACE_STEP
-} from "../../../shared/pagechanger/constants";
 import { getStepChangeError } from "../../../shared/pagechanger/PageChanger";
 import {
   Artifact,
   ArtifactDisplayModel,
   artifactsAreEqual
 } from "../../../shared/types/Dataset";
-import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_TARGET_MESSAGE } from "../../constants";
+import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, VIEW_TRACE_STEP } from "../../constants";
 import SearchBar from "./bar/SearchBar";
 import { SearchFooter } from "./SearchFooter";
 import SearchResults from "./SearchResults";
 import { SuggestionFunctionType } from "./types";
+
 
 
 /*
@@ -27,6 +26,7 @@ import { SuggestionFunctionType } from "./types";
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
   onArtifactsSelected: (artifact: Artifact[]) => ArtifactMutatorActionType;
+  nextPageLocation: string;
 }
 
 export default function SearchController(props: SearchProps) {
@@ -127,6 +127,7 @@ export default function SearchController(props: SearchProps) {
       setAreArtifactSelected(true); //changes made, results not up-to-date
       dispatch(changeStep(nextStep));
     } else dispatch(setError(error));
+    appHistory.push(props.nextPageLocation)
   };
 
   useEffect(() => startSearch(""), [startSearch]);
