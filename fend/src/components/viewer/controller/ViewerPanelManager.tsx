@@ -1,8 +1,8 @@
 import React from 'react'
-import { createDefaultWordDescriptors } from '../../shared/artifacts/WordCreator'
-import { Artifact } from '../../shared/types/Dataset'
-import { NumberSetter } from '../constants'
-import { getDefaultArtifactDisplay } from './accordion/ArtifactAccordionFactory'
+import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCreator'
+import { Artifact } from '../../../shared/types/Dataset'
+import { NumberSetter } from '../../constants'
+import { getDefaultArtifactDisplay } from '../accordion/ArtifactAccordionFactory'
 
 
 interface TraceSourceArtifactDisplayProps {

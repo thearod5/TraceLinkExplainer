@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTraceInformation } from "../../api/trace";
-import { setError } from "../../redux/actions";
+import { getTraceInformation } from "../../../api/trace";
+import { setError } from "../../../redux/actions";
 import {
   getCurrentStep,
   getDataset,
   getSelectedSources,
   getSelectedTargets,
   getTrace
-} from "../../redux/selectors";
+} from "../../../redux/selectors";
 import {
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP
-} from "../../shared/pagechanger/constants";
-import { Artifact, Dataset } from "../../shared/types/Dataset";
-import { Trace } from "../../shared/types/Trace";
-import { NumberSetter } from "../constants";
-import SourceArtifactSearch from "./search/SourceArtifactSearchContainer";
-import TargetArtifactSearch from "./search/TargetArtifactSearchContainer";
+} from "../../../shared/pagechanger/constants";
+import { Artifact, Dataset } from "../../../shared/types/Dataset";
+import { Trace } from "../../../shared/types/Trace";
+import { NumberSetter } from "../../constants";
+import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
+import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
 import NoSourceMessage from "./NoSourceMessage";
-import { TraceSourceArtifactDisplay } from "./PanelFactory";
-import { PanelView } from "./PanelView";
-import { handleTraceInformationRequest, updatePanel } from "./TraceArtifactController";
+import { TraceSourceArtifactDisplay } from "./ViewerPanelManager";
+import { PanelView } from "./Viewer";
+import { handleTraceInformationRequest, updatePanel } from "../TraceArtifactController";
 
 
 

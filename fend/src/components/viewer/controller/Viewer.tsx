@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Fade } from "@material-ui/core";
 import React from 'react';
 import SplitPane from "react-split-pane";
-import { WordModal } from "./accordion/TraceExplanation";
+import { WordModal } from "../accordion/TraceExplanation";
 
 interface PanelViewProps {
   leftPanel: JSX.Element | null
