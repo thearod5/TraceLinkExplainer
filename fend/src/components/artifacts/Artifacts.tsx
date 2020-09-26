@@ -22,7 +22,7 @@ import { Artifact, Dataset } from "../../shared/types/Dataset";
 import { Relationships, WordDescriptors } from "../../shared/types/Trace";
 import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
-import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./ArtifactDisplayFactory";
+import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./accordion/ArtifactAccordionFactory";
 import NoSourceMessage from "./NoSourceMessage";
 
 export default function ArtifactSelector() {
@@ -45,8 +45,6 @@ export default function ArtifactSelector() {
   const [traceFamilyColors, setTraceFamilyColors] = useState<Record<string, string> | null>(null);
 
   const dispatch = useDispatch()
-
-  console.log(traceFamilyColors)
 
   useEffect(() => {
     if (currentStep === SELECT_SOURCE_STEP) {
@@ -192,6 +190,7 @@ export default function ArtifactSelector() {
         </div>
       </div>
     </div>
+
   return (
     <div className="flexColumn heightFull overflowYHidden">
       {loading ? loadingBar : body}

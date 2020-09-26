@@ -1,9 +1,9 @@
 import React from "react";
-import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
-import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
-import { FamilyColors, Relationships, WordDescriptors } from "../../shared/types/Trace";
-import { colors } from "../constants";
-import ArtifactAccordion from "./accordion/ArtifactAccordion";
+import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../../shared/artifacts/WordCreator";
+import { Artifact, ArtifactIdentifier } from "../../../shared/types/Dataset";
+import { FamilyColors, Relationships, WordDescriptors } from "../../../shared/types/Trace";
+import { colors } from "../../constants";
+import ArtifactAccordion from "./ArtifactAccordion";
 
 export function getDefaultArtifactDisplay(
   artifact: ArtifactIdentifier,
