@@ -1,4 +1,4 @@
-import { Box, Checkbox, IconButton } from "@material-ui/core";
+import { Box, Button, IconButton } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import KeyboardTabIcon from "@material-ui/icons/KeyboardTab";
@@ -13,6 +13,7 @@ interface SearchFooterProps {
   onStepCompleted: () => void;
   onNextPage: () => void;
   onPreviousPage: () => void;
+  numberSelected: number
 }
 
 export function SearchFooter(props: SearchFooterProps) {
@@ -42,17 +43,14 @@ export function SearchFooter(props: SearchFooterProps) {
     </IconButton>
   );
 
-  const nextStepButton = (
-    <div className="flexRowCentered" onClick={props.onStepCompleted}>
-      <div className="centeredColumn"><p>{props.message}</p></div>
-      <Checkbox
-        checked={props.completed}
-        color="primary"
-        icon={<KeyboardTabIcon color={"secondary"} />}
-      />
-    </div>
-
-  );
+  const nextStepButton = <Button
+    variant="contained"
+    color="secondary"
+    endIcon={<KeyboardTabIcon color={"primary"} />}
+    onClick={props.onStepCompleted}
+  >
+    {props.message}({props.numberSelected})
+  </Button>
 
   return (
     <Box
@@ -69,7 +67,7 @@ export function SearchFooter(props: SearchFooterProps) {
           {nextPageButton}
         </div>
 
-        {nextStepButton}
+        <div className="padLight">{nextStepButton}</div>
       </div>
     </Box>
   );
