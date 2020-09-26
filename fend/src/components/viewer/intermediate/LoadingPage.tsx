@@ -15,7 +15,7 @@ export default function LoadingBar(props: LoadingBarProps) {
         <div className="flexColumn heightFull justifyContentCenter">
           <div className="flexRow justifyContentCenter">
             <Box className="flexColumn justifyContentCenter roundBorderHard padLarge" style={{ background: "white", zIndex: 11 }} boxShadow={3}>
-              <h1 style={{ paddingBottom: "100px" }}>Retrieving Trace Information...</h1>
+              <h1 style={{ paddingBottom: "100px" }}>Retrieving Trace Information</h1>
               <div className="flexRowCentered padSmall">
                 <CircularProgress color="secondary" size="10rem" />
               </div>
