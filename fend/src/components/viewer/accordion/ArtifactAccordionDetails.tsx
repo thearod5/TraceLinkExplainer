@@ -25,7 +25,7 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
       className="flexColumn"
       style={props.style}
     >
-      <div className="overflowScroll" style={{}}>
+      <div className="overflowScroll">
         <ViewerWords
           words={props.words}
           families={props.families}

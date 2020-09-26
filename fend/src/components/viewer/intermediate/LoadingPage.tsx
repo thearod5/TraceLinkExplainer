@@ -2,7 +2,7 @@ import { CircularProgress } from "@material-ui/core";
 import React from 'react';
 import ViewerModal from "../explanation/ViewerModal";
 
-const title = "Retrieving Trace Information"
+const title = "Loading Trace Information"
 
 interface LoadingBarProps {
   open: boolean

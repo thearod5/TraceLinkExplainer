@@ -5,28 +5,32 @@ import { setTrace } from "../../../redux/actions";
 import { getTrace } from "../../../redux/selectors";
 import { getEdgesInFamilies, getNodesInFamilies } from "../../../shared/artifacts/WordCreator";
 import { Relationships } from "../../../shared/types/Trace";
+import { primaryColor, secondaryColor } from '../../../styles/theme';
 import ViewerModal from "./ViewerModal";
 
-
+const NETWORK_GRAPH_LENGTH = "600px"
 const NETWORK_GRAPH_OPTIONS = {
   edges: {
-    color: "#000000"
+    color: secondaryColor
   },
-  width: "600px",
-  height: "600px",
+  nodes: {
+    color: primaryColor
+  },
+  width: NETWORK_GRAPH_LENGTH,
+  height: NETWORK_GRAPH_LENGTH,
   layout: {
+    randomSeed: 42,
     hierarchical: {
       enabled: true,
-      levelSeparation: 250,
+      levelSeparation: 200,
       nodeSpacing: 100,
       treeSpacing: 200, //distance between independant trees
       direction: 'LR',        // UD, DU, LR, RL
       sortMethod: 'directed',  // hubsize, directed
-    },
+    }
   },
   interaction: {
-    dragNodes: true,
-    dragView: true
+    dragNodes: true
   }
 };
 

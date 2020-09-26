@@ -12,7 +12,7 @@ import { createToolbarIcons } from "./ToolbarIcons";
 /*
  * Accordion for TraceInformation. Manages state changes in accordion.
  */
-const ACCORDION_MAX_HEIGHT = 500 //px
+const ACCORDION_MAX_HEIGHT = 600 //px
 
 interface ArtifactAccordionProps {
   artifactType: string;
