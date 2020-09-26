@@ -1,9 +1,9 @@
 
 import React from 'react';
 import SplitPane from "react-split-pane";
-import { secondaryColor } from '../../../styles/theme';
+import { primaryColor } from '../../../styles/theme';
 import { WordModal } from '../accordion/TraceExplanation';
-import LoadingBar from './LoadingPage';
+import LoadingBar from '../intermediate/LoadingPage';
 
 interface ViewerProps {
   leftPanel: JSX.Element
@@ -21,8 +21,8 @@ export function Viewer(props: ViewerProps) {
       <SplitPane
         split="vertical"
       >
-        <div className="heightFull" style={{ borderRight: `1px solid ${secondaryColor}` }}>{leftPanel}</div>
-        <div className="heightFull" style={{ borderLeft: `1px solid ${secondaryColor}` }}>{rightPanel}</div>
+        <div className="heightFull" style={{ borderRight: `1px solid ${primaryColor}` }}>{leftPanel}</div>
+        <div className="heightFull" style={{ borderLeft: `1px solid ${primaryColor}` }}>{rightPanel}</div>
       </SplitPane>
       {loadingBar}
       <WordModal open={modalOpen} />

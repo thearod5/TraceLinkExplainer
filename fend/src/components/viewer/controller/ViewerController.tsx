@@ -18,7 +18,7 @@ import { Trace } from "../../../shared/types/Trace";
 import { NumberSetter } from "../../constants";
 import SourceArtifactSearch from "../search/containers/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/containers/TargetArtifactSearchContainer";
-import NoSourceMessage from "./NoSourceMessage";
+import NoSourceMessage from "../intermediate/NoSourceMessage";
 import { Viewer } from "./Viewer";
 import { handleTraceInformationRequest, TraceSourceArtifactDisplay, updatePanel } from "./ViewerPanelManager";
 
