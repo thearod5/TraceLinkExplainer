@@ -65,7 +65,7 @@ export default function SearchBar(props: SearchBarProps) {
             color="secondary"
             onClick={() => setAdvancedSearch(!advancedSearch)}
           >
-            {"Basic"}
+            {advancedSearch ? "Basic" : "Advanced"}
           </Button>
         </div>
       </div></div>)
