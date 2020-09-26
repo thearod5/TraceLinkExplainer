@@ -155,6 +155,7 @@ export default function SearchController(props: SearchProps) {
       onStepCompleted={handleStepCompleted}
       onNextPage={onNextPage}
       onPreviousPage={onPreviousPage}
+      numberSelected={selectedArtifacts.length}
     />
   );
 
