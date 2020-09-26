@@ -76,7 +76,7 @@ export default function DatasetChooser() {
     <Fade in={true} timeout={FADE_TIMEOUT}>
       <Box className="roundBorder padMedium" boxShadow={3}>
         <h2 className="textAlignCenter">Datasets</h2>
-        <div className="flexColumn padLight">
+        <div className="flexColumn padSmall">
           {datasets.length === 0 ? (
             <LinearProgress color="secondary" />
           ) : (

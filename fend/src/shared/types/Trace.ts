@@ -99,6 +99,17 @@ export function isTraceRetrievealPayload(
   return objectContainsKeys(requiredKeys, obj, log);
 }
 
+export function isWordDescriptorDisplay(
+  obj: any,
+  log = false
+): obj is WordDescriptorDisplay {
+  const requiredKeys = ["word",
+    "size",
+    "color",
+    "relationshipIds"]
+  return objectContainsKeys(requiredKeys, obj, log)
+}
+
 export function isTraceInformation(
   obj: any,
   log = false

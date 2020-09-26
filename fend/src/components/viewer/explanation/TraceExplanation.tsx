@@ -51,7 +51,7 @@ export function WordModal(
 
   return (
     <Dialog
-      open={props.open}
+      open={true}
       fullWidth
       maxWidth={"sm"}
       onClose={handleClose}
@@ -60,10 +60,11 @@ export function WordModal(
       BackdropProps={{
         timeout: 500,
       }}
+      className='debug'
     >
       <HoverClose handleClose={handleClose} />
       <DialogTitle className="displayInlineBlock textAlignCenter">{selectedWord.word}</DialogTitle>
-      <div className="padLight">
+      <div className="padSmall">
         <TraceExplanation families={relationships.filter(family => selectedWord.relationshipIds.includes(family.title))} />
       </div>
     </Dialog >
@@ -94,10 +95,11 @@ interface HoverCloseProps {
 function HoverClose(props: HoverCloseProps) {
   const [hover, setHover] = useState(false)
 
-  const regularElement = <CloseIcon style={{ position: "relative", left: "85%", top: "5px" }} onClick={props.handleClose} />
-  const hoverElement = <CancelIcon style={{ position: "relative", left: "85%", top: "5px" }} onClick={props.handleClose} />
+  const regularElement = <CloseIcon onClick={props.handleClose} />
+  const hoverElement = <CancelIcon onClick={props.handleClose} />
   return (
     <div
+      className='flexRow justifyContentFlexEnd debugBlue'
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >

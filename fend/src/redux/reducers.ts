@@ -1,6 +1,7 @@
+import { VIEW_TRACE_STEP } from "../components/constants";
 import { getNewStepState } from "../shared/pagechanger/PageChanger";
 import { areArtifacts, isDataset } from "../shared/types/Dataset";
-import { isTrace } from "../shared/types/Trace";
+import { isTrace, isWordDescriptorDisplay } from "../shared/types/Trace";
 import {
   CHANGE_STEP_ACTION,
   CLEAR_DATA,
@@ -9,6 +10,7 @@ import {
   SET_ERROR_ACTION,
   SET_SELECTED_SOURCES_ACTION,
   SET_SELECTED_TARGETS_ACTION,
+  SET_SELECTED_WORD_ACTION,
   SET_TRACE_ACTION,
   UNSELECT_DATASET
 } from "./actions";
@@ -80,6 +82,20 @@ export default (
         }
       } else {
         throw new Error(createReducerError(SET_TRACE_ACTION, "Trace", action.payload));
+      }
+    case SET_SELECTED_WORD_ACTION:
+      if (isWordDescriptorDisplay(action.payload)) {
+        if (state.currentStep !== VIEW_TRACE_STEP)
+          return state
+        return {
+          ...state,
+          trace: {
+            ...state.trace,
+            selectedWord: action.payload
+          }
+        }
+      } else {
+        throw new Error(createReducerError(SET_SELECTED_WORD_ACTION, "WordDescriptorDisplay", action.payload));
       }
     case CLEAR_DATA:
       return createEmptyState();

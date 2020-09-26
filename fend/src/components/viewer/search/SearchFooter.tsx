@@ -27,7 +27,7 @@ export function SearchFooter(props: SearchFooterProps) {
     </IconButton>
   );
   const pageLabel = (
-    <div className="centeredColumn padLight">
+    <div className="centeredColumn padSmall">
       <label className="bold">
         Page {props.page} / {props.totalPages}
       </label>
@@ -67,7 +67,7 @@ export function SearchFooter(props: SearchFooterProps) {
           {nextPageButton}
         </div>
 
-        <div className="padLight">{nextStepButton}</div>
+        <div className="padSmall">{nextStepButton}</div>
       </div>
     </Box>
   );

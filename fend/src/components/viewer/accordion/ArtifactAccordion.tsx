@@ -54,7 +54,6 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
   );
 
   const handleAccordionExpandClick = (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    console.log("is expanded", newExpanded)
     const callBack = newExpanded ? onExpand : onShrink
     callBack()
   };

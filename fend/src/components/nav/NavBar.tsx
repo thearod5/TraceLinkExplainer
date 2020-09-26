@@ -26,7 +26,7 @@ export default function NavBar() {
       <div className="centeredColumn">
         <h1
           onClick={GoHomeClickHanlder}
-          className="padLight"
+          className="padSmall"
           style={{ color: primaryColor }}
         >
           {currentStep === 0 ? WELCOME_MESSAGE : dataset}

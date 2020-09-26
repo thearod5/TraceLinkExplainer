@@ -1,9 +1,9 @@
 import React from "react";
-import { WordDescriptorDisplay } from "../../../../shared/types/Trace";
-import { DEFAULT_FONT_COLOR } from "../../../constants";
-import { WordCallback } from "./ArtifactAccordionWords";
+import { WordDescriptorDisplay } from "../../../shared/types/Trace";
+import { DEFAULT_FONT_COLOR } from "../../constants";
+import { WordCallback } from "./ViewerWords";
 
-export interface WordProps {
+export interface ViewerWordProps {
   word: WordDescriptorDisplay
   colorSelected: boolean
   sizeSelected: boolean
@@ -14,7 +14,7 @@ export interface WordProps {
   handleClose: () => void
 }
 
-export function Word(props: WordProps) {
+export function ViewerWord(props: ViewerWordProps) {
   const HAS_FAMILY = props.word.relationshipIds.length > 0;
 
   const wordId = `${props.word.word}:${props.wordIndex}`;

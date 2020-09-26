@@ -50,8 +50,8 @@ export default function SearchBar(props: SearchBarProps) {
       <div className="centeredColumn">
         <div className="flexRowCentered padSideLight" style={{ height: "70%" }}>
           <Button
-            size="small"
-            className="padLight"
+            size="medium"
+            className="padSmall"
             color="primary"
             variant="contained"
             onClick={(event: any) => props.onSearch(query)}
@@ -61,7 +61,7 @@ export default function SearchBar(props: SearchBarProps) {
 
           <Button
             size="small"
-            className="padLight"
+            className="padSmall"
             color="secondary"
             onClick={() => setAdvancedSearch(!advancedSearch)}
           >

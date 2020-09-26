@@ -12,7 +12,7 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import React, { useState } from "react";
 import { Artifact } from "../../../../shared/types/Dataset";
 import { Relationships, Words } from "../../../../shared/types/Trace";
-import ArtifactAccordionWords from "../../accordion/words/ArtifactAccordionWords";
+import ViewerWords from "../../words/ViewerWords";
 import { ArtifactClickAction } from "../types";
 import SearchItemDialog from "./SearchItemDialog";
 
@@ -65,11 +65,11 @@ export default function SearchItemAccordion(props: SearchResultProps) {
 
       <AccordionDetails style={{ maxHeight: "300px" }}>
         <Box
-          className="overflowScroll roundBorder padLight"
+          className="overflowScroll roundBorder padSmall"
           style={{ width: "90%", maxHeight: "300px" }}
           boxShadow={3}
         >
-          <ArtifactAccordionWords
+          <ViewerWords
             words={props.words}
             families={props.families}
             colorSelected={true}
@@ -78,7 +78,7 @@ export default function SearchItemAccordion(props: SearchResultProps) {
           />
         </Box>
 
-        <div className="centeredColumn padLight" >
+        <div className="centeredColumn padSmall" >
           <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
             <FullscreenIcon />
           </IconButton>

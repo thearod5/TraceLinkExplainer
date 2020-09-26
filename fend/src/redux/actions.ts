@@ -1,5 +1,5 @@
 import { Artifact, Dataset } from "../shared/types/Dataset";
-import { Trace } from "../shared/types/Trace";
+import { Trace, WordDescriptorDisplay } from "../shared/types/Trace";
 import { ArtifactMutatorActionType } from "./types";
 
 /*
@@ -104,6 +104,19 @@ export function setTrace(trace: Trace) {
   }
 }
 
+export const SET_SELECTED_WORD_ACTION = "SET_SELECTED_WORD_ACTION"
+
+export interface SetSelectedWord {
+  type: typeof SET_SELECTED_WORD_ACTION,
+  payload: WordDescriptorDisplay | null
+}
+
+export function setSelectedWord(word: WordDescriptorDisplay | null) {
+  return {
+    type: SET_SELECTED_WORD_ACTION,
+    payload: word
+  }
+}
 /*
  * Meta
  */

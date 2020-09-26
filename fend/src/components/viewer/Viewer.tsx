@@ -4,7 +4,7 @@ import React from 'react';
 import SplitPane from "react-split-pane";
 import { primaryColor } from '../../styles/theme';
 import { FADE_TIMEOUT } from '../constants';
-import { WordModal } from './accordion/TraceExplanation';
+import { WordModal } from './explanation/TraceExplanation';
 import LoadingBar from './intermediate/LoadingPage';
 
 interface ViewerProps {

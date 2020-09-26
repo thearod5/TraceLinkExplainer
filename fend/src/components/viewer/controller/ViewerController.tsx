@@ -42,7 +42,6 @@ export default function ViewerController() {
     if (sourceIndex !== -1)
       setLastSelectedSourceIndex(sourceIndex)
     setSourceIndex(index);
-    console.log("CHANGING INDEX", index)
   }, [sourceIndex])
 
   const setSelectedTargetIndexAdapter = useCallback((index: number) => {
@@ -61,20 +60,19 @@ export default function ViewerController() {
     }
   }, [currentStep])
 
+  console.log(currentStep)
+
   /*
   * Step. 2 - select targets
   */
-  const displaySelectedSources = () => setLeftPanel(
-    <DefaultTraceArtifactDisplay
-      selectedSources={selectedSources}
-      setIndex={setSelectedSourceIndexAdapter}
-      sourceIndex={sourceIndex}
-    />)
-  console.log("SOURCEINDEX", sourceIndex)
-
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
-      displaySelectedSources()
+      setLeftPanel(
+        <DefaultTraceArtifactDisplay
+          selectedSources={selectedSources}
+          setIndex={setSelectedSourceIndexAdapter}
+          sourceIndex={sourceIndex}
+        />)
     }
   }, [currentStep, sourceIndex])
   //separate so reloading one does not affect the other

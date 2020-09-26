@@ -17,25 +17,27 @@ import theme from "./styles/theme";
 
 function App() {
   const dispatch = useDispatch();
+  const updateStepToLocation = (location: any) => {
+    switch (location) {
+      case HOME_ROUTE:
+        dispatch(changeStep(SELECT_DATASET_STEP))
+        break;
+      case SELECT_SOURCE_ARTIFACTS:
+        dispatch(changeStep(SELECT_SOURCE_STEP))
+        break;
+      case SELECT_TARGET_ARTIFACTS:
+        dispatch(changeStep(SELECT_TARGET_STEP))
+        break;
+      case TRACE_VIEW_ROUTE:
+        dispatch(changeStep(VIEW_TRACE_STEP))
+        break;
+      default:
+        return;
+    }
+  }
   useEffect(() => {
-    appHistory.listen((location: any) => {
-      switch (location.pathname) {
-        case HOME_ROUTE:
-          dispatch(changeStep(SELECT_DATASET_STEP))
-          break;
-        case SELECT_SOURCE_ARTIFACTS:
-          dispatch(changeStep(SELECT_SOURCE_STEP))
-          break;
-        case SELECT_TARGET_ARTIFACTS:
-          dispatch(changeStep(SELECT_TARGET_STEP))
-          break;
-        case TRACE_VIEW_ROUTE:
-          dispatch(changeStep(VIEW_TRACE_STEP))
-          break;
-        default:
-          return;
-      }
-    });
+    appHistory.listen(location => updateStepToLocation(location.pathname))
+    updateStepToLocation(appHistory.location.pathname)
     // eslint-disable-next-line
   }, [])
 

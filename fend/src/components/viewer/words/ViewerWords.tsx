@@ -1,10 +1,10 @@
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setTrace } from "../../../../redux/actions";
-import { getSelectedWord, getTrace } from "../../../../redux/selectors";
-import { Relationships, Trace, WordDescriptorDisplay, Words } from "../../../../shared/types/Trace";
-import { Word } from "./Word";
+import { setSelectedWord } from "../../../redux/actions";
+import { getSelectedWord } from "../../../redux/selectors";
+import { Relationships, WordDescriptorDisplay, Words } from "../../../shared/types/Trace";
+import { ViewerWord } from "./ViewerWord";
 
 interface ArtifactWordsProps {
   words: Words;
@@ -14,25 +14,26 @@ interface ArtifactWordsProps {
   defaultSize: number;
 }
 
-export default function ArtifactAccordionWords(props: ArtifactWordsProps) {
-  const trace: Trace = useSelector(getTrace)
+export default function ViewerWords(props: ArtifactWordsProps) {
   const selectedWord = useSelector(getSelectedWord)
   const dispatch = useDispatch()
 
-  const handleClose = () => dispatch(setTrace({ ...trace, selectedWord: null }))
-  const setSelectedWord: WordCallback = (word: WordDescriptorDisplay) => dispatch(setTrace({ ...trace, selectedWord: word }))
+  const { words, colorSelected, sizeSelected, defaultSize } = props
+
+  const handleClose = () => dispatch(setSelectedWord(null))
+  const handleOnClick: WordCallback = (word: WordDescriptorDisplay) => dispatch(setSelectedWord(word))
 
   const body = createWords(
-    props.words,
+    words,
     selectedWord,
-    props.colorSelected,
-    props.sizeSelected,
-    props.defaultSize,
-    setSelectedWord,
+    colorSelected,
+    sizeSelected,
+    defaultSize,
+    handleOnClick,
     handleClose);
   return (
     <div className="textAlignLeft overflowScroll">
-      <div className="sizeFull padLight overflowScroll">{body}</div>
+      <div className="sizeFull padSmall overflowScroll">{body}</div>
     </div>
   );
 }
@@ -48,7 +49,7 @@ function createWords(
   clickHandler: WordCallback | null,
   handleClose: () => void
 ) {
-  return words.map((word: WordDescriptorDisplay, wordIndex: number) => Word({
+  return words.map((word: WordDescriptorDisplay, wordIndex: number) => ViewerWord({
     word, selectedWord, colorSelected, sizeSelected, defaultSize, wordIndex, clickHandler, handleClose
   }));
 }

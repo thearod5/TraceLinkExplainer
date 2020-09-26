@@ -32,8 +32,6 @@ export function DefaultTraceArtifactDisplay(
   )
 }
 
-
-
 export function handleTraceInformationRequest(traceInformation: TraceInformation) {
   const { dispatch } = store
   const trace: Trace = getTrace(store.getState())

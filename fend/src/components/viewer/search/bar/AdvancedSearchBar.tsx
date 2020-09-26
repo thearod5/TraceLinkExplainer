@@ -19,7 +19,7 @@ interface AdvancedSearchBarProps {
 
 export default function AdvancedSearchBar(props: AdvancedSearchBarProps) {
   return (<div className="flexRowSpaceAround sizeFull">
-    <div className="centeredColumn padLight">
+    <div className="centeredColumn padSmall">
       {props.validQuery ? (
         <CheckIcon color="secondary" className="heightFull" />
       ) : (
