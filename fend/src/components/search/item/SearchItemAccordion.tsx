@@ -75,8 +75,6 @@ export default function SearchItemAccordion(props: SearchResultProps) {
             colorSelected={true}
             sizeSelected={false}
             defaultSize={1}
-            selectedWord={null}
-            setSelectedWord={null}
           />
         </Box>
 

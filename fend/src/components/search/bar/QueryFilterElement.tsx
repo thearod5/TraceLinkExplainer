@@ -34,7 +34,7 @@ export default function QueryFilterElement(props: BasicSearchElementProps) {
             onChange={createOnChangeHandler(props.setFilter)}
             color="secondary"
           >
-            {props.filterOperations.map(option => <MenuItem value={option}>{option}</MenuItem>)}
+            {props.filterOperations.map(option => <MenuItem key={option} value={option}>{option}</MenuItem>)}
           </Select>
         </FormControl>
 

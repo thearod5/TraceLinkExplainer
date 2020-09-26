@@ -57,6 +57,14 @@ export interface TraceInformation {
   score: number; // similarities score for when estimations are calculated
 }
 
+export interface Trace {
+  targetWords: WordDescriptors | null
+  sourceWords: WordDescriptors | null
+  relationships: Relationships | null
+  relationshipColors: Record<string, string> | null
+  selectedWord: WordDescriptorDisplay | null
+}
+
 //FEND version of WordDescriptor
 export interface WordDescriptorDisplay {
   word: string;
@@ -70,6 +78,12 @@ export type Words = WordDescriptorDisplay[];
 /*
  * Type Definitions
  */
+
+export function isTrace(obj?: any): obj is Trace {
+  const requiredKeys = ["targetWords", "sourceWords", "relationships", "relationshipColors", "selectedWord"]; // TODO: Automate generation of list of keys
+  return objectContainsKeys(requiredKeys, obj, true);
+}
+
 
 export function isTraceRetrievealPayload(
   obj: object,

@@ -1,16 +1,16 @@
 import React from "react";
-import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
-import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
-import { FamilyColors, Relationships, WordDescriptors } from "../../shared/types/Trace";
-import { colors } from "../constants";
-import ArtifactAccordion from "./accordion/ArtifactAccordion";
+import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../../shared/artifacts/WordCreator";
+import { Artifact, ArtifactIdentifier } from "../../../shared/types/Dataset";
+import { FamilyColors, Relationships, WordDescriptors } from "../../../shared/types/Trace";
+import { colors } from "../../constants";
+import ArtifactAccordion from "./ArtifactAccordion";
 
 export function getDefaultArtifactDisplay(
   artifact: ArtifactIdentifier,
   words: WordDescriptors,
   expanded: boolean,
   onExpand: () => void,
-  onShrink: () => void
+  onShrink: () => void,
 ) {
   return (
     <ArtifactAccordion
@@ -34,7 +34,7 @@ function getTraceArtifactDisplay(
   familyColors: FamilyColors,
   expanded: boolean,
   onExpand: () => void,
-  onShrink: () => void
+  onShrink: () => void,
 ) {
   return (
     <ArtifactAccordion
@@ -46,7 +46,8 @@ function getTraceArtifactDisplay(
       familyColors={familyColors}
       expanded={expanded}
       onExpand={onExpand}
-      onShrink={onShrink} />
+      onShrink={onShrink}
+    />
   );
 }
 
@@ -57,7 +58,8 @@ export function createTraceArtifactDisplays(
   selectedIndex: number,
   traceWords: WordDescriptors,
   familyColors: Record<string, string>,
-  setIndex: (index: number) => void) {
+  setIndex: (index: number) => void,
+) {
   return (
     <div className="heightFull overflowScroll"> {
       artifacts.map((artifact, index) => {
@@ -77,8 +79,7 @@ export function createTraceArtifactDisplays(
             createDefaultWordDescriptors(artifact.body),
             false,
             () => setIndex(index),
-            () => setIndex(-1)
-          );
+            () => setIndex(-1));
         }
       })
     }

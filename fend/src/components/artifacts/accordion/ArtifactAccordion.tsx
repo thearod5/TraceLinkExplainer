@@ -2,7 +2,7 @@ import { Accordion } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
-import { FamilyColors, Relationships, WordDescriptorDisplay, WordDescriptors, Words } from "../../../shared/types/Trace";
+import { FamilyColors, Relationships, WordDescriptors, Words } from "../../../shared/types/Trace";
 import { primaryColor } from "../../../styles/theme";
 import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from "../../constants";
 import ArtifactAccordionDetails from "./ArtifactAccordionDetails";
@@ -29,7 +29,7 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
   const [sizeSelected, setSizeSelected] = useState(true);
   const [colorSelected, setColorSelected] = useState(true);
   const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
-  const [selectedWord, setSelectedWord] = useState<WordDescriptorDisplay | null>(null)
+
 
   const handleZoomIn = () => setFontSize(fontSize + FONT_SIZE_DELTA);
   const handleZoomOut = () => setFontSize(fontSize - FONT_SIZE_DELTA)
@@ -74,8 +74,6 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
         colorSelected={colorSelected}
         sizeSelected={sizeSelected}
         fontSize={fontSize}
-        selectedWord={selectedWord}
-        setSelectedWord={setSelectedWord}
         toolbarIcons={toolbarIcons}
       />
     </Accordion>
