@@ -1,6 +1,6 @@
 import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
 import {
-  FamilyColors,
+  RelationshipColors,
   KeyWordType, Relationships,
   SyntaxWordType,
   WordDescriptor, WordDescriptorDisplay,
@@ -53,8 +53,8 @@ export function getDefaultFamilies(): Relationships {
   return families
 }
 
-export function getDefaultFamilyColors(): FamilyColors {
-  const colors: FamilyColors = {};
+export function getDefaultFamilyColors(): RelationshipColors {
+  const colors: RelationshipColors = {};
   colors[SyntaxWordType] = "#FF8C00";
   colors[KeyWordType] = "#79ADDC";
   colors[""] = "black";
@@ -65,7 +65,7 @@ export function createArtifactDisplayModel(
   artifact: Artifact,
   families: Relationships = getDefaultFamilies(),
   defaultSize: number = 1,
-  familyColors: FamilyColors = getDefaultFamilyColors(),
+  familyColors: RelationshipColors = getDefaultFamilyColors(),
   defaultColor: string = "black"
 ): ArtifactDisplayModel {
   const wordDescriptors = createDefaultWordDescriptors(artifact.body);
@@ -108,7 +108,7 @@ export function createWords(
   descriptors: WordDescriptors,
   families: Relationships,
   defaultSize: number,
-  familyColors: FamilyColors,
+  familyColors: RelationshipColors,
   defaultColor: string = "black"
 ): Words {
   const createWordFromDescriptor = (descriptor: WordDescriptor) =>
@@ -126,7 +126,7 @@ export function createWord(
   descriptor: WordDescriptor,
   families: Relationships,
   defaultSize: number,
-  familyColors: FamilyColors,
+  familyColors: RelationshipColors,
   defaultColor: string
 ): WordDescriptorDisplay {
   const hasFamily = descriptor.relationshipIds.length > 0

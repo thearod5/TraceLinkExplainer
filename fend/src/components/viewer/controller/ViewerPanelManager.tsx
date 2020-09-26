@@ -14,7 +14,7 @@ interface TraceSourceArtifactDisplayProps {
   sourceIndex: number
 }
 
-export function TraceSourceArtifactDisplay(
+export function DefaultTraceArtifactDisplay(
   props: TraceSourceArtifactDisplayProps
 ) {
   const { selectedSources, setIndex, sourceIndex } = props
@@ -24,7 +24,7 @@ export function TraceSourceArtifactDisplay(
         artifact,
         createDefaultWordDescriptors(artifact.body),
         index === sourceIndex,
-        () => setIndex(sourceIndex),
+        () => setIndex(index),
         () => setIndex(-1)
       ))
   return (
@@ -51,7 +51,7 @@ export function handleTraceInformationRequest(traceInformation: TraceInformation
   }))
 }
 
-export function updatePanel(
+export function updateTraceArtifactDisplayInPanel(
   type: "SOURCE" | "TARGET",
   selectedArtifactIndex: number,
   setSelectedArtifactIndex: NumberSetter,

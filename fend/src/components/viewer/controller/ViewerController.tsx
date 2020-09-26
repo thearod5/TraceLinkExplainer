@@ -16,10 +16,7 @@ import NoSourceMessage from "../intermediate/NoSourceMessage";
 import SourceArtifactSearch from "../search/containers/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/containers/TargetArtifactSearchContainer";
 import { Viewer } from "../Viewer";
-import { handleTraceInformationRequest, TraceSourceArtifactDisplay, updatePanel } from "./ViewerPanelManager";
-
-
-
+import { DefaultTraceArtifactDisplay, handleTraceInformationRequest, updateTraceArtifactDisplayInPanel } from "./ViewerPanelManager";
 
 export default function ViewerController() {
   const INITIAL_LEFT_PANEL = <SourceArtifactSearch />
@@ -45,6 +42,7 @@ export default function ViewerController() {
     if (sourceIndex !== -1)
       setLastSelectedSourceIndex(sourceIndex)
     setSourceIndex(index);
+    console.log("CHANGING INDEX", index)
   }, [sourceIndex])
 
   const setSelectedTargetIndexAdapter = useCallback((index: number) => {
@@ -53,6 +51,9 @@ export default function ViewerController() {
     setTargetIndex(index);
   }, [targetIndex])
 
+  /*
+  * Step. 1 - select sources
+  */
   useEffect(() => {
     if (currentStep === SELECT_SOURCE_STEP) {
       setLeftPanel(INITIAL_LEFT_PANEL)
@@ -60,17 +61,22 @@ export default function ViewerController() {
     }
   }, [currentStep])
 
+  /*
+  * Step. 2 - select targets
+  */
+  const displaySelectedSources = () => setLeftPanel(
+    <DefaultTraceArtifactDisplay
+      selectedSources={selectedSources}
+      setIndex={setSelectedSourceIndexAdapter}
+      sourceIndex={sourceIndex}
+    />)
+  console.log("SOURCEINDEX", sourceIndex)
+
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
-      setLeftPanel(
-        <TraceSourceArtifactDisplay
-          selectedSources={selectedSources}
-          setIndex={setSelectedSourceIndexAdapter}
-          sourceIndex={sourceIndex}
-        />)
+      displaySelectedSources()
     }
-
-  }, [currentStep, selectedSources, sourceIndex, setSelectedSourceIndexAdapter])
+  }, [currentStep, sourceIndex])
   //separate so reloading one does not affect the other
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
@@ -79,15 +85,11 @@ export default function ViewerController() {
   }, [currentStep])
 
   /*
-   * Makes Async API call for both panels defined below
+   * Step 3. View Trace
    */
   const stateIsCached = () =>
     sourceIndex === lastSelectedSourceIndex &&
     targetIndex === lastSelectedTargetIndex
-
-  console.log(stateIsCached())
-  console.log(sourceIndex, targetIndex)
-  console.log(lastSelectedSourceIndex, lastSelectedTargetIndex)
 
   useEffect(() => {
     if (
@@ -111,11 +113,8 @@ export default function ViewerController() {
     // eslint-disable-next-line
   }, [dataset.name, currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);
 
-  /*
-   * Asyncronously sets the LEFT and RIGHT panels
-   */
   useEffect(() => {
-    updatePanel(
+    updateTraceArtifactDisplayInPanel(
       "SOURCE",
       sourceIndex,
       setSelectedSourceIndexAdapter,
@@ -125,7 +124,7 @@ export default function ViewerController() {
   }, [currentStep, selectedSources, sourceIndex, trace, setSelectedSourceIndexAdapter]);
 
   useEffect(() => {
-    updatePanel(
+    updateTraceArtifactDisplayInPanel(
       "TARGET",
       targetIndex,
       setSelectedTargetIndexAdapter,
@@ -133,7 +132,6 @@ export default function ViewerController() {
       [VIEW_TRACE_STEP]
     )
   }, [currentStep, selectedTargets, targetIndex, trace, setSelectedTargetIndexAdapter]);
-
 
   const modalOpen = trace.selectedWord !== null
 

@@ -1,13 +1,13 @@
 import React from "react";
 import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../../shared/types/Dataset";
-import { FamilyColors, Relationships, WordDescriptors } from "../../../shared/types/Trace";
+import { RelationshipColors, Relationships, WordDescriptors } from "../../../shared/types/Trace";
 import { colors } from "../../constants";
 import ArtifactAccordion from "./ArtifactAccordion";
 
 export function getDefaultArtifactDisplay(
   artifact: ArtifactIdentifier,
-  words: WordDescriptors,
+  wordDescriptors: WordDescriptors,
   expanded: boolean,
   onExpand: () => void,
   onShrink: () => void,
@@ -17,9 +17,9 @@ export function getDefaultArtifactDisplay(
       key={`${artifact.type}:${artifact.id}`}
       artifactId={artifact.id}
       artifactType={artifact.type}
-      words={words}
-      families={getDefaultFamilies()}
-      familyColors={getDefaultFamilyColors()}
+      wordDescriptors={wordDescriptors}
+      relationships={getDefaultFamilies()}
+      relationshipColors={getDefaultFamilyColors()}
       expanded={expanded}
       onExpand={onExpand}
       onShrink={onShrink}
@@ -28,10 +28,10 @@ export function getDefaultArtifactDisplay(
 }
 
 function getTraceArtifactDisplay(
-  artifactWords: WordDescriptors,
+  wordDescriptors: WordDescriptors,
   families: Relationships,
   artifact: Artifact,
-  familyColors: FamilyColors,
+  familyColors: RelationshipColors,
   expanded: boolean,
   onExpand: () => void,
   onShrink: () => void,
@@ -41,9 +41,9 @@ function getTraceArtifactDisplay(
       key={`${artifact.type}:${artifact.id}`}
       artifactId={artifact.id}
       artifactType={artifact.type}
-      words={artifactWords}
-      families={families}
-      familyColors={familyColors}
+      wordDescriptors={wordDescriptors}
+      relationships={families}
+      relationshipColors={familyColors}
       expanded={expanded}
       onExpand={onExpand}
       onShrink={onShrink}
@@ -90,8 +90,8 @@ export function createTraceArtifactDisplays(
  * Factory utilities functions
  */
 
-export function createFamilyColors(familyIds: string[]): FamilyColors {
-  const familyColors: FamilyColors = {};
+export function createFamilyColors(familyIds: string[]): RelationshipColors {
+  const familyColors: RelationshipColors = {};
   familyIds.forEach((family, index) => {
     familyColors[family] = colors[index % colors.length];
   });

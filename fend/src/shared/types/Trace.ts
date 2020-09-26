@@ -138,4 +138,4 @@ export function isWordDescriptors(
     .includes(false);
 }
 
-export type FamilyColors = Record<string, string>; //id to color mapping
+export type RelationshipColors = Record<string, string>; //id to color mapping
