@@ -2,12 +2,8 @@ import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
 import {
   FamilyColors,
   KeyWordType, Relationships,
-
-
   SyntaxWordType,
-
   WordDescriptor, WordDescriptorDisplay,
-
   WordDescriptors,
   Words
 } from "../types/Trace";
@@ -148,6 +144,7 @@ export function createWord(
       mainFamilyId in familyColors
         ? familyColors[mainFamilyId]
         : defaultColor;
+
   } else {
     wordSize = defaultSize
     wordColor = defaultColor

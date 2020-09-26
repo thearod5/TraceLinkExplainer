@@ -46,6 +46,8 @@ export default function ArtifactSelector() {
 
   const dispatch = useDispatch()
 
+  console.log(traceFamilyColors)
+
   useEffect(() => {
     if (currentStep === SELECT_SOURCE_STEP) {
       setLeftPanel(<SourceArtifactSearch />);
@@ -105,7 +107,11 @@ export default function ArtifactSelector() {
       setLoading(true)
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
-          const familyColors = createFamilyColors(Object.keys(traceInformation.relationships));
+          console.log(traceInformation.relationships)
+          const familyColors = createFamilyColors(
+            traceInformation
+              .relationships
+              .map(relationship => relationship.title));
           setTraceFamilyColors(familyColors)
           setSourceWords(traceInformation.sourceDescriptors)
           setTargetWords(traceInformation.targetDescriptors)
