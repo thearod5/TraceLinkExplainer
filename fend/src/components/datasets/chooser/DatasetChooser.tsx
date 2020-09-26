@@ -1,24 +1,24 @@
 import { Box, Button, LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDatasetByName, getDatasetNames } from "../../api/datasets";
+import { getDatasetByName, getDatasetNames } from "../../../api/datasets";
 import {
   changeStep,
   clearData,
   selectDataset,
   setError
-} from "../../redux/actions";
-import { getDataset } from "../../redux/selectors";
-import { appHistory } from "../../redux/store";
-import { FIRST_STEP_IN_WIZARD } from "../../shared/pagechanger/constants";
-import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
-import { Dataset } from "../../shared/types/Dataset";
-import { SELECT_ARTIFACTS_ROUTE } from "../nav/routes";
-import DatasetItem from "./item/DatasetItem";
+} from "../../../redux/actions";
+import { getDataset } from "../../../redux/selectors";
+import { appHistory } from "../../../redux/store";
+import { FIRST_STEP_IN_WIZARD } from "../../../shared/pagechanger/constants";
+import { getStepChangeError } from "../../../shared/pagechanger/PageChanger";
+import { Dataset } from "../../../shared/types/Dataset";
+import { SELECT_ARTIFACTS_ROUTE } from "../../nav/routes";
+import DatasetChooserItem from "./DatasetChooserItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
 
-function DatasetChooser() {
+export default function DatasetChooser() {
   const dataset = useSelector(getDataset);
   const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ function DatasetChooser() {
   };
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
-    <DatasetItem
+    <DatasetChooserItem
       key={dataset}
       dataset={dataset}
       isSelected={currentIndex === indexSelected}
@@ -98,4 +98,3 @@ function DatasetChooser() {
   );
 }
 
-export default DatasetChooser;

@@ -28,7 +28,7 @@ interface ItemDetailsProps {
   onClick: (route: string) => void;
 }
 
-export default function DatasetItemDetails(props: ItemDetailsProps) {
+export default function DatasetChooserItemDetails(props: ItemDetailsProps) {
   return (
     <ItemContainer>
       <ButtonGroup
