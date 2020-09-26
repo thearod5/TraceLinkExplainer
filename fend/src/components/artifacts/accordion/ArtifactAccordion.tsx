@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { createWords } from "../../../shared/artifacts/WordCreator";
 import { FamilyColors, Relationships, WordDescriptorDisplay, WordDescriptors, Words } from "../../../shared/types/Trace";
 import { primaryColor } from "../../../styles/theme";
+import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from "../../constants";
 import ArtifactAccordionDetails from "./ArtifactAccordionDetails";
 import ArtifactAccordionSummary from "./ArtifactAccordionSummary";
 import { createToolbarIcons } from "./ToolbarIcons";
@@ -11,13 +12,7 @@ import { createToolbarIcons } from "./ToolbarIcons";
 /*
  * Accordion for TraceInformation. Manages state changes in accordion.
  */
-
-export const DEFAULT_FONT_COLOR = "black";
-const FONT_SIZE_DELTA = 0.2;
 const ACCORDION_MAX_HEIGHT = 500 //px
-const DEFAULT_FONT_SIZE = 1;
-const SIZE_SELECTED_DEFAULT_VALUE = true;
-const COLOR_SELECTED_DEFAULT_VALUE = true;
 
 interface ArtifactAccordionProps {
   artifactType: string;
@@ -31,8 +26,8 @@ interface ArtifactAccordionProps {
 }
 
 export default function ArtifactAccordion(props: ArtifactAccordionProps) {
-  const [sizeSelected, setSizeSelected] = useState(SIZE_SELECTED_DEFAULT_VALUE);
-  const [colorSelected, setColorSelected] = useState(COLOR_SELECTED_DEFAULT_VALUE);
+  const [sizeSelected, setSizeSelected] = useState(true);
+  const [colorSelected, setColorSelected] = useState(true);
   const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
   const [selectedWord, setSelectedWord] = useState<WordDescriptorDisplay | null>(null)
 

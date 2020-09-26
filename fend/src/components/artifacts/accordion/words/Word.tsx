@@ -1,6 +1,6 @@
 import React from "react";
 import { WordDescriptorDisplay } from "../../../../shared/types/Trace";
-import { DEFAULT_FONT_COLOR } from "../ArtifactAccordion";
+import { DEFAULT_FONT_COLOR } from "../../../constants";
 import { WordCallback } from "./ArtifactAccordionWords";
 
 export interface WordProps {

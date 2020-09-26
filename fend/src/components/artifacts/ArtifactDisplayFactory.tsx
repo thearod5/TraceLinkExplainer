@@ -2,12 +2,8 @@ import React from "react";
 import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../shared/types/Dataset";
 import { FamilyColors, Relationships, WordDescriptors } from "../../shared/types/Trace";
+import { colors } from "../constants";
 import ArtifactAccordion from "./accordion/ArtifactAccordion";
-
-
-export const colors = ["CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "Khaki", "BlueViolet", "FireBrick", "LightGreen", "Maroon",
-  "DeepSkyBlue", "MediumOrchid", "Olive", "SpringGreen"]; //TODO: Add to theme
-
 
 export function getDefaultArtifactDisplay(
   artifact: ArtifactIdentifier,
@@ -62,28 +58,31 @@ export function createTraceArtifactDisplays(
   traceWords: WordDescriptors,
   familyColors: Record<string, string>,
   setIndex: (index: number) => void) {
-  return <div className="heightFull overflowScroll">
-    {artifacts.map((artifact, index) => {
-      if (index === selectedIndex) {
-        return getTraceArtifactDisplay(
-          traceWords,
-          families,
-          artifact,
-          familyColors,
-          true,
-          () => setIndex(index),
-          () => setIndex(-1)
-        );
-      } else {
-        return getDefaultArtifactDisplay(
-          artifact,
-          createDefaultWordDescriptors(artifact.body),
-          false,
-          () => setIndex(index),
-          () => setIndex(-1)
-        );
-      }
-    })}</div>;
+  return (
+    <div className="heightFull overflowScroll"> {
+      artifacts.map((artifact, index) => {
+        if (index === selectedIndex) {
+          return getTraceArtifactDisplay(
+            traceWords,
+            families,
+            artifact,
+            familyColors,
+            true,
+            () => setIndex(index),
+            () => setIndex(-1)
+          );
+        } else {
+          return getDefaultArtifactDisplay(
+            artifact,
+            createDefaultWordDescriptors(artifact.body),
+            false,
+            () => setIndex(index),
+            () => setIndex(-1)
+          );
+        }
+      })
+    }
+    </div>);
 }
 
 /*

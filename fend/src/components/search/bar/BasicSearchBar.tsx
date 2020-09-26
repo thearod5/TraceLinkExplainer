@@ -3,6 +3,9 @@ import { CATEGORICAL_OPERATIONS } from "../../../shared/query/Types";
 import QueryFilterElement from "./QueryFilterElement";
 import { SubmitFuncType } from './SearchBar';
 
+export type REACT_STRING_SETTER = React.Dispatch<React.SetStateAction<string>>
+const EMPTY_QUERY = ""
+
 interface BasicSearchBarProps {
   query: string
   setQuery: SubmitFuncType
@@ -12,9 +15,6 @@ interface BasicSearchBarProps {
   onChangeMode: () => void
 }
 
-const EMPTY_QUERY = ""
-export type REACT_STRING_SETTER = React.Dispatch<React.SetStateAction<string>>
-
 export default function BasicSearchBar(props: BasicSearchBarProps) {
   const [idFilter, setIdFilter] = useState("=")
   const [idQuery, setIdQuery] = useState(EMPTY_QUERY)
@@ -23,7 +23,7 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
   const [typeFilter, setTypeFilter] = useState("=")
   const [typeQuery, setTypeQuery] = useState(EMPTY_QUERY)
 
-  const { setQuery, onSearch, onChangeMode } = props
+  const { setQuery, onSearch } = props
 
   const createQuery = (): string => {
     const queries = [["id", idFilter, idQuery], ["body", bodyFilter, bodyQuery], ["type", typeFilter, typeQuery]]
@@ -53,7 +53,7 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
         setFilter={setIdFilter}
         query={idQuery}
         setQuery={createQuerySetter(setIdQuery)}
-        onSearch={props.onSearch}
+        onSearch={onSearch}
       />
       <QueryFilterElement
         label={"body"}
@@ -62,7 +62,7 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
         setFilter={setBodyFilter}
         query={bodyQuery}
         setQuery={createQuerySetter(setBodyQuery)}
-        onSearch={props.onSearch}
+        onSearch={onSearch}
       />
       <QueryFilterElement
         label={"type"}
@@ -71,7 +71,7 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
         setFilter={setTypeFilter}
         query={typeQuery}
         setQuery={createQuerySetter(setTypeQuery)}
-        onSearch={props.onSearch}
+        onSearch={onSearch}
       />
     </div>)
 }
