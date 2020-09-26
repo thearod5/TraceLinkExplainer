@@ -1,19 +1,19 @@
 import { LinearProgress } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeStep, setError } from "../../redux/actions";
-import { getCurrentStep } from "../../redux/selectors";
-import { ArtifactMutatorActionType } from "../../redux/types";
-import { createArtifactDisplayModel } from "../../shared/artifacts/WordCreator";
+import { changeStep, setError } from "../../../redux/actions";
+import { getCurrentStep } from "../../../redux/selectors";
+import { ArtifactMutatorActionType } from "../../../redux/types";
+import { createArtifactDisplayModel } from "../../../shared/artifacts/WordCreator";
 import {
   SELECT_SOURCE_STEP, VIEW_TRACE_STEP
-} from "../../shared/pagechanger/constants";
-import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
+} from "../../../shared/pagechanger/constants";
+import { getStepChangeError } from "../../../shared/pagechanger/PageChanger";
 import {
   Artifact,
   ArtifactDisplayModel,
   artifactsAreEqual
-} from "../../shared/types/Dataset";
+} from "../../../shared/types/Dataset";
 import SearchBar from "./bar/SearchBar";
 import {
   SEARCH_DISPLAY_LIMIT,

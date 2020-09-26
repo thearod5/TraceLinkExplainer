@@ -16,8 +16,8 @@ import {
 import { Artifact, Dataset } from "../../shared/types/Dataset";
 import { Trace } from "../../shared/types/Trace";
 import { NumberSetter } from "../constants";
-import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
-import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
+import SourceArtifactSearch from "./search/SourceArtifactSearchContainer";
+import TargetArtifactSearch from "./search/TargetArtifactSearchContainer";
 import NoSourceMessage from "./NoSourceMessage";
 import { TraceSourceArtifactDisplay } from "./PanelFactory";
 import { PanelView } from "./PanelView";

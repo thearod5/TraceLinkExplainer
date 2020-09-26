@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CATEGORICAL_OPERATIONS } from "../../../shared/query/Types";
+import { CATEGORICAL_OPERATIONS } from "../../../../shared/query/Types";
 import QueryFilterElement from "./QueryFilterElement";
 import { SubmitFuncType } from './SearchBar';
 
