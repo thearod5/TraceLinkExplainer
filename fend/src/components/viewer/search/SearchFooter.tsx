@@ -49,7 +49,7 @@ export function SearchFooter(props: SearchFooterProps) {
     endIcon={<KeyboardTabIcon color={"primary"} />}
     onClick={props.onStepCompleted}
   >
-    {props.message}({props.numberSelected})
+    {props.message} ({props.numberSelected})
   </Button>
 
   return (

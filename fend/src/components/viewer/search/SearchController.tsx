@@ -14,16 +14,12 @@ import {
   ArtifactDisplayModel,
   artifactsAreEqual
 } from "../../../shared/types/Dataset";
+import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_TARGET_MESSAGE } from "../../constants";
 import SearchBar from "./bar/SearchBar";
-import {
-  SEARCH_DISPLAY_LIMIT,
-  SEARCH_LIMIT,
-  SELECT_SOURCE_MESSAGE,
-  SELECT_TARGET_MESSAGE
-} from "./Constants";
 import { SearchFooter } from "./SearchFooter";
 import SearchResults from "./SearchResults";
 import { SuggestionFunctionType } from "./types";
+
 
 /*
  * In charge of managing the state of the search panel.
