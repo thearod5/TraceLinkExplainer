@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
 import { getTraceInformation } from "../../api/trace";
-import { setError, setTrace } from "../../redux/actions";
+import { setError } from "../../redux/actions";
 import {
   getCurrentStep,
   getDataset,
@@ -12,20 +12,19 @@ import {
   getTrace
 } from "../../redux/selectors";
 import {
-  createDefaultWordDescriptors
-} from "../../shared/artifacts/WordCreator";
-import {
   SELECT_SOURCE_STEP,
   SELECT_TARGET_STEP,
   VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
 import { Artifact, Dataset } from "../../shared/types/Dataset";
 import { Trace } from "../../shared/types/Trace";
+import { NumberSetter } from "../constants";
 import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
-import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./accordion/ArtifactAccordionFactory";
 import { WordModal } from "./accordion/TraceExplanation";
 import NoSourceMessage from "./NoSourceMessage";
+import { TraceSourceArtifactDisplay } from "./PanelFactory";
+import { handleTraceInformationRequest, updatePanel } from "./TraceArtifactController";
 
 export default function ArtifactSelector() {
   const trace: Trace = useSelector(getTrace)
@@ -51,7 +50,7 @@ export default function ArtifactSelector() {
     }
   }, [currentStep])
 
-  const setSelectedSourceIndexAdapter = (index: number) => {
+  const setSelectedSourceIndexAdapter: NumberSetter = (index: number) => {
     if (sourceIndex !== -1)
       setLastSelectedSourceIndex(sourceIndex)
     setSourceIndex(index);
@@ -66,19 +65,12 @@ export default function ArtifactSelector() {
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
       setLeftPanel(
-        <div className='heightFull overflowScroll'>
-          {selectedSources.map((artifact: Artifact, index: number) =>
-            getDefaultArtifactDisplay(
-              artifact,
-              createDefaultWordDescriptors(artifact.body),
-              index === sourceIndex,
-              () => setSelectedSourceIndexAdapter(sourceIndex),
-              () => setSelectedSourceIndexAdapter(-1)
-            ))}
-        </div>
-      )
+        <TraceSourceArtifactDisplay
+          selectedSources={selectedSources}
+          setIndex={setSelectedSourceIndexAdapter}
+          sourceIndex={sourceIndex}
+        />)
     }
-    // eslint-disable-next-line
   }, [currentStep, selectedSources, sourceIndex])
 
   useEffect(() => {
@@ -90,32 +82,22 @@ export default function ArtifactSelector() {
   /*
    * Makes Async API call for both panels defined below
    */
+  const stateIsCached = () =>
+    sourceIndex === lastSelectedSourceIndex &&
+    targetIndex === lastSelectedTargetIndex
 
   useEffect(() => {
     if (
       currentStep === VIEW_TRACE_STEP &&
       sourceIndex > -1 &&
       targetIndex > -1 &&
-      (sourceIndex !== lastSelectedSourceIndex &&
-        targetIndex !== lastSelectedTargetIndex)) {
+      !stateIsCached()) {
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
       setLoading(true)
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
-
-          const familyColors = createFamilyColors(
-            traceInformation
-              .relationships
-              .map(relationship => relationship.title));
-          dispatch(setTrace({
-            ...trace,
-            relationships: traceInformation.relationships,
-            relationshipColors: familyColors,
-            sourceWords: traceInformation.sourceDescriptors,
-            targetWords: traceInformation.targetDescriptors,
-            selectedWord: null
-          }))
+          handleTraceInformationRequest(traceInformation)
           setLoading(false)
         })
         .catch((e) => {
@@ -127,53 +109,22 @@ export default function ArtifactSelector() {
   }, [dataset.name, currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);
 
   /*
-   * Asyncronously sets the LEFT PANEL
+   * Asyncronously sets the LEFT and RIGHT panels
    */
   useEffect(() => {
-    if (
-      currentStep >= VIEW_TRACE_STEP &&
-      trace.sourceWords !== null &&
-      trace.relationshipColors !== null &&
-      trace.relationships !== null
-    ) {
-
-
-      const leftTracePanel = createTraceArtifactDisplays(
-        selectedSources,
-        trace.relationships,
-        sourceIndex,
-        trace.sourceWords,
-        trace.relationshipColors,
-        setSelectedSourceIndexAdapter
-      )
-      setLeftPanel(
-        leftTracePanel
-      );
-    }
+    updatePanel(
+      "SOURCE",
+      sourceIndex,
+      setSelectedSourceIndexAdapter,
+      setLeftPanel)
   }, [currentStep, selectedSources, sourceIndex, trace]);
 
-  /*
-  * Asyncronously sets the RIGHT PANEL
-  */
   useEffect(() => {
-    if (
-      currentStep >= VIEW_TRACE_STEP &&
-      trace.targetWords !== null &&
-      trace.relationshipColors !== null &&
-      trace.relationships !== null
-    ) {
-      const rightTracePanel = createTraceArtifactDisplays(
-        selectedTargets,
-        trace.relationships,
-        targetIndex,
-        trace.targetWords,
-        trace.relationshipColors,
-        setSelectedTargetIndexAdapter
-      )
-      setRightPanel(
-        rightTracePanel
-      );
-    }
+    updatePanel(
+      "TARGET",
+      targetIndex,
+      setSelectedTargetIndexAdapter,
+      setRightPanel)
   }, [currentStep, selectedTargets, targetIndex, trace]);
 
   const body = <SplitPane split="vertical">

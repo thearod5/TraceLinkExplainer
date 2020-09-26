@@ -9,3 +9,5 @@ export const DEFAULT_FONT_SIZE = 1;
 export const FONT_SIZE_DELTA = 0.2;
 
 export type WordDescriptorDisplaySetter = React.Dispatch<React.SetStateAction<WordDescriptorDisplay | null>>
+export type NumberSetter = (num: number) => void
+export type ElementSetter = (value: React.SetStateAction<JSX.Element | null>) => void
