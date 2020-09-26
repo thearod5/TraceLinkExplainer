@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SplitPane from "react-split-pane";
 import { getTraceInformation } from "../../api/trace";
-import { setError } from "../../redux/actions";
+import { setError, setTrace } from "../../redux/actions";
 import {
   getCurrentStep,
   getDataset,
   getSelectedSources,
-  getSelectedTargets
+  getSelectedTargets,
+  getTrace
 } from "../../redux/selectors";
 import {
   createDefaultWordDescriptors
@@ -19,13 +20,15 @@ import {
   VIEW_TRACE_STEP
 } from "../../shared/pagechanger/constants";
 import { Artifact, Dataset } from "../../shared/types/Dataset";
-import { Relationships, WordDescriptors } from "../../shared/types/Trace";
+import { Trace } from "../../shared/types/Trace";
 import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
 import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from "./accordion/ArtifactAccordionFactory";
+import { WordModal } from "./accordion/TraceExplanation";
 import NoSourceMessage from "./NoSourceMessage";
 
 export default function ArtifactSelector() {
+  const trace: Trace = useSelector(getTrace)
   const dataset: Dataset = useSelector(getDataset);
   const selectedSources: Artifact[] = useSelector(getSelectedSources);
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
@@ -38,11 +41,6 @@ export default function ArtifactSelector() {
   const [targetIndex, setTargetIndex] = useState(0);
   const [lastSelectedSourceIndex, setLastSelectedSourceIndex] = useState(-1);
   const [lastSelectedTargetIndex, setLastSelectedTargetIndex] = useState(-1);
-
-  const [targetWords, setTargetWords] = useState<WordDescriptors | null>(null);
-  const [sourceWords, setSourceWords] = useState<WordDescriptors | null>(null);
-  const [families, setFamilies] = useState<Relationships | null>(null);
-  const [traceFamilyColors, setTraceFamilyColors] = useState<Record<string, string> | null>(null);
 
   const dispatch = useDispatch()
 
@@ -105,20 +103,24 @@ export default function ArtifactSelector() {
       setLoading(true)
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
-          console.log(traceInformation.relationships)
+
           const familyColors = createFamilyColors(
             traceInformation
               .relationships
               .map(relationship => relationship.title));
-          setTraceFamilyColors(familyColors)
-          setSourceWords(traceInformation.sourceDescriptors)
-          setTargetWords(traceInformation.targetDescriptors)
-          setFamilies(traceInformation.relationships)
+          dispatch(setTrace({
+            ...trace,
+            relationships: traceInformation.relationships,
+            relationshipColors: familyColors,
+            sourceWords: traceInformation.sourceDescriptors,
+            targetWords: traceInformation.targetDescriptors,
+            selectedWord: null
+          }))
           setLoading(false)
         })
         .catch((e) => {
           setLoading(false)
-          dispatch(setError(e))
+          dispatch(setError(e.toString()))
         });
     }
     // eslint-disable-next-line
@@ -130,25 +132,25 @@ export default function ArtifactSelector() {
   useEffect(() => {
     if (
       currentStep >= VIEW_TRACE_STEP &&
-      sourceWords !== null &&
-      traceFamilyColors !== null &&
-      families !== null
+      trace.sourceWords !== null &&
+      trace.relationshipColors !== null &&
+      trace.relationships !== null
     ) {
+
+
       const leftTracePanel = createTraceArtifactDisplays(
         selectedSources,
-        families,
+        trace.relationships,
         sourceIndex,
-        sourceWords,
-        traceFamilyColors,
-        setSelectedSourceIndexAdapter)
+        trace.sourceWords,
+        trace.relationshipColors,
+        setSelectedSourceIndexAdapter
+      )
       setLeftPanel(
         leftTracePanel
       );
-    } else {
-      setError(`SourceWords: ${sourceWords === null}`)
     }
-    // eslint-disable-next-line
-  }, [currentStep, selectedSources, sourceIndex, sourceWords, traceFamilyColors, families]);
+  }, [currentStep, selectedSources, sourceIndex, trace]);
 
   /*
   * Asyncronously sets the RIGHT PANEL
@@ -156,24 +158,23 @@ export default function ArtifactSelector() {
   useEffect(() => {
     if (
       currentStep >= VIEW_TRACE_STEP &&
-      targetWords !== null &&
-      traceFamilyColors !== null &&
-      families !== null
+      trace.targetWords !== null &&
+      trace.relationshipColors !== null &&
+      trace.relationships !== null
     ) {
       const rightTracePanel = createTraceArtifactDisplays(
         selectedTargets,
-        families,
+        trace.relationships,
         targetIndex,
-        targetWords,
-        traceFamilyColors,
-        setSelectedTargetIndexAdapter)
+        trace.targetWords,
+        trace.relationshipColors,
+        setSelectedTargetIndexAdapter
+      )
       setRightPanel(
         rightTracePanel
       );
     }
-    // eslint-disable-next-line
-  }, [currentStep, selectedTargets, targetIndex, targetWords, traceFamilyColors, families]);
-
+  }, [currentStep, selectedTargets, targetIndex, trace]);
 
   const body = <SplitPane split="vertical">
     {leftPanel}
@@ -191,9 +192,16 @@ export default function ArtifactSelector() {
       </div>
     </div>
 
+  const open = trace.selectedWord !== null
+
+  let modal = trace.selectedWord === null ? null : <WordModal
+    open={open}
+  />
+
   return (
     <div className="flexColumn heightFull overflowYHidden">
       {loading ? loadingBar : body}
+      {modal}
     </div>
   );
 }

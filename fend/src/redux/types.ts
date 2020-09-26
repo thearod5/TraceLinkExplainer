@@ -1,4 +1,5 @@
 import { Artifact, ArtifactIdentifier, Dataset } from "../shared/types/Dataset";
+import { Trace } from "../shared/types/Trace";
 
 export interface RootState {
   dataset: Dataset;
@@ -8,6 +9,7 @@ export interface RootState {
   targetIndex: number;
   error: string | undefined;
   currentStep: number;
+  trace: Trace
 }
 
 export interface ArtifactMutatorActionType {

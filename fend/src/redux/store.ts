@@ -5,7 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { initializeEmptyDataset } from "./initializers";
+import { initializeEmptyDataset, initializeEmptyTrace } from "./initializers";
 import rootReducer from "./reducers";
 import { RootState } from "./types";
 
@@ -28,6 +28,7 @@ export function createEmptyState(): RootState {
     targetIndex: 0,
     error: undefined,
     dataset: initializeEmptyDataset(),
+    trace: initializeEmptyTrace()
   };
 }
 

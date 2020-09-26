@@ -1,5 +1,6 @@
 import { getNewStepState } from "../shared/pagechanger/PageChanger";
 import { areArtifacts, isDataset } from "../shared/types/Dataset";
+import { isTrace } from "../shared/types/Trace";
 import {
   CHANGE_STEP_ACTION,
   CLEAR_DATA,
@@ -8,7 +9,8 @@ import {
   SET_ERROR_ACTION,
   SET_SELECTED_SOURCES_ACTION,
   SET_SELECTED_TARGETS_ACTION,
-  UNSELECT_DATASET,
+  SET_TRACE_ACTION,
+  UNSELECT_DATASET
 } from "./actions";
 import { initializeEmptyDataset } from "./initializers";
 import { createEmptyState } from "./store";
@@ -25,7 +27,7 @@ export default (
           ...state,
           dataset: action.payload,
         };
-      } else throw new Error(createReducerError("Dataset", action.payload));
+      } else throw new Error(createReducerError(SELECT_DATASET, "Dataset", action.payload));
 
     case UNSELECT_DATASET:
       return {
@@ -40,7 +42,7 @@ export default (
         return typeof result === "string"
           ? { ...state, error: result }
           : result;
-      } else throw new Error(createReducerError("Number", newStep));
+      } else throw new Error(createReducerError(CHANGE_STEP_ACTION, "Number", newStep));
 
     case SET_SELECTED_SOURCES_ACTION:
       if (areArtifacts(action.payload)) {
@@ -48,7 +50,7 @@ export default (
           ...state,
           selectedSources: action.payload,
         };
-      } else throw new Error(createReducerError("Artifact[]", action.payload));
+      } else throw new Error(createReducerError(SET_SELECTED_SOURCES_ACTION, "Artifact[]", action.payload));
 
     case SET_SELECTED_TARGETS_ACTION:
       if (areArtifacts(action.payload)) {
@@ -56,7 +58,7 @@ export default (
           ...state,
           selectedTargets: action.payload,
         };
-      } else throw new Error(createReducerError("Artifact[]", action.payload));
+      } else throw new Error(createReducerError(SET_SELECTED_TARGETS_ACTION, "Artifact[]", action.payload));
 
     case SET_ERROR_ACTION:
       if (typeof action.payload === "string") {
@@ -67,9 +69,18 @@ export default (
       } else if (action.payload === undefined) {
         return { ...state, error: undefined };
       } else {
-        throw new Error(createReducerError("string", action.payload));
+        throw new Error(createReducerError(SET_ERROR_ACTION, "string", action.payload));
       }
 
+    case SET_TRACE_ACTION:
+      if (isTrace(action.payload)) {
+        return {
+          ...state,
+          trace: action.payload
+        }
+      } else {
+        throw new Error(createReducerError(SET_TRACE_ACTION, "Trace", action.payload));
+      }
     case CLEAR_DATA:
       return createEmptyState();
     default:
@@ -77,6 +88,6 @@ export default (
   }
 };
 
-function createReducerError(error: string, payload: any) {
-  return `Expected a ${error}. Given: ${payload}.`;
+function createReducerError(name: string, error: string, payload: any) {
+  return `Expected a ${error}. Given: ${JSON.stringify(payload)}.`;
 }

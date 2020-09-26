@@ -3,14 +3,17 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from 'react';
 import Graph from "react-graph-vis";
+import { useDispatch, useSelector } from "react-redux";
+import { setTrace } from "../../../redux/actions";
+import { getTrace } from "../../../redux/selectors";
 import { getEdgesInFamilies, getNodesInFamilies } from "../../../shared/artifacts/WordCreator";
-import { Relationships, WordDescriptorDisplay } from "../../../shared/types/Trace";
+import { Relationships } from "../../../shared/types/Trace";
 
 const NETWORK_GRAPH_OPTIONS = {
   edges: {
     color: "#000000"
   },
-  width: "90%",
+  width: "100%",
   height: "400px",
   layout: {
     hierarchical: {
@@ -29,34 +32,39 @@ const NETWORK_GRAPH_OPTIONS = {
 };
 
 interface WordModalProps {
-  open: boolean,
-  handleClose: () => void,
-  selectedWord: WordDescriptorDisplay | null,
-  families: Relationships
+  open: boolean
 }
 
 export function WordModal(
   props: WordModalProps
 ) {
-  if (props.selectedWord === null)
+  const trace = useSelector(getTrace)
+  const { selectedWord, relationships } = trace
+  const dispatch = useDispatch()
+
+  if (selectedWord === null || relationships === null || relationships === null)
     return null
+
+  const handleClose = () => {
+    dispatch(setTrace({ ...trace, selectedWord: null }))
+  }
 
   return (
     <Dialog
       open={props.open}
       fullWidth
       maxWidth={"sm"}
-      onClose={props.handleClose}
+      onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
-      <HoverClose handleClose={props.handleClose} />
-      <DialogTitle className="displayInlineBlock textAlignCenter">{props.selectedWord.word}</DialogTitle>
+      <HoverClose handleClose={handleClose} />
+      <DialogTitle className="displayInlineBlock textAlignCenter">{selectedWord.word}</DialogTitle>
       <div className="padLight">
-        <TraceExplanation families={props.families.filter(family => props.selectedWord?.relationshipIds.includes(family.title))} />
+        <TraceExplanation families={relationships.filter(family => selectedWord.relationshipIds.includes(family.title))} />
       </div>
     </Dialog >
   )

@@ -22,17 +22,19 @@ export function Word(props: WordProps) {
     return <br key={wordId}></br>;
   }
   const familyIntersection = props.selectedWord !== null ? props.selectedWord.relationshipIds.filter(value => props.word.relationshipIds.includes(value)) : [];
-  const isSelectedWord = props.selectedWord !== null && (props.word.word === props.selectedWord.word);
   const isSelectedFamily = familyIntersection.length > 0;
 
   const WORD_COLOR = props.word.color;
   let border;
-  if (isSelectedWord) {
+  if (isSelectedFamily) {
     border = `3px solid ${WORD_COLOR}`;
-  } else if (isSelectedFamily) {
-    border = `1px solid ${WORD_COLOR}`;
   } else {
     border = "none";
+  }
+
+  const handleClick = () => {
+    if (HAS_FAMILY && props.clickHandler !== null)
+      props.clickHandler(props.word)
   }
 
   const fontSize = props.sizeSelected ? props.word.size : props.defaultSize;
@@ -47,7 +49,7 @@ export function Word(props: WordProps) {
         wordWrap: "initial",
         borderBottom: border
       }}
-      onClick={() => HAS_FAMILY && props.clickHandler !== null ? props.clickHandler(props.word) : null}
+      onClick={handleClick}
     >
       {props.word.word}
     </pre>

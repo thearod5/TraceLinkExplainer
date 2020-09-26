@@ -1,4 +1,5 @@
 import { Artifact, Dataset } from "../shared/types/Dataset";
+import { Trace } from "../shared/types/Trace";
 import { ArtifactMutatorActionType } from "./types";
 
 /*
@@ -14,7 +15,8 @@ export type CustomAction =
   | SetError
   | ClearDataAction
   | ClearDataAction
-  | ArtifactMutatorActionType;
+  | ArtifactMutatorActionType
+  | SetTrace;
 
 /*
  * Datasets
@@ -47,23 +49,6 @@ export function unselectDataset(): UnselectDatasetAction {
   };
 }
 
-/*
- * Meta
- */
-
-export const CHANGE_STEP_ACTION = "CHANGE_STEP";
-
-export interface ChangeStepAction {
-  type: typeof CHANGE_STEP_ACTION;
-  payload: number;
-}
-
-export function changeStep(newStep: number) {
-  return {
-    type: CHANGE_STEP_ACTION,
-    payload: newStep,
-  };
-}
 
 /*
  * Artifacts
@@ -104,6 +89,25 @@ export function setSelectedTargets(
 /*
  * Meta
  */
+
+export const SET_TRACE_ACTION = "SET_TRACE_ACTION"
+
+export interface SetTrace {
+  type: typeof SET_TRACE_ACTION;
+  payload: Trace
+}
+
+export function setTrace(trace: Trace) {
+  return {
+    type: SET_TRACE_ACTION,
+    payload: trace
+  }
+}
+
+/*
+ * Meta
+ */
+
 export const SET_ERROR_ACTION = "SET_ERROR_ACTION";
 
 export interface SetError {
@@ -129,5 +133,19 @@ export function clearData(): ClearDataAction {
   return {
     type: CLEAR_DATA,
     payload: undefined,
+  };
+}
+
+export const CHANGE_STEP_ACTION = "CHANGE_STEP";
+
+export interface ChangeStepAction {
+  type: typeof CHANGE_STEP_ACTION;
+  payload: number;
+}
+
+export function changeStep(newStep: number) {
+  return {
+    type: CHANGE_STEP_ACTION,
+    payload: newStep,
   };
 }

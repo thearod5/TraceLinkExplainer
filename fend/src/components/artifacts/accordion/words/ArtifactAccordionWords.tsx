@@ -1,7 +1,9 @@
 
 import React from "react";
-import { Relationships, WordDescriptorDisplay, Words } from "../../../../shared/types/Trace";
-import { WordModal } from "../TraceExplanation";
+import { useDispatch, useSelector } from "react-redux";
+import { setTrace } from "../../../../redux/actions";
+import { getSelectedWord, getTrace } from "../../../../redux/selectors";
+import { Relationships, Trace, WordDescriptorDisplay, Words } from "../../../../shared/types/Trace";
 import { Word } from "./Word";
 
 interface ArtifactWordsProps {
@@ -10,32 +12,27 @@ interface ArtifactWordsProps {
   colorSelected: boolean;
   sizeSelected: boolean;
   defaultSize: number;
-  selectedWord: WordDescriptorDisplay | null;
-  setSelectedWord: ((newValue: null | WordDescriptorDisplay) => void) | null
 }
 
 export default function ArtifactAccordionWords(props: ArtifactWordsProps) {
+  const trace: Trace = useSelector(getTrace)
+  const selectedWord = useSelector(getSelectedWord)
+  const dispatch = useDispatch()
 
-  const handleClose = () => props.setSelectedWord !== null ? props.setSelectedWord(null) : () => null
+  const handleClose = () => dispatch(setTrace({ ...trace, selectedWord: null }))
+  const setSelectedWord: WordCallback = (word: WordDescriptorDisplay) => dispatch(setTrace({ ...trace, selectedWord: word }))
 
   const body = createWords(
     props.words,
-    props.selectedWord,
+    selectedWord,
     props.colorSelected,
     props.sizeSelected,
     props.defaultSize,
-    props.setSelectedWord,
+    setSelectedWord,
     handleClose);
-  const open = props.selectedWord !== null
   return (
     <div className="textAlignLeft overflowScroll">
       <div className="sizeFull padLight overflowScroll">{body}</div>
-      <WordModal
-        open={open}
-        handleClose={handleClose}
-        selectedWord={props.selectedWord}
-        families={props.families}
-      />
     </div>
   );
 }
