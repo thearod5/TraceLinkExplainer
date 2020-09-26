@@ -3,7 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
-import ArtifactSelector from "./components/viewer/controller/ViewerController";
+import ViewerController from "./components/viewer/controller/ViewerController";
 import DatasetViewer from "./components/datasets/DatasetView";
 import Home from "./components/home/Home";
 import NavBar from "./components/nav/NavBar";
@@ -32,7 +32,7 @@ function App() {
               <main className="flexColumn widthFull" style={{ height: "90%" }}>
                 <Switch>
                   <Route path={SELECT_ARTIFACTS_ROUTE}>
-                    <ArtifactSelector />
+                    <ViewerController />
                   </Route>
                   <Route path={DATASET_ROUTE}>
                     <DatasetViewer />

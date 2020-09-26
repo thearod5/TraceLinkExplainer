@@ -3,14 +3,14 @@ import React from 'react';
 import SplitPane from "react-split-pane";
 import { WordModal } from "../accordion/TraceExplanation";
 
-interface PanelViewProps {
+interface ViewerProps {
   leftPanel: JSX.Element | null
   rightPanel: JSX.Element
   loading: boolean
   modalOpen: boolean
 }
 
-export function PanelView(props: PanelViewProps) {
+export function Viewer(props: ViewerProps) {
   const { leftPanel, rightPanel, modalOpen, loading } = props
   const loadingBar = <LoadingBar open={loading} />
   return (

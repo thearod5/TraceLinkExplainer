@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTraceInformation } from "../../../api/trace";
 import { setError } from "../../../redux/actions";
@@ -19,13 +19,12 @@ import { NumberSetter } from "../../constants";
 import SourceArtifactSearch from "../search/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/TargetArtifactSearchContainer";
 import NoSourceMessage from "./NoSourceMessage";
-import { TraceSourceArtifactDisplay } from "./ViewerPanelManager";
-import { PanelView } from "./Viewer";
-import { handleTraceInformationRequest, updatePanel } from "../TraceArtifactController";
+import { Viewer } from "./Viewer";
+import { handleTraceInformationRequest, TraceSourceArtifactDisplay, updatePanel } from "./ViewerPanelManager";
 
 
 
-export default function ArtifactSelector() {
+export default function ViewerController() {
   const INITIAL_LEFT_PANEL = <SourceArtifactSearch />
   const INITIAL_RIGHT_PANEL = <NoSourceMessage />
 
@@ -45,17 +44,17 @@ export default function ArtifactSelector() {
 
   const dispatch = useDispatch()
 
-  const setSelectedSourceIndexAdapter: NumberSetter = (index: number) => {
+  const setSelectedSourceIndexAdapter: NumberSetter = useCallback((index: number) => {
     if (sourceIndex !== -1)
       setLastSelectedSourceIndex(sourceIndex)
     setSourceIndex(index);
-  }
+  }, [sourceIndex])
 
-  const setSelectedTargetIndexAdapter = (index: number) => {
+  const setSelectedTargetIndexAdapter = useCallback((index: number) => {
     if (targetIndex !== -1)
       setLastSelectedTargetIndex(targetIndex)
     setTargetIndex(index);
-  }
+  }, [targetIndex])
 
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
@@ -66,7 +65,7 @@ export default function ArtifactSelector() {
           sourceIndex={sourceIndex}
         />)
     }
-  }, [currentStep, selectedSources, sourceIndex])
+  }, [currentStep, selectedSources, sourceIndex, setSelectedSourceIndexAdapter])
 
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
@@ -112,7 +111,7 @@ export default function ArtifactSelector() {
       sourceIndex,
       setSelectedSourceIndexAdapter,
       setLeftPanel)
-  }, [currentStep, selectedSources, sourceIndex, trace]);
+  }, [currentStep, selectedSources, sourceIndex, trace, setSelectedSourceIndexAdapter]);
 
   useEffect(() => {
     updatePanel(
@@ -120,13 +119,13 @@ export default function ArtifactSelector() {
       targetIndex,
       setSelectedTargetIndexAdapter,
       setRightPanel)
-  }, [currentStep, selectedTargets, targetIndex, trace]);
+  }, [currentStep, selectedTargets, targetIndex, trace, setSelectedTargetIndexAdapter]);
 
 
   const modalOpen = trace.selectedWord !== null
 
   return (
-    <PanelView
+    <Viewer
       leftPanel={leftPanel}
       rightPanel={rightPanel}
       loading={loading}
