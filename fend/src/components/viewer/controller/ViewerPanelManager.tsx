@@ -64,35 +64,14 @@ export function updateTraceArtifactDisplayInPanel(
   setPanel: ElementSetter,
   stepsRequired: number[]
 ) {
-  const state = store.getState();
   const currentStep = store.getState().currentStep
-  const trace = store.getState().trace
-
-  const { relationships, relationshipColors, sourceWords, targetWords } = trace;
-  const typeIndex = type === "SOURCE" ? 0 : 1
-
-  const selectedArtifactsTuple = [state.selectedSources, state.selectedTargets]
-  const artifactWordsTuple = [sourceWords, targetWords]
-
-  const selectedArtifacts: Artifact[] = selectedArtifactsTuple[typeIndex]
-  const artifactWords = artifactWordsTuple[typeIndex]
-
-  if (
-    stepsRequired.includes(currentStep) &&
-    artifactWords !== null &&
-    relationshipColors !== null &&
-    relationships !== null
-  ) {
+  if (stepsRequired.includes(currentStep)) {
     const tracePanel = < TracedArtifactDisplay
       type={type}
-      artifacts={selectedArtifacts}
-      relationships={relationships}
-      traceWords={artifactWords}
-      relationshipColors={relationshipColors}
     />
 
     setPanel(
       tracePanel
     );
-  } 
+  }
 }

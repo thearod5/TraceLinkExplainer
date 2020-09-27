@@ -11,6 +11,7 @@ export interface RootState {
   traceTargetIndex: number;
   error: string | undefined;
   currentStep: number;
+  loading: boolean;
   trace: Trace
 }
 
