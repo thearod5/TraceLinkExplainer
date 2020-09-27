@@ -12,8 +12,8 @@ import ViewerWords from '../words/ViewerWords';
 
 
 interface ArtifactAccordionDetailsProps {
-  words: Words;
-  families: Relationships;
+  words: Words | null;
+  families: Relationships | null;
   colorSelected: boolean;
   sizeSelected: boolean;
   fontSize: number;
@@ -23,32 +23,38 @@ interface ArtifactAccordionDetailsProps {
 
 export default function ArtifactAccordionDetails(props: ArtifactAccordionDetailsProps) {
   const loading = useSelector(getLoading)
-  const body = (
-    <div
+
+  const { style, words, families, colorSelected, sizeSelected, fontSize, toolbarIcons } = props
+  let body;
+
+  if (!loading && words !== null && families !== null) {
+    body = (<div
       className="flexColumn"
-      style={props.style}>
+      style={style}>
       <div className="overflowScroll">
         <ViewerWords
-          words={props.words}
-          families={props.families}
-          colorSelected={props.colorSelected}
-          sizeSelected={props.sizeSelected}
-          defaultSize={props.fontSize}
+          words={words}
+          families={families}
+          colorSelected={colorSelected}
+          sizeSelected={sizeSelected}
+          defaultSize={fontSize}
         />
       </div>
       <div className="flexRowCentered justifyContentCenter padSmall">
         <div
           className="flexRowCentered justifyContentCenter roundBorderMedium"
           style={{ backgroundColor: secondaryColor }}>
-          {props.toolbarIcons}
+          {toolbarIcons}
         </div>
       </div>
-    </div>
-  )
+    </div>)
+  } else {
+    body = <LinearProgress color="secondary" />
+  }
 
-  const loadingBar = <LinearProgress color="secondary" />
+
   return (
     <AccordionDetails className="flexColumn">
-      {loading ? loadingBar : body}
+      {body}
     </AccordionDetails>)
 }

@@ -35,12 +35,7 @@ export function TracedArtifactDisplay(props: TracedArtifactAccordionDisplayProps
   return (
     <div className="heightFull overflowScroll"> {
       artifacts.map((artifact, index) => {
-        if (
-          index === selectedIndex
-          && traceWords !== null
-          && relationships !== null
-          && relationshipColors !== null
-        ) {
+        if (index === selectedIndex) {
           return createTracedArtifactAccordion(
             traceWords,
             relationships,
@@ -50,7 +45,9 @@ export function TracedArtifactDisplay(props: TracedArtifactAccordionDisplayProps
             () => onSetIndex(index),
             () => onSetIndex(-1)
           );
-        } else {
+        }
+
+        else {
           return createDefaultArtifactAccordion(
             artifact,
             createDefaultWordDescriptors(artifact.body),
@@ -85,10 +82,10 @@ export function createDefaultArtifactAccordion(
 }
 
 function createTracedArtifactAccordion(
-  wordDescriptors: WordDescriptors,
-  families: Relationships,
+  wordDescriptors: WordDescriptors | null,
+  families: Relationships | null,
   artifact: Artifact,
-  familyColors: RelationshipColors,
+  familyColors: RelationshipColors | null,
   expanded: boolean,
   onExpand: () => void,
   onShrink: () => void,

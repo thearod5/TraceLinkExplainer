@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedSourceIndex, setSelectedTargetIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from "../../../redux/actions";
+import { setSelectedSourceIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from "../../../redux/actions";
 import { getSelectedSourceIndex, getSelectedSources, getTrace } from "../../../redux/selectors";
-import store, { NOT_CACHED } from "../../../redux/store";
+import store from "../../../redux/store";
 import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCreator';
 import { Artifact } from "../../../shared/types/Dataset";
 import { Trace, TraceInformation } from "../../../shared/types/Trace";
@@ -53,10 +53,6 @@ export function handleTraceInformationRequest(
   }))
   dispatch(setTraceSourceIndex(sourceIndex))
   dispatch(setTraceTargetIndex(targetIndex))
-  if (targetIndex === NOT_CACHED)
-    dispatch(setSelectedTargetIndex(targetIndex))
-  if (sourceIndex === NOT_CACHED)
-    dispatch(setSelectedSourceIndex(sourceIndex))
 }
 
 export function updateTraceArtifactDisplayInPanel(

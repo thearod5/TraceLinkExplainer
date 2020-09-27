@@ -1,7 +1,7 @@
 import { Accordion } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
-import { createWords } from "../../../shared/artifacts/WordCreator";
+import { createWords, getDefaultFamilyColors } from "../../../shared/artifacts/WordCreator";
 import { RelationshipColors, Relationships, WordDescriptors, Words } from "../../../shared/types/Trace";
 import { primaryColor } from "../../../styles/theme";
 import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from "../../constants";
@@ -17,9 +17,9 @@ const ACCORDION_MAX_HEIGHT = 600 //px
 interface ArtifactAccordionProps {
   artifactType: string;
   artifactId: string;
-  wordDescriptors: WordDescriptors;
-  relationships: Relationships;
-  relationshipColors: RelationshipColors;
+  wordDescriptors: WordDescriptors | null;
+  relationships: Relationships | null;
+  relationshipColors: RelationshipColors | null;
   expanded: boolean;
   onExpand: () => void;
   onShrink: () => void;
@@ -45,13 +45,22 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
     sizeSelected,
     setSizeSelected)
 
-  const words: Words = createWords(
-    wordDescriptors,
-    relationships,
-    fontSize,
-    relationshipColors,
-    DEFAULT_FONT_COLOR
-  );
+  let words: Words | null;
+
+  const colors = relationshipColors === null ? getDefaultFamilyColors() : relationshipColors
+  const relationshipsToo = relationships === null ? [] : relationships
+
+  if (wordDescriptors !== null) {
+    words = createWords(
+      wordDescriptors,
+      relationshipsToo,
+      fontSize,
+      colors,
+      DEFAULT_FONT_COLOR
+    )
+  } else {
+    words = null;
+  }
 
   const handleAccordionExpandClick = (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
     const callBack = newExpanded ? onExpand : onShrink

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTraceInformation } from "../../../api/trace";
-import { setError, setLoading } from "../../../redux/actions";
+import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex } from "../../../redux/actions";
 import {
   getCurrentStep,
   getDataset,
@@ -91,6 +91,8 @@ export default function ViewerController() {
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
 
+      dispatch(setSelectedSourceIndex(sourceIndex))
+      dispatch(setSelectedTargetIndex(targetIndex))
       dispatch(setLoading(true))
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
@@ -103,7 +105,9 @@ export default function ViewerController() {
         });
     }
 
-    if (currentStep === VIEW_TRACE_STEP) {
+    if (currentStep === VIEW_TRACE_STEP
+      && selectedSources.length > 0
+      && selectedTargets.length > 0) {
       if (!containsUndefinedTraceIndices() && !traceInformationCached())
         update()
       if (initialStartup) {
@@ -113,7 +117,7 @@ export default function ViewerController() {
     }
 
     // eslint-disable-next-line
-  }, [currentStep, selectedSourceIndex, selectedTargetIndex]);
+  }, [currentStep, selectedSourceIndex, selectedTargetIndex, selectedSources, selectedTargets]);
 
   useEffect(() => {
     if (currentStep < VIEW_TRACE_STEP) {
