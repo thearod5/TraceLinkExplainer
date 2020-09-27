@@ -19,7 +19,7 @@ interface SearchItemDialogProps {
   artifact: Artifact;
 }
 
-export default function SearchItemDialog(props: SearchItemDialogProps) {
+export default function SearchResultDialog(props: SearchItemDialogProps) {
   const isCode = props.artifact.type === "Classes";
   const createBodyContainer = isCode ? (
     <SyntaxHighlighter

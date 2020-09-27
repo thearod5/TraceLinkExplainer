@@ -17,9 +17,9 @@ import { NOT_CACHED, UNSELECTED_INDEX } from "../../../redux/store";
 import { Artifact, Dataset } from "../../../shared/types/Dataset";
 import { Trace } from "../../../shared/types/Trace";
 import { SELECT_SOURCE_STEP, SELECT_TARGET_STEP, VIEW_TRACE_STEP } from "../../constants";
-import NoSourceMessage from "../intermediate/NoSourceMessage";
-import SourceArtifactSearch from "../search/containers/SourceArtifactSearchContainer";
-import TargetArtifactSearch from "../search/containers/TargetArtifactSearchContainer";
+import NoSourceMessage from "../panels/NoSourceMessage";
+import SourceArtifactSearch from "../panels/SourceArtifactSearchContainer";
+import TargetArtifactSearch from "../panels/TargetArtifactSearchContainer";
 import { Viewer } from "../Viewer";
 import { DefaultSourceArtifactDisplay, handleTraceInformationRequest, updateTraceArtifactDisplayInPanel } from "./ViewerPanelManager";
 
@@ -136,8 +136,6 @@ export default function ViewerController() {
       [VIEW_TRACE_STEP]
     )
   }, [currentStep, selectedTargets, trace]);
-
-
 
   const modalOpen = trace.selectedWord !== null
   return (

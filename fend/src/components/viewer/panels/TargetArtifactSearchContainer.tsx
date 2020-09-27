@@ -1,8 +1,8 @@
 import React from "react";
-import { searchForTargetArtifact } from "../../../../api/search";
-import { setSelectedTargets } from "../../../../redux/actions";
-import { TRACE_VIEW_ROUTE } from "../../../constants";
-import SearchController from "../SearchController";
+import { searchForTargetArtifact } from "../../../api/search";
+import { setSelectedTargets } from "../../../redux/actions";
+import { TRACE_VIEW_ROUTE } from "../../constants";
+import SearchController from "../search/SearchController";
 
 interface TargetArtifactSearchProps { }
 

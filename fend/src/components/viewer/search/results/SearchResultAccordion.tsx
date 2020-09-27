@@ -14,9 +14,9 @@ import { Artifact } from "../../../../shared/types/Dataset";
 import { Relationships, Words } from "../../../../shared/types/Trace";
 import ViewerWords from "../../words/ViewerWords";
 import { ArtifactClickAction } from "../types";
-import SearchItemDialog from "./SearchItemDialog";
+import SearchResultDialog from "./SearchResultDialog";
 
-interface SearchResultProps {
+interface SearchResultAccordionProps {
   result: Artifact;
   words: Words;
   families: Relationships;
@@ -24,7 +24,7 @@ interface SearchResultProps {
   removeArtifact: ArtifactClickAction;
 }
 
-export default function SearchItemAccordion(props: SearchResultProps) {
+export default function SearchResultAccordion(props: SearchResultAccordionProps) {
   const [expanded, setExpanded] = useState(false);
   const [checked, setChecked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -85,7 +85,7 @@ export default function SearchItemAccordion(props: SearchResultProps) {
         </div>
       </AccordionDetails>
 
-      <SearchItemDialog
+      <SearchResultDialog
         handleClose={handleClose}
         open={dialogOpen}
         artifact={props.result}

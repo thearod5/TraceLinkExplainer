@@ -31,3 +31,6 @@ export const SELECT_TARGET_ARTIFACTS = "/selecttargets"
 export const TRACE_VIEW_ROUTE = "/trace"; //page 4
 
 export const FADE_TIMEOUT = 500 //ms
+
+export type StartSearchCallback = (searchString: string, limit?: number) => void
+export type VoidCallback = () => void

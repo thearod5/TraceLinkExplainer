@@ -1,4 +1,3 @@
-import { LinearProgress } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStep, setError } from "../../../redux/actions";
@@ -12,17 +11,14 @@ import {
   ArtifactDisplayModel,
   artifactsAreEqual
 } from "../../../shared/types/Dataset";
-import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, VIEW_TRACE_STEP } from "../../constants";
-import SearchBar from "./bar/SearchBar";
-import { SearchFooter } from "./SearchFooter";
-import SearchResults from "./SearchResults";
+import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, StartSearchCallback, VIEW_TRACE_STEP } from "../../constants";
+import Search from "./Search";
 import { SuggestionFunctionType } from "./types";
-
-
 
 /*
  * In charge of managing the state of the search panel.
  */
+
 export interface SearchProps {
   searchFunction: SuggestionFunctionType;
   onArtifactsSelected: (artifact: Artifact[]) => ArtifactMutatorActionType;
@@ -58,7 +54,7 @@ export default function SearchController(props: SearchProps) {
   /*
    * Search API call
    */
-  const startSearch = useCallback(
+  const startSearch: StartSearchCallback = useCallback(
     (searchString: string, limit: number = SEARCH_LIMIT) => {
       setIsLoading(true);
       props
@@ -78,10 +74,6 @@ export default function SearchController(props: SearchProps) {
     // eslint-disable-next-line
     [props]
   );
-
-  /*
-   * Handlers
-   */
 
   const setResultsInView = (startIndex: number) => {
     if (startIndex < 0) return dispatch(setError("No previous page."));
@@ -132,57 +124,22 @@ export default function SearchController(props: SearchProps) {
 
   useEffect(() => startSearch(""), [startSearch]);
 
-  /*
-   * Child Components
-   */
-  const searchBar = (
-    <SearchBar onSearch={(query: string) => startSearch(query, -1)} />
-  );
-
-  const loadingBar = (
-    <LinearProgress color="secondary" variant="indeterminate" />
-  );
-
-  const footer = (
-    <SearchFooter
-      page={currentPage}
+  return (
+    <Search
+      startSearch={startSearch}
+      currentPage={currentPage}
+      footerMessage={footerMessage}
+      areArtifactSelected={areArtifactSelected}
       totalPages={totalPages}
-      message={footerMessage}
-      completed={areArtifactSelected}
-      onStepCompleted={handleStepCompleted}
+      handleStepCompleted={handleStepCompleted}
       onNextPage={onNextPage}
       onPreviousPage={onPreviousPage}
       numberSelected={selectedArtifacts.length}
+      searchResultsInView={searchResultsInView}
+      numberOfTotalResults={searchResults.length}
+      selectArtifact={selectArtifact}
+      removeArtifact={removeArtifact}
+      isLoading={isLoading}
     />
-  );
-
-  const body = (
-    <div style={{ height: "90%" }}>
-      <div
-        className="flexRowContentLeft widthFull overflowYScroll"
-        style={{ height: "90%" }}
-      >
-        <SearchResults
-          numberOfTotalResults={searchResults.length}
-          results={searchResultsInView}
-          selectArtifact={selectArtifact}
-          removeArtifact={removeArtifact}
-        />
-      </div>
-
-      <div style={{ height: "10%" }}>{footer}</div>
-    </div>
-  );
-
-  return (
-    <div className="flexColumn alignContentEnd heightFull overflowYScroll">
-      <div
-        className="flexRowContentLeft widthFull padVerticalLight"
-        style={{ height: "10%" }}
-      >
-        {searchBar}
-      </div>
-      {isLoading ? loadingBar : body}
-    </div>
-  );
+  )
 }

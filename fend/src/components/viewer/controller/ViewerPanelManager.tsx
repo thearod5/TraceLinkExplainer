@@ -7,7 +7,7 @@ import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCrea
 import { Artifact } from "../../../shared/types/Dataset";
 import { Trace, TraceInformation } from "../../../shared/types/Trace";
 import { ElementSetter } from "../../constants";
-import { createDefaultArtifactAccordion, createFamilyColors as createRelationshipColors, TracedArtifactDisplay } from '../tracedartifacts/TracedArtifactsDisplay';
+import { createDefaultArtifactAccordion, createFamilyColors as createRelationshipColors, TracedArtifactDisplay } from '../panels/TracedArtifactsDisplay';
 
 
 export function DefaultSourceArtifactDisplay() {
