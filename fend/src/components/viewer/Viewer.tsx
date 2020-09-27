@@ -5,12 +5,10 @@ import SplitPane from "react-split-pane";
 import { primaryColor } from '../../styles/theme';
 import { FADE_TIMEOUT } from '../constants';
 import { WordModal } from './explanation/TraceExplanation';
-import LoadingBar from './intermediate/LoadingPage';
 
 interface ViewerProps {
   leftPanel: JSX.Element | null
   rightPanel: JSX.Element | null
-  loading: boolean
   modalOpen: boolean
 }
 
@@ -25,9 +23,8 @@ export function Viewer(props: ViewerProps) {
   const [currentRight, setCurrentRight] = useState<JSX.Element | null>(null)
   const [fadeRightOut, setFadeRightOut] = useState(false)
 
-  const { leftPanel, rightPanel, modalOpen, loading } = props
+  const { leftPanel, rightPanel, modalOpen } = props
 
-  const loadingBar = <LoadingBar open={loading} />
 
   //Aprocess leave old component 
   useEffect(() => {
@@ -86,8 +83,7 @@ export function Viewer(props: ViewerProps) {
 
   return (
     <div className="flexColumn heightFull overflowYHidden">
-      {loading ? null : body}
-      {loadingBar}
+      {body}
       <WordModal open={modalOpen} />
     </div>
   );

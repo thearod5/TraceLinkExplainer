@@ -1,5 +1,7 @@
-import { AccordionDetails } from '@material-ui/core';
+import { AccordionDetails, LinearProgress } from '@material-ui/core';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { getLoading } from '../../../redux/selectors';
 import { Relationships, Words } from '../../../shared/types/Trace';
 import { secondaryColor } from '../../../styles/theme';
 import ViewerWords from '../words/ViewerWords';
@@ -20,11 +22,11 @@ interface ArtifactAccordionDetailsProps {
 }
 
 export default function ArtifactAccordionDetails(props: ArtifactAccordionDetailsProps) {
-  return (
-    <AccordionDetails
+  const loading = useSelector(getLoading)
+  const body = (
+    <div
       className="flexColumn"
-      style={props.style}
-    >
+      style={props.style}>
       <div className="overflowScroll">
         <ViewerWords
           words={props.words}
@@ -41,5 +43,12 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
           {props.toolbarIcons}
         </div>
       </div>
+    </div>
+  )
+
+  const loadingBar = <LinearProgress color="secondary" />
+  return (
+    <AccordionDetails className="flexColumn">
+      {loading ? loadingBar : body}
     </AccordionDetails>)
 }

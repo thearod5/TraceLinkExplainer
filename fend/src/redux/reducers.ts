@@ -8,6 +8,7 @@ import {
   CustomAction,
   SELECT_DATASET,
   SET_ERROR_ACTION,
+  SET_LOADING_ACTION,
   SET_SELECTED_SOURCES_ACTION,
   SET_SELECTED_SOURCE_INDEX_ACTION,
   SET_SELECTED_TARGETS_ACTION,
@@ -108,6 +109,16 @@ export default (
         return { ...state, error: undefined };
       } else {
         throw new Error(createReducerError(SET_ERROR_ACTION, "string", action.payload));
+      }
+
+    case SET_LOADING_ACTION:
+      if (typeof action.payload === "boolean") {
+        return {
+          ...state,
+          loading: action.payload,
+        };
+      } else {
+        throw new Error(createReducerError(SET_LOADING_ACTION, "boolean", action.payload));
       }
 
     case SET_TRACE_ACTION:
