@@ -10,7 +10,7 @@ export const getTraceTargetIndex = (state: RootState) => state.traceTargetIndex
 export const getCurrentStep = (state: RootState) => state.currentStep;
 export const getError = (state: RootState) => state.error;
 export const getTrace = (state: RootState) => state.trace;
-export const getSourceWoreds = (state: RootState) => state.trace.sourceWords
+export const getSourceWords = (state: RootState) => state.trace.sourceWords
 export const getTargetWords = (state: RootState) => state.trace.targetWords
 export const getSelectedWord = (state: RootState) => state.trace.selectedWord
 export const getRelationships = (state: RootState) => state.trace.relationships
