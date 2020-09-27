@@ -14,6 +14,8 @@ import {
   SET_SELECTED_TARGET_INDEX_ACTION,
   SET_SELECTED_WORD_ACTION,
   SET_TRACE_ACTION,
+  SET_TRACE_SOURCE_INDEX_ACTION,
+  SET_TRACE_TARGET_INDEX_ACTION,
   UNSELECT_DATASET
 } from "./actions";
 import { initializeEmptyDataset } from "./initializers";
@@ -68,9 +70,25 @@ export default (
       if (typeof action.payload === "number") {
         return {
           ...state,
-          selectedTargetIndex: action.payload
+          selectedTargetIndex: action.payload,
         };
       } else throw new Error(createReducerError(SET_SELECTED_TARGET_INDEX_ACTION, "number", action.payload));
+
+    case SET_TRACE_SOURCE_INDEX_ACTION:
+      if (typeof action.payload === "number") {
+        return {
+          ...state,
+          traceSourceIndex: action.payload
+        };
+      } else throw new Error(createReducerError(SET_TRACE_SOURCE_INDEX_ACTION, "number", action.payload));
+
+    case SET_TRACE_TARGET_INDEX_ACTION:
+      if (typeof action.payload === "number") {
+        return {
+          ...state,
+          traceTargetIndex: action.payload,
+        };
+      } else throw new Error(createReducerError(SET_TRACE_TARGET_INDEX_ACTION, "number", action.payload));
 
     case SET_SELECTED_TARGETS_ACTION:
       if (areArtifacts(action.payload)) {

@@ -13,6 +13,8 @@ export type CustomAction =
   | SetSelectedSourcesAction
   | SetSelectedSourceIndex
   | SetSelectedTargetIndex
+  | SetTraceSourceIndexAction
+  | SetTraceTargetIndexAction
   | ChangeStepAction
   | SetError
   | ClearDataAction
@@ -116,6 +118,40 @@ export function setSelectedTargetIndex(
 ) {
   return {
     type: SET_SELECTED_TARGET_INDEX_ACTION,
+    payload: index,
+  };
+}
+
+/*
+ * Trace indices
+ */
+export const SET_TRACE_SOURCE_INDEX_ACTION = "SET_TRACE_SOURCE_INDEX_ACTION";
+
+export interface SetTraceSourceIndexAction {
+  type: typeof SET_TRACE_SOURCE_INDEX_ACTION;
+  payload: number;
+}
+
+export function setTraceSourceIndex(
+  index: number
+) {
+  return {
+    type: SET_TRACE_SOURCE_INDEX_ACTION,
+    payload: index,
+  };
+}
+export const SET_TRACE_TARGET_INDEX_ACTION = "SET_TRACE_TARGET_INDEX_ACTION";
+
+export interface SetTraceTargetIndexAction {
+  type: typeof SET_TRACE_TARGET_INDEX_ACTION;
+  payload: number;
+}
+
+export function setTraceTargetIndex(
+  index: number
+) {
+  return {
+    type: SET_TRACE_TARGET_INDEX_ACTION,
     payload: index,
   };
 }

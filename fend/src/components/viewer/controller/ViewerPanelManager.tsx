@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedSourceIndex, setTrace } from "../../../redux/actions";
+import { setSelectedSourceIndex, setSelectedTargetIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from "../../../redux/actions";
 import { getSelectedSourceIndex, getSelectedSources, getTrace } from "../../../redux/selectors";
-import store from "../../../redux/store";
+import store, { NOT_CACHED } from "../../../redux/store";
 import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCreator';
 import { Artifact } from "../../../shared/types/Dataset";
 import { Trace, TraceInformation } from "../../../shared/types/Trace";
@@ -14,8 +14,10 @@ export function DefaultSourceArtifactDisplay() {
   const selectedSources = useSelector(getSelectedSources)
   const selectedSourceIndex = useSelector(getSelectedSourceIndex)
   const dispatch = useDispatch()
-  const setIndex = (index: number) => dispatch(setSelectedSourceIndex(index))
-
+  const setIndex = (index: number) => {
+    dispatch(setSelectedSourceIndex(index))
+    dispatch(setTraceSourceIndex(index))
+  }
   const sourceArtifactDisplays = selectedSources.map(
     (artifact: Artifact, index: number) =>
       createDefaultArtifactAccordion(
@@ -30,7 +32,11 @@ export function DefaultSourceArtifactDisplay() {
   )
 }
 
-export function handleTraceInformationRequest(traceInformation: TraceInformation) {
+export function handleTraceInformationRequest(
+  traceInformation: TraceInformation,
+  sourceIndex: number,
+  targetIndex: number
+) {
   const { dispatch } = store
   const trace: Trace = getTrace(store.getState())
   const relationshipColors = createRelationshipColors(
@@ -45,6 +51,12 @@ export function handleTraceInformationRequest(traceInformation: TraceInformation
     targetWords: traceInformation.targetDescriptors,
     selectedWord: null
   }))
+  dispatch(setTraceSourceIndex(sourceIndex))
+  dispatch(setTraceTargetIndex(targetIndex))
+  if (targetIndex === NOT_CACHED)
+    dispatch(setSelectedTargetIndex(targetIndex))
+  if (sourceIndex === NOT_CACHED)
+    dispatch(setSelectedSourceIndex(sourceIndex))
 }
 
 export function updateTraceArtifactDisplayInPanel(
@@ -82,5 +94,5 @@ export function updateTraceArtifactDisplayInPanel(
     setPanel(
       tracePanel
     );
-  }
+  } 
 }

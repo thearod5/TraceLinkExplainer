@@ -12,13 +12,14 @@ import { RootState } from "./types";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["dataset", "currentStep", "selectedSources", "selectedTargets"], // Top level store branches to persist
+  whitelist: ["dataset", "currentStep", "selectedSources", "selectedTargets",
+    "trace", "traceSourceIndex", "traceTargetIndex"], // Top level store branches to persist
 };
 
 export const appHistory = createBrowserHistory();
 
 export const NOT_CACHED = -2
-const UNSELECTED_INDEX = -1
+export const UNSELECTED_INDEX = -1
 
 const middleware = [thunk, routerMiddleware(appHistory)];
 
@@ -28,8 +29,10 @@ export function createEmptyState(): RootState {
     dataset: initializeEmptyDataset(),
     selectedSources: [],
     selectedTargets: [],
-    selectedSourceIndex: NOT_CACHED,
-    selectedTargetIndex: NOT_CACHED,
+    selectedSourceIndex: 0,
+    selectedTargetIndex: 0,
+    traceSourceIndex: NOT_CACHED,
+    traceTargetIndex: NOT_CACHED,
     trace: initializeEmptyTrace(),
     error: undefined
   };

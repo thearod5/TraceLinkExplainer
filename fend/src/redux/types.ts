@@ -7,6 +7,8 @@ export interface RootState {
   selectedTargets: Artifact[];
   selectedSourceIndex: number;
   selectedTargetIndex: number;
+  traceSourceIndex: number;
+  traceTargetIndex: number;
   error: string | undefined;
   currentStep: number;
   trace: Trace
