@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTraceInformation } from "../../../api/trace";
-import { setError } from "../../../redux/actions";
+import { setError, setLoading } from "../../../redux/actions";
 import {
   getCurrentStep,
   getDataset,
@@ -37,7 +37,6 @@ export default function ViewerController() {
   const traceSourceIndex = useSelector(getTraceSourceIndex)
   const traceTargetIndex = useSelector(getTraceTargetIndex)
 
-  const [loading, setLoading] = useState(false)
   const [initialStartup, setInitialStartup] = useState(true)
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
@@ -92,14 +91,14 @@ export default function ViewerController() {
       const sourceArtifact = selectedSources[sourceIndex];
       const targetArtifact = selectedTargets[targetIndex];
 
-      setLoading(true)
+      dispatch(setLoading(true))
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
           handleTraceInformationRequest(traceInformation, sourceIndex, targetIndex)
-          setLoading(false)
+          dispatch(setLoading(false))
         })
         .catch((e) => {
-          setLoading(false)
+          dispatch(setLoading(false))
           dispatch(setError(e.toString()))
         });
     }
@@ -145,7 +144,6 @@ export default function ViewerController() {
     <Viewer
       leftPanel={leftPanel}
       rightPanel={rightPanel}
-      loading={loading}
       modalOpen={modalOpen}
     />
   );

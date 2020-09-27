@@ -34,6 +34,7 @@ export function createEmptyState(): RootState {
     traceSourceIndex: NOT_CACHED,
     traceTargetIndex: NOT_CACHED,
     trace: initializeEmptyTrace(),
+    loading: false,
     error: undefined
   };
 }

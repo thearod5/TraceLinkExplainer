@@ -47,12 +47,12 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
   return (
     <div className="flexRowSpaceAround sizeFull">
       <QueryFilterElement
-        label={"id"}
+        label={"type"}
         filterOperations={CATEGORICAL_OPERATIONS}
-        selectedFilter={idFilter}
-        setFilter={setIdFilter}
-        query={idQuery}
-        setQuery={createQuerySetter(setIdQuery)}
+        selectedFilter={typeFilter}
+        setFilter={setTypeFilter}
+        query={typeQuery}
+        setQuery={createQuerySetter(setTypeQuery)}
         onSearch={onSearch}
       />
       <QueryFilterElement
@@ -65,12 +65,12 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
         onSearch={onSearch}
       />
       <QueryFilterElement
-        label={"type"}
+        label={"id"}
         filterOperations={CATEGORICAL_OPERATIONS}
-        selectedFilter={typeFilter}
-        setFilter={setTypeFilter}
-        query={typeQuery}
-        setQuery={createQuerySetter(setTypeQuery)}
+        selectedFilter={idFilter}
+        setFilter={setIdFilter}
+        query={idQuery}
+        setQuery={createQuerySetter(setIdQuery)}
         onSearch={onSearch}
       />
     </div>)

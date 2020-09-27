@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSourceIndex, setSelectedTargetIndex } from "../../../redux/actions";
-import { getSelectedSourceIndex, getSelectedTargetIndex } from "../../../redux/selectors";
+import { getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getSourceWords, getTargetWords, getTrace } from "../../../redux/selectors";
 import { createDefaultWordDescriptors, getDefaultFamilies, getDefaultFamilyColors } from "../../../shared/artifacts/WordCreator";
 import { Artifact, ArtifactIdentifier } from "../../../shared/types/Dataset";
 import { RelationshipColors, Relationships, WordDescriptors } from "../../../shared/types/Trace";
@@ -11,32 +11,41 @@ import ArtifactAccordion from "../accordion/ArtifactAccordion";
 //TODO: Extract this into component (TracedArtifactAccordions)
 
 interface TracedArtifactAccordionDisplayProps {
-  type: "SOURCE" | "TARGET",
-  artifacts: Artifact[],
-  traceWords: WordDescriptors,
-  relationships: Relationships,
-  relationshipColors: Record<string, string>,
+  type: "SOURCE" | "TARGET"
 }
 
 export function TracedArtifactDisplay(props: TracedArtifactAccordionDisplayProps) {
-  const { type, artifacts, relationships: families, traceWords, relationshipColors: familyColors } = props
+  const trace = useSelector(getTrace)
+  const { type } = props
+  const { relationships, relationshipColors } = trace
   const index = type === "SOURCE" ? 0 : 1
+
+  const artifactWords = [getSourceWords, getTargetWords]
+  const artifactSelectors = [getSelectedSources, getSelectedTargets]
   const selectors = [getSelectedSourceIndex, getSelectedTargetIndex]
   const setters = [setSelectedSourceIndex, setSelectedTargetIndex]
-  const selectedIndex = useSelector(selectors[index])
+
   const dispatch = useDispatch()
+  const selectedIndex = useSelector(selectors[index])
+  const artifacts = useSelector(artifactSelectors[index])
+  const traceWords = useSelector(artifactWords[index])
 
   const onSetIndex = (artifactIndex: number) => dispatch(setters[index](artifactIndex))
 
   return (
     <div className="heightFull overflowScroll"> {
       artifacts.map((artifact, index) => {
-        if (index === selectedIndex) {
+        if (
+          index === selectedIndex
+          && traceWords !== null
+          && relationships !== null
+          && relationshipColors !== null
+        ) {
           return createTracedArtifactAccordion(
             traceWords,
-            families,
+            relationships,
             artifact,
-            familyColors,
+            relationshipColors,
             true,
             () => onSetIndex(index),
             () => onSetIndex(-1)

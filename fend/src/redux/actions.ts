@@ -232,3 +232,17 @@ export function changeStep(newStep: number) {
     payload: newStep,
   };
 }
+
+export const SET_LOADING_ACTION = "SET_LOADING_ACTION";
+
+export interface SetLoadingAction {
+  type: typeof SET_LOADING_ACTION;
+  payload: boolean;
+}
+
+export function setLoading(loading: boolean) {
+  return {
+    type: SET_LOADING_ACTION,
+    payload: loading,
+  };
+}
