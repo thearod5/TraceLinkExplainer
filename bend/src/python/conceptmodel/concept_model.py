@@ -59,7 +59,6 @@ class ConceptModel:
         :return:
         """
         df = pd.read_csv(tsv_path)
-        df.to_csv(tsv_path, index=False)
         rels, left_terms, right_terms = [], [], []
         for index, row in df.iterrows():
             rel, lt, rt = row[0], row[1], row[2]
