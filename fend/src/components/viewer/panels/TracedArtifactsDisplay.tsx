@@ -31,16 +31,16 @@ export function TracedArtifactDisplay(props: TracedArtifactAccordionDisplayProps
   const traceWords = useSelector(artifactWords[index])
 
   const onSetIndex = (artifactIndex: number) => dispatch(setters[index](artifactIndex))
-
   return (
     <div className="heightFull overflowScroll"> {
       artifacts.map((artifact, index) => {
         if (index === selectedIndex) {
+          const defaultAccordion = relationships === null || relationshipColors === null
           return createTracedArtifactAccordion(
-            traceWords,
-            relationships,
+            defaultAccordion ? createDefaultWordDescriptors(artifact.body) : traceWords,
+            defaultAccordion ? getDefaultFamilies() : relationships,
             artifact,
-            relationshipColors,
+            defaultAccordion ? getDefaultFamilyColors() : relationshipColors,
             true,
             () => onSetIndex(index),
             () => onSetIndex(-1)

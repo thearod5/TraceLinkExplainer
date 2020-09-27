@@ -1,7 +1,7 @@
 import { Accordion } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useState } from "react";
-import { createWords, getDefaultFamilyColors } from "../../../shared/artifacts/WordCreator";
+import { createWords } from "../../../shared/artifacts/WordCreator";
 import { RelationshipColors, Relationships, WordDescriptors, Words } from "../../../shared/types/Trace";
 import { primaryColor } from "../../../styles/theme";
 import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from "../../constants";
@@ -31,7 +31,7 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
   const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
 
   const { artifactId, expanded, onExpand,
-    onShrink, relationships, relationshipColors, wordDescriptors,
+    onShrink, relationships, relationshipColors, wordDescriptors
   } = props
 
   const handleZoomIn = () => setFontSize(fontSize + FONT_SIZE_DELTA);
@@ -47,15 +47,12 @@ export default function ArtifactAccordion(props: ArtifactAccordionProps) {
 
   let words: Words | null;
 
-  const colors = relationshipColors === null ? getDefaultFamilyColors() : relationshipColors
-  const relationshipsToo = relationships === null ? [] : relationships
-
-  if (wordDescriptors !== null) {
+  if (wordDescriptors !== null && relationships != null && relationshipColors !== null) {
     words = createWords(
       wordDescriptors,
-      relationshipsToo,
+      relationships,
       fontSize,
-      colors,
+      relationshipColors,
       DEFAULT_FONT_COLOR
     )
   } else {
