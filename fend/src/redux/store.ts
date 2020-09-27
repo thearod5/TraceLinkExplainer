@@ -17,18 +17,21 @@ const persistConfig = {
 
 export const appHistory = createBrowserHistory();
 
+export const NOT_CACHED = -2
+const UNSELECTED_INDEX = -1
+
 const middleware = [thunk, routerMiddleware(appHistory)];
 
 export function createEmptyState(): RootState {
   return {
     currentStep: 0,
+    dataset: initializeEmptyDataset(),
     selectedSources: [],
     selectedTargets: [],
-    sourceIndex: 0,
-    targetIndex: 0,
-    error: undefined,
-    dataset: initializeEmptyDataset(),
-    trace: initializeEmptyTrace()
+    selectedSourceIndex: NOT_CACHED,
+    selectedTargetIndex: NOT_CACHED,
+    trace: initializeEmptyTrace(),
+    error: undefined
   };
 }
 

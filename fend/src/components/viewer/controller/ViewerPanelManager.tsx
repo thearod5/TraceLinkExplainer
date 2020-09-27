@@ -1,29 +1,27 @@
 import React from 'react';
-import { setTrace } from "../../../redux/actions";
-import { getTrace } from "../../../redux/selectors";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedSourceIndex, setTrace } from "../../../redux/actions";
+import { getSelectedSourceIndex, getSelectedSources, getTrace } from "../../../redux/selectors";
 import store from "../../../redux/store";
 import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCreator';
 import { Artifact } from "../../../shared/types/Dataset";
 import { Trace, TraceInformation } from "../../../shared/types/Trace";
-import { ElementSetter, NumberSetter } from "../../constants";
-import { createFamilyColors, createTraceArtifactDisplays, getDefaultArtifactDisplay } from '../accordion/ArtifactAccordionFactory';
+import { ElementSetter } from "../../constants";
+import { createDefaultArtifactAccordion, createFamilyColors as createRelationshipColors, TracedArtifactDisplay } from '../tracedartifacts/TracedArtifactsDisplay';
 
-interface TraceSourceArtifactDisplayProps {
-  selectedSources: Artifact[],
-  setIndex: NumberSetter,
-  sourceIndex: number
-}
 
-export function DefaultTraceArtifactDisplay(
-  props: TraceSourceArtifactDisplayProps
-) {
-  const { selectedSources, setIndex, sourceIndex } = props
+export function DefaultSourceArtifactDisplay() {
+  const selectedSources = useSelector(getSelectedSources)
+  const selectedSourceIndex = useSelector(getSelectedSourceIndex)
+  const dispatch = useDispatch()
+  const setIndex = (index: number) => dispatch(setSelectedSourceIndex(index))
+
   const sourceArtifactDisplays = selectedSources.map(
     (artifact: Artifact, index: number) =>
-      getDefaultArtifactDisplay(
+      createDefaultArtifactAccordion(
         artifact,
         createDefaultWordDescriptors(artifact.body),
-        index === sourceIndex,
+        index === selectedSourceIndex,
         () => setIndex(index),
         () => setIndex(-1)
       ))
@@ -35,14 +33,14 @@ export function DefaultTraceArtifactDisplay(
 export function handleTraceInformationRequest(traceInformation: TraceInformation) {
   const { dispatch } = store
   const trace: Trace = getTrace(store.getState())
-  const familyColors = createFamilyColors(
+  const relationshipColors = createRelationshipColors(
     traceInformation
       .relationships
       .map(relationship => relationship.title));
   dispatch(setTrace({
     ...trace,
     relationships: traceInformation.relationships,
-    relationshipColors: familyColors,
+    relationshipColors: relationshipColors,
     sourceWords: traceInformation.sourceDescriptors,
     targetWords: traceInformation.targetDescriptors,
     selectedWord: null
@@ -51,8 +49,6 @@ export function handleTraceInformationRequest(traceInformation: TraceInformation
 
 export function updateTraceArtifactDisplayInPanel(
   type: "SOURCE" | "TARGET",
-  selectedArtifactIndex: number,
-  setSelectedArtifactIndex: NumberSetter,
   setPanel: ElementSetter,
   stepsRequired: number[]
 ) {
@@ -75,14 +71,14 @@ export function updateTraceArtifactDisplayInPanel(
     relationshipColors !== null &&
     relationships !== null
   ) {
-    const tracePanel = createTraceArtifactDisplays(
-      selectedArtifacts,
-      relationships,
-      selectedArtifactIndex,
-      artifactWords,
-      relationshipColors,
-      setSelectedArtifactIndex
-    )
+    const tracePanel = < TracedArtifactDisplay
+      type={type}
+      artifacts={selectedArtifacts}
+      relationships={relationships}
+      traceWords={artifactWords}
+      relationshipColors={relationshipColors}
+    />
+
     setPanel(
       tracePanel
     );

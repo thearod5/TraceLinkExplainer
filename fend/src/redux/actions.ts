@@ -11,6 +11,8 @@ export type CustomAction =
   | UnselectDatasetAction
   | SetSelectedTargetsAction
   | SetSelectedSourcesAction
+  | SetSelectedSourceIndex
+  | SetSelectedTargetIndex
   | ChangeStepAction
   | SetError
   | ClearDataAction
@@ -83,6 +85,38 @@ export function setSelectedTargets(
   return {
     type: SET_SELECTED_TARGETS_ACTION,
     payload: targetArtifact,
+  };
+}
+
+export const SET_SELECTED_SOURCE_INDEX_ACTION = "SET_SELECTED_SOURCE_INDEX_ACTION";
+
+export interface SetSelectedSourceIndex {
+  type: typeof SET_SELECTED_SOURCE_INDEX_ACTION;
+  payload: number;
+}
+
+export function setSelectedSourceIndex(
+  index: number
+) {
+  return {
+    type: SET_SELECTED_SOURCE_INDEX_ACTION,
+    payload: index,
+  };
+}
+
+export const SET_SELECTED_TARGET_INDEX_ACTION = "SET_SELECTED_TARGET_INDEX_ACTION";
+
+export interface SetSelectedTargetIndex {
+  type: typeof SET_SELECTED_TARGET_INDEX_ACTION;
+  payload: number;
+}
+
+export function setSelectedTargetIndex(
+  index: number
+) {
+  return {
+    type: SET_SELECTED_TARGET_INDEX_ACTION,
+    payload: index,
   };
 }
 

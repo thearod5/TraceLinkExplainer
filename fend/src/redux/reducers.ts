@@ -9,7 +9,9 @@ import {
   SELECT_DATASET,
   SET_ERROR_ACTION,
   SET_SELECTED_SOURCES_ACTION,
+  SET_SELECTED_SOURCE_INDEX_ACTION,
   SET_SELECTED_TARGETS_ACTION,
+  SET_SELECTED_TARGET_INDEX_ACTION,
   SET_SELECTED_WORD_ACTION,
   SET_TRACE_ACTION,
   UNSELECT_DATASET
@@ -53,6 +55,22 @@ export default (
           selectedSources: action.payload,
         };
       } else throw new Error(createReducerError(SET_SELECTED_SOURCES_ACTION, "Artifact[]", action.payload));
+
+    case SET_SELECTED_SOURCE_INDEX_ACTION:
+      if (typeof action.payload === "number") {
+        return {
+          ...state,
+          selectedSourceIndex: action.payload
+        };
+      } else throw new Error(createReducerError(SET_SELECTED_SOURCE_INDEX_ACTION, "number", action.payload));
+
+    case SET_SELECTED_TARGET_INDEX_ACTION:
+      if (typeof action.payload === "number") {
+        return {
+          ...state,
+          selectedTargetIndex: action.payload
+        };
+      } else throw new Error(createReducerError(SET_SELECTED_TARGET_INDEX_ACTION, "number", action.payload));
 
     case SET_SELECTED_TARGETS_ACTION:
       if (areArtifacts(action.payload)) {

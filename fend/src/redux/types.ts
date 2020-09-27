@@ -5,8 +5,8 @@ export interface RootState {
   dataset: Dataset;
   selectedSources: Artifact[];
   selectedTargets: Artifact[];
-  sourceIndex: number;
-  targetIndex: number;
+  selectedSourceIndex: number;
+  selectedTargetIndex: number;
   error: string | undefined;
   currentStep: number;
   trace: Trace

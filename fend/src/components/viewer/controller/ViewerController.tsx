@@ -1,22 +1,25 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTraceInformation } from "../../../api/trace";
-import { setError } from "../../../redux/actions";
+import { setError, setSelectedSourceIndex, setSelectedTargetIndex } from "../../../redux/actions";
 import {
   getCurrentStep,
   getDataset,
+  getSelectedSourceIndex,
   getSelectedSources,
+  getSelectedTargetIndex,
   getSelectedTargets,
   getTrace
 } from "../../../redux/selectors";
+import { NOT_CACHED } from "../../../redux/store";
 import { Artifact, Dataset } from "../../../shared/types/Dataset";
 import { Trace } from "../../../shared/types/Trace";
-import { NumberSetter, SELECT_SOURCE_STEP, SELECT_TARGET_STEP, VIEW_TRACE_STEP } from "../../constants";
+import { SELECT_SOURCE_STEP, SELECT_TARGET_STEP, VIEW_TRACE_STEP } from "../../constants";
 import NoSourceMessage from "../intermediate/NoSourceMessage";
 import SourceArtifactSearch from "../search/containers/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../search/containers/TargetArtifactSearchContainer";
 import { Viewer } from "../Viewer";
-import { DefaultTraceArtifactDisplay, handleTraceInformationRequest, updateTraceArtifactDisplayInPanel } from "./ViewerPanelManager";
+import { DefaultSourceArtifactDisplay, handleTraceInformationRequest, updateTraceArtifactDisplayInPanel } from "./ViewerPanelManager";
 
 export default function ViewerController() {
   const trace: Trace = useSelector(getTrace)
@@ -25,28 +28,13 @@ export default function ViewerController() {
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets);
   const currentStep: number = useSelector(getCurrentStep);
 
+  const dispatch = useDispatch()
+  const selectedSourceIndex = useSelector(getSelectedSourceIndex)
+  const selectedTargetIndex = useSelector(getSelectedTargetIndex)
+
   const [loading, setLoading] = useState(false)
   const [leftPanel, setLeftPanel] = useState<JSX.Element | null>(null);
   const [rightPanel, setRightPanel] = useState<JSX.Element | null>(null);
-  const [sourceIndex, setSourceIndex] = useState(0);
-  const [targetIndex, setTargetIndex] = useState(0);
-  const [lastSelectedSourceIndex, setLastSelectedSourceIndex] = useState(-1);
-  const [lastSelectedTargetIndex, setLastSelectedTargetIndex] = useState(-1);
-
-  const dispatch = useDispatch()
-
-  const setSelectedSourceIndexAdapter: NumberSetter = useCallback((index: number) => {
-    if (sourceIndex !== -1)
-      setLastSelectedSourceIndex(sourceIndex)
-    setSourceIndex(index);
-  }, [sourceIndex])
-
-  const setSelectedTargetIndexAdapter = useCallback((index: number) => {
-    if (targetIndex !== -1)
-      setLastSelectedTargetIndex(targetIndex)
-    setTargetIndex(index);
-  }, [targetIndex])
-
 
   /*
   * Step. 1 - select sources
@@ -64,14 +52,10 @@ export default function ViewerController() {
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
       setLeftPanel(
-        <DefaultTraceArtifactDisplay
-          selectedSources={selectedSources}
-          setIndex={setSelectedSourceIndexAdapter}
-          sourceIndex={sourceIndex}
-        />)
+        <DefaultSourceArtifactDisplay />)
     }
     // eslint-disable-next-line
-  }, [currentStep, sourceIndex, selectedSources])
+  }, [currentStep, selectedSources])
   //separate so reloading one does not affect the other
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
@@ -82,18 +66,23 @@ export default function ViewerController() {
   /*
    * Step 3. View Trace
    */
-  const stateIsCached = () =>
-    sourceIndex === lastSelectedSourceIndex &&
-    targetIndex === lastSelectedTargetIndex
-
   useEffect(() => {
     if (
       currentStep === VIEW_TRACE_STEP &&
-      sourceIndex > -1 &&
-      targetIndex > -1 &&
-      !stateIsCached()) {
-      const sourceArtifact = selectedSources[sourceIndex];
-      const targetArtifact = selectedTargets[targetIndex];
+      selectedSourceIndex !== -1 &&
+      selectedTargetIndex !== -1
+    ) {
+      const DEFAULT_INDEX = 0
+      const sourceArtifact = selectedSources[selectedSourceIndex === NOT_CACHED ? DEFAULT_INDEX : selectedSourceIndex];
+      const targetArtifact = selectedTargets[selectedTargetIndex === NOT_CACHED ? DEFAULT_INDEX : selectedTargetIndex];
+      if (selectedTargetIndex === NOT_CACHED) {
+        dispatch(setSelectedTargetIndex(DEFAULT_INDEX))
+      }
+
+      if (selectedSourceIndex === NOT_CACHED) {
+        dispatch(setSelectedSourceIndex(DEFAULT_INDEX))
+      }
+
       setLoading(true)
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
@@ -106,30 +95,25 @@ export default function ViewerController() {
         });
     }
     // eslint-disable-next-line
-  }, [dataset.name, currentStep, selectedSources, sourceIndex, selectedTargets, targetIndex]);
+  }, [currentStep, selectedSourceIndex, selectedTargetIndex]);
 
   useEffect(() => {
     updateTraceArtifactDisplayInPanel(
       "SOURCE",
-      sourceIndex,
-      setSelectedSourceIndexAdapter,
       setLeftPanel,
       [SELECT_TARGET_STEP, VIEW_TRACE_STEP]
     )
-  }, [currentStep, selectedSources, sourceIndex, trace, setSelectedSourceIndexAdapter]);
+  }, [currentStep, selectedSources, trace]);
 
   useEffect(() => {
     updateTraceArtifactDisplayInPanel(
       "TARGET",
-      targetIndex,
-      setSelectedTargetIndexAdapter,
       setRightPanel,
       [VIEW_TRACE_STEP]
     )
-  }, [currentStep, selectedTargets, targetIndex, trace, setSelectedTargetIndexAdapter]);
+  }, [currentStep, selectedTargets, trace]);
 
   const modalOpen = trace.selectedWord !== null
-
   return (
     <Viewer
       leftPanel={leftPanel}

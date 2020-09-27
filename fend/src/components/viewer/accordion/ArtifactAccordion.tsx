@@ -7,7 +7,7 @@ import { primaryColor } from "../../../styles/theme";
 import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from "../../constants";
 import ArtifactAccordionDetails from "./ArtifactAccordionDetails";
 import ArtifactAccordionSummary from "./ArtifactAccordionSummary";
-import { createToolbarIcons } from "./ToolbarIcons";
+import { createToolbarIcons } from "../tracedartifacts/ToolbarIcons";
 
 /*
  * Accordion for TraceInformation. Manages state changes in accordion.
