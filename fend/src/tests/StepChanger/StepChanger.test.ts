@@ -1,15 +1,14 @@
+import { SELECT_SOURCE_STEP } from "../../components/constants";
 import {
   clearData,
   selectDataset,
   setSelectedSources,
-  setSelectedTargets,
+  setSelectedTargets
 } from "../../redux/actions";
 import store, { createEmptyState } from "../../redux/store";
 import { RootState } from "../../redux/types";
-import { SELECT_SOURCE_STEP } from "../../shared/pagechanger/constants";
 import { getNewStepState } from "../../shared/pagechanger/PageChanger";
 import { Artifact, Dataset } from "../../shared/types/Dataset";
-
 let mockState: RootState = createEmptyState();
 
 const mockDataset: Dataset = {
@@ -111,11 +110,6 @@ test("+ : selectTargetArtifacts : default", () => {
   expect(currentState.selectedSources.length).toEqual(0);
 });
 
-function assertEmptyArtifact(artifact: Artifact) {
-  expect(artifact.id).toBe("");
-  expect(artifact.body).toBe("");
-  expect(artifact.type).toBe("");
-}
 
 function assertEqualToMock(artifact: Artifact) {
   expect(artifact.id).toBe(mockArtifact.id);
