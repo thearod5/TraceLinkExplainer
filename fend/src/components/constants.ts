@@ -7,7 +7,7 @@ export const SEARCH_DISPLAY_LIMIT = 20;
 export const NUMBER_RESULTS_PROMPT = " artifacts retrieved";
 
 export const colors = [
-  "CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "BlueViolet", "FireBrick", "LightGreen",
+  "CornFlowerBlue", "DarkSeaGreen", "DarkSalmon", "BlueViolet", "FireBrick",
   "Maroon", "DeepSkyBlue", "MediumOrchid", "Olive", "SpringGreen"]; //TODO: Add to theme
 
 export const DEFAULT_FONT_COLOR = "black";
