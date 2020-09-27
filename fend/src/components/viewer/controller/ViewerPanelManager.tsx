@@ -51,7 +51,6 @@ export function handleTraceInformationRequest(
     targetWords: traceInformation.targetDescriptors,
     selectedWord: null
   }))
-  console.log("DEBUG", "SETTING TRACE", trace)
   dispatch(setTraceSourceIndex(sourceIndex))
   dispatch(setTraceTargetIndex(targetIndex))
   if (targetIndex === NOT_CACHED)

@@ -29,8 +29,6 @@ export function TracedArtifactDisplay(props: TracedArtifactAccordionDisplayProps
   const selectedIndex = useSelector(selectors[index])
   const artifacts = useSelector(artifactSelectors[index])
   const traceWords = useSelector(artifactWords[index])
-  console.log("DEBUG", type, selectedIndex, artifacts)
-  console.log("DEBUG", "TRACE WORDS", type, traceWords)
 
   const onSetIndex = (artifactIndex: number) => dispatch(setters[index](artifactIndex))
 

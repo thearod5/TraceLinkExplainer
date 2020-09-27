@@ -84,12 +84,6 @@ export default function ViewerController() {
  * Step 3. View Trace
  */
 
-  console.log("DEBUG", "TRACE SOURCE INDEX", traceSourceIndex)
-  console.log("DEBUG", "TRACE TARGET INDEX", traceTargetIndex)
-
-  console.log("DEBUG", "SELECTED SOURCE INDEX", selectedSourceIndex)
-  console.log("DEBUG", "SELECTED TARGET INDEX", selectedTargetIndex)
-
   useEffect(() => {
     const update = () => {
       const DEFAULT_INDEX = 0
@@ -99,8 +93,6 @@ export default function ViewerController() {
       const targetArtifact = selectedTargets[targetIndex];
 
       setLoading(true)
-      console.log("DEBUG", "SOURCE", sourceArtifact, sourceIndex)
-      console.log("DEBUG", "TARGET", targetArtifact, targetIndex)
       getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
         .then((traceInformation) => {
           handleTraceInformationRequest(traceInformation, sourceIndex, targetIndex)

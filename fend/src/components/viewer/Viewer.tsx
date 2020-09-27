@@ -43,6 +43,7 @@ export function Viewer(props: ViewerProps) {
         }, 0) //no timeout because fade out completed
       }, FADE_TIMEOUT - PROCESSING_DELTA) //allows fade out to complete
     }
+    // eslint-disable-next-line
   }, [nextLeft])
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export function Viewer(props: ViewerProps) {
         }, 0) //no timeout because fade out completed
       }, FADE_TIMEOUT - PROCESSING_DELTA) //allows fade out to complete
     }
+    // eslint-disable-next-line
   }, [nextRight])
 
   setTimeout(() => {
