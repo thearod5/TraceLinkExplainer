@@ -1,7 +1,7 @@
 import { Artifact, ArtifactDisplayModel } from "../types/Dataset";
 import {
-  RelationshipColors,
-  KeyWordType, Relationships,
+  KeyWordType, RelationshipColors,
+  Relationships,
   SyntaxWordType,
   WordDescriptor, WordDescriptorDisplay,
   WordDescriptors,
@@ -37,7 +37,7 @@ const keyWordDelimiters = [
   "string",
 ];
 
-export function getDefaultFamilies(): Relationships {
+export function getDefaultRelationships(): Relationships {
   const families: Relationships = [
     {
       weight: 0,
@@ -53,7 +53,7 @@ export function getDefaultFamilies(): Relationships {
   return families
 }
 
-export function getDefaultFamilyColors(): RelationshipColors {
+export function getDefaultRelationshipColors(): RelationshipColors {
   const colors: RelationshipColors = {};
   colors[SyntaxWordType] = "#FF8C00";
   colors[KeyWordType] = "#79ADDC";
@@ -63,9 +63,9 @@ export function getDefaultFamilyColors(): RelationshipColors {
 
 export function createArtifactDisplayModel(
   artifact: Artifact,
-  families: Relationships = getDefaultFamilies(),
+  families: Relationships = getDefaultRelationships(),
   defaultSize: number = 1,
-  familyColors: RelationshipColors = getDefaultFamilyColors(),
+  relationshipColors: RelationshipColors = getDefaultRelationshipColors(),
   defaultColor: string = "black"
 ): ArtifactDisplayModel {
   const wordDescriptors = createDefaultWordDescriptors(artifact.body);
@@ -73,7 +73,7 @@ export function createArtifactDisplayModel(
     wordDescriptors,
     families,
     defaultSize,
-    familyColors,
+    relationshipColors,
     defaultColor
   );
   return {
@@ -108,7 +108,7 @@ export function createWords(
   descriptors: WordDescriptors,
   families: Relationships,
   defaultSize: number,
-  familyColors: RelationshipColors,
+  relationshipColors: RelationshipColors,
   defaultColor: string = "black"
 ): Words {
   const createWordFromDescriptor = (descriptor: WordDescriptor) =>
@@ -116,7 +116,7 @@ export function createWords(
       descriptor,
       families,
       defaultSize,
-      familyColors,
+      relationshipColors,
       defaultColor
     );
   return descriptors.map(createWordFromDescriptor);
@@ -124,25 +124,25 @@ export function createWords(
 
 export function createWord(
   descriptor: WordDescriptor,
-  families: Relationships,
+  relationships: Relationships,
   defaultSize: number,
-  familyColors: RelationshipColors,
+  relationshipColors: RelationshipColors,
   defaultColor: string
 ): WordDescriptorDisplay {
-  const hasFamily = descriptor.relationshipIds.length > 0
+  const hasRelationship = descriptor.relationshipIds.length > 0
   let wordSize, wordColor;
-  if (hasFamily) {
-    const mainFamilyId: string = descriptor.relationshipIds[0]
-    const mainFamilyQuery = families.filter(family => family.title === mainFamilyId)
+  if (hasRelationship) {
+    const mainRelationshipId: string = descriptor.relationshipIds[0]
+    const mainRelationshipQuery = relationships.filter(relationship => relationship.title === mainRelationshipId)
 
-    if (mainFamilyQuery.length === 0)
-      throw Error(`Could not find family: ${mainFamilyId}`)
-    const mainFamily = mainFamilyQuery[0]
+    if (mainRelationshipQuery.length === 0)
+      throw Error(`Could not find relationship: ${mainRelationshipId}`)
+    const mainRelationship = mainRelationshipQuery[0]
 
-    wordSize = mainFamily.weight + defaultSize
+    wordSize = mainRelationship.weight + defaultSize
     wordColor =
-      mainFamilyId in familyColors
-        ? familyColors[mainFamilyId]
+      mainRelationshipId in relationshipColors
+        ? relationshipColors[mainRelationshipId]
         : defaultColor;
 
   } else {
@@ -193,8 +193,8 @@ export function splitWordsByDelimiter(
   return delimiterWords;
 }
 
-export function getNodesInFamilies(families: Relationships) {
-  const result = families.map(family => family.nodes.map(node => {
+export function getNodesInFamilies(relationships: Relationships) {
+  const result = relationships.map(relationship => relationship.nodes.map(node => {
     return { id: node.word, label: node.word }
   })).flat()
   return result
@@ -202,11 +202,11 @@ export function getNodesInFamilies(families: Relationships) {
 
 export function getEdgesInFamilies(families: Relationships) {
   const edges: object[] = []
-  for (let familyIndex = 0; familyIndex < families.length; familyIndex++) {
-    const family = families[familyIndex]
-    let from = family.nodes[0].word
-    for (let edgeIndex = 0; edgeIndex < family.nodes.length; edgeIndex++) {
-      const currentNode = family.nodes[edgeIndex]
+  for (let relationshipIndex = 0; relationshipIndex < families.length; relationshipIndex++) {
+    const relationship = families[relationshipIndex]
+    let from = relationship.nodes[0].word
+    for (let edgeIndex = 0; edgeIndex < relationship.nodes.length; edgeIndex++) {
+      const currentNode = relationship.nodes[edgeIndex]
       if (edgeIndex === 0)
         continue
       edges.push({

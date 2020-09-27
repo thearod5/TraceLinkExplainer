@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedSourceIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from "../../../redux/actions";
 import { getSelectedSourceIndex, getSelectedSources, getTrace } from "../../../redux/selectors";
 import store from "../../../redux/store";
-import { createDefaultWordDescriptors } from '../../../shared/artifacts/WordCreator';
 import { Artifact } from "../../../shared/types/Dataset";
 import { Trace, TraceInformation } from "../../../shared/types/Trace";
 import { ElementSetter } from "../../constants";
-import { createDefaultArtifactAccordion, createFamilyColors as createRelationshipColors, TracedArtifactDisplay } from '../panels/TracedArtifactsDisplay';
+import { createDefaultArtifactAccordion, createRelationshipColors } from '../accordion/ArtifactAccordionFactory';
+import { TracedArtifactDisplay } from '../panels/TracedArtifactsDisplay';
 
 
 export function DefaultSourceArtifactDisplay() {
@@ -22,7 +22,7 @@ export function DefaultSourceArtifactDisplay() {
     (artifact: Artifact, index: number) =>
       createDefaultArtifactAccordion(
         artifact,
-        createDefaultWordDescriptors(artifact.body),
+        artifact.body,
         index === selectedSourceIndex,
         () => setIndex(index),
         () => setIndex(-1)

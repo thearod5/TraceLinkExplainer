@@ -54,7 +54,7 @@ export function WordModal(
 
   const body = (
     <div className="padSmall">
-      <TraceExplanation families={relationships.filter(family => selectedWord.relationshipIds.includes(family.title))} />
+      <TraceExplanation families={relationships.filter(relationship => selectedWord.relationshipIds.includes(relationship.title))} />
     </div>)
 
   return (

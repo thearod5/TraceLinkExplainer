@@ -1,5 +1,5 @@
 import React from "react";
-import { getDefaultFamilies } from "../../../../shared/artifacts/WordCreator";
+import { getDefaultRelationships } from "../../../../shared/artifacts/WordCreator";
 import { ArtifactDisplayModel } from "../../../../shared/types/Dataset";
 import { NUMBER_RESULTS_PROMPT } from "../../../constants";
 import SearchResultAccordion from "./SearchResultAccordion";
@@ -25,7 +25,7 @@ export default function SearchResults(props: SearchResultsProps) {
             key={searchItem.artifact.id}
             result={searchItem.artifact}
             words={searchItem.words}
-            families={getDefaultFamilies()}
+            families={getDefaultRelationships()}
             selectArtifact={props.selectArtifact}
             removeArtifact={props.removeArtifact}
           />

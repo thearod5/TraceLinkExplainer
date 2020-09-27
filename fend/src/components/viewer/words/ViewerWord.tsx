@@ -15,25 +15,25 @@ export interface ViewerWordProps {
 }
 
 export function ViewerWord(props: ViewerWordProps) {
-  const HAS_FAMILY = props.word.relationshipIds.length > 0;
+  const HAS_RELATIONSHIP = props.word.relationshipIds.length > 0;
 
   const wordId = `${props.word.word}:${props.wordIndex}`;
   if (props.word.word === "\n") {
     return <br key={wordId}></br>;
   }
-  const familyIntersection = props.selectedWord !== null ? props.selectedWord.relationshipIds.filter(value => props.word.relationshipIds.includes(value)) : [];
-  const isSelectedFamily = familyIntersection.length > 0;
+  const relationshipIntersection = props.selectedWord !== null ? props.selectedWord.relationshipIds.filter(value => props.word.relationshipIds.includes(value)) : [];
+  const isInSelectedRelationship = relationshipIntersection.length > 0;
 
   const WORD_COLOR = props.word.color;
   let border;
-  if (isSelectedFamily) {
+  if (isInSelectedRelationship) {
     border = `3px solid ${WORD_COLOR}`;
   } else {
     border = "none";
   }
 
   const handleClick = () => {
-    if (HAS_FAMILY && props.clickHandler !== null)
+    if (HAS_RELATIONSHIP && props.clickHandler !== null)
       props.clickHandler(props.word)
   }
 

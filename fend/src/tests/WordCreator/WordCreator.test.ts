@@ -7,7 +7,7 @@ import { KeyWordType, SyntaxWordType, WordDescriptor } from "../../shared/types/
 test("dummy test", () => {
   const document = "function(int count)";
   const documentWords = ["function", "(", "int", " ", "count", ")"];
-  const requiredFamilies = [SyntaxWordType, KeyWordType];
+  const requiredRelationships = [SyntaxWordType, KeyWordType];
 
   //Body
   const words: WordDescriptor[] = createDefaultWordDescriptors(document);
@@ -19,12 +19,12 @@ test("dummy test", () => {
 
     expect(word.word).not.toStrictEqual("");
     expect(documentWords).toContain(word.word);
-    for (let wordFamilyIndex in word.relationshipIds)
-      familiesInWords.push(word.relationshipIds[wordFamilyIndex]);
+    for (let wordRelationshipIndex in word.relationshipIds)
+      familiesInWords.push(word.relationshipIds[wordRelationshipIndex]);
   }
 
-  for (let requiredFamilyIndex in requiredFamilies) {
-    expect(familiesInWords).toContain(requiredFamilies[requiredFamilyIndex]);
+  for (let requiredRelationshipIndex in requiredRelationships) {
+    expect(familiesInWords).toContain(requiredRelationships[requiredRelationshipIndex]);
   }
 });
 
