@@ -133,8 +133,8 @@ function isWordDescriptor(obj?: any, log = false): obj is WordDescriptor {
   const result =
     objectContainsKeys(requiredKeys, obj, log) &&
     typeof obj.word === "string" &&
-    typeof obj.families === "object" &&
-    obj.families.length >= 0;
+    typeof obj.relationshipIds === "object" &&
+    obj.relationshipIds.length >= 0;
   if (log && !result) console.error("Failed: ", obj);
   return result;
 }

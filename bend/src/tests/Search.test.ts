@@ -39,7 +39,7 @@ test('search : source : query : +', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
     datasetName: 'Drone',
-    query: 'id is RE-8',
+    query: 'id = RE-8',
     limit: TEST_LIMIT
   }
   return testSearchFunction(SEARCH_SOURCE_ROUTE, searchQuery, (res) => {
@@ -52,7 +52,7 @@ test('search : source : query combination: +', () => {
   const TEST_LIMIT = 5
   const searchQuery = {
     datasetName: 'Drone',
-    query: 'id is RE-8 AND type is Classes',
+    query: 'id = RE-8 && type = Classes',
     limit: TEST_LIMIT
   }
   return testSearchFunction(SEARCH_SOURCE_ROUTE, searchQuery, (res) => {

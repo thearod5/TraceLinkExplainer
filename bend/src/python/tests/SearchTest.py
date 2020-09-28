@@ -12,7 +12,7 @@ class SearchTest(unittest.TestCase):
 
     def test_search_source(self):
         artifacts = search_for_artifact(
-            "Drone", ["id", "is", "RE-8"], 10)["searchItems"]
+            "Drone", ["id", "=", "RE-8"], 10)["searchItems"]
 
         self.assertEqual(1, len(artifacts))
         self.assertEqual(artifacts[0]["id"], "RE-8")

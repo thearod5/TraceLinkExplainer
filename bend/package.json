@@ -8,8 +8,8 @@
     "start": "'ts-node' src/server.ts",
     "start-watch": "npm run killOld & nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec npm start",
     "lint": "eslint . --ext .ts,.tsx,.js",
-    "test": "jest --forceExit --maxWorkers=1 --detectOpenHandles",
-    "test-watch": "jest --watch --forceExit --maxWorkers=1 --detectOpenHandles",
+    "test": "npm run test-python && jest --forceExit --maxWorkers=1 --detectOpenHandles",
+    "test-watch": "npm run test-python && jest --watch --forceExit --maxWorkers=1 --detectOpenHandles",
     "test-python": "env/bin/python3 src/python/tests/TestRunner.py"
   },
   "author": "Alberto Rodriguez",

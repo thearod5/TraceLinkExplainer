@@ -3,15 +3,14 @@ import pathlib
 import sys
 import unittest
 
-# For Running from Command Line
-from tests.TestConceptModel import TestConceptModel
-from tests.TestRootFamilies import TestRootFamilies
-from tests.TestUtil import TestUtil
-
 PATH_TO_TEST_FOLDER = pathlib.Path(__file__).parent.absolute()
 PATH_TO_PYTHON_MODULE = os.path.join(PATH_TO_TEST_FOLDER, "..")
 sys.path.insert(0, PATH_TO_PYTHON_MODULE)
 
+# For Running from Command Line
+from tests.TestConceptModel import TestConceptModel
+from tests.TestRootFamilies import TestRootFamilies
+from tests.TestUtil import TestUtil
 from tests.QueryTest import QueryTest
 from tests.SearchTest import SearchTest
 from tests.TestCleanDoc import TestCleanDoc

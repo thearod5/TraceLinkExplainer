@@ -22,4 +22,4 @@ test('TRACE route', () => {
       })
       .catch(reject)
   })
-})
+}, 10000)
