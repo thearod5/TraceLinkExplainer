@@ -3,10 +3,10 @@ from typing import Dict
 from scipy.sparse import csr_matrix
 from sklearn.preprocessing import minmax_scale
 
-from models.TraceInformation import TraceExplanation, Relationship, WordRelationshipNode, SIB
+from models.TraceInformation import TraceExplanation, Relationship, WordRelationshipNode, SYN
 from models.WordDescriptor import WordDescriptor
 from preprocessing.Cleaners import clean_doc
-from vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
+from relationships.vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
 
 VSM_RELATIONSHIP_NAME = "ROOT"
 
@@ -30,7 +30,7 @@ def add_root_relationships(dataset, trace_relationships: TraceExplanation, cutof
         related_words = get_related_words(source_words, source_words_cleaned, root) + \
                         get_related_words(target_words, target_words_cleaned, root)
         related_words = list(set(related_words))
-        related_word_nodes = list(map(lambda word: WordRelationshipNode(word, SIB), related_words))
+        related_word_nodes = list(map(lambda word: WordRelationshipNode(word, SYN), related_words))
         relationships.append(Relationship(root, related_word_nodes, weight))
 
     return TraceExplanation(source_descriptors, target_descriptors, relationships)

@@ -3,7 +3,7 @@ import pandas as pd
 from controllers.Query import filter_artifacts
 from loader.DataLoader import (get_all_artifacts_for_dataset,
                                get_traced_artifacts)
-from vsm.CalculateSimilarityMatrix import calculate_similarity_matrix
+from relationships.vsm.CalculateSimilarityMatrix import calculate_similarity_matrix
 
 """
  Source - search_for_artifact

@@ -1,9 +1,9 @@
 import unittest
 
-from conceptmodel.concept_model import get_concept_model_for_dataset, add_concept_families
 from controllers.TraceExplanation import get_words_in_artifact
 from models.TraceInformation import TraceExplanation, CHILD, SYN, SOURCE
 from models.WordDescriptor import WordDescriptor
+from relationships.conceptmodel.ConceptModelRelationships import get_concept_model_for_dataset, add_concept_families
 
 
 class TestConceptModel(unittest.TestCase):

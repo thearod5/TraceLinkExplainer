@@ -4,7 +4,8 @@ import numpy as np
 
 from models.TraceInformation import TraceExplanation, Relationship
 from models.WordDescriptor import WordDescriptor
-from vsm.WordRootRelationships import add_root_relationships, get_vsm_weights, create_word_similarity_dictionary
+from relationships.vsm.VSMRelationships import add_root_relationships, get_vsm_weights, \
+    create_word_similarity_dictionary
 
 
 class TestRootFamilies(unittest.TestCase):
