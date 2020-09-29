@@ -1,6 +1,6 @@
 
 import _ from 'lodash';
-import { HOME_ROUTE, SELECT_SOURCE_ARTIFACTS, SELECT_SOURCE_STEP, SELECT_TARGET_ARTIFACTS, TRACE_VIEW_ROUTE, VIEW_TRACE_STEP } from "../../components/constants";
+import { HOME_ROUTE, SELECT_SOURCES_ROUTE, SELECT_SOURCE_STEP, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE, VIEW_TRACE_STEP } from "../../components/constants";
 import { initializeEmptyTrace } from "../../redux/initializers";
 import store from "../../redux/store";
 import { RootState } from "../../redux/types";
@@ -13,9 +13,9 @@ const TARGET_NOT_SELECTED_ERROR = "You must select a target artifact.";
 
 export const PAGE_STEP_MAPPING: Record<number, string> = {
   0: HOME_ROUTE,
-  1: SELECT_SOURCE_ARTIFACTS,
-  2: SELECT_TARGET_ARTIFACTS,
-  3: TRACE_VIEW_ROUTE,
+  1: SELECT_SOURCES_ROUTE,
+  2: SELECT_TARGETS_ROUTE,
+  3: VIEW_TRACE_ROUTE,
 };
 
 //write unit tests for state
@@ -54,12 +54,12 @@ export function getStepChangeError(
   switch (requestedEndpoint) {
     case HOME_ROUTE:
       return undefined;
-    case SELECT_SOURCE_ARTIFACTS:
+    case SELECT_SOURCES_ROUTE:
       if (!datasetSelected) return DATASET_NOT_SELECTED_ERROR;
       else if (!sourceSelected && requestedStep > SELECT_SOURCE_STEP)
         return SOURCE_NOT_SELECTED_ERROR;
       else return undefined;
-    case TRACE_VIEW_ROUTE:
+    case VIEW_TRACE_ROUTE:
       if (!datasetSelected) return DATASET_NOT_SELECTED_ERROR;
       else if (!sourceSelected) return SOURCE_NOT_SELECTED_ERROR;
       else if (!targetSelected) return TARGET_NOT_SELECTED_ERROR;

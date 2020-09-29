@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
 import { Route, Router, Switch } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
-import { DATASET_ROUTE, HOME_ROUTE, SELECT_DATASET_STEP, SELECT_SOURCE_ARTIFACTS, SELECT_SOURCE_STEP, SELECT_TARGET_ARTIFACTS, SELECT_TARGET_STEP, TRACE_VIEW_ROUTE, VIEW_TRACE_STEP } from "./components/constants";
+import { DATASET_ROUTE, HOME_ROUTE, SELECT_DATASET_STEP, SELECT_SOURCES_ROUTE, SELECT_SOURCE_STEP, SELECT_TARGETS_ROUTE, SELECT_TARGET_STEP, VIEW_TRACE_ROUTE, VIEW_TRACE_STEP } from "./components/constants";
 import DatasetViewer from "./components/datasets/DatasetView";
 import AppSnackBar from "./components/footer/AppSnackBar";
 import Home from "./components/home/Home";
@@ -22,13 +22,13 @@ function App() {
       case HOME_ROUTE:
         dispatch(changeStep(SELECT_DATASET_STEP))
         break;
-      case SELECT_SOURCE_ARTIFACTS:
+      case SELECT_SOURCES_ROUTE:
         dispatch(changeStep(SELECT_SOURCE_STEP))
         break;
-      case SELECT_TARGET_ARTIFACTS:
+      case SELECT_TARGETS_ROUTE:
         dispatch(changeStep(SELECT_TARGET_STEP))
         break;
-      case TRACE_VIEW_ROUTE:
+      case VIEW_TRACE_ROUTE:
         dispatch(changeStep(VIEW_TRACE_STEP))
         break;
       default:
@@ -57,7 +57,7 @@ function App() {
 
               <main className="flexColumn widthFull" style={{ height: "90%" }}>
                 <Switch>
-                  <Route path={[SELECT_SOURCE_ARTIFACTS, SELECT_TARGET_ARTIFACTS, TRACE_VIEW_ROUTE]}>
+                  <Route path={[SELECT_SOURCES_ROUTE, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE]}>
                     <ViewerController />
                   </Route>
                   <Route path={DATASET_ROUTE}>

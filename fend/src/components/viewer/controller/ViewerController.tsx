@@ -13,10 +13,9 @@ import {
   getTraceSourceIndex,
   getTraceTargetIndex
 } from "../../../redux/selectors";
-import { NOT_CACHED, UNSELECTED_INDEX } from "../../../redux/store";
 import { Artifact, Dataset } from "../../../shared/types/Dataset";
 import { Trace } from "../../../shared/types/Trace";
-import { SELECT_SOURCE_STEP, SELECT_TARGET_STEP, VIEW_TRACE_STEP } from "../../constants";
+import { NOT_CACHED, SELECT_SOURCE_STEP, SELECT_TARGET_STEP, UNSELECTED_INDEX, VIEW_TRACE_STEP } from "../../constants";
 import NoSourceMessage from "../panels/NoSourceMessage";
 import SourceArtifactSearch from "../panels/SourceArtifactSearchContainer";
 import TargetArtifactSearch from "../panels/TargetArtifactSearchContainer";

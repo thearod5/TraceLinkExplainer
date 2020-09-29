@@ -12,7 +12,7 @@ import { getDataset } from "../../../redux/selectors";
 import { appHistory } from "../../../redux/store";
 import { getStepChangeError } from "../../../shared/pagechanger/PageChanger";
 import { Dataset } from "../../../shared/types/Dataset";
-import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCE_ARTIFACTS } from "../../constants";
+import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from "../../constants";
 import DatasetChooserItem from "./DatasetChooserItem";
 
 const DEFAULT_INDEX_SELECTED = -1;
@@ -52,7 +52,7 @@ export default function DatasetChooser() {
   };
 
   const onRouteSelected = (route: string) => {
-    if (route === SELECT_SOURCE_ARTIFACTS) {
+    if (route === SELECT_SOURCES_ROUTE) {
       const error = getStepChangeError(FIRST_STEP_IN_WIZARD);
       if (error === undefined) {
         dispatch(changeStep(FIRST_STEP_IN_WIZARD));

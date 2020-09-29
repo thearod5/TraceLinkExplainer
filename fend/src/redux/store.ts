@@ -5,6 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
+import { NOT_CACHED } from "../components/constants";
 import { initializeEmptyDataset, initializeEmptyTrace } from "./initializers";
 import rootReducer from "./reducers";
 import { RootState } from "./types";
@@ -18,8 +19,7 @@ const persistConfig = {
 
 export const appHistory = createBrowserHistory();
 
-export const NOT_CACHED = -2
-export const UNSELECTED_INDEX = -1
+
 
 const middleware = [thunk, routerMiddleware(appHistory)];
 

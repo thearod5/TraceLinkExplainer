@@ -1,7 +1,7 @@
 import React from "react";
 import { searchForTargetArtifact } from "../../../api/search";
 import { setSelectedTargets } from "../../../redux/actions";
-import { TRACE_VIEW_ROUTE } from "../../constants";
+import { VIEW_TRACE_ROUTE } from "../../constants";
 import SearchController from "../search/SearchController";
 
 interface TargetArtifactSearchProps { }
@@ -11,7 +11,7 @@ export default function TargetArtifactSearch(props: TargetArtifactSearchProps) {
     <SearchController
       searchFunction={searchForTargetArtifact}
       onArtifactsSelected={setSelectedTargets}
-      nextPageLocation={TRACE_VIEW_ROUTE}
+      nextPageLocation={VIEW_TRACE_ROUTE}
     />
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { searchForSourceArtifact } from "../../../api/search";
 import { setSelectedSources } from "../../../redux/actions";
-import { SELECT_TARGET_ARTIFACTS } from "../../constants";
+import { SELECT_TARGETS_ROUTE } from "../../constants";
 import SearchController from "../search/SearchController";
 
 export default function SourceArtifactSearch() {
@@ -9,7 +9,7 @@ export default function SourceArtifactSearch() {
     <SearchController
       searchFunction={searchForSourceArtifact}
       onArtifactsSelected={setSelectedSources}
-      nextPageLocation={SELECT_TARGET_ARTIFACTS}
+      nextPageLocation={SELECT_TARGETS_ROUTE}
     />
   );
 }
