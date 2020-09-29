@@ -25,7 +25,6 @@ export function Viewer(props: ViewerProps) {
 
   const { leftPanel, rightPanel, modalOpen } = props
 
-
   //Aprocess leave old component 
   useEffect(() => {
     if (nextLeft === null)
@@ -71,6 +70,7 @@ export function Viewer(props: ViewerProps) {
       setNextRight(rightPanel)
   }, 0)
 
+  
   const body = (
     <SplitPane split="vertical">
       <Fade in={!fadeLeftOut} timeout={FADE_TIMEOUT}>

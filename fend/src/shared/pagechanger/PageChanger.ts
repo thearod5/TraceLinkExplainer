@@ -1,5 +1,7 @@
 
+import _ from 'lodash';
 import { HOME_ROUTE, SELECT_SOURCE_ARTIFACTS, SELECT_SOURCE_STEP, SELECT_TARGET_ARTIFACTS, TRACE_VIEW_ROUTE, VIEW_TRACE_STEP } from "../../components/constants";
+import { initializeEmptyTrace } from "../../redux/initializers";
 import store from "../../redux/store";
 import { RootState } from "../../redux/types";
 import { isNonEmptyDataset } from "../types/Dataset";
@@ -21,13 +23,22 @@ export function getNewStepState(
   currentState: RootState,
   requestedStep: number
 ): RootState | string {
-  //Step step if an error is found
   const error = getStepChangeError(requestedStep, currentState); //validation
+  const { currentStep } = currentState
   if (error !== undefined) return error;
-  if (currentState.currentStep !== requestedStep && currentState.currentStep === VIEW_TRACE_STEP) {
-    return { ...currentState, currentStep: requestedStep, trace: { ...currentState.trace, relationshipColors: null } }
+  if (currentStep === requestedStep)
+    return currentState
+
+  // validation passed, reset any state
+  const newState = _.cloneDeep(currentState)
+  if (currentStep === VIEW_TRACE_STEP) { // moving OUTOF VIEW_TRACE page
+    newState.trace = initializeEmptyTrace()
+  } else if (requestedStep === VIEW_TRACE_STEP) { //reloading trace page
+    newState.trace.selectedWord = null
   }
-  return { ...currentState, currentStep: requestedStep };
+
+  newState.currentStep = requestedStep
+  return newState;
 }
 
 export function getStepChangeError(

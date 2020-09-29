@@ -13,7 +13,7 @@ const persistConfig = {
   key: "root",
   storage,
   whitelist: ["dataset", "currentStep", "selectedSources", "selectedTargets",
-    "trace", "traceSourceIndex", "traceTargetIndex"], // Top level store branches to persist
+    "traceSourceIndex", "traceTargetIndex"], // Top level store branches to persist
 };
 
 export const appHistory = createBrowserHistory();
