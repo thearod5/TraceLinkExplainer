@@ -1,6 +1,6 @@
 
 import _ from 'lodash';
-import { HOME_ROUTE, SELECT_SOURCES_ROUTE, SELECT_SOURCE_STEP, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE, VIEW_TRACE_STEP } from "../../components/constants";
+import { HOME_ROUTE, SELECT_SOURCES_ROUTE, SELECT_SOURCE_STEP, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE, VIEW_TRACE_STEP } from "../../constants";
 import { initializeEmptyTrace } from "../../redux/initializers";
 import store from "../../redux/store";
 import { RootState } from "../../redux/types";

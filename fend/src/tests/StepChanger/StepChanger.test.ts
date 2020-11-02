@@ -1,4 +1,4 @@
-import { SELECT_SOURCE_STEP } from "../../components/constants";
+import { SELECT_SOURCE_STEP } from "../../constants";
 import {
   clearData,
   selectDataset,
