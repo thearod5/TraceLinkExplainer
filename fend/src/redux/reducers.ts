@@ -1,4 +1,4 @@
-import { VIEW_TRACE_STEP } from "../components/constants";
+import { VIEW_TRACE_STEP } from "../constants";
 import { getNewStepState } from "../shared/pagechanger/PageChanger";
 import { areArtifacts, isDataset } from "../shared/types/Dataset";
 import { isTrace, isWordDescriptorDisplay } from "../shared/types/Trace";
