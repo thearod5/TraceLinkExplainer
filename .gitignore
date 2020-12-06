@@ -6,6 +6,7 @@ package-lock.json
 */package-lock.json
 .vscode
 .idea
+**/env
 **/.ipynp_checkpoints
 **/__pycache__
 *.code-workspace
