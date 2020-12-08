@@ -19,7 +19,15 @@ from rest_framework import routers
 
 from api import views
 
-router = routers.DefaultRouter()
+
+class OptionalSlashRouter(routers.DefaultRouter):
+
+    def __init__(self):
+        super().__init__()
+        self.trailing_slash = '/?'
+
+
+router = OptionalSlashRouter()
 router.register(r'datasets', views.DatasetViewSet)
 router.register(r'artifacts', views.ArtifactViewSet)
 router.register(r'traces', views.TraceViewSet)

@@ -3,19 +3,19 @@ from rest_framework import serializers
 from api.models import Dataset, Artifact, Trace
 
 
-class DatasetSerializer(serializers.HyperlinkedModelSerializer):
+class DatasetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dataset
-        fields = ['name']
+        fields = ['id', 'name']
 
 
-class ArtifactSerializer(serializers.HyperlinkedModelSerializer):
+class ArtifactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artifact
-        fields = ['name', 'text', 'dataset']
+        fields = ['id', 'name', 'text', 'dataset']
 
 
-class TraceSerializer(serializers.HyperlinkedModelSerializer):
+class TraceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trace
-        fields = ['source', 'target']
+        fields = ['id', 'source', 'target']
