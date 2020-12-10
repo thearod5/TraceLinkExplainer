@@ -29,10 +29,10 @@ class OptionalSlashRouter(routers.DefaultRouter):
 
 router = OptionalSlashRouter()
 router.register(r'datasets', views.DatasetViewSet)
-router.register(r'artifacts', views.ArtifactViewSet)
-router.register(r'traces', views.TraceViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('<str:dataset>/search/', views.SearchViewSet.as_view()),
+    path('<str:dataset>/traces', views.TraceViewSet.as_view({"get": "list"})),
+    path('', include(router.urls))
 ]

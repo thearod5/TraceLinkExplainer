@@ -1,39 +1,69 @@
-import rest_framework.viewsets as viewsets
-from rest_framework import status
-from rest_framework.response import Response
+import json
+from functools import wraps
+from typing import List
 
-from api import serializers, models
+from django.http import HttpResponse, HttpResponseBadRequest
+from rest_framework import viewsets
+from rest_framework.request import Request
+from rest_framework.views import APIView
+
+from api.models import Dataset, Trace
+from api.serializers import DatasetSerializer, TraceSerializer
+
+
+class ApplicationError(HttpResponseBadRequest):
+    def __init__(self, message: str):
+        super().__init__(json.dumps({'details': message}), content_type='application/json')
+
+
+def require_query_params(required_params):
+    """
+    request handler decorator that verifies that request contains given query params
+    """
+
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwds):
+            if not has_params(args[1], required_params):
+                return ApplicationError("missing one of required params: %s" % required_params)
+            return f(*args, **kwds)
+
+        return wrapper
+
+    return decorator
 
 
 class DatasetViewSet(viewsets.ModelViewSet):
     """
-    Allows the creation, updating, and reading of datasets in the system.
+    A viewset for viewing and editing user instances.
     """
-    queryset = models.Dataset.objects.all().order_by('-name')
-    serializer_class = serializers.DatasetSerializer
-
-
-class ArtifactViewSet(viewsets.ModelViewSet):
-    """
-    Allows the creation, updating, and reading of datasets in the system.
-    """
-    queryset = models.Artifact.objects.all().order_by('-name')
-    serializer_class = serializers.ArtifactSerializer
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = serializers.ArtifactSerializer(instance)
-        return Response(serializer.data)
+    queryset = Dataset.objects.all()
+    serializer_class = DatasetSerializer
 
 
 class TraceViewSet(viewsets.ModelViewSet):
     """
-    Allows the creation, updating, and reading of datasets in the system.
+    A viewset for viewing and editing user instances.
     """
-    queryset = models.Trace.objects.all().order_by('-source')
-    serializer_class = serializers.TraceSerializer
+    queryset = Trace.objects.all()
+    serializer_class = TraceSerializer
+
+
+@require_query_params(["source", "target", "dataset"])
+def get_explanation(self, request: Request, dataset: str, format=None):
+    source_name = request.query_params.get("source")
+    target_name = request.query_params.get("target")
+    dataset_name = request.query_params.get("dataset")
+    return HttpResponse("hello")
+
+
+class SearchViewSet(APIView):
+    @require_query_params(["query"])
+    def get(self, request: Request, dataset: str, format=None):
+        query_string = request.query_params.get("query")
+        print("SEARCH PARAMS:", query_string, dataset)
+        return HttpResponse("hello")
+
+
+def has_params(request: Request, params: List[str]):
+    return all([param in request.query_params for param in params])
