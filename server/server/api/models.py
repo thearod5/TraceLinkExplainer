@@ -4,7 +4,7 @@ MAX_ID_LENGTH = 50
 MAX_BODY_LENGTH = 500
 
 
-class Dataset(models.Model):
+class DatasetMeta(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=MAX_ID_LENGTH)
 
@@ -22,8 +22,10 @@ class ArtifactType(models.Model):
 
 class Artifact(models.Model):
     id = models.AutoField(primary_key=True)
-    dataset = models.ForeignKey(Dataset, related_name='artifacts', on_delete=models.CASCADE)
-    type = models.ForeignKey(ArtifactType, related_name='type', on_delete=models.CASCADE)
+    dataset = models.ForeignKey(DatasetMeta,
+                                on_delete=models.CASCADE)
+    type = models.ForeignKey(ArtifactType,
+                             on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_ID_LENGTH)
     text = models.CharField(max_length=MAX_BODY_LENGTH)
 
@@ -34,14 +36,12 @@ class Artifact(models.Model):
 
 class Trace(models.Model):
     id = models.AutoField(primary_key=True)
-    dataset = models.ForeignKey(Dataset, related_name='traces', on_delete=models.CASCADE)
-
-    source_type = models.ForeignKey(ArtifactType, related_name='source_type', on_delete=models.CASCADE)
-    source_name = models.CharField(max_length=MAX_ID_LENGTH)
-
-    target_type = models.ForeignKey(ArtifactType, related_name='target_type', on_delete=models.CASCADE)
-    target_name = models.CharField(max_length=MAX_ID_LENGTH)
+    source = models.ForeignKey(Artifact,
+                               on_delete=models.CASCADE,
+                               related_name='source')
+    target = models.ForeignKey(Artifact,
+                               on_delete=models.CASCADE,
+                               related_name='target')
 
     class Meta:
-        unique_together = [['dataset', 'source_type', 'source_name', 'target_type', 'target_name']]
-        ordering = ['dataset', 'source_name', 'target_name']
+        unique_together = [['source', 'target']]
