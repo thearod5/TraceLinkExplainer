@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 MAX_ID_LENGTH = 50
@@ -5,7 +7,7 @@ MAX_BODY_LENGTH = 500
 
 
 class DatasetMeta(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=MAX_ID_LENGTH)
 
     class Meta:
@@ -21,7 +23,7 @@ class ArtifactType(models.Model):
 
 
 class Artifact(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     dataset = models.ForeignKey(DatasetMeta,
                                 on_delete=models.CASCADE)
     type = models.ForeignKey(ArtifactType,
@@ -35,7 +37,7 @@ class Artifact(models.Model):
 
 
 class Trace(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     source = models.ForeignKey(Artifact,
                                on_delete=models.CASCADE,
                                related_name='source')

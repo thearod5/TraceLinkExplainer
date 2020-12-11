@@ -60,13 +60,13 @@ class ArtifactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Artifact
-        fields = ['dataset', 'type', 'name', 'text']
+        fields = ['id', 'dataset', 'type', 'name', 'text']
 
 
 class NestedArtifactSerializer(ArtifactSerializer):
     class Meta:
         model = models.Artifact
-        fields = ['type', 'name', 'text']
+        fields = ['id', 'type', 'name', 'text']
 
 
 class DatasetSerializer(serializers.ModelSerializer):
@@ -104,10 +104,12 @@ class ProjectSerializer(serializers.Serializer):
     def to_representation(self, instance):
         artifacts = models.Artifact.objects.filter(dataset=instance.id)
         traces = models.Trace.objects.filter(source__dataset=instance.id, target__dataset=instance.id)
-        a_serializer = ArtifactSerializer(artifacts, many=True)
-        t_serializer = TraceSerializer(traces, many=True)
+        artifacts = NestedArtifactSerializer(artifacts, many=True).data  # ignores dataset id from objects
+        traces = TraceSerializer(traces, many=True).data
+
         return {
+            "id": instance.id,
             "name": instance.name,
-            "artifacts": a_serializer.data,
-            "traces:": t_serializer.data
+            "artifacts": artifacts,
+            "traces:": traces
         }

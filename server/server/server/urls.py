@@ -33,6 +33,5 @@ router.register(r'datasets', views.ProjectViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('<str:dataset>/search/', views.SearchViewSet.as_view()),
-    path('<str:dataset>/traces', views.TraceViewSet.as_view({"get": "list"})),
     path('', include(router.urls))
 ]

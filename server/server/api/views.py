@@ -7,8 +7,8 @@ from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
-from api.models import DatasetMeta, Trace
-from api.serializers import TraceSerializer, ProjectSerializer
+from api.models import DatasetMeta
+from api.serializers import ProjectSerializer
 
 
 class ApplicationError(HttpResponseBadRequest):
@@ -39,14 +39,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """
     queryset = DatasetMeta.objects.all()  # dummy query set
     serializer_class = ProjectSerializer
-
-
-class TraceViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    queryset = Trace.objects.all()
-    serializer_class = TraceSerializer
 
 
 @require_query_params(["source", "target", "dataset"])
