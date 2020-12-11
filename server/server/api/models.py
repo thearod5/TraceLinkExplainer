@@ -37,10 +37,10 @@ class Trace(models.Model):
     dataset = models.ForeignKey(Dataset, related_name='traces', on_delete=models.CASCADE)
 
     source_type = models.ForeignKey(ArtifactType, related_name='source_type', on_delete=models.CASCADE)
-    source_name = models.ForeignKey(Artifact, related_name='source_name', on_delete=models.CASCADE)
+    source_name = models.CharField(max_length=MAX_ID_LENGTH)
 
     target_type = models.ForeignKey(ArtifactType, related_name='target_type', on_delete=models.CASCADE)
-    target_name = models.ForeignKey(Artifact, related_name='target_name', on_delete=models.CASCADE)
+    target_name = models.CharField(max_length=MAX_ID_LENGTH)
 
     class Meta:
         unique_together = [['dataset', 'source_type', 'source_name', 'target_type', 'target_name']]

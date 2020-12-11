@@ -29,6 +29,7 @@ class OptionalSlashRouter(routers.DefaultRouter):
 
 router = OptionalSlashRouter()
 router.register(r'datasets', views.DatasetViewSet)
+router.register(r'traces', views.TraceViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

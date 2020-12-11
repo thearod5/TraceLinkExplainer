@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_text
 from rest_framework import serializers
+from rest_framework.relations import SlugRelatedField
 
 import api.models as models
 
@@ -26,27 +27,21 @@ class TraceSerializer(serializers.ModelSerializer):
         queryset=models.ArtifactType.objects.all()
     )
 
-    source_name = CreatableSlugRelatedField(
-        many=False,
-        slug_field='name',
-        queryset=models.Artifact.objects.all()
-    )
-
     target_type = CreatableSlugRelatedField(
         many=False,
         slug_field='name',
         queryset=models.ArtifactType.objects.all()
     )
 
-    target_name = CreatableSlugRelatedField(
+    dataset = SlugRelatedField(
         many=False,
         slug_field='name',
-        queryset=models.Artifact.objects.all()
+        queryset=models.Dataset.objects.all()
     )
 
     class Meta:
         model = models.Trace
-        fields = ['source_type', 'source_name', 'target_type', 'target_name']
+        fields = ['dataset', 'source_type', 'source_name', 'target_type', 'target_name']
 
 
 class ArtifactSerializer(serializers.ModelSerializer):
@@ -56,25 +51,18 @@ class ArtifactSerializer(serializers.ModelSerializer):
         queryset=models.ArtifactType.objects.all()
     )
 
+    dataset = SlugRelatedField(
+        many=False,
+        slug_field='name',
+        queryset=models.Dataset.objects.all()
+    )
+
     class Meta:
         model = models.Artifact
-        fields = ['type', 'name', 'text']
+        fields = ['dataset', 'type', 'name', 'text']
 
 
 class DatasetSerializer(serializers.ModelSerializer):
-    artifacts = ArtifactSerializer(many=True)
-    traces = TraceSerializer(many=True)
-
     class Meta:
         model = models.Dataset
-        fields = ['name', 'artifacts', 'traces']
-
-    def create(self, validated_data):
-        artifacts_data = validated_data.pop('artifacts')
-        traces_data = validated_data.pop('traces')
-        dataset = models.Dataset.objects.create(**validated_data)
-
-        for artifact_data in artifacts_data:
-            models.Artifact.objects.create(dataset=dataset, **artifact_data)
-
-        return dataset
+        fields = ['name']
