@@ -2,9 +2,9 @@ import unittest
 
 import numpy as np
 
-from models.TraceInformation import TraceExplanation, Relationship
-from models.WordDescriptor import WordDescriptor
-from relationships.vsm.VSMRelationships import add_root_relationships, get_vsm_weights, \
+from explanation.models.TraceInformation import TraceExplanation, Relationship
+from explanation.models.WordDescriptor import WordDescriptor
+from explanation.relationships.vsm.VSMRelationships import add_root_relationships, get_vsm_weights, \
     create_word_similarity_dictionary
 
 

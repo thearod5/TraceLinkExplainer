@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>explanation.relationships.vsm package &#8212; TraceLinkExplainer 1.0.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="manage module" href="manage.html" />
+    <link rel="prev" title="explanation.relationships.conceptmodel package" href="explanation.relationships.conceptmodel.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="explanation-relationships-vsm-package">
+<h1>explanation.relationships.vsm package<a class="headerlink" href="#explanation-relationships-vsm-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-explanation.relationships.vsm.CalculateSimilarityMatrix">
+<span id="explanation-relationships-vsm-calculatesimilaritymatrix-module"></span><h2>explanation.relationships.vsm.CalculateSimilarityMatrix module<a class="headerlink" href="#module-explanation.relationships.vsm.CalculateSimilarityMatrix" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="explanation.relationships.vsm.CalculateSimilarityMatrix.calculate_similarity_matrix">
+<code class="sig-prename descclassname">explanation.relationships.vsm.CalculateSimilarityMatrix.</code><code class="sig-name descname">calculate_similarity_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_a</span></em>, <em class="sig-param"><span class="n">raw_b</span></em>, <em class="sig-param"><span class="n">logger</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.vsm.CalculateSimilarityMatrix.calculate_similarity_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates DistanceMatrix by transforming given documents into
+term frequency matrices (weighted via TF-IDF).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_a</strong> – {Listof String} - docs representing the rows of the matrix</p></li>
+<li><p><strong>raw_b</strong> – {Listof String} - docs representing the columns of the matrix</p></li>
+<li><p><strong>max_features</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>{DistanceMatrix} From A to B</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.CalculateSimilarityMatrix.calculate_similarity_matrix_from_term_frequencies">
+<code class="sig-prename descclassname">explanation.relationships.vsm.CalculateSimilarityMatrix.</code><code class="sig-name descname">calculate_similarity_matrix_from_term_frequencies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tf_a</span></em>, <em class="sig-param"><span class="n">tf_b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.vsm.CalculateSimilarityMatrix.calculate_similarity_matrix_from_term_frequencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.CalculateSimilarityMatrix.calculate_similarity_matrix_lsa">
+<code class="sig-prename descclassname">explanation.relationships.vsm.CalculateSimilarityMatrix.</code><code class="sig-name descname">calculate_similarity_matrix_lsa</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_a</span></em>, <em class="sig-param"><span class="n">raw_b</span></em>, <em class="sig-param"><span class="n">logger</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.vsm.CalculateSimilarityMatrix.calculate_similarity_matrix_lsa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Distance Matrix (calc. via cosine-similarity)
+where the given matrix is first reduced via lsa.</p>
+<p>Note, the resulting dimensions of the singular value decomposition is (a, a) where
+a = min(number of documents, number components, number of features). In our case,
+requirements + designs normally will not satisfy 100 records. In means that our
+number of resulting components varying between the upper and lower matrices.</p>
+<p>:param raw_a {Listof String} - Represents the rows of the matrix
+:param raw_b {Listof String} - Represents the cols of the matrix
+:return {SimilarityMatrix} From every doc in A to B</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.CalculateSimilarityMatrix.create_term_frequency_matrix">
+<code class="sig-prename descclassname">explanation.relationships.vsm.CalculateSimilarityMatrix.</code><code class="sig-name descname">create_term_frequency_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_a</span></em>, <em class="sig-param"><span class="n">raw_b</span></em>, <em class="sig-param"><span class="n">return_vectorizer</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.vsm.CalculateSimilarityMatrix.create_term_frequency_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates 2 TermFrequencyMatrices (one for A another for B) where the weight of
+each (row, col) pair is calculated via TF-IDF
+:param raw_a : The documents whose matrix is the first element
+:param raw_b : The documents whose matrix is the second element
+:return: CountMatrix for raw_a and raw_b, and also the vocabulary used</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-explanation.relationships.vsm.VSMRelationships">
+<span id="explanation-relationships-vsm-vsmrelationships-module"></span><h2>explanation.relationships.vsm.VSMRelationships module<a class="headerlink" href="#module-explanation.relationships.vsm.VSMRelationships" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="explanation.relationships.vsm.VSMRelationships.add_relationship_ids">
+<code class="sig-prename descclassname">explanation.relationships.vsm.VSMRelationships.</code><code class="sig-name descname">add_relationship_ids</code><span class="sig-paren">(</span><em class="sig-param">word_descriptors: [&lt;class 'explanation.models.WordDescriptor.WordDescriptor'&gt;], word_roots: [&lt;class 'str'&gt;], valid_roots: [&lt;class 'str'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.vsm.VSMRelationships.add_relationship_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each word descriptor, add its stemmed root (which is the relationship id), to list of linked
+relationships for that word.
+:param word_descriptors:
+:param word_roots: 1-1 mapping to word_descriptors containing its morphological root
+:param valid_roots: represents the set of word roots that have a non-zero weight in VSM weighting scheme.
+:return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.VSMRelationships.add_root_relationships">
+<code class="sig-prename descclassname">explanation.relationships.vsm.VSMRelationships.</code><code class="sig-name descname">add_root_relationships</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">trace_relationships</span><span class="p">:</span> <span class="n">explanation.models.TraceInformation.TraceExplanation</span></em>, <em class="sig-param"><span class="n">cutoff</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; explanation.models.TraceInformation.TraceExplanation<a class="headerlink" href="#explanation.relationships.vsm.VSMRelationships.add_root_relationships" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.VSMRelationships.create_word_similarity_dictionary">
+<code class="sig-prename descclassname">explanation.relationships.vsm.VSMRelationships.</code><code class="sig-name descname">create_word_similarity_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_index_mapping</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">similarity_matrix</span><span class="p">:</span> <span class="n">scipy.sparse.csr.csr_matrix</span></em>, <em class="sig-param"><span class="n">cutoff</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="headerlink" href="#explanation.relationships.vsm.VSMRelationships.create_word_similarity_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word_index_mapping</strong> – Word to index dictionary. Given by sklearn.</p></li>
+<li><p><strong>similarity_matrix</strong> – The similarity scores of some document.</p></li>
+<li><p><strong>normalize</strong> – Put weights/similarities between scale between 0 and 1</p></li>
+<li><p><strong>cutoff</strong> – Will only allow words with weights/similarities greater than this.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dict - Contains words as keys and similarity scores as values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.VSMRelationships.get_related_words">
+<code class="sig-prename descclassname">explanation.relationships.vsm.VSMRelationships.</code><code class="sig-name descname">get_related_words</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">words</span></em>, <em class="sig-param"><span class="n">word_roots</span></em>, <em class="sig-param"><span class="n">root_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.vsm.VSMRelationships.get_related_words" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.vsm.VSMRelationships.get_vsm_weights">
+<code class="sig-prename descclassname">explanation.relationships.vsm.VSMRelationships.</code><code class="sig-name descname">get_vsm_weights</code><span class="sig-paren">(</span><em class="sig-param">source_root_words: [&lt;class 'str'&gt;], target_root_words: [&lt;class 'str'&gt;], weight_cutoff: float</em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="headerlink" href="#explanation.relationships.vsm.VSMRelationships.get_vsm_weights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-explanation.relationships.vsm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-explanation.relationships.vsm" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TraceLinkExplainer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">server</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">api package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="explanation.html">explanation package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">server package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">server</a><ul>
+  <li><a href="explanation.html">explanation package</a><ul>
+  <li><a href="explanation.relationships.html">explanation.relationships package</a><ul>
+      <li>Previous: <a href="explanation.relationships.conceptmodel.html" title="previous chapter">explanation.relationships.conceptmodel package</a></li>
+      <li>Next: <a href="manage.html" title="next chapter">manage module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Alberto Rodriguez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/explanation.relationships.vsm.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

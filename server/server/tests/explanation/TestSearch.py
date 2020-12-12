@@ -1,9 +1,9 @@
 import unittest
 
-from controllers.Search import search_for_artifact, search_for_related_artifacts
+from explanation.controllers.Search import search_for_artifact, search_for_related_artifacts
 
 
-class SearchTest(unittest.TestCase):
+class TestSearch(unittest.TestCase):
     def runTest(self):
         self.test_search_source()
         self.test_empty_search()

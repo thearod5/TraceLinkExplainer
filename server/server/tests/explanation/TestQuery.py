@@ -1,9 +1,9 @@
 import unittest
 
-from controllers.Query import filter_artifacts
+from explanation.controllers.Query import filter_artifacts
 
 
-class QueryTest(unittest.TestCase):
+class TestQuery(unittest.TestCase):
     test_artifact_body = "state transitiosn"
 
     def runTest(self):

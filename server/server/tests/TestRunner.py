@@ -8,19 +8,19 @@ PATH_TO_PYTHON_MODULE = os.path.join(PATH_TO_TEST_FOLDER, "..")
 sys.path.insert(0, PATH_TO_PYTHON_MODULE)
 
 # For Running from Command Line
-from tests.TestConceptModel import TestConceptModel
-from tests.TestRootFamilies import TestRootFamilies
-from tests.TestUtil import TestUtil
-from tests.QueryTest import QueryTest
-from tests.SearchTest import SearchTest
-from tests.TestCleanDoc import TestCleanDoc
+from tests.explanation.TestConceptModel import TestConceptModel
+from tests.explanation.TestRootFamilies import TestRootFamilies
+from tests.explanation.TestUtil import TestUtil
+from tests.explanation.TestQuery import TestQuery
+from tests.explanation.TestSearch import TestSearch
+from tests.explanation.TestCleanDoc import TestCleanDoc
 
 if __name__ == "__main__":
     test_suite = unittest.TestSuite()
 
     classes_to_test = [
-        SearchTest,
-        QueryTest,
+        TestSearch,
+        TestQuery,
         TestCleanDoc,
         TestRootFamilies,
         TestConceptModel,

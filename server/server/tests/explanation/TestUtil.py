@@ -1,8 +1,8 @@
 import unittest
 
-from models.TraceInformation import TraceExplanation
-from models.WordDescriptor import WordDescriptor
-from util.DictHelper import export_object_as_dict
+from explanation.models.TraceInformation import TraceExplanation
+from explanation.models.WordDescriptor import WordDescriptor
+from explanation.util.DictHelper import export_object_as_dict
 
 
 class TestUtil(unittest.TestCase):

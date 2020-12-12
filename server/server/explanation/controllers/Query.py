@@ -2,7 +2,7 @@ from itertools import compress
 
 import pandas as pd
 
-from models.Artifact import ArtifactDict
+from explanation.models.Artifact import ArtifactDict
 
 COMBINE_FILTERS_OPERATIONS = {
     "&&": lambda a, b: a and b,

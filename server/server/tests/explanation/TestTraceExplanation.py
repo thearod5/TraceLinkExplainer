@@ -1,7 +1,7 @@
 import unittest
 
-from controllers.TraceExplanation import get_trace_information
-from models.TraceInformation import TracePayloadDict
+from explanation.controllers.TraceExplanation import get_trace_information
+from explanation.models.TraceInformation import TracePayloadDict
 
 
 class TestTraceExplanation(unittest.TestCase):
