@@ -1,4 +1,4 @@
-rm db.sqlite3
+rm ../data/db.sqlite3
 rm -rf src/api/migrations
 mkdir src/api/migrations
 touch src/api/migrations/__init__.py
