@@ -3,10 +3,10 @@ from typing import Dict
 from scipy.sparse import csr_matrix
 from sklearn.preprocessing import minmax_scale
 
-from models.TraceInformation import TraceExplanation, Relationship, WordRelationshipNode, SYN
-from models.WordDescriptor import WordDescriptor
-from preprocessing.Cleaners import clean_doc
-from relationships.vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
+from explanation.models.TraceInformation import TraceExplanation, Relationship, WordRelationshipNode, SYN
+from explanation.models.WordDescriptor import WordDescriptor
+from explanation.preprocessing.Cleaners import clean_doc
+from explanation.relationships.vsm.CalculateSimilarityMatrix import create_term_frequency_matrix
 
 VSM_RELATIONSHIP_NAME = "ROOT"
 

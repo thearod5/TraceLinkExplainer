@@ -1,22 +1,22 @@
-from explanation.loader.DataLoader import get_words_in_artifact
+from api import models
 from explanation.models.TraceInformation import TraceInformation, TraceExplanation, TracePayloadDict
 from explanation.models.WordDescriptor import WordDescriptor
+from explanation.preprocessing.Cleaners import get_words_in_string_doc
 from explanation.relationships.conceptmodel.ConceptModelRelationships import add_concept_families
 from explanation.relationships.vsm.VSMRelationships import add_root_relationships
 
 
 def get_trace_information(
-        dataset: str,
-        source_type: str,
-        source_id: str,
-        target_type: str,
-        target_id: str) -> TracePayloadDict:
-    # 1. Create FEND words
-    source_words = get_words_in_artifact(dataset, source_type, source_id)
-    target_words = get_words_in_artifact(dataset, target_type, target_id)
+        dataset_name: str,
+        source_name: str,
+        target_name: str) -> TracePayloadDict:
+    source_artifact = models.Artifact.objects.get(dataset__name=dataset_name, name=source_name)
+    target_artifact = models.Artifact.objects.get(dataset__name=dataset_name, name=target_name)
 
-    trace_explanation: TraceExplanation = create_trace_payload(
-        dataset, source_words, target_words)
+    source_words = get_words_in_string_doc(source_artifact.text)
+    target_words = get_words_in_string_doc(target_artifact.text)
+
+    trace_explanation: TraceExplanation = create_trace_payload(dataset_name, source_words, target_words)
 
     payload = TraceInformation(trace_explanation, "MANUAL", 0)
     return payload.to_dict()

@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, TypedDict
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_text
@@ -84,19 +84,36 @@ class ProjectSerializer(serializers.Serializer):
 
         dataset = create_object(DatasetSerializer, dataset_data)
 
-        artifacts = []
+        artifacts: TypedDict[str, models.Artifact] = {}
         for a_data in artifact_data:
             a_data.update({"dataset": dataset.id})
             artifact = create_object(ArtifactSerializer, a_data)
-            artifacts.append(artifact)
+            artifacts[artifact.id] = artifact
 
-        traces = []
+        artifact_traces = {}
         for t_data in trace_data:
             t_data.update({"dataset": dataset.id})
             trace = create_object(TraceSerializer, t_data)
-            traces.append(trace)
+            if trace.source_id not in artifact_traces:
+                artifact_traces[trace.source_id] = [trace]
+            else:
+                artifact_traces[trace.source_id] = artifact_traces[trace.source_id] + [trace]
+                
+            if trace.target_id not in artifact_traces:
+                artifact_traces[trace.target_id] = [trace]
+            else:
+                artifact_traces[trace.target_id] = artifact_traces[trace.target_id] + [trace]
+
+        for artifact_id, traces in artifact_traces.items():
+            artifact = artifacts[artifact_id]
+            for trace in traces:
+                artifact.traces.add(trace)
+            artifact.save()
 
         return dataset
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError("updating projects on this route is not defined.")
 
     def to_internal_value(self, data):
         return data

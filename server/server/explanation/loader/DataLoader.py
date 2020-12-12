@@ -4,6 +4,7 @@ import pathlib
 
 import pandas as pd
 
+from api import models
 from explanation.preprocessing.Cleaners import get_words_in_string_doc
 from explanation.util.FileHelper import get_path_to_data
 
@@ -118,10 +119,9 @@ def get_all_artifacts_for_dataset(dataset: str):
     return list(map(lambda a_type: get_dataset_artifacts_for_type(dataset, a_type, True), artifact_types))
 
 
-def get_words_in_artifact(dataset: str, artifact_type: str, artifact_id: str):
-    artifact = get_artifact_in_dataset(
-        dataset, artifact_type, artifact_id)["body"]
-    return get_words_in_string_doc(artifact)
+def get_words_in_artifact(artifact_id: str):
+    artifact = models.Artifact.objects.get(id=artifact_id)
+    return get_words_in_string_doc(artifact.text)
 
 
 def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):

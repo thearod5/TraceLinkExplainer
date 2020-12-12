@@ -3,7 +3,7 @@ from typing import List
 import pandas as pd
 from igraph import Graph, OUT
 
-from models.TraceInformation import WordRelationshipNode, Relationship, SYN, ANC, CHILD
+from explanation.models.TraceInformation import WordRelationshipNode, Relationship, SYN, ANC, CHILD
 
 CONCEPT_MODEL_WEIGHT = 1
 

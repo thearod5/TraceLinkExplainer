@@ -2,7 +2,7 @@ import functools
 
 from nltk.stem import PorterStemmer
 
-from Paths import PATH_TO_STOP_WORDS
+from explanation.Paths import PATH_TO_STOP_WORDS
 
 word_splitters = [".", "\n", "\t", " ", "(", ")", ":", ",",
                   ";", "[", "]", "{", "}", "\'", "\"", "|", "&", "*", "_"]

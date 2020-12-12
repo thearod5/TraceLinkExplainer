@@ -47,3 +47,5 @@ class TestTraceSerializer(TestCase):
 
         self.assertEqual(2, len(models.Artifact.objects.all()))
         self.assertEqual(1, len(models.Trace.objects.all()))
+
+        print(models.Artifact.objects.filter(traces__source__name="RE-8", name="RE-8"))

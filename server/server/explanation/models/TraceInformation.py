@@ -2,7 +2,7 @@ from typing import List
 
 from typing_extensions import TypedDict
 
-from models.WordDescriptor import WordDescriptor, WordDescriptorDict
+from explanation.models.WordDescriptor import WordDescriptor, WordDescriptorDict
 
 ANC = "ANCESTOR"
 CHILD = "CHILD"
@@ -79,6 +79,14 @@ class TraceExplanation:
         }
 
 
+class TracePayloadDict(TypedDict):
+    relationships: RelationshipDict
+    sourceDescriptors: WordDescriptorDict
+    targetDescriptors: WordDescriptorDict
+    trace_type: str
+    score: float
+
+
 class TraceInformation(TraceExplanation):
     """
     The BEND response to FEND encapsulating all
@@ -94,16 +102,8 @@ class TraceInformation(TraceExplanation):
         self.trace_type = trace_type
         self.score = score
 
-    def to_dict(self):
+    def to_dict(self) -> TracePayloadDict:
         super_dict = super(TraceInformation, self).to_dict()
         super_dict["traceType"] = self.trace_type
         super_dict["score"] = self.score
         return super_dict
-
-
-class TracePayloadDict(TypedDict):
-    relationships: RelationshipDict
-    sourceDescriptors: WordDescriptorDict
-    targetDescriptors: WordDescriptorDict
-    trace_type: str
-    score: float

@@ -1,14 +1,15 @@
 import os
 
-from Paths import PATH_TO_DATA
-from models.TraceInformation import TraceExplanation, Relationship
-from models.WordDescriptor import WordDescriptor
-from preprocessing.Cleaners import clean_doc
-from relationships.conceptmodel.ConceptModel import ConceptModel, ONTOLOGY_RELATION_PATHS
+from explanation.Paths import PATH_TO_DATA
+from explanation.models.TraceInformation import TraceExplanation, Relationship
+from explanation.models.WordDescriptor import WordDescriptor
+from explanation.preprocessing.Cleaners import clean_doc
+from explanation.relationships.conceptmodel.ConceptModel import ConceptModel, ONTOLOGY_RELATION_PATHS
 
 
 def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
-    path_to_concept_file = os.path.join(PATH_TO_DATA, ONTOLOGY_RELATION_PATHS[dataset_name])
+    ontology_name = "test" if dataset_name == "test" else "Drone"
+    path_to_concept_file = os.path.join(PATH_TO_DATA, ONTOLOGY_RELATION_PATHS[ontology_name])
     cm = ConceptModel()
     cm.add_concepts(path_to_concept_file)
     return cm

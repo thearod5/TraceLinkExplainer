@@ -30,6 +30,7 @@ class Artifact(models.Model):
                              on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_ID_LENGTH)
     text = models.CharField(max_length=MAX_BODY_LENGTH)
+    traces = models.ManyToManyField("Trace")
 
     class Meta:
         unique_together = [['dataset', 'type', 'name']]
