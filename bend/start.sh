@@ -1,1 +1,1 @@
-env/bin/python3 src/server/manage.py "$@"
+cd server && ../env/bin/python3 manage.py runserver
