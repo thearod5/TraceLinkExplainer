@@ -6,10 +6,9 @@ package-lock.json
 */package-lock.json
 .vscode
 .idea
-**/env
 **/.ipynp_checkpoints
 **/__pycache__
 *.code-workspace
-bend/src/python/.ipynb_checkpoints
-docs/*
-bend/env
+**/.ipynb_checkpoints
+**/env
+**/.env
