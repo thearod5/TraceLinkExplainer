@@ -41,7 +41,7 @@ ARTIFACT_NOT_FOUND_ERROR_TAG = "ARTIFACT_NOT_FOUND"
 def get_dataset_path(dataset_name: str):
     dataset_query = list(
         filter(lambda f: f[0] != ".", os.listdir(PATH_TO_DATA)))
-    assert dataset_name in dataset_query, 'Could not find dataset: %s in %s' % (
+    assert dataset_name in dataset_query, 'Could not find project: %s in %s' % (
         dataset_name, PATH_TO_DATA)
     return os.path.join(PATH_TO_DATA, dataset_name)
 

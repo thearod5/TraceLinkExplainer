@@ -1,14 +1,11 @@
-import unittest
+from django.test import TestCase
 
 from explanation.models.TraceInformation import TraceExplanation
 from explanation.models.WordDescriptor import WordDescriptor
 from explanation.util.DictHelper import export_object_as_dict
 
 
-class TestUtil(unittest.TestCase):
-    def runTest(self):
-        self.test_export_as_dict()
-        self.test_export_as_dict_with_obj_as_values()
+class TestUtil(TestCase):
 
     def test_export_as_dict_with_obj_as_values(self):
         dict_with_obj_value = {"word": WordDescriptor("Word", ["family"])}

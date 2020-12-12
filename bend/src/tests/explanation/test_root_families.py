@@ -1,6 +1,5 @@
-import unittest
-
 import numpy as np
+from django.test import TestCase
 
 from explanation.models.TraceInformation import TraceExplanation, Relationship
 from explanation.models.WordDescriptor import WordDescriptor
@@ -8,13 +7,7 @@ from explanation.relationships.vsm.VSMRelationships import add_root_relationship
     create_word_similarity_dictionary
 
 
-class TestRootFamilies(unittest.TestCase):
-    def runTest(self):
-        self.test_create_word_similarity_dictionary()
-        self.test_create_word_similarity_dictionary_cutoff()
-        self.test_create_word_similarity_dictionary_normalize()
-        self.test_get_vsm_weights()
-        self.test_add_root_families()
+class TestRootFamilies(TestCase):
 
     def test_add_root_families(self):
         source_words = ["unman", "plane", "car"]

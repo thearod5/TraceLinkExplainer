@@ -1,20 +1,11 @@
-import unittest
+from django.test import TestCase
 
 from explanation.preprocessing.Cleaners import clean_doc, split_chained_calls, separate_camel_case, \
     remove_non_alphanumeric_characters, remove_stop_words, stem_doc, to_lower, get_camel_case_words, \
     get_words_in_string_doc
 
 
-class TestCleanDoc(unittest.TestCase):
-
-    def runTest(self):
-        self.test_separate_chained_calls()
-        self.test_separate_camel_case_ec_example()
-        self.test_remove_non_alphanumeric()
-        self.test_remove_stop_words()
-        self.test_to_lower()
-        self.test_stem_doc()
-        self.test_clean_doc_basic()
+class TestCleanDoc(TestCase):
 
     def test_separate_chained_calls(self):
         doc = "helloWorld.thisMyThing"

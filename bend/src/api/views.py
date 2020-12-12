@@ -44,30 +44,30 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
     """
-    queryset = models.DatasetMeta.objects.all()  # dummy query set
+    queryset = models.ProjectMeta.objects.all()  # dummy query set
     serializer_class = ProjectSerializer
 
 
 @api_view(['GET'])
-def search_artifacts(request: Request, dataset_name: str):
-    dataset_artifacts = models.Artifact.objects.filter(dataset__name=dataset_name)
+def search_artifacts(request: Request, project_name: str):
+    project_artifacts = models.Artifact.objects.filter(project__name=project_name)
     if "source_name" in request.query_params:
         source_name = request.query_params['source_name']
         filter_query = (Q(traces__source__name=source_name) | Q(traces__target__name=source_name))
-        dataset_artifacts = models.Artifact.objects.filter(filter_query).exclude(name=source_name)
+        project_artifacts = models.Artifact.objects.filter(filter_query).exclude(name=source_name)
 
-    payload = ArtifactSerializer(dataset_artifacts, many=True).data
+    payload = ArtifactSerializer(project_artifacts, many=True).data
     return JsonResponse(payload, safe=False)
 
 
 @api_view(['GET'])
-def get_explanation(request: Request, dataset_name: str, source_name: str, target_name: str):
+def get_explanation(request: Request, project_name: str, source_name: str, target_name: str):
     trace_a = (Q(source__name=source_name) & Q(target__name=target_name))
     trace_b = (Q(source__name=target_name) & Q(target__name=source_name))
     trace_query = trace_a | trace_b
     if len(models.Trace.objects.filter(trace_query)) == 0:
         return ApplicationError("artifacts are not traced: %s - %s" % (source_name, target_name))
-    explanation = get_trace_information(dataset_name=dataset_name,
+    explanation = get_trace_information(project_name=project_name,
                                         source_name=source_name,
                                         target_name=target_name)
     return JsonResponse(explanation)

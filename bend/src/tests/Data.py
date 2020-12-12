@@ -1,18 +1,35 @@
+import json
+import os
 from functools import wraps
 
 from api import models
-from api.serializers import ArtifactSerializer, TraceSerializer, DatasetSerializer, create_object, ProjectSerializer
+from api.serializers import ArtifactSerializer, TraceSerializer, ProjectMetaSerializer, create_object, ProjectSerializer
+from explanation.Paths import PATH_TO_TEST_PROJECT_RESOURCES
 
 
-def create_dataset(data):
-    return create_object(DatasetSerializer, data)
+def read_json_file(path_to_file):
+    with open(path_to_file) as f:
+        data = json.load(f)
+    return data
 
 
-def create_project(data) -> models.DatasetMeta:
+def create_test_file_path(name):
+    return os.path.join(PATH_TO_TEST_PROJECT_RESOURCES, name + ".json")
+
+
+def get_test_file(name):
+    return read_json_file(create_test_file_path(name))
+
+
+def create_project_meta(data):
+    return create_object(ProjectMetaSerializer, data)
+
+
+def create_project(data) -> models.Project:
     return create_object(ProjectSerializer, data)
 
 
-def optional_builder_method(f):
+def builder_method(f):
     @wraps(f)
     def wrapper(*args, return_obj=False):
         object_created = f(*args)
@@ -24,79 +41,77 @@ def optional_builder_method(f):
 
 
 class DataBuilder:
-    dataset_name = "Drone"
+    project_id = None
 
-    artifact_a_type = "requirements"
-    artifact_a_name = "RE-8"
-    artifact_a_text = "hello world"
+    project_meta = get_test_file('meta')
+    project_name = project_meta['name']
 
-    dataset_id = None
+    artifact_a = get_test_file('artifact_a')
+    artifact_a_type = artifact_a['type']
+    artifact_a_name = artifact_a['name']
+    artifact_a_text = artifact_a['text']
 
-    dataset = {
-        "name": dataset_name
-    }
+    artifact_b = get_test_file('artifact_b')
+    artifact_b_name = artifact_b['name']
+    artifact_b_type = artifact_b['type']
+    artifact_b_text = artifact_b['text']
 
-    artifact_a = {
-        "type": artifact_a_type,
-        "name": artifact_a_name,
-        "text": artifact_a_text
-    }
-
-    artifact_b_name = "RE-10"
-
-    artifact_b = {
-        "type": artifact_a_type,
-        "name": artifact_b_name,
-        "text": artifact_a_text
-    }
+    n_artifact_types = len({artifact_a_type, artifact_b_type})
 
     trace = {
         "source_type": artifact_a_type,
-        "target_type": artifact_a_type,
         "source_name": artifact_a_name,
+        "target_type": artifact_b_type,
         "target_name": artifact_b_name
     }
 
-    @optional_builder_method
-    def create_empty_dataset(self):
-        dataset = create_dataset(self.dataset)
-        self.dataset_id = dataset.id
-        return dataset
-
-    @optional_builder_method
-    def create_project(self):
+    @builder_method
+    def with_empty_project(self):
         data = {
-            "dataset": self.dataset,
-            "artifacts": [self.artifact_a, self.artifact_b],
-            "traces": [self.trace]}
-        dataset = create_project(data)
-        self.dataset_id = dataset.id
-        return dataset
+            "project": self.project_meta,
+            "artifacts": [],
+            "traces": []}
+        project = create_project(data)
+        self.project_id = project.meta.id
+        return project
 
-    def with_artifact(self, artifact_data):
+    @builder_method
+    def with_default_project(self):
+        artifacts = [self.artifact_a, self.artifact_b]
+        traces = [self.trace]
+        data = {
+            "project": self.project_meta,
+            "artifacts": artifacts,
+            "traces": traces}
+        project = create_project(data)
+        self.project_id = project.meta.id
+        return project
+
+    def _with_artifact(self, artifact_data):
         artifact_data = artifact_data.copy()
-        artifact_data.update({"dataset": self.dataset_id})
+        artifact_data.update({"project": self.project_id})
         a_serializer = ArtifactSerializer(data=artifact_data, many=False)
         a_serializer.is_valid(raise_exception=True)
         return a_serializer.save()
 
-    @optional_builder_method
+    @builder_method
     def with_artifact_a(self):
-        return self.with_artifact(self.artifact_a)
+        return self._with_artifact(self.artifact_a)
 
-    @optional_builder_method
+    @builder_method
     def with_artifact_b(self):
-        return self.with_artifact(self.artifact_b)
+        return self._with_artifact(self.artifact_b)
 
+    @builder_method
     def with_artifacts(self):
-        self.with_artifact_a()
-        self.with_artifact_b()
-        return self
+        a = self.with_artifact_a()
+        b = self.with_artifact_b()
+        return a, b
 
-    @optional_builder_method
+    @builder_method
     def with_trace(self):
         t_data = self.trace
-        t_data.update({'dataset': self.dataset_id})
+        t_data.update({'project': self.project_id})
         t_serializer = TraceSerializer(data=t_data, many=False)
         t_serializer.is_valid(raise_exception=True)
         return t_serializer.save()

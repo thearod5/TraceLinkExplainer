@@ -38,10 +38,10 @@ class TraceSerializer(serializers.ModelSerializer):
         fields = ['source', 'target']
 
     def to_internal_value(self, data):
-        source = models.Artifact.objects.get(dataset=data.get('dataset'),
+        source = models.Artifact.objects.get(project=data.get('project'),
                                              type=data.get('source_type'),
                                              name=data.get('source_name'))
-        target = models.Artifact.objects.get(dataset=data.get('dataset'),
+        target = models.Artifact.objects.get(project=data.get('project'),
                                              type=data.get('target_type'),
                                              name=data.get('target_name'))
 
@@ -60,7 +60,7 @@ class ArtifactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Artifact
-        fields = ['id', 'dataset', 'type', 'name', 'text']
+        fields = ['id', 'project', 'type', 'name', 'text']
 
 
 class NestedArtifactSerializer(ArtifactSerializer):
@@ -69,48 +69,55 @@ class NestedArtifactSerializer(ArtifactSerializer):
         fields = ['id', 'type', 'name', 'text']
 
 
-class DatasetSerializer(serializers.ModelSerializer):
+class ProjectMetaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.DatasetMeta
+        model = models.ProjectMeta
         fields = ['name']
 
 
 class ProjectSerializer(serializers.Serializer):
 
     def create(self, validated_data):
-        dataset_data = validated_data.pop('dataset')
+        meta_data = validated_data.pop('project')
         artifact_data = validated_data.pop('artifacts')
         trace_data = validated_data.pop('traces')
 
-        dataset = create_object(DatasetSerializer, dataset_data)
+        project_meta = create_object(ProjectMetaSerializer, meta_data)
 
-        artifacts: TypedDict[str, models.Artifact] = {}
+        artifact_id_map: TypedDict[str, models.Artifact] = {}
+        artifacts = []
         for a_data in artifact_data:
-            a_data.update({"dataset": dataset.id})
+            a_data.update({"project": project_meta.id})
             artifact = create_object(ArtifactSerializer, a_data)
-            artifacts[artifact.id] = artifact
+            artifact_id_map[artifact.id] = artifact
+            artifacts.append(artifact)
 
         artifact_traces = {}
+        traces = []
         for t_data in trace_data:
-            t_data.update({"dataset": dataset.id})
+            t_data.update({"project": project_meta.id})
             trace = create_object(TraceSerializer, t_data)
+            traces.append(traces)
+
+            # map traces to their source and target artifacts
             if trace.source_id not in artifact_traces:
                 artifact_traces[trace.source_id] = [trace]
             else:
                 artifact_traces[trace.source_id] = artifact_traces[trace.source_id] + [trace]
-                
+
             if trace.target_id not in artifact_traces:
                 artifact_traces[trace.target_id] = [trace]
             else:
                 artifact_traces[trace.target_id] = artifact_traces[trace.target_id] + [trace]
 
+        # update many to many entries between artifacts and traces
         for artifact_id, traces in artifact_traces.items():
-            artifact = artifacts[artifact_id]
+            artifact = artifact_id_map[artifact_id]
             for trace in traces:
                 artifact.traces.add(trace)
             artifact.save()
 
-        return dataset
+        return models.Project(project_meta, artifacts, traces)
 
     def update(self, instance, validated_data):
         raise NotImplementedError("updating projects on this route is not defined.")
@@ -119,9 +126,9 @@ class ProjectSerializer(serializers.Serializer):
         return data
 
     def to_representation(self, instance):
-        artifacts = models.Artifact.objects.filter(dataset=instance.id)
-        traces = models.Trace.objects.filter(source__dataset=instance.id, target__dataset=instance.id)
-        artifacts = NestedArtifactSerializer(artifacts, many=True).data  # ignores dataset id from objects
+        artifacts = models.Artifact.objects.filter(project=instance.id)
+        traces = models.Trace.objects.filter(source__project=instance.id, target__project=instance.id)
+        artifacts = NestedArtifactSerializer(artifacts, many=True).data  # ignores project_meta id from objects
         traces = TraceSerializer(traces, many=True).data
 
         return {

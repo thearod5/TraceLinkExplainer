@@ -1,25 +1,22 @@
-import unittest
+from django.test import TestCase
 
 from explanation.loader.DataLoader import get_words_in_artifact
 from explanation.models.TraceInformation import TraceExplanation, CHILD, SYN, SOURCE
 from explanation.models.WordDescriptor import WordDescriptor
 from explanation.relationships.conceptmodel.ConceptModelRelationships import get_concept_model_for_dataset, \
     add_concept_families
+from tests.Data import DataBuilder
 
 
-class TestConceptModel(unittest.TestCase):
+class TestConceptModel(TestCase):
     concept_model = get_concept_model_for_dataset("test")
 
-    def runTest(self):
-        self.test_ex_test_dataset()
-        self.test_basic()
-        self.test_empty()
-        self.test_multiple_words()
-
     def test_ex_test_dataset(self):
+        project = DataBuilder().with_default_project(return_obj=True)
+
         dataset = "test"
-        source_words = get_words_in_artifact(dataset, "classes", "AFAssignRouteComponent.java")
-        target_words = get_words_in_artifact(dataset, "designs", "DD-352")
+        source_words = get_words_in_artifact(project.artifacts[0].id)
+        target_words = get_words_in_artifact(project.artifacts[1].id)
 
         source_word_descriptors = list(map(WordDescriptor, source_words))
         target_word_descriptors = list(map(WordDescriptor, target_words))
@@ -31,12 +28,13 @@ class TestConceptModel(unittest.TestCase):
 
         relationship = relationships[0]
 
-        self.assertEqual("add->transmit", relationship.title)
+        self.assertEqual("transmit->add", relationship.title)
         self.assertEqual(2, len(relationship.nodes))
         self.assertEqual(SOURCE, relationship.nodes[0].node_type)
         self.assertEqual(CHILD, relationship.nodes[1].node_type)
 
-        self.assertEqual("add->transmit", explanation.target_descriptors[0].relationship_ids[0])
+        descriptor = list(filter(lambda r: r.word == "add", explanation.target_descriptors))[0]
+        self.assertEqual("transmit->add", descriptor.relationship_ids[0])
 
     def test_basic(self):
         word_1 = "micro uav"

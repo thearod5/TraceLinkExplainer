@@ -18,7 +18,7 @@ router.register(r'projects', views.ProjectViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('projects/<str:dataset_name>/artifacts/', search_artifacts),
-    path('<str:dataset_name>/traces/<str:source_name>/<str:target_name>', get_explanation),
+    path('projects/<str:project_name>/artifacts/', search_artifacts),
+    path('<str:project_name>/traces/<str:source_name>/<str:target_name>', get_explanation),
     path('', include(router.urls))
 ]

@@ -1,6 +1,6 @@
-rm server/db.sqlite3
-rm -rf server/api/migrations
-mkdir server/api/migrations
-touch server/api/migrations/__init__.py
+rm db.sqlite3
+rm -rf src/api/migrations
+mkdir src/api/migrations
+touch src/api/migrations/__init__.py
 ./run.sh makemigrations
 ./run.sh migrate

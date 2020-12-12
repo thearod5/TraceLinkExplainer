@@ -1,16 +1,10 @@
-import unittest
+from django.test import TestCase
 
 from explanation.controllers.Query import filter_artifacts
 
 
-class TestQuery(unittest.TestCase):
+class TestQuery(TestCase):
     test_artifact_body = "state transitiosn"
-
-    def runTest(self):
-        self.test_basic_filter()
-        self.test_exact_filter()
-        self.test_combined_filter()
-        self.test_combine_negative()
 
     def test_basic_filter(self):
         test_artifacts = [{"id": "RE-9", "body": self.test_artifact_body}]

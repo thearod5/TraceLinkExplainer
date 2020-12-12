@@ -1,8 +1,9 @@
+from django.test import TestCase
+
 from explanation.controllers.Search import search_for_artifact, search_for_related_artifacts
-from tests.SmartTest import SmartTest
 
 
-class TestSearch(SmartTest):
+class TestSearch(TestCase):
 
     def test_search_source(self):
         artifacts = search_for_artifact(
