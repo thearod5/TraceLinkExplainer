@@ -5,7 +5,7 @@ import {
   isValidOperation,
   isValidQuery,
   isValidValue
-} from "../../shared/query/QueryValidator";
+} from "../../operations/query/QueryValidator";
 
 /*
  * isValidAttribute

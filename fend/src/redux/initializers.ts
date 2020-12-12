@@ -1,14 +1,14 @@
-import { Artifact, Dataset } from "../shared/types/Dataset";
-import { Trace } from "../shared/types/Trace";
+import { Artifact, Dataset } from '../operations/types/Dataset'
+import { Trace } from '../operations/types/Trace'
 
-export function initializeEmptyDataset(): Dataset {
+export function initializeEmptyDataset (): Dataset {
   return {
-    name: "",
-    summary: "",
-  };
+    name: '',
+    summary: ''
+  }
 }
 
-export function initializeEmptyTrace(): Trace {
+export function initializeEmptyTrace (): Trace {
   return {
     targetWords: null,
     sourceWords: null,
@@ -18,10 +18,10 @@ export function initializeEmptyTrace(): Trace {
   }
 }
 
-export function initializeEmptyArtifact(): Artifact {
+export function initializeEmptyArtifact (): Artifact {
   return {
-    id: "",
-    body: "",
-    type: "",
-  };
+    id: '',
+    body: '',
+    type: ''
+  }
 }

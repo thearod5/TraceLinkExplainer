@@ -7,8 +7,8 @@ import {
 } from "../../redux/actions";
 import store, { createEmptyState } from "../../redux/store";
 import { RootState } from "../../redux/types";
-import { getNewStepState } from "../../shared/pagechanger/PageChanger";
-import { Artifact, Dataset } from "../../shared/types/Dataset";
+import { getNewStepState } from "../../operations/pagechanger/PageChanger";
+import { Artifact, Dataset } from "../../operations/types/Dataset";
 let mockState: RootState = createEmptyState();
 
 const mockDataset: Dataset = {

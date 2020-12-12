@@ -1,24 +1,23 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createDefaultArtifactAccordion, createTracedArtifactAccordion } from "../components/artifact/accordion/ArtifactAccordionFactory";
-import { setSelectedSourceIndex, setSelectedTargetIndex } from "../redux/actions";
-import { getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getSourceWords, getTargetWords, getTrace } from "../redux/selectors";
-import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from "../shared/artifacts/WordCreator";
-
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { createDefaultArtifactAccordion, createTracedArtifactAccordion } from '../components/artifact/accordion/ArtifactAccordionFactory'
+import { setSelectedSourceIndex, setSelectedTargetIndex } from '../redux/actions'
+import { getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getSourceWords, getTargetWords, getTrace } from '../redux/selectors'
+import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../operations/artifacts/WordCreator'
 
 /* Responsibility: Displays all selected artifacts for either Search or Target artifacts.
  *
  */
 
 interface TracedArtifactAccordionDisplayProps {
-  type: "SOURCE" | "TARGET"
+  type: 'SOURCE' | 'TARGET'
 }
 
-export function SelectedArtifactsContainer(props: TracedArtifactAccordionDisplayProps) {
+export function SelectedArtifactsContainer (props: TracedArtifactAccordionDisplayProps) {
   const trace = useSelector(getTrace)
   const { type } = props
   const { relationships, relationshipColors } = trace
-  const index = type === "SOURCE" ? 0 : 1
+  const index = type === 'SOURCE' ? 0 : 1
 
   const artifactWords = [getSourceWords, getTargetWords]
   const artifactSelectors = [getSelectedSources, getSelectedTargets]
@@ -44,18 +43,16 @@ export function SelectedArtifactsContainer(props: TracedArtifactAccordionDisplay
             true,
             () => onSetIndex(index),
             () => onSetIndex(-1)
-          );
-        }
-
-        else {
+          )
+        } else {
           return createDefaultArtifactAccordion(
             artifact,
             artifact.body,
             false,
             () => onSetIndex(index),
-            () => onSetIndex(-1));
+            () => onSetIndex(-1))
         }
       })
     }
-    </div>);
+    </div>)
 }

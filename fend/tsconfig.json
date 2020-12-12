@@ -21,7 +21,7 @@
   },
   "include": [
     "src",
-    "src/shared",
+    "src/operations",
     "decs.d.ts"
   ]
 }

@@ -1,5 +1,5 @@
-import { getQueryRecommendations } from "../../shared/query/QueryRecommender";
-import { ATTRIBUTE_VALUES, CATEGORICAL_OPERATIONS } from "../../shared/query/Types";
+import { getQueryRecommendations } from "../../operations/query/QueryRecommender";
+import { ATTRIBUTE_VALUES, CATEGORICAL_OPERATIONS } from "../../operations/query/Types";
 
 test("+ : getRecommendations : attributes", () => {
   const query = "";

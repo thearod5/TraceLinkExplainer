@@ -1,13 +1,13 @@
-import { AccordionDetails, LinearProgress } from '@material-ui/core';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { getLoading } from '../../../redux/selectors';
-import { Relationships, Words } from '../../../shared/types/Trace';
-import { secondaryColor } from '../../../styles/theme';
-import ViewerWords from '../words/ArtifactWord';
+import { AccordionDetails, LinearProgress } from '@material-ui/core'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { getLoading } from '../../../redux/selectors'
+import { Relationships, Words } from '../../../operations/types/Trace'
+import { secondaryColor } from '../../../styles/theme'
+import ViewerWords from '../words/ArtifactWord'
 
 /* Responsibility: Container for body of accordion when displaying trace information.
- * 
+ *
  */
 
 interface ArtifactAccordionDetailsProps {
@@ -20,11 +20,11 @@ interface ArtifactAccordionDetailsProps {
   style: React.CSSProperties;
 }
 
-export default function ArtifactAccordionDetails(props: ArtifactAccordionDetailsProps) {
+export default function ArtifactAccordionDetails (props: ArtifactAccordionDetailsProps) {
   const loading = useSelector(getLoading)
 
   const { style, words, families, colorSelected, sizeSelected, fontSize, toolbarIcons } = props
-  let body;
+  let body
 
   if (!loading && words !== null && families !== null) {
     body = (<div
@@ -50,7 +50,6 @@ export default function ArtifactAccordionDetails(props: ArtifactAccordionDetails
   } else {
     body = <LinearProgress color="secondary" />
   }
-
 
   return (
     <AccordionDetails className="flexColumn">

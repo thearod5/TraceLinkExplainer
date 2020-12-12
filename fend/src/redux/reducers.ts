@@ -1,7 +1,7 @@
-import { VIEW_TRACE_STEP } from "../constants";
-import { getNewStepState } from "../shared/pagechanger/PageChanger";
-import { areArtifacts, isDataset } from "../shared/types/Dataset";
-import { isTrace, isWordDescriptorDisplay } from "../shared/types/Trace";
+import { VIEW_TRACE_STEP } from '../constants'
+import { getNewStepState } from '../operations/pagechanger/PageChanger'
+import { areArtifacts, isDataset } from '../operations/types/Dataset'
+import { isTrace, isWordDescriptorDisplay } from '../operations/types/Trace'
 import {
   CHANGE_STEP_ACTION,
   CLEAR_DATA,
@@ -18,10 +18,10 @@ import {
   SET_TRACE_SOURCE_INDEX_ACTION,
   SET_TRACE_TARGET_INDEX_ACTION,
   UNSELECT_DATASET
-} from "./actions";
-import { initializeEmptyDataset } from "./initializers";
-import { createEmptyState } from "./store";
-import { RootState } from "./types";
+} from './actions'
+import { initializeEmptyDataset } from './initializers'
+import { createEmptyState } from './store'
+import { RootState } from './types'
 
 export default (
   state = createEmptyState(),
@@ -32,93 +32,93 @@ export default (
       if (isDataset(action.payload)) {
         return {
           ...state,
-          dataset: action.payload,
-        };
-      } else throw new Error(createReducerError(SELECT_DATASET, "Dataset", action.payload));
+          dataset: action.payload
+        }
+      } else throw new Error(createReducerError(SELECT_DATASET, 'Dataset', action.payload))
 
     case UNSELECT_DATASET:
       return {
         ...state,
-        dataset: initializeEmptyDataset(),
-      };
+        dataset: initializeEmptyDataset()
+      }
 
     case CHANGE_STEP_ACTION:
-      const newStep = action.payload;
-      if (typeof newStep === "number") {
-        const result = getNewStepState(state, newStep);
-        return typeof result === "string"
+      const newStep = action.payload
+      if (typeof newStep === 'number') {
+        const result = getNewStepState(state, newStep)
+        return typeof result === 'string'
           ? { ...state, error: result }
-          : result;
-      } else throw new Error(createReducerError(CHANGE_STEP_ACTION, "Number", newStep));
+          : result
+      } else throw new Error(createReducerError(CHANGE_STEP_ACTION, 'Number', newStep))
 
     case SET_SELECTED_SOURCES_ACTION:
       if (areArtifacts(action.payload)) {
         return {
           ...state,
-          selectedSources: action.payload,
-        };
-      } else throw new Error(createReducerError(SET_SELECTED_SOURCES_ACTION, "Artifact[]", action.payload));
+          selectedSources: action.payload
+        }
+      } else throw new Error(createReducerError(SET_SELECTED_SOURCES_ACTION, 'Artifact[]', action.payload))
 
     case SET_SELECTED_SOURCE_INDEX_ACTION:
-      if (typeof action.payload === "number") {
+      if (typeof action.payload === 'number') {
         return {
           ...state,
           selectedSourceIndex: action.payload
-        };
-      } else throw new Error(createReducerError(SET_SELECTED_SOURCE_INDEX_ACTION, "number", action.payload));
+        }
+      } else throw new Error(createReducerError(SET_SELECTED_SOURCE_INDEX_ACTION, 'number', action.payload))
 
     case SET_SELECTED_TARGET_INDEX_ACTION:
-      if (typeof action.payload === "number") {
+      if (typeof action.payload === 'number') {
         return {
           ...state,
-          selectedTargetIndex: action.payload,
-        };
-      } else throw new Error(createReducerError(SET_SELECTED_TARGET_INDEX_ACTION, "number", action.payload));
+          selectedTargetIndex: action.payload
+        }
+      } else throw new Error(createReducerError(SET_SELECTED_TARGET_INDEX_ACTION, 'number', action.payload))
 
     case SET_TRACE_SOURCE_INDEX_ACTION:
-      if (typeof action.payload === "number") {
+      if (typeof action.payload === 'number') {
         return {
           ...state,
           traceSourceIndex: action.payload
-        };
-      } else throw new Error(createReducerError(SET_TRACE_SOURCE_INDEX_ACTION, "number", action.payload));
+        }
+      } else throw new Error(createReducerError(SET_TRACE_SOURCE_INDEX_ACTION, 'number', action.payload))
 
     case SET_TRACE_TARGET_INDEX_ACTION:
-      if (typeof action.payload === "number") {
+      if (typeof action.payload === 'number') {
         return {
           ...state,
-          traceTargetIndex: action.payload,
-        };
-      } else throw new Error(createReducerError(SET_TRACE_TARGET_INDEX_ACTION, "number", action.payload));
+          traceTargetIndex: action.payload
+        }
+      } else throw new Error(createReducerError(SET_TRACE_TARGET_INDEX_ACTION, 'number', action.payload))
 
     case SET_SELECTED_TARGETS_ACTION:
       if (areArtifacts(action.payload)) {
         return {
           ...state,
-          selectedTargets: action.payload,
-        };
-      } else throw new Error(createReducerError(SET_SELECTED_TARGETS_ACTION, "Artifact[]", action.payload));
+          selectedTargets: action.payload
+        }
+      } else throw new Error(createReducerError(SET_SELECTED_TARGETS_ACTION, 'Artifact[]', action.payload))
 
     case SET_ERROR_ACTION:
-      if (typeof action.payload === "string") {
+      if (typeof action.payload === 'string') {
         return {
           ...state,
-          error: action.payload,
-        };
+          error: action.payload
+        }
       } else if (action.payload === undefined) {
-        return { ...state, error: undefined };
+        return { ...state, error: undefined }
       } else {
-        throw new Error(createReducerError(SET_ERROR_ACTION, "string", action.payload));
+        throw new Error(createReducerError(SET_ERROR_ACTION, 'string', action.payload))
       }
 
     case SET_LOADING_ACTION:
-      if (typeof action.payload === "boolean") {
+      if (typeof action.payload === 'boolean') {
         return {
           ...state,
-          loading: action.payload,
-        };
+          loading: action.payload
+        }
       } else {
-        throw new Error(createReducerError(SET_LOADING_ACTION, "boolean", action.payload));
+        throw new Error(createReducerError(SET_LOADING_ACTION, 'boolean', action.payload))
       }
 
     case SET_TRACE_ACTION:
@@ -128,12 +128,11 @@ export default (
           trace: action.payload
         }
       } else {
-        throw new Error(createReducerError(SET_TRACE_ACTION, "Trace", action.payload));
+        throw new Error(createReducerError(SET_TRACE_ACTION, 'Trace', action.payload))
       }
     case SET_SELECTED_WORD_ACTION:
       if (isWordDescriptorDisplay(action.payload)) {
-        if (state.currentStep !== VIEW_TRACE_STEP)
-          return state
+        if (state.currentStep !== VIEW_TRACE_STEP) { return state }
         return {
           ...state,
           trace: {
@@ -142,15 +141,15 @@ export default (
           }
         }
       } else {
-        throw new Error(createReducerError(SET_SELECTED_WORD_ACTION, "WordDescriptorDisplay", action.payload));
+        throw new Error(createReducerError(SET_SELECTED_WORD_ACTION, 'WordDescriptorDisplay', action.payload))
       }
     case CLEAR_DATA:
-      return createEmptyState();
+      return createEmptyState()
     default:
-      return state;
+      return state
   }
-};
+}
 
-function createReducerError(name: string, error: string, payload: any) {
-  return `Expected a ${error}. Given: ${JSON.stringify(payload)}.`;
+function createReducerError (name: string, error: string, payload: any) {
+  return `Expected a ${error}. Given: ${JSON.stringify(payload)}.`
 }

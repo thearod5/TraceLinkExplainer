@@ -1,65 +1,65 @@
-import { Box, Button, Fade, LinearProgress } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getDatasetByName, getDatasetNames } from "../../api/datasets";
+import { Box, Button, Fade, LinearProgress } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getDatasetByName, getDatasetNames } from '../../api/datasets'
 import {
   changeStep,
   clearData,
   selectDataset,
   setError
-} from "../../redux/actions";
-import { getDataset } from "../../redux/selectors";
-import { appHistory } from "../../redux/store";
-import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
-import { Dataset } from "../../shared/types/Dataset";
-import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from "../../constants";
-import DatasetChooserItem from "./DatasetChooserItem";
+} from '../../redux/actions'
+import { getDataset } from '../../redux/selectors'
+import { appHistory } from '../../redux/store'
+import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
+import { Dataset } from '../../operations/types/Dataset'
+import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from '../../constants'
+import DatasetChooserItem from './DatasetChooserItem'
 
-const DEFAULT_INDEX_SELECTED = -1;
+const DEFAULT_INDEX_SELECTED = -1
 
-export default function DatasetChooser() {
-  const dataset = useSelector(getDataset);
-  const dispatch = useDispatch();
+export default function DatasetChooser () {
+  const dataset = useSelector(getDataset)
+  const dispatch = useDispatch()
 
-  const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED);
-  const [datasets, setDatasetsNames] = useState<string[]>([]);
+  const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED)
+  const [datasets, setDatasetsNames] = useState<string[]>([])
 
   useEffect(() => {
-    dispatch(changeStep(0));
+    dispatch(changeStep(0))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useEffect(() => {
     getDatasetNames().then((names) => {
       names.map((name, index) =>
         dataset.name === name ? setIndexSelected(index) : null
-      );
-      setDatasetsNames(names);
-    });
-  }, [dataset.name]);
+      )
+      setDatasetsNames(names)
+    })
+  }, [dataset.name])
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
-    const clickedDatasetName = datasets[indexToSelect];
+    const clickedDatasetName = datasets[indexToSelect]
     getDatasetByName(clickedDatasetName).then((dataset: Dataset) => {
       dispatch(selectDataset(dataset))
     }
-    );
-  };
+    )
+  }
 
   const deselectDataset = () => {
-    dispatch(clearData());
-    setIndexSelected(DEFAULT_INDEX_SELECTED);
-  };
+    dispatch(clearData())
+    setIndexSelected(DEFAULT_INDEX_SELECTED)
+  }
 
   const onRouteSelected = (route: string) => {
     if (route === SELECT_SOURCES_ROUTE) {
-      const error = getStepChangeError(FIRST_STEP_IN_WIZARD);
+      const error = getStepChangeError(FIRST_STEP_IN_WIZARD)
       if (error === undefined) {
-        dispatch(changeStep(FIRST_STEP_IN_WIZARD));
-        appHistory.push(route);
-      } else dispatch(setError(error));
+        dispatch(changeStep(FIRST_STEP_IN_WIZARD))
+        appHistory.push(route)
+      } else dispatch(setError(error))
     }
-  };
+  }
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
     <DatasetChooserItem
@@ -70,7 +70,7 @@ export default function DatasetChooser() {
       deselect={() => deselectDataset}
       onRouteSelected={onRouteSelected}
     />
-  ));
+  ))
 
   return (
     <Fade in={true} timeout={FADE_TIMEOUT}>
@@ -80,8 +80,8 @@ export default function DatasetChooser() {
           {datasets.length === 0 ? (
             <LinearProgress color="secondary" />
           ) : (
-              datasetItems
-            )}
+            datasetItems
+          )}
         </div>
         <div className="flexRowCentered padMedium">
           <Button
@@ -92,10 +92,9 @@ export default function DatasetChooser() {
           // TODO: Functionality for this
           >
             New Dataset
-        </Button>
+          </Button>
         </div>
       </Box>
     </Fade>
-  );
+  )
 }
-

@@ -1,7 +1,7 @@
-import { objectContainsKeys } from "./TypeUtil";
+import { objectContainsKeys } from './TypeUtil'
 
-export const SyntaxWordType: string = "#SYNTAX";
-export const KeyWordType: string = "#KEYWORD";
+export const SyntaxWordType: string = '#SYNTAX'
+export const KeyWordType: string = '#KEYWORD'
 
 /*
  * Type Definitions
@@ -15,17 +15,17 @@ export interface TraceRetrievalPayload {
   targetType: string;
 }
 
-//BEND Version of Word
+// BEND Version of Word
 export interface WordDescriptor {
   word: string;
   relationshipIds: string[]
 }
 
-const SYN_NODE_TYPE = "SYNONYM"
-const SIB_NODE_TYPE = "SIBLING"
-const ANC_NODE_TYPE = "ANCESTOR"
-const CHILD_NODE_TYPE = "CHILD"
-const SOURCE_NODE_TYPE = "SOURCE"
+const SYN_NODE_TYPE = 'SYNONYM'
+const SIB_NODE_TYPE = 'SIBLING'
+const ANC_NODE_TYPE = 'ANCESTOR'
+const CHILD_NODE_TYPE = 'CHILD'
+const SOURCE_NODE_TYPE = 'SOURCE'
 
 export type WordDescriptors = WordDescriptor[];
 
@@ -65,7 +65,7 @@ export interface Trace {
   selectedWord: WordDescriptorDisplay | null
 }
 
-//FEND version of WordDescriptor
+// FEND version of WordDescriptor
 export interface WordDescriptorDisplay {
   word: string;
   size: number;
@@ -79,74 +79,73 @@ export type Words = WordDescriptorDisplay[];
  * Type Definitions
  */
 
-export function isTrace(obj?: any): obj is Trace {
-  const requiredKeys = ["targetWords", "sourceWords", "relationships", "relationshipColors", "selectedWord"]; // TODO: Automate generation of list of keys
-  return objectContainsKeys(requiredKeys, obj, true);
+export function isTrace (obj?: any): obj is Trace {
+  const requiredKeys = ['targetWords', 'sourceWords', 'relationships', 'relationshipColors', 'selectedWord'] // TODO: Automate generation of list of keys
+  return objectContainsKeys(requiredKeys, obj, true)
 }
 
-
-export function isTraceRetrievealPayload(
+export function isTraceRetrievealPayload (
   obj: object,
   log = false
 ): obj is TraceRetrievalPayload {
   const requiredKeys = [
-    "datasetName",
-    "sourceId",
-    "sourceType",
-    "targetId",
-    "targetType",
-  ];
-  return objectContainsKeys(requiredKeys, obj, log);
-}
-
-export function isWordDescriptorDisplay(
-  obj: any,
-  log = false
-): obj is WordDescriptorDisplay {
-  const requiredKeys = ["word",
-    "size",
-    "color",
-    "relationshipIds"]
+    'datasetName',
+    'sourceId',
+    'sourceType',
+    'targetId',
+    'targetType'
+  ]
   return objectContainsKeys(requiredKeys, obj, log)
 }
 
-export function isTraceInformation(
+export function isWordDescriptorDisplay (
+  obj: any,
+  log = false
+): obj is WordDescriptorDisplay {
+  const requiredKeys = ['word',
+    'size',
+    'color',
+    'relationshipIds']
+  return objectContainsKeys(requiredKeys, obj, log)
+}
+
+export function isTraceInformation (
   obj: any,
   log = false
 ): obj is TraceInformation {
   const requiredKeys = [
-    "relationships",
-    "sourceDescriptors",
-    "targetDescriptors",
-    "traceType",
-    "score",
-  ];
+    'relationships',
+    'sourceDescriptors',
+    'targetDescriptors',
+    'traceType',
+    'score'
+  ]
   return (
     objectContainsKeys(requiredKeys, obj, log) &&
     isWordDescriptors(obj.sourceDescriptors, log) &&
     isWordDescriptors(obj.targetDescriptors, log)
-  );
+  )
 }
 
-function isWordDescriptor(obj?: any, log = false): obj is WordDescriptor {
-  const requiredKeys = ["word", "relationshipIds"];
+function isWordDescriptor (obj?: any, log = false): obj is WordDescriptor {
+  const requiredKeys = ['word', 'relationshipIds']
   const result =
     objectContainsKeys(requiredKeys, obj, log) &&
-    typeof obj.word === "string" &&
-    typeof obj.relationshipIds === "object" &&
-    obj.relationshipIds.length >= 0;
-  if (log && !result) console.error("Failed: ", obj);
-  return result;
+    typeof obj.word === 'string' &&
+    typeof obj.relationshipIds === 'object' &&
+    obj.relationshipIds.length >= 0
+  if (log && !result) console.error('Failed: ', obj)
+  return result
 }
 
-export function isWordDescriptors(
+export function isWordDescriptors (
   obj?: any,
   log = false
 ): obj is WordDescriptors {
-  if (!Array.isArray(obj)) return false;
+  if (!Array.isArray(obj)) return false
   return !obj
     .map((wordDescriptor: any) => isWordDescriptor(wordDescriptor, log))
-    .includes(false);
+    .includes(false)
 }
 
-export type RelationshipColors = Record<string, string>; //id to color mapping
+export type RelationshipColors = Record<string, string>; // id to color mapping

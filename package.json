@@ -6,8 +6,8 @@
   "scripts": {
     "fend": "cd fend && npm start",
     "fend-test": "cd fend && npm run test",
-    "bend": "cd bend && npm run start-watch",
-    "bend-test": "cd bend && npm run test",
+    "bend": "cd bend && ./start.sh",
+    "bend-test": "cd bend && ./test.sh",
     "fend-lint": "cd fend && npm run lint",
     "bend-lint": "cd bend && npm run lint",
     "start": "concurrently \"npm run bend\" \"npm run fend\"",

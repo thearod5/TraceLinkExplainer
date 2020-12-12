@@ -1,9 +1,9 @@
-import React from "react";
-import { getDefaultRelationships } from "../../../shared/artifacts/WordCreator";
-import { ArtifactDisplayModel } from "../../../shared/types/Dataset";
-import { NUMBER_RESULTS_PROMPT } from "../../../constants";
-import SearchResultAccordion from "./SearchResultAccordion";
-import { ArtifactClickAction } from "../types";
+import React from 'react'
+import { getDefaultRelationships } from '../../../operations/artifacts/WordCreator'
+import { ArtifactDisplayModel } from '../../../operations/types/Dataset'
+import { NUMBER_RESULTS_PROMPT } from '../../../constants'
+import SearchResultAccordion from './SearchResultAccordion'
+import { ArtifactClickAction } from '../types'
 
 interface SearchResultsProps {
   numberOfTotalResults: number;
@@ -12,8 +12,8 @@ interface SearchResultsProps {
   removeArtifact: ArtifactClickAction;
 }
 
-export default function SearchResults(props: SearchResultsProps) {
-  const numberOfTotalResults = props.numberOfTotalResults;
+export default function SearchResults (props: SearchResultsProps) {
+  const numberOfTotalResults = props.numberOfTotalResults
   return (
     <div className="flexColumn sizeFull">
       <label className="padVerticalLight widthFull textAlignCenter">
@@ -29,8 +29,8 @@ export default function SearchResults(props: SearchResultsProps) {
             selectArtifact={props.selectArtifact}
             removeArtifact={props.removeArtifact}
           />
-        );
+        )
       })}
     </div>
-  );
+  )
 }

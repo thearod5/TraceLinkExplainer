@@ -4,34 +4,34 @@ export interface AttributeDefinition {
 }
 
 export const CATEGORICAL_OPERATIONS = [
-  "~",
-  "!~",
-  "=",
-  "!=",
-  ">",
-  "<"
-];
-export const COMBINATORS = ["&&", "||"];
+  '~',
+  '!~',
+  '=',
+  '!=',
+  '>',
+  '<'
+]
+export const COMBINATORS = ['&&', '||']
 
 const TypeAttribute = {
-  fieldName: "type",
-  operations: CATEGORICAL_OPERATIONS,
-};
+  fieldName: 'type',
+  operations: CATEGORICAL_OPERATIONS
+}
 
 const BodyAttribute = {
-  fieldName: "body",
-  operations: CATEGORICAL_OPERATIONS,
-};
+  fieldName: 'body',
+  operations: CATEGORICAL_OPERATIONS
+}
 
 const IdAttribute = {
-  fieldName: "id",
-  operations: CATEGORICAL_OPERATIONS,
-};
+  fieldName: 'id',
+  operations: CATEGORICAL_OPERATIONS
+}
 
-export const Attributes = [TypeAttribute, BodyAttribute, IdAttribute];
+export const Attributes = [TypeAttribute, BodyAttribute, IdAttribute]
 export const ATTRIBUTE_VALUES = Attributes.map(
   (attribute) => attribute.fieldName
-);
+)
 
 export enum CommandType {
   ATTRIBUTE = 0,
@@ -48,14 +48,14 @@ export const STEP_ORDER: CommandType[] = [
   CommandType.ATTRIBUTE,
   CommandType.OPERATION,
   CommandType.VALUE,
-  CommandType.COMBINATOR,
-];
+  CommandType.COMBINATOR
+]
 
-export const STEPS_IN_SINGLE_COMMAND = STEP_ORDER.length - 1; //eliminate combinator
-export const STEPS_IN_COMMAND_EXTENSION = STEP_ORDER.length;
+export const STEPS_IN_SINGLE_COMMAND = STEP_ORDER.length - 1 // eliminate combinator
+export const STEPS_IN_COMMAND_EXTENSION = STEP_ORDER.length
 
 export const AttributeTypeMap: Record<string, AttributeType> = {
   type: AttributeType.categorical,
   body: AttributeType.categorical,
-  id: AttributeType.categorical,
-};
+  id: AttributeType.categorical
+}
