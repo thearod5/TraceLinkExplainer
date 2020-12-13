@@ -49,12 +49,12 @@ class DataBuilder:
     artifact_a = get_test_file('artifact_a')
     artifact_a_type = artifact_a['type']
     artifact_a_name = artifact_a['name']
-    artifact_a_text = artifact_a['text']
+    artifact_a_text = artifact_a['body']
 
     artifact_b = get_test_file('artifact_b')
     artifact_b_name = artifact_b['name']
     artifact_b_type = artifact_b['type']
-    artifact_b_text = artifact_b['text']
+    artifact_b_text = artifact_b['body']
 
     n_artifact_types = len({artifact_a_type, artifact_b_type})
 

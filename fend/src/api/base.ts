@@ -30,3 +30,10 @@ export async function post (url: string, data: object): Promise<any> {
       store.dispatch(setError(e))
     })
 }
+
+export async function get (url: string): Promise<any> {
+  return fetch(url).then((res) => res.json())
+    .catch((e) => {
+      store.dispatch(setError(e))
+    })
+}

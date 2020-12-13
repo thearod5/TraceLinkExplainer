@@ -22,7 +22,7 @@ export default function SearchResults (props: SearchResultsProps) {
       {props.results.map((searchItem) => {
         return (
           <SearchResultAccordion
-            key={searchItem.artifact.id}
+            key={searchItem.artifact.name}
             result={searchItem.artifact}
             words={searchItem.words}
             families={getDefaultRelationships()}

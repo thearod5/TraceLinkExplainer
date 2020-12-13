@@ -59,7 +59,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           onClick={(event) => event.stopPropagation()} // stops opening of accordion
           onFocus={(event) => event.stopPropagation()}
           control={<Checkbox checked={checked} onClick={onClick} />}
-          label={props.result.id}
+          label={props.result.name}
         />
       </AccordionSummary>
 

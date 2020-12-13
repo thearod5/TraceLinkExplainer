@@ -16,8 +16,8 @@ export function createTracedArtifactAccordion (
 ) {
   return (
     <ArtifactAccordion
-      key={`${artifact.type}:${artifact.id}`}
-      artifactId={artifact.id}
+      key={`${artifact.type}:${artifact.name}`}
+      artifactId={artifact.name}
       artifactType={artifact.type}
       wordDescriptors={wordDescriptors}
       relationships={relationships}
@@ -38,8 +38,8 @@ export function createDefaultArtifactAccordion (
 ) {
   return (
     <ArtifactAccordion
-      key={`${artifact.type}:${artifact.id}`}
-      artifactId={artifact.id}
+      key={`${artifact.type}:${artifact.name}`}
+      artifactId={artifact.name}
       artifactType={artifact.type}
       wordDescriptors={createDefaultWordDescriptors(artifactBody)}
       relationships={getDefaultRelationships()}

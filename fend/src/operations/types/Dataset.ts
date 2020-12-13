@@ -6,13 +6,15 @@ import { objectContainsKeys } from './TypeUtil'
  */
 
 export interface Dataset {
+  id: string;
   name: string;
-  summary: string;
+  description: string;
 }
 
 export interface ArtifactIdentifier {
+  project:string;
+  name: string;
   type: string;
-  id: string;
 }
 
 export interface Artifact extends ArtifactIdentifier {
@@ -35,12 +37,12 @@ export interface ArtifactDisplayModel {
  */
 
 export function isDataset (obj?: any): obj is Dataset {
-  const requiredKeys = ['name', 'summary'] // TODO: Automate generation of list of keys
+  const requiredKeys = ['name', 'id', 'description'] // TODO: Automate generation of list of keys
   return objectContainsKeys(requiredKeys, obj)
 }
 
 export function isNonEmptyDataset (obj?: any): obj is Dataset {
-  return isDataset(obj) && obj.name !== '' && obj.summary !== ''
+  return isDataset(obj) && obj.id !== ''
 }
 
 export function isArtifact (obj?: any): obj is Artifact {
@@ -56,7 +58,7 @@ export function areArtifacts (obj: any): obj is Artifact[] {
 }
 
 export function isArtifactIdentifier (obj?: any): obj is ArtifactIdentifier {
-  const requiredKeys = ['id', 'type']
+  const requiredKeys = ['project', 'name', 'type']
   return objectContainsKeys(requiredKeys, obj)
 }
 
@@ -70,7 +72,7 @@ export function isArtifactIdentifierList (
 }
 
 export function artifactsAreEqual (a1: Artifact, a2: Artifact) {
-  return a1.type === a2.type && a1.id === a2.id
+  return a1.type === a2.type && a1.name === a2.name
 }
 
 /*
@@ -78,6 +80,6 @@ export function artifactsAreEqual (a1: Artifact, a2: Artifact) {
  */
 
 export function getArtifactIdentifier (artifact: Artifact): ArtifactIdentifier {
-  const { id, type } = artifact
-  return { id, type }
+  const { project, name: id, type } = artifact
+  return { project, name: id, type }
 }

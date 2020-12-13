@@ -1,6 +1,7 @@
 from typing import Type, TypedDict
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.utils.encoding import smart_text
 from rest_framework import serializers
 from rest_framework.relations import PrimaryKeyRelatedField
@@ -60,23 +61,24 @@ class ArtifactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Artifact
-        fields = ['id', 'project', 'type', 'name', 'text']
+        fields = ['id', 'project', 'type', 'name', 'body']
 
 
 class NestedArtifactSerializer(ArtifactSerializer):
     class Meta:
         model = models.Artifact
-        fields = ['id', 'type', 'name', 'text']
+        fields = ['id', 'type', 'name', 'body']
 
 
 class ProjectMetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProjectMeta
-        fields = ['name']
+        fields = '__all__'
 
 
 class ProjectSerializer(serializers.Serializer):
 
+    @transaction.atomic
     def create(self, validated_data):
         meta_data = validated_data.pop('project')
         artifact_data = validated_data.pop('artifacts')

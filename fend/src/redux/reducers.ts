@@ -43,6 +43,7 @@ export default (
       }
 
     case CHANGE_STEP_ACTION:
+      // eslint-disable-next-line no-case-declarations
       const newStep = action.payload
       if (typeof newStep === 'number') {
         const result = getNewStepState(state, newStep)

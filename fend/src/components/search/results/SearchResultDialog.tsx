@@ -42,7 +42,7 @@ export default function SearchResultDialog (props: SearchItemDialogProps) {
       open={props.open}
     >
       <DialogTitle id="customized-dialog-title">
-        {props.artifact.id}
+        {props.artifact.name}
       </DialogTitle>
       <DialogContent dividers>{createBodyContainer}</DialogContent>
       <DialogActions>

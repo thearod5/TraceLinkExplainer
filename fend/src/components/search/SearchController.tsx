@@ -67,6 +67,7 @@ export default function SearchController (props: SearchProps) {
           setIsLoading(false)
         })
         .catch((e) => {
+          console.log(e)
           dispatch(setError(e.toString()))
           setIsLoading(false)
         })

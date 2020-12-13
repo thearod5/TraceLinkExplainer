@@ -121,7 +121,7 @@ def get_all_artifacts_for_dataset(dataset: str):
 
 def get_words_in_artifact(artifact_id: str):
     artifact = models.Artifact.objects.get(id=artifact_id)
-    return get_words_in_string_doc(artifact.text)
+    return get_words_in_string_doc(artifact.body)
 
 
 def get_artifact_in_dataset(dataset: str, artifact_type: str, artifact_id: str):

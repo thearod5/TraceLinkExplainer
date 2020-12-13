@@ -10,11 +10,11 @@ def get_trace_information(
         project_name: str,
         source_name: str,
         target_name: str) -> TracePayloadDict:
-    source_artifact = models.Artifact.objects.get(dataset__name=project_name, name=source_name)
-    target_artifact = models.Artifact.objects.get(dataset__name=project_name, name=target_name)
+    source_artifact = models.Artifact.objects.get(project__name=project_name, name=source_name)
+    target_artifact = models.Artifact.objects.get(project__name=project_name, name=target_name)
 
-    source_words = get_words_in_string_doc(source_artifact.text)
-    target_words = get_words_in_string_doc(target_artifact.text)
+    source_words = get_words_in_string_doc(source_artifact.body)
+    target_words = get_words_in_string_doc(target_artifact.body)
 
     trace_explanation: TraceExplanation = create_trace_payload(project_name, source_words, target_words)
 

@@ -20,7 +20,7 @@ class TestTraceSerializer(TestCase):
         self.assertEqual(data.project_name, artifact.project.name)
         self.assertEqual(data.artifact_a_type, artifact.type.name)
         self.assertEqual(data.artifact_a_name, artifact.name)
-        self.assertEqual(data.artifact_a_text, artifact.text)
+        self.assertEqual(data.artifact_a_text, artifact.body)
         self.assertEqual(1, len(models.Artifact.objects.all()))
 
     def test_cannot_create_artifact_duplicates(self):

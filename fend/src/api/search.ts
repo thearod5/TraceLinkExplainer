@@ -6,11 +6,9 @@ import {
   isNonEmptyDataset
 } from '../operations/types/Dataset'
 import {
-  SearchResponse,
-  SearchSourceRoutePayload,
-  SearchTargetRoutePayload
+  SearchResponse
 } from '../operations/types/Search'
-import { BASE_URL, post } from './base'
+import { BASE_URL, get, post } from './base'
 import { CustomError, isError } from './errors'
 
 export type ServerResponse = CustomError | SearchResponse;
@@ -24,13 +22,8 @@ export async function searchForSourceArtifact (
     if (!isNonEmptyDataset(dataset)) {
       return reject(Error('Dataset not selected.'))
     }
-    const searchUrl = [BASE_URL, 'source'].join('/')
-    const payload: SearchSourceRoutePayload = {
-      datasetName: dataset.name,
-      query,
-      limit
-    }
-    return resolve(baseSearchFunction(searchUrl, payload))
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts'].join('/')
+    return resolve(baseSearchFunction(searchUrl))
   })
 }
 
@@ -54,32 +47,26 @@ export async function searchForTargetArtifact (
       )
     }
 
-    const searchUrl = [BASE_URL, 'target'].join('/')
-    const payload: SearchTargetRoutePayload = {
-      datasetName: dataset.name,
-      sources,
-      query,
-      limit
-    }
-    return resolve(baseSearchFunction(searchUrl, payload))
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts?source_name=' + sources[0].name].join('/')
+    console.log('SEARCHING FOR TRACED:', searchUrl)
+    return resolve(baseSearchFunction(searchUrl))
   })
 }
 
 async function baseSearchFunction (
-  url: string,
-  payload: SearchSourceRoutePayload
+  url: string
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    (post(url, payload) as Promise<SearchResponse>).then(
-      (response: ServerResponse) => {
-        if (response === undefined) {
-          return reject('Backend is off. Please see system administrator.')
-        } else if (isError(response)) {
-          return reject(response.error)
-        } else if (!('searchItems' in response)) {
-          return reject('Response contains no search results.')
+    (get(url) as Promise<Artifact[]>).then(
+      (artifacts: Artifact[]) => {
+        if (artifacts === undefined) {
+          return reject(Error('Backend is off. Please see system administrator.'))
+        } else if (isError(artifacts)) {
+          return reject(artifacts.error)
+        } else {
+          console.log(artifacts)
+          return resolve(artifacts)
         }
-        return resolve(response.searchItems)
       }
     )
   })

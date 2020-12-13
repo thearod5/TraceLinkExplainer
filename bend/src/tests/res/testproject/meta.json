@@ -1,3 +1,4 @@
 {
-  "name": "Drone"
+  "name": "Drone",
+  "description": "UAV controller"
 }

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import DatasetChooserItemDetails from './DatasetChooserItemDetails'
 
 interface DataItemSummaryProps {
-  dataset: string;
+  datasetName: string;
   isSelected: boolean;
   select: () => void;
   deselect: () => void;
@@ -24,7 +24,7 @@ function DatasetChooserItem (props: DataItemSummaryProps) {
   return (
     <Accordion expanded={expanded} onClick={() => setExpanded(!expanded)}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <h4>{props.dataset}</h4>
+        <h4>{props.datasetName}</h4>
       </AccordionSummary>
       <DatasetChooserItemDetails onClick={props.onRouteSelected} />
     </Accordion>

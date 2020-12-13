@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 
 from api import models
-from api.serializers import ProjectSerializer, ArtifactSerializer
+from api.serializers import ProjectSerializer, ArtifactSerializer, ProjectMetaSerializer
 from explanation.controllers.TraceExplanation import get_trace_information
 
 
@@ -46,6 +46,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """
     queryset = models.ProjectMeta.objects.all()  # dummy query set
     serializer_class = ProjectSerializer
+
+
+@api_view(['GET'])
+def get_projects(request: Request):
+    projects = models.ProjectMeta.objects.all()
+    p_serializer = ProjectMetaSerializer(projects, many=True)
+    return JsonResponse(p_serializer.data, safe=False)
 
 
 @api_view(['GET'])

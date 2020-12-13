@@ -13,11 +13,11 @@ let mockState: RootState = createEmptyState();
 
 const mockDataset: Dataset = {
   name: "Test Dataset",
-  summary: "Test Summary",
+  description: "Test Summary",
 };
 
 const mockArtifact: Artifact = {
-  id: "RE-8",
+  name: "RE-8",
   body: "ARTIFACT BODY",
   type: "Requirement",
 };
@@ -70,7 +70,7 @@ test("+ : getStepChangeError : select a dataset", () => {
   expect(currentState.selectedTargets.length).toEqual(0);
 
   expect(currentState.dataset.name).toBe("");
-  expect(currentState.dataset.summary).toBe("");
+  expect(currentState.dataset.description).toBe("");
 });
 
 test("+ : setDataset", () => {
@@ -112,7 +112,7 @@ test("+ : selectTargetArtifacts : default", () => {
 
 
 function assertEqualToMock(artifact: Artifact) {
-  expect(artifact.id).toBe(mockArtifact.id);
+  expect(artifact.name).toBe(mockArtifact.name);
   expect(artifact.body).toBe(mockArtifact.body);
   expect(artifact.type).toBe(mockArtifact.type);
 }

@@ -10,6 +10,7 @@ MAX_BODY_LENGTH = 1000000
 class ProjectMeta(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=MAX_ID_LENGTH)
+    description = models.CharField(max_length=MAX_BODY_LENGTH)
 
     class Meta:
         unique_together = ['name']
@@ -30,7 +31,7 @@ class Artifact(models.Model):
     type = models.ForeignKey(ArtifactType,
                              on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_ID_LENGTH)
-    text = models.CharField(max_length=MAX_BODY_LENGTH)
+    body = models.CharField(max_length=MAX_BODY_LENGTH)
     traces = models.ManyToManyField("Trace")
 
     class Meta:

@@ -74,7 +74,7 @@ def stem_doc(doc):
     :return: {String} Cleaned string.
     """
     if doc is None:
-        raise Exception("Received None as text document")
+        raise Exception("Received None as body document")
     return " ".join([ps.stem(word) for word in doc.split(" ")])
 
 

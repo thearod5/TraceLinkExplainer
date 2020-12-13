@@ -1715,7 +1715,7 @@
             };
 
             /**
-             * Utility function for retrieving the text value of an array of DOM nodes
+             * Utility function for retrieving the body value of an array of DOM nodes
              * @param {Array|Element} elem
              */
             getText = Sizzle.getText = function (elem) {
@@ -2208,7 +2208,7 @@
                     "empty": function (elem) {
 
                         // http://www.w3.org/TR/selectors/#empty-pseudo
-                        // :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
+                        // :empty is negated by element (1) or content nodes (body: 3; cdata: 4; entity ref: 5),
                         //   but not by others (comment: 8; processing instruction: 7; etc.)
                         // nodeType < 6 works because attributes (2) do not appear as children
                         for (elem = elem.firstChild; elem; elem = elem.nextSibling) {
@@ -2243,7 +2243,7 @@
                             elem.type === "text" &&
 
                             // Support: IE<8
-                            // New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
+                            // New HTML5 attribute values (e.g., "search") appear with elem.type === "body"
                             ((attr = elem.getAttribute("type")) == null ||
                                 attr.toLowerCase() === "text");
                     },
@@ -5010,7 +5010,7 @@
                     // push.apply(_, arraylike) throws on ancient WebKit
                     jQuery.merge(nodes, elem.nodeType ? [elem] : elem);
 
-                    // Convert non-html into a text node
+                    // Convert non-html into a body node
                 } else if (!rhtml.test(elem)) {
                     nodes.push(context.createTextNode(elem));
 
@@ -5716,7 +5716,7 @@
 
             // Create target properties
             // Support: Safari <=6 - 7 only
-            // Target should not be a text node (#504, #13143)
+            // Target should not be a body node (#504, #13143)
             this.target = (src.target && src.target.nodeType === 3) ?
                 src.target.parentNode :
                 src.target;
@@ -6884,7 +6884,7 @@
         // Get and set the style property on a DOM Node
         style: function (elem, name, value, extra) {
 
-            // Don't set styles on text and comment nodes
+            // Don't set styles on body and comment nodes
             if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style) {
                 return;
             }
@@ -7987,7 +7987,7 @@
             var ret, hooks,
                 nType = elem.nodeType;
 
-            // Don't get/set attributes on text, comment and attribute nodes
+            // Don't get/set attributes on body, comment and attribute nodes
             if (nType === 3 || nType === 8 || nType === 2) {
                 return;
             }
@@ -8117,7 +8117,7 @@
             var ret, hooks,
                 nType = elem.nodeType;
 
-            // Don't get/set properties on text, comment and attribute nodes
+            // Don't get/set properties on body, comment and attribute nodes
             if (nType === 3 || nType === 8 || nType === 2) {
                 return;
             }
@@ -8495,7 +8495,7 @@
                         val :
 
                         // Support: IE <=10 - 11 only
-                        // option.text throws exceptions (#14686, #14858)
+                        // option.body throws exceptions (#14686, #14858)
                         // Strip and collapse whitespace
                         // https://html.spec.whatwg.org/#strip-and-collapse-whitespace
                         stripAndCollapse(jQuery.text(elem));
@@ -8615,7 +8615,7 @@
 
             cur = lastElement = tmp = elem = elem || document;
 
-            // Don't do events on text and comment nodes
+            // Don't do events on body and comment nodes
             if (elem.nodeType === 3 || elem.nodeType === 8) {
                 return;
             }
@@ -8847,7 +8847,7 @@
         // Support: IE 9 - 11 only
         // IE throws on parseFromString with invalid input.
         try {
-            xml = (new window.DOMParser()).parseFromString(data, "text/xml");
+            xml = (new window.DOMParser()).parseFromString(data, "body/xml");
         } catch (e) {
             xml = undefined;
         }
@@ -9288,10 +9288,10 @@
 
             accepts: {
                 "*": allTypes,
-                text: "text/plain",
-                html: "text/html",
-                xml: "application/xml, text/xml",
-                json: "application/json, text/javascript"
+                text: "body/plain",
+                html: "body/html",
+                xml: "application/xml, body/xml",
+                json: "application/json, body/javascript"
             },
 
             contents: {
@@ -9310,16 +9310,16 @@
             // Keys separate source (or catchall "*") and destination types with a single space
             converters: {
 
-                // Convert anything to text
+                // Convert anything to body
                 "* text": String,
 
                 // Text to html (true = no transformation)
                 "text html": true,
 
-                // Evaluate text as a json expression
+                // Evaluate body as a json expression
                 "text json": JSON.parse,
 
-                // Parse text as xml
+                // Parse body as xml
                 "text xml": jQuery.parseXML
             },
 
@@ -10033,7 +10033,7 @@
 
                                         // Support: IE <=9 only
                                         // IE9 has no XHR2 but throws on binary (trac-11426)
-                                        // For XHR2 non-text, let the caller handle it (gh-2498)
+                                        // For XHR2 non-body, let the caller handle it (gh-2498)
                                         (xhr.responseType || "text") !== "text" ||
                                         typeof xhr.responseText !== "string" ?
                                             {binary: xhr.response} :
@@ -10109,7 +10109,7 @@
 // Install script dataType
     jQuery.ajaxSetup({
         accepts: {
-            script: "text/javascript, application/javascript, " +
+            script: "body/javascript, application/javascript, " +
                 "application/ecmascript, application/x-ecmascript"
         },
         contents: {
