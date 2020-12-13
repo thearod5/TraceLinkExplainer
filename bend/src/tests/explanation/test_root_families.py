@@ -1,10 +1,10 @@
 import numpy as np
 from django.test import TestCase
 
+from explanation.conceptmodel.VSMRelationships import add_root_relationships, get_vsm_weights, \
+    create_word_similarity_dictionary
 from explanation.models.TraceInformation import TraceExplanation, Relationship
 from explanation.models.WordDescriptor import WordDescriptor
-from explanation.relationships.vsm.VSMRelationships import add_root_relationships, get_vsm_weights, \
-    create_word_similarity_dictionary
 
 
 class TestRootFamilies(TestCase):

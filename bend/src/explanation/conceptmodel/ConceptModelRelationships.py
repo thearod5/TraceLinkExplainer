@@ -1,10 +1,10 @@
 import os
 
-from explanation.Paths import PATH_TO_DATA
+from explanation.Cleaners import clean_doc
+from explanation.conceptmodel.ConceptModel import ConceptModel, ONTOLOGY_RELATION_PATHS
 from explanation.models.TraceInformation import TraceExplanation, Relationship
 from explanation.models.WordDescriptor import WordDescriptor
-from explanation.preprocessing.Cleaners import clean_doc
-from explanation.relationships.conceptmodel.ConceptModel import ConceptModel, ONTOLOGY_RELATION_PATHS
+from paths import PATH_TO_DATA
 
 
 def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:

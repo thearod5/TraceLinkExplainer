@@ -23,6 +23,6 @@ class TestRoutes(TestCase):
 
     def test_delete_project_by_id(self):
         client = APIClient()
-        meta: models.ProjectMeta = DataBuilder().with_default_project(return_obj=True)
+        meta: models.ProjectDescription = DataBuilder().with_default_project(return_obj=True)
         response = client.delete('/projects/' + meta.id.__str__())
         self.assertEqual(204, response.status_code, response.content)

@@ -11,7 +11,7 @@ class TestTraceSerializer(TestCase):
         meta = data_builder.with_empty_project(return_obj=True)
         self.assertIsNotNone(meta)
         self.assertEqual(data_builder.project_name, meta.name)
-        self.assertEqual(1, len(models.ProjectMeta.objects.all()))
+        self.assertEqual(1, len(models.ProjectDescription.objects.all()))
         self.assertEqual(0, len(models.Artifact.objects.all()))
 
     def test_artifact_serializer(self):
@@ -30,7 +30,7 @@ class TestTraceSerializer(TestCase):
     def test_trace_serializer(self):
         data_builder = DataBuilder()
         trace = data_builder.with_empty_project().with_artifacts().with_trace(return_obj=True)
-        self.assertEqual(1, len(models.ProjectMeta.objects.all()))
+        self.assertEqual(1, len(models.ProjectDescription.objects.all()))
         self.assertEqual(2, len(models.Artifact.objects.all()))
         self.assertEqual(1, len(models.Trace.objects.all()))
         self.assertEqual(data_builder.n_artifact_types, len(models.ArtifactType.objects.all()))

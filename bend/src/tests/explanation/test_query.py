@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from explanation.controllers.Query import filter_artifacts
+from search.Query import filter_artifacts
 
 
 class TestQuery(TestCase):

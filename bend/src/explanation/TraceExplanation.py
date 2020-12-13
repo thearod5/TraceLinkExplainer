@@ -1,9 +1,9 @@
 from api import models
+from explanation.Cleaners import get_words_in_string_doc
+from explanation.conceptmodel.ConceptModelRelationships import add_concept_families
+from explanation.conceptmodel.VSMRelationships import add_root_relationships
 from explanation.models.TraceInformation import TraceInformation, TraceExplanation, TracePayloadDict
 from explanation.models.WordDescriptor import WordDescriptor
-from explanation.preprocessing.Cleaners import get_words_in_string_doc
-from explanation.relationships.conceptmodel.ConceptModelRelationships import add_concept_families
-from explanation.relationships.vsm.VSMRelationships import add_root_relationships
 
 
 def get_trace_information(

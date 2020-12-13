@@ -4,7 +4,7 @@ from functools import wraps
 
 from api import models
 from api.serializers import ArtifactSerializer, TraceSerializer, ProjectMetaSerializer, create_object, ProjectSerializer
-from explanation.Paths import PATH_TO_TEST_PROJECT_RESOURCES
+from paths import PATH_TO_TEST_PROJECT_RESOURCES
 
 
 def read_json_file(path_to_file):
@@ -21,11 +21,11 @@ def get_test_file(name):
     return read_json_file(create_test_file_path(name))
 
 
-def create_project_meta(data) -> models.ProjectMeta:
+def create_project_meta(data) -> models.ProjectDescription:
     return create_object(ProjectMetaSerializer, data)
 
 
-def create_project(data) -> models.ProjectMeta:
+def create_project(data) -> models.ProjectDescription:
     return create_object(ProjectSerializer, data)
 
 
@@ -81,14 +81,15 @@ class DataBuilder:
         self.project_id = meta.id
         return meta
 
-    def get_default_project_data(self):
-        artifacts = [self.artifact_a, self.artifact_b]
-        traces = [self.trace]
+    def get_default_project_data(self) -> dict:
+        artifacts = [self.artifact_a.copy(), self.artifact_b.copy()]
+        traces = [self.trace.copy()]
         data = {
             "project": self.project_meta,
             "artifacts": artifacts,
             "traces": traces
         }
+
         return data
 
     @builder_method

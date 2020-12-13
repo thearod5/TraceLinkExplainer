@@ -1,13 +1,15 @@
+import json
 import uuid
 from typing import List
 
 from django.db import models
+from django.http import HttpResponseBadRequest
 
-MAX_ID_LENGTH = 50
+MAX_ID_LENGTH = 4096  # max path length on linux
 MAX_BODY_LENGTH = 1000000
 
 
-class ProjectMeta(models.Model):
+class ProjectDescription(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=MAX_ID_LENGTH)
     description = models.CharField(max_length=MAX_BODY_LENGTH)
@@ -26,7 +28,7 @@ class ArtifactType(models.Model):
 
 class Artifact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    project = models.ForeignKey(ProjectMeta,
+    project = models.ForeignKey(ProjectDescription,
                                 on_delete=models.CASCADE)
     type = models.ForeignKey(ArtifactType,
                              on_delete=models.CASCADE)
@@ -54,6 +56,11 @@ class Trace(models.Model):
 
 class Project:
     def __init__(self, meta, artifacts, traces):
-        self.meta: ProjectMeta = meta
+        self.meta: ProjectDescription = meta
         self.artifacts: List[Artifact] = artifacts
         self.traces: List[Trace] = traces
+
+
+class ApplicationError(HttpResponseBadRequest):
+    def __init__(self, message: str):
+        super().__init__(json.dumps({'details': message}), content_type='application/json')

@@ -1,11 +1,17 @@
 from django.test import TestCase
 
-from explanation.loader.DataLoader import get_words_in_artifact
+from api import models
+from explanation.Cleaners import get_words_in_string_doc
+from explanation.conceptmodel.ConceptModelRelationships import get_concept_model_for_dataset, \
+    add_concept_families
 from explanation.models.TraceInformation import TraceExplanation, CHILD, SYN, SOURCE
 from explanation.models.WordDescriptor import WordDescriptor
-from explanation.relationships.conceptmodel.ConceptModelRelationships import get_concept_model_for_dataset, \
-    add_concept_families
 from tests.Data import DataBuilder
+
+
+def get_words_in_artifact(artifact_id: str):
+    artifact = models.Artifact.objects.get(id=artifact_id)
+    return get_words_in_string_doc(artifact.body)
 
 
 class TestConceptModel(TestCase):
