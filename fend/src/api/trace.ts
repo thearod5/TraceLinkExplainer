@@ -1,8 +1,8 @@
 import { setError } from '../redux/actions'
 import store from '../redux/store'
 import { Artifact } from '../operations/types/Dataset'
-import { TraceInformation, TraceRetrievalPayload } from '../operations/types/Trace'
-import { BASE_URL, get, post } from './base'
+import { TraceInformation } from '../operations/types/Trace'
+import { BASE_URL, get } from './base'
 import { isError } from './errors'
 
 export function getTraceInformation (

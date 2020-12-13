@@ -46,8 +46,8 @@ export async function searchForTargetArtifact (
         )
       )
     }
-
-    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts?source_name=' + sources[0].name].join('/')
+    const queryString = sources.map(source => 'source_name=' + source.name)
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts?' + queryString].join('/')
     console.log('SEARCHING FOR TRACED:', searchUrl)
     return resolve(baseSearchFunction(searchUrl))
   })

@@ -12,11 +12,12 @@ class TestConceptModel(TestCase):
     concept_model = get_concept_model_for_dataset("test")
 
     def test_ex_test_dataset(self):
-        project = DataBuilder().with_default_project(return_obj=True)
+        data_builder = DataBuilder()
+        project = data_builder.with_default_project(return_obj=True)
 
         dataset = "test"
-        source_words = get_words_in_artifact(project.artifacts[0].id)
-        target_words = get_words_in_artifact(project.artifacts[1].id)
+        source_words = get_words_in_artifact(data_builder.artifact_a_id)
+        target_words = get_words_in_artifact(data_builder.artifact_b_id)
 
         source_word_descriptors = list(map(WordDescriptor, source_words))
         target_word_descriptors = list(map(WordDescriptor, target_words))

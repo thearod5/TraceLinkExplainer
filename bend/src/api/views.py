@@ -41,27 +41,22 @@ def require_query_params(required_params):
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    queryset = models.ProjectMeta.objects.all()  # dummy query set
+    queryset = models.ProjectMeta.objects.all()
     serializer_class = ProjectSerializer
 
-
-@api_view(['GET'])
-def get_projects(request: Request):
-    projects = models.ProjectMeta.objects.all()
-    p_serializer = ProjectMetaSerializer(projects, many=True)
-    return JsonResponse(p_serializer.data, safe=False)
+    def list(self, request, *args, **kwargs):
+        projects = models.ProjectMeta.objects.all()
+        p_serializer = ProjectMetaSerializer(projects, many=True)
+        return JsonResponse(p_serializer.data, safe=False)
 
 
 @api_view(['GET'])
 def search_artifacts(request: Request, project_name: str):
     project_artifacts = models.Artifact.objects.filter(project__name=project_name)
     if "source_name" in request.query_params:
-        source_name = request.query_params['source_name']
-        filter_query = (Q(traces__source__name=source_name) | Q(traces__target__name=source_name))
-        project_artifacts = models.Artifact.objects.filter(filter_query).exclude(name=source_name)
+        source_names = request.GET.getlist("source_name")
+        filter_query = (Q(traces__source__name__in=source_names) | Q(traces__target__name__in=source_names))
+        project_artifacts = models.Artifact.objects.filter(filter_query).exclude(name__in=source_names)
 
     payload = ArtifactSerializer(project_artifacts, many=True).data
     return JsonResponse(payload, safe=False)

@@ -8,9 +8,9 @@ class TestTraceSerializer(TestCase):
 
     def test_create_empty_dataset(self):
         data_builder = DataBuilder()
-        project = data_builder.with_empty_project(return_obj=True)
-        self.assertIsNotNone(project)
-        self.assertEqual(data_builder.project_name, project.meta.name)
+        meta = data_builder.with_empty_project(return_obj=True)
+        self.assertIsNotNone(meta)
+        self.assertEqual(data_builder.project_name, meta.name)
         self.assertEqual(1, len(models.ProjectMeta.objects.all()))
         self.assertEqual(0, len(models.Artifact.objects.all()))
 
@@ -20,7 +20,7 @@ class TestTraceSerializer(TestCase):
         self.assertEqual(data.project_name, artifact.project.name)
         self.assertEqual(data.artifact_a_type, artifact.type.name)
         self.assertEqual(data.artifact_a_name, artifact.name)
-        self.assertEqual(data.artifact_a_text, artifact.body)
+        self.assertEqual(data.artifact_a_body, artifact.body)
         self.assertEqual(1, len(models.Artifact.objects.all()))
 
     def test_cannot_create_artifact_duplicates(self):
@@ -42,8 +42,8 @@ class TestTraceSerializer(TestCase):
 
     def test_integration(self):
         data = DataBuilder()
-        project = data.with_default_project(return_obj=True)
-        self.assertEqual(data.project_id, project.meta.id)
+        meta = data.with_default_project(return_obj=True)
+        self.assertEqual(data.project_id, meta.id)
 
         self.assertEqual(2, len(models.Artifact.objects.all()))
         self.assertEqual(1, len(models.Trace.objects.all()))

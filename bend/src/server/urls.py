@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from api import views
-from api.views import get_explanation, search_artifacts, get_projects
+from api.views import get_explanation, search_artifacts, ProjectViewSet
 
 
 class OptionalSlashRouter(routers.DefaultRouter):
@@ -14,12 +13,10 @@ class OptionalSlashRouter(routers.DefaultRouter):
 
 
 router = OptionalSlashRouter()
-router.register(r'projects', views.ProjectViewSet)
-
+router.register('projects', ProjectViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/<str:project_name>/artifacts/', search_artifacts),
     path('<str:project_name>/traces/<str:source_name>/<str:target_name>', get_explanation),
-    path('projects/names', get_projects),
     path('', include(router.urls))
 ]

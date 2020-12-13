@@ -21,11 +21,11 @@ def get_test_file(name):
     return read_json_file(create_test_file_path(name))
 
 
-def create_project_meta(data):
+def create_project_meta(data) -> models.ProjectMeta:
     return create_object(ProjectMetaSerializer, data)
 
 
-def create_project(data) -> models.Project:
+def create_project(data) -> models.ProjectMeta:
     return create_object(ProjectSerializer, data)
 
 
@@ -47,14 +47,16 @@ class DataBuilder:
     project_name = project_meta['name']
 
     artifact_a = get_test_file('artifact_a')
+    artifact_a_id = None
     artifact_a_type = artifact_a['type']
     artifact_a_name = artifact_a['name']
-    artifact_a_text = artifact_a['body']
+    artifact_a_body = artifact_a['body']
 
     artifact_b = get_test_file('artifact_b')
+    artifact_b_id = None
     artifact_b_name = artifact_b['name']
     artifact_b_type = artifact_b['type']
-    artifact_b_text = artifact_b['body']
+    artifact_b_body = artifact_b['body']
 
     n_artifact_types = len({artifact_a_type, artifact_b_type})
 
@@ -65,27 +67,37 @@ class DataBuilder:
         "target_name": artifact_b_name
     }
 
+    def set_artifact_ids(self):
+        self.artifact_a_id = models.Artifact.objects.get(name=self.artifact_a_name).id
+        self.artifact_b_id = models.Artifact.objects.get(name=self.artifact_b_name).id
+
     @builder_method
     def with_empty_project(self):
         data = {
             "project": self.project_meta,
             "artifacts": [],
             "traces": []}
-        project = create_project(data)
-        self.project_id = project.meta.id
-        return project
+        meta = create_project(data)
+        self.project_id = meta.id
+        return meta
 
-    @builder_method
-    def with_default_project(self):
+    def get_default_project_data(self):
         artifacts = [self.artifact_a, self.artifact_b]
         traces = [self.trace]
         data = {
             "project": self.project_meta,
             "artifacts": artifacts,
-            "traces": traces}
-        project = create_project(data)
-        self.project_id = project.meta.id
-        return project
+            "traces": traces
+        }
+        return data
+
+    @builder_method
+    def with_default_project(self):
+        data = self.get_default_project_data()
+        meta = create_project(data)
+        self.set_artifact_ids()
+        self.project_id = meta.id
+        return meta
 
     def _with_artifact(self, artifact_data):
         artifact_data = artifact_data.copy()

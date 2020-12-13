@@ -76,10 +76,19 @@ class ProjectMetaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+def get_project_from_meta(meta: models.ProjectMeta):
+    artifacts = models.Artifact.objects.filter(project__id=meta.id)
+    traces = models.Trace.objects.filter(source__project=meta.meta.id, target__project=meta.meta.id)
+    artifacts = NestedArtifactSerializer(artifacts, many=True).data  # ignores project_meta id from objects
+    traces = TraceSerializer(traces, many=True).data
+
+    return models.Project(meta, artifacts, traces)
+
+
 class ProjectSerializer(serializers.Serializer):
 
     @transaction.atomic
-    def create(self, validated_data):
+    def create(self, validated_data) -> models.Project:
         meta_data = validated_data.pop('project')
         artifact_data = validated_data.pop('artifacts')
         trace_data = validated_data.pop('traces')
@@ -119,7 +128,7 @@ class ProjectSerializer(serializers.Serializer):
                 artifact.traces.add(trace)
             artifact.save()
 
-        return models.Project(project_meta, artifacts, traces)
+        return project_meta
 
     def update(self, instance, validated_data):
         raise NotImplementedError("updating projects on this route is not defined.")
@@ -127,8 +136,8 @@ class ProjectSerializer(serializers.Serializer):
     def to_internal_value(self, data):
         return data
 
-    def to_representation(self, instance):
-        artifacts = models.Artifact.objects.filter(project=instance.id)
+    def to_representation(self, instance: models.ProjectMeta):
+        artifacts = models.Artifact.objects.filter(project__id=instance.id)
         traces = models.Trace.objects.filter(source__project=instance.id, target__project=instance.id)
         artifacts = NestedArtifactSerializer(artifacts, many=True).data  # ignores project_meta id from objects
         traces = TraceSerializer(traces, many=True).data

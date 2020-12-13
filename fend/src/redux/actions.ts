@@ -198,7 +198,6 @@ export interface SetError {
 }
 
 export function setError (error: string | undefined): SetError {
-  throw Error(error)
   return {
     type: SET_ERROR_ACTION,
     payload: error
