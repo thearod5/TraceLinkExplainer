@@ -20,7 +20,7 @@ class IFilter(ABC):
         return self.get_symbol() == other.get_symbol()
 
 
-class FilterController(IFilter):
+class FilterController(IFilter, ABC):
     """
     Represents some filtering action on a projects artifacts
     """
@@ -49,9 +49,23 @@ class EqualFilter(FilterController):
     field_suffix = ""
 
 
+class DoesNotEqualFilter(EqualFilter):
+    symbol = "!="
+
+    def create_query(self, field_name: str, field_value: str) -> Q:
+        return ~super().create_query(field_name, field_value)
+
+
 class ContainsFilter(FilterController):
     symbol = "~"
     field_suffix = "__icontains"
+
+
+class DoesNotContainFilter(ContainsFilter):
+    symbol = "!~"
+
+    def create_query(self, field_name: str, field_value: str) -> Q:
+        return ~super().create_query(field_name, field_value)
 
 
 class GreaterThanEqualToFilter(FilterController):
@@ -75,7 +89,9 @@ class LessThanFilter(FilterController):
 
 
 REGISTERED_OPERATIONS: List[IFilter] = [EqualFilter(),
+                                        DoesNotEqualFilter(),
                                         ContainsFilter(),
+                                        DoesNotContainFilter(),
                                         GreaterThanEqualToFilter(),
                                         GreaterThanFilter(),
                                         LessThanEqualToFilter(),

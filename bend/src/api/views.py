@@ -8,6 +8,7 @@ from api import models
 from api.models import ApplicationError
 from api.serializers import ProjectSerializer, ArtifactSerializer, ProjectMetaSerializer
 from explanation.TraceExplanation import get_trace_information
+from search.Parsers import parse_definition
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -38,6 +39,11 @@ def search_artifacts(request: Request, project_name: str):
         source_names = request.GET.getlist("source_name")
         filter_query = (Q(traces__source__name__in=source_names) | Q(traces__target__name__in=source_names))
         project_artifacts = models.Artifact.objects.filter(filter_query).exclude(name__in=source_names)
+
+    if "query" in request.query_params:
+        query = request.query_params['query']
+        q = parse_definition(query).eval()
+        project_artifacts = models.Artifact.objects.filter(q)
 
     payload = ArtifactSerializer(project_artifacts, many=True).data
     return JsonResponse(payload, safe=False)

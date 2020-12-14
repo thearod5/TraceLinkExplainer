@@ -43,7 +43,12 @@ class TypeAttribute(AttributeController):
     filters = ["=", "!="]
 
 
-REGISTERED_ATTRIBUTES: List[IAttribute] = [NameAttribute(), TypeAttribute()]
+class BodyAttribute(AttributeController):
+    symbol = "body"
+    filters = ["=", "!=", "~", "!~"]
+
+
+REGISTERED_ATTRIBUTES: List[IAttribute] = [NameAttribute(), TypeAttribute(), BodyAttribute()]
 
 
 class Attribute(IAttribute):

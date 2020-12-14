@@ -16,8 +16,8 @@ interface BasicSearchBarProps {
 }
 
 export default function BasicSearchBar (props: BasicSearchBarProps) {
-  const [idFilter, setIdFilter] = useState('=')
-  const [idQuery, setIdQuery] = useState(EMPTY_QUERY)
+  const [nameFilter, setIdFilter] = useState('=')
+  const [nameQuery, setIdQuery] = useState(EMPTY_QUERY)
   const [bodyFilter, setBodyFilter] = useState('~')
   const [bodyQuery, setBodyQuery] = useState(EMPTY_QUERY)
   const [typeFilter, setTypeFilter] = useState('=')
@@ -26,7 +26,7 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
   const { setQuery, onSearch } = props
 
   const createQuery = (): string => {
-    const queries = [['id', idFilter, idQuery], ['body', bodyFilter, bodyQuery], ['type', typeFilter, typeQuery]]
+    const queries = [['name', nameFilter, nameQuery], ['body', bodyFilter, bodyQuery], ['type', typeFilter, typeQuery]]
     return queries
       .filter(parts => parts[2] !== EMPTY_QUERY)
       .map(parts => `${parts[0]} ${parts[1]} ${parts[2]}`)
@@ -36,7 +36,7 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
   useEffect(() => {
     setQuery(createQuery())
     // eslint-disable-next-line
-  }, [idFilter, idQuery, bodyFilter, bodyQuery, typeFilter, typeQuery])
+  }, [nameFilter, nameQuery, bodyFilter, bodyQuery, typeFilter, typeQuery])
 
   const createQuerySetter = (setter: REACT_STRING_SETTER) => {
     return (query: string) => {
@@ -65,11 +65,11 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
         onSearch={onSearch}
       />
       <QueryFilterElement
-        label={'id'}
+        label={'name'}
         filterOperations={CATEGORICAL_OPERATIONS}
-        selectedFilter={idFilter}
+        selectedFilter={nameFilter}
         setFilter={setIdFilter}
-        query={idQuery}
+        query={nameQuery}
         setQuery={createQuerySetter(setIdQuery)}
         onSearch={onSearch}
       />

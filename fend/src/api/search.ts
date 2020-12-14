@@ -22,7 +22,8 @@ export async function searchForSourceArtifact (
     if (!isNonEmptyDataset(dataset)) {
       return reject(Error('Dataset not selected.'))
     }
-    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts'].join('/')
+    const queryString = query.length === 0 ? '' : '?query=' + query
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
     return resolve(baseSearchFunction(searchUrl))
   })
 }
@@ -46,9 +47,8 @@ export async function searchForTargetArtifact (
         )
       )
     }
-    const queryString = sources.map(source => 'source_name=' + source.name)
-    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts?' + queryString].join('/')
-    console.log('SEARCHING FOR TRACED:', searchUrl)
+    const queryString = query.length === 0 ? '' : '?query=' + query
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
     return resolve(baseSearchFunction(searchUrl))
   })
 }

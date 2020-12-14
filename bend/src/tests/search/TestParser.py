@@ -1,11 +1,13 @@
 from django.test import TestCase
 
+from api import models
 from search.Attributes import NameAttribute, TypeAttribute
 from search.Combinators import AndCombinator, OrCombinator, get_combinator_symbols
 from search.Expressions import QueryExpression
-from search.Filters import EqualFilter
+from search.Filters import EqualFilter, DoesNotEqualFilter
 from search.ParserUtil import get_symbols_in_def
 from search.Parsers import parse_definition
+from tests.Data import DataBuilder
 
 
 class TestParse(TestCase):
@@ -16,6 +18,19 @@ class TestParse(TestCase):
     def test_filtered_expression(self):
         expr = parse_definition("name=RE-8")
         self.assertEqual(QueryExpression(NameAttribute(), EqualFilter(), "RE-8"), expr)
+
+    def test_filtered_expression_not(self):
+        expr = parse_definition("name!=RE-8")
+        self.assertEqual(QueryExpression(NameAttribute(), DoesNotEqualFilter(), "RE-8"), expr)
+
+    def test_filtered_expression_contains_quotes(self):
+        data_builder = DataBuilder()
+        data_builder.with_default_project()
+        expr = parse_definition("body ~ \"new route assignments\"")
+        artifacts = models.Artifact.objects.filter(expr.eval())
+
+        self.assertEqual(1, len(artifacts))
+        self.assertEqual(data_builder.artifact_a_name, artifacts.first().name)
 
     def test_combinator(self):
         expr = parse_definition("name=RE-8&&type=requirements")

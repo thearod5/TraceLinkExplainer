@@ -9,7 +9,9 @@ export const CATEGORICAL_OPERATIONS = [
   '=',
   '!=',
   '>',
-  '<'
+  '<',
+  '>=',
+  '=<'
 ]
 export const COMBINATORS = ['&&', '||']
 
@@ -23,12 +25,12 @@ const BodyAttribute = {
   operations: CATEGORICAL_OPERATIONS
 }
 
-const IdAttribute = {
-  fieldName: 'id',
+const NameAttribute = {
+  fieldName: 'name',
   operations: CATEGORICAL_OPERATIONS
 }
 
-export const Attributes = [TypeAttribute, BodyAttribute, IdAttribute]
+export const Attributes = [TypeAttribute, BodyAttribute, NameAttribute]
 export const ATTRIBUTE_VALUES = Attributes.map(
   (attribute) => attribute.fieldName
 )
