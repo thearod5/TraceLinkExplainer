@@ -1,118 +1,121 @@
-import { SELECT_SOURCE_STEP } from "../../constants";
+import { v4 } from 'uuid'
+import { SELECT_SOURCE_STEP } from '../../constants'
+import { getNewStepState } from '../../operations/pagechanger/PageChanger'
+import { Artifact, Dataset } from '../../operations/types/Dataset'
 import {
   clearData,
   selectDataset,
   setSelectedSources,
   setSelectedTargets
-} from "../../redux/actions";
-import store, { createEmptyState } from "../../redux/store";
-import { RootState } from "../../redux/types";
-import { getNewStepState } from "../../operations/pagechanger/PageChanger";
-import { Artifact, Dataset } from "../../operations/types/Dataset";
-let mockState: RootState = createEmptyState();
+} from '../../redux/actions'
+import store, { createEmptyState } from '../../redux/store'
+import { RootState } from '../../redux/types'
+
+const mockState: RootState = createEmptyState()
 
 const mockDataset: Dataset = {
-  name: "Test Dataset",
-  description: "Test Summary",
-};
+  id: v4(),
+  name: 'Test Dataset',
+  description: 'Test Summary'
+}
 
 const mockArtifact: Artifact = {
-  name: "RE-8",
-  body: "ARTIFACT BODY",
-  type: "Requirement",
-};
+  project: v4(),
+  name: 'RE-8',
+  body: 'ARTIFACT BODY',
+  type: 'Requirement'
+}
 
-function assertIsRootState(state: RootState | string): RootState {
-  if (typeof state === "string") {
-    throw Error(state);
+function assertIsRootState (state: RootState | string): RootState {
+  if (typeof state === 'string') {
+    throw Error(state)
   }
-  return state;
+  return state
 }
 
 afterEach(() => {
-  store.dispatch(clearData());
-});
+  store.dispatch(clearData())
+})
 
 /*
  * Step 0 -> Step 1: Selecting a dataset
  */
 
-test("+ : getStepChangeError : select a dataset", () => {
-  //Test
-  store.dispatch(selectDataset(mockDataset));
-  const state = store.getState();
+test('+ : getStepChangeError : select a dataset', () => {
+  // Test
+  store.dispatch(selectDataset(mockDataset))
+  const state = store.getState()
 
   const res: RootState = assertIsRootState(
     getNewStepState(state, SELECT_SOURCE_STEP)
-  );
-  //Assertions
-  expect(res.dataset.name).toEqual(mockDataset.name);
-});
+  )
+  // Assertions
+  expect(res.dataset.name).toEqual(mockDataset.name)
+})
 
-test("- : getStepChangeError : select an empty dataset", () => {
-  //Test
+test('- : getStepChangeError : select an empty dataset', () => {
+  // Test
   const res: RootState | string = getNewStepState(
     mockState,
     SELECT_SOURCE_STEP
-  );
+  )
 
-  expect(typeof res).toEqual("string");
-});
+  expect(typeof res).toEqual('string')
+})
 
 /*
  * Step 1 -> Step 2: Selecting a source artifact
  */
 
-test("+ : getStepChangeError : select a dataset", () => {
-  const currentState: RootState = store.getState();
-  expect(currentState.currentStep).toEqual(0);
-  expect(currentState.selectedSources.length).toEqual(0);
-  expect(currentState.selectedTargets.length).toEqual(0);
+test('+ : getStepChangeError : select a dataset', () => {
+  const currentState: RootState = store.getState()
+  expect(currentState.currentStep).toEqual(0)
+  expect(currentState.selectedSources.length).toEqual(0)
+  expect(currentState.selectedTargets.length).toEqual(0)
 
-  expect(currentState.dataset.name).toBe("");
-  expect(currentState.dataset.description).toBe("");
-});
+  expect(currentState.dataset.name).toBe('')
+  expect(currentState.dataset.description).toBe('')
+})
 
-test("+ : setDataset", () => {
-  let currentState: RootState = store.getState();
+test('+ : setDataset', () => {
+  let currentState: RootState = store.getState()
 
-  //Test
-  store.dispatch(selectDataset(mockDataset));
-  //Assertions
-  currentState = store.getState();
-  expect(currentState.dataset.name).toEqual(mockDataset.name);
-});
+  // Test
+  store.dispatch(selectDataset(mockDataset))
+  // Assertions
+  currentState = store.getState()
+  expect(currentState.dataset.name).toEqual(mockDataset.name)
+})
 
-test("+ : setSelectedSources: default", () => {
-  let currentState: RootState = store.getState();
-  expect(currentState.selectedSources.length).toEqual(0);
+test('+ : setSelectedSources: default', () => {
+  let currentState: RootState = store.getState()
+  expect(currentState.selectedSources.length).toEqual(0)
 
-  //Test
-  store.dispatch(setSelectedSources([mockArtifact]));
+  // Test
+  store.dispatch(setSelectedSources([mockArtifact]))
 
-  //Assertions
-  currentState = store.getState();
-  assertEqualToMock(currentState.selectedSources[0]);
-  expect(currentState.selectedSources.length).toEqual(1);
-  expect(currentState.selectedTargets.length).toEqual(0);
-});
+  // Assertions
+  currentState = store.getState()
+  assertEqualToMock(currentState.selectedSources[0])
+  expect(currentState.selectedSources.length).toEqual(1)
+  expect(currentState.selectedTargets.length).toEqual(0)
+})
 
-test("+ : selectTargetArtifacts : default", () => {
-  let currentState: RootState = store.getState();
+test('+ : selectTargetArtifacts : default', () => {
+  let currentState: RootState = store.getState()
 
-  //Test
-  store.dispatch(setSelectedTargets([mockArtifact]));
+  // Test
+  store.dispatch(setSelectedTargets([mockArtifact]))
 
-  //Assertions
-  currentState = store.getState();
-  assertEqualToMock(currentState.selectedTargets[0]);
-  expect(currentState.selectedTargets.length).toEqual(1);
-  expect(currentState.selectedSources.length).toEqual(0);
-});
+  // Assertions
+  currentState = store.getState()
+  assertEqualToMock(currentState.selectedTargets[0])
+  expect(currentState.selectedTargets.length).toEqual(1)
+  expect(currentState.selectedSources.length).toEqual(0)
+})
 
-
-function assertEqualToMock(artifact: Artifact) {
-  expect(artifact.name).toBe(mockArtifact.name);
-  expect(artifact.body).toBe(mockArtifact.body);
-  expect(artifact.type).toBe(mockArtifact.type);
+function assertEqualToMock (artifact: Artifact) {
+  expect(artifact.name).toBe(mockArtifact.name)
+  expect(artifact.body).toBe(mockArtifact.body)
+  expect(artifact.type).toBe(mockArtifact.type)
 }

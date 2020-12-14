@@ -59,5 +59,5 @@ export const STEPS_IN_COMMAND_EXTENSION = STEP_ORDER.length
 export const AttributeTypeMap: Record<string, AttributeType> = {
   type: AttributeType.categorical,
   body: AttributeType.categorical,
-  id: AttributeType.categorical
+  name: AttributeType.categorical
 }
