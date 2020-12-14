@@ -10,7 +10,7 @@ export interface ToolbarButtonProps {
   iconElement: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
   checked: boolean;
   onChange: (event: any) => void;
-  name: string;
+  description: string;
 }
 
 export function createToolbarIcons (
@@ -25,38 +25,37 @@ export function createToolbarIcons (
       iconElement: ZoomInIcon,
       checked: true,
       onChange: handleZoomIn,
-      name: 'increase font size'
+      description: 'increase font size'
     },
     {
       iconElement: ZoomOutIcon,
       checked: true,
       onChange: handleZoomOut,
-      name: 'decrease font size'
+      description: 'decrease font size'
     },
     {
       iconElement: FullscreenExitIcon,
       checked: sizeSelected,
       onChange: (event: any) => setSizeSelected(event.target.checked),
-      name: 'toggle dynamic word size'
+      description: 'toggle dynamic word size'
     },
     {
       iconElement: InvertColorsOffIcon,
       checked: colorSelected,
       onChange: (event: any) => setColorSelected(event.target.checked),
-      name: 'toggle dynamic word color'
+      description: 'toggle dynamic word color'
     }
   ]
   return icons.map((iconButton: ToolbarButtonProps, index: number) => {
-    const { checked, onChange, name } = iconButton
+    const { checked, onChange, description } = iconButton
     return (
-      <Tooltip key={index} title={name}>
+      <Tooltip key={index} title={description}>
         <Checkbox
-
           checked={checked}
           checkedIcon={<iconButton.iconElement/>} // Compains if iconElement moved to deconstruction
           icon={<iconButton.iconElement />}
           onChange={onChange}
-          color='primary'
+          color='default'
         />
       </Tooltip>
     )

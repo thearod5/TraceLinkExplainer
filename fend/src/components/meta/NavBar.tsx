@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { HOME_ROUTE } from '../../constants'
 import { getCurrentStep, getDataset } from '../../redux/selectors'
 import { appHistory } from '../../redux/store'
-import { primaryColor } from '../../styles/theme'
 
 const WELCOME_MESSAGE = 'TraceViewer'
 // TODO: Add button to view dataset. Also make a real nav bar looking thing.
@@ -26,7 +25,6 @@ export default function NavBar () {
         <h1
           onClick={GoHomeClickHanlder}
           className="padSmall"
-          style={{ color: primaryColor }}
         >
           {currentStep === 0 ? WELCOME_MESSAGE : dataset}
         </h1>

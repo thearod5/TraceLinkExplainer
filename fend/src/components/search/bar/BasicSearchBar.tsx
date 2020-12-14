@@ -45,7 +45,7 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
   }
 
   return (
-    <div className="flexRowSpaceAround sizeFull">
+    <div className="flexRowSpaceAround padSmall">
 
       <QueryFilterElement
         label={'name'}

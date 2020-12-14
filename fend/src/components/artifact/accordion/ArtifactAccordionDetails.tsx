@@ -1,8 +1,9 @@
-import { AccordionDetails, LinearProgress } from '@material-ui/core'
+import { AccordionDetails } from '@material-ui/core'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Relationships, Words } from '../../../operations/types/Trace'
 import { getLoading } from '../../../redux/selectors'
+import LoadingBar from '../../meta/LoadingBar'
 import ViewerWords from '../words/ArtifactWord'
 
 /* Responsibility: Container for body of accordion when displaying trace information.
@@ -47,7 +48,7 @@ export default function ArtifactAccordionDetails (props: ArtifactAccordionDetail
       </div>
     </div>)
   } else {
-    body = <LinearProgress color="primary" />
+    body = LoadingBar()
   }
 
   return (

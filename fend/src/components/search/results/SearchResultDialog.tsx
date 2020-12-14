@@ -1,4 +1,5 @@
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,7 +22,7 @@ interface SearchItemDialogProps {
 
 export default function SearchResultDialog (props: SearchItemDialogProps) {
   const isCode = props.artifact.type === 'code'
-  const createBodyContainer = isCode ? (
+  const bodyContainer = isCode ? (
     <SyntaxHighlighter
       language="java"
       style={docco}
@@ -33,27 +34,37 @@ export default function SearchResultDialog (props: SearchItemDialogProps) {
     <p style={{ whiteSpace: 'pre-wrap' }}>{props.artifact.body}</p>
   )
 
+  const dialogOptionsBar = (
+    <div className="flexRowSpaceAround widthFull">
+
+      <IconButton aria-label="select" onClick={props.selectSource} color='primary'>
+        <DoneIcon />
+      </IconButton>
+    </div>)
+
+  const dialogHeader = (
+    <DialogTitle>
+      <Box className='flexRow justifyContentSpaceBetween'>{props.artifact.name}
+        <IconButton aria-label="exit" onClick={props.handleClose}>
+          <CloseIcon />
+        </IconButton>
+      </Box>
+
+    </DialogTitle>
+  )
+
   return (
     <Dialog
       fullWidth
       maxWidth={isCode ? 'lg' : 'sm'}
       onClose={props.handleClose}
-      aria-labelledby="customized-dialog-title"
+      aria-labelledby="artifact-expanded-view"
       open={props.open}
     >
-      <DialogTitle id="customized-dialog-title">
-        {props.artifact.name}
-      </DialogTitle>
-      <DialogContent dividers>{createBodyContainer}</DialogContent>
+      {dialogHeader}
+      <DialogContent dividers>{bodyContainer}</DialogContent>
       <DialogActions>
-        <div className="flexRowSpaceAround widthFull">
-          <IconButton aria-label="exit" onClick={props.handleClose}>
-            <CloseIcon />
-          </IconButton>
-          <IconButton aria-label="select" onClick={props.selectSource}>
-            <DoneIcon />
-          </IconButton>
-        </div>
+        {dialogOptionsBar}
       </DialogActions>
     </Dialog>
   )

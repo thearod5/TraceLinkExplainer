@@ -47,6 +47,13 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
     props.selectArtifact(props.result)
   }
 
+  const viewExpandedArtifactIcon = (
+    <div className="centeredColumn padSmall" >
+      <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
+        <FullscreenIcon/>
+      </IconButton>
+    </div>)
+
   return (
     <Accordion
       TransitionProps={{ unmountOnExit: true }}
@@ -78,11 +85,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           />
         </Box>
 
-        <div className="centeredColumn padSmall" >
-          <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
-            <FullscreenIcon color={'primary'}/>
-          </IconButton>
-        </div>
+        {viewExpandedArtifactIcon}
       </AccordionDetails>
 
       <SearchResultDialog

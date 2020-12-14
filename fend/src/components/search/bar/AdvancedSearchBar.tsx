@@ -48,7 +48,6 @@ export default function AdvancedSearchBar (props: AdvancedSearchBarProps) {
         renderInput={(params: object) =>
           SearchSuggestion(params, props.onSearch)
         }
-        size="small"
         fullWidth={true}
       />
     </div>

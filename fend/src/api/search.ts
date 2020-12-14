@@ -47,7 +47,7 @@ export async function searchForTargetArtifact (
         )
       )
     }
-    const baseQuery = '?' + sources.map(source => 'source_name=' + source.name)
+    const baseQuery = '?' + sources.map(source => 'source_name=' + source.name).join('&')
     const queryString = query.length === 0 ? baseQuery : baseQuery + 'query=' + query
     const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
     return resolve(baseSearchFunction(searchUrl))

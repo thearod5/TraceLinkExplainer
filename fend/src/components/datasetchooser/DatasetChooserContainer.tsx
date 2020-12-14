@@ -1,4 +1,4 @@
-import { Box, Button, Fade, LinearProgress } from '@material-ui/core'
+import { Box, Button, Fade } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDatasetNames } from '../../api/datasets'
@@ -13,6 +13,7 @@ import {
 } from '../../redux/actions'
 import { getDataset } from '../../redux/selectors'
 import { appHistory } from '../../redux/store'
+import LoadingBar from '../meta/LoadingBar'
 import DatasetChooserItem from './DatasetChooserItem'
 
 const DEFAULT_INDEX_SELECTED = -1
@@ -22,11 +23,11 @@ export default function DatasetChooser () {
 
   return (
     <Fade in={true} timeout={FADE_TIMEOUT}>
-      <Box className="roundBorder padMedium" boxShadow={3}>
+      <Box className="roundBorder padMedium" boxShadow={3} >
         <h2 className="textAlignCenter">Datasets</h2>
         <div className="flexColumn padSmall">
           {datasetItems.length === 0 ? (
-            <LinearProgress color="secondary" />
+            LoadingBar()
           ) : (
             datasetItems
           )}

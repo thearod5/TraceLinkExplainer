@@ -1,7 +1,7 @@
-import { LinearProgress } from '@material-ui/core'
 import React from 'react'
 import { StartSearchCallback, VoidCallback } from '../../constants'
 import { Artifact, ArtifactDisplayModel } from '../../operations/types/Dataset'
+import LoadingBar from '../meta/LoadingBar'
 import SearchBar from './bar/SearchBar'
 import SearchResults from './results/SearchResults'
 import { SearchFooter } from './SearchFooter'
@@ -41,9 +41,7 @@ export default function Search (props: SearchProps) {
     <SearchBar onSearch={(query: string) => startSearch(query, -1)} />
   )
 
-  const loadingBar = (
-    <LinearProgress color="primary" variant="indeterminate" />
-  )
+  const loadingBar = LoadingBar()
 
   const footer = (
     <SearchFooter

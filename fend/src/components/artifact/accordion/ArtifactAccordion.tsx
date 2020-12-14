@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from '../../../constants'
 import { createWords } from '../../../operations/artifacts/WordCreator'
 import { RelationshipColors, Relationships, WordDescriptors, Words } from '../../../operations/types/Trace'
-import { primaryColor, secondaryColor } from '../../../styles/theme'
+import { primaryColor } from '../../../styles/theme'
 import ArtifactAccordionDetails from './ArtifactAccordionDetails'
 import ArtifactAccordionSummary from './ArtifactAccordionSummary'
 import { createToolbarIcons } from './ArtifactAccordionToolbar'
@@ -73,7 +73,7 @@ export default function ArtifactAccordion (props: ArtifactAccordionProps) {
       onChange={handleAccordionExpandClick}
     >
       <ArtifactAccordionSummary
-        style={{ backgroundColor: primaryColor, color: secondaryColor }}
+        style={{ backgroundColor: primaryColor, color: 'white' }}
         expandIcon={<ExpandMoreIcon />}
         title={artifactId}
       />
