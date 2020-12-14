@@ -3,7 +3,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Relationships, Words } from '../../../operations/types/Trace'
 import { getLoading } from '../../../redux/selectors'
-import { primaryColor } from '../../../styles/theme'
 import ViewerWords from '../words/ArtifactWord'
 
 /* Responsibility: Container for body of accordion when displaying trace information.
@@ -39,10 +38,10 @@ export default function ArtifactAccordionDetails (props: ArtifactAccordionDetail
           defaultSize={fontSize}
         />
       </div>
-      <div className="flexRowCentered justifyContentCenter padSmall">
+      <div className="flexRowCentered justifyContentCenter padSmall" >
         <div
           className="flexRowCentered justifyContentCenter roundBorderMedium"
-          style={{ backgroundColor: primaryColor }}>
+        >
           {toolbarIcons}
         </div>
       </div>

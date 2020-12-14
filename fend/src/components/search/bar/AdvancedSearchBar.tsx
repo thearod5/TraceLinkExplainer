@@ -21,7 +21,7 @@ export default function AdvancedSearchBar (props: AdvancedSearchBarProps) {
   return (<div className="flexRowSpaceAround sizeFull">
     <div className="centeredColumn padSmall">
       {props.validQuery ? (
-        <CheckIcon color="secondary" className="heightFull" />
+        <CheckIcon color="primary" className="heightFull" />
       ) : (
         <Tooltip title={props.queryError}>
           <ReportProblemIcon color="action" className="heightFull" />
