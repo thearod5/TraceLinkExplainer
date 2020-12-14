@@ -42,7 +42,10 @@ def search_artifacts(request: Request, project_name: str):
 
     if "query" in request.query_params:
         query = request.query_params['query']
-        q = parse_definition(query).eval()
+        expr = parse_definition(query)
+        if isinstance(expr, str):
+            return ApplicationError("could not parse (%s) into expression" % expr)
+        q = expr.eval()
         project_artifacts = models.Artifact.objects.filter(q)
 
     payload = ArtifactSerializer(project_artifacts, many=True).data

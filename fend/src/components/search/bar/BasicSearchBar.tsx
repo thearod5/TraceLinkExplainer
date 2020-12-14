@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { CATEGORICAL_OPERATIONS } from '../../../operations/query/Types'
+import { AttributeTypeMap } from '../../../operations/query/Types'
 import QueryFilterElement from './QueryFilterElement'
 import { SubmitFuncType } from './SearchBar'
 
@@ -30,7 +30,7 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
     return queries
       .filter(parts => parts[2] !== EMPTY_QUERY)
       .map(parts => `${parts[0]} ${parts[1]} ${parts[2]}`)
-      .join(' && ')
+      .join(' ^^ ')
   }
 
   useEffect(() => {
@@ -46,9 +46,19 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
 
   return (
     <div className="flexRowSpaceAround sizeFull">
+
+      <QueryFilterElement
+        label={'name'}
+        filterOperations={AttributeTypeMap.name}
+        selectedFilter={nameFilter}
+        setFilter={setIdFilter}
+        query={nameQuery}
+        setQuery={createQuerySetter(setIdQuery)}
+        onSearch={onSearch}
+      />
       <QueryFilterElement
         label={'type'}
-        filterOperations={CATEGORICAL_OPERATIONS}
+        filterOperations={AttributeTypeMap.type}
         selectedFilter={typeFilter}
         setFilter={setTypeFilter}
         query={typeQuery}
@@ -57,20 +67,11 @@ export default function BasicSearchBar (props: BasicSearchBarProps) {
       />
       <QueryFilterElement
         label={'body'}
-        filterOperations={CATEGORICAL_OPERATIONS}
+        filterOperations={AttributeTypeMap.body}
         selectedFilter={bodyFilter}
         setFilter={setBodyFilter}
         query={bodyQuery}
         setQuery={createQuerySetter(setBodyQuery)}
-        onSearch={onSearch}
-      />
-      <QueryFilterElement
-        label={'name'}
-        filterOperations={CATEGORICAL_OPERATIONS}
-        selectedFilter={nameFilter}
-        setFilter={setIdFilter}
-        query={nameQuery}
-        setQuery={createQuerySetter(setIdQuery)}
         onSearch={onSearch}
       />
     </div>)

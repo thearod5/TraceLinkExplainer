@@ -62,7 +62,7 @@ export default function SearchBar (props: SearchBarProps) {
           <Button
             size="small"
             className="padSmall"
-            color="secondary"
+            color="primary"
             onClick={() => setAdvancedSearch(!advancedSearch)}
           >
             {advancedSearch ? 'Basic' : 'Advanced'}

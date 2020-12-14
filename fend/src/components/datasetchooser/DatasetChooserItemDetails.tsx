@@ -11,16 +11,19 @@ type ButtonClickCallback = (route: string) => void;
 interface ModalItemContent {
   route: string;
   icon: JSXElementConstructor<{}>;
+  disabled: boolean;
 }
 
 const MODAL_ITEMS: Record<string, ModalItemContent> = {
   'Link Explanation': {
     route: SELECT_SOURCES_ROUTE,
-    icon: AccountTreeIcon
+    icon: AccountTreeIcon,
+    disabled: false
   },
   'View Dataset': {
     route: DATASET_ROUTE,
-    icon: ViewModuleIcon
+    icon: ViewModuleIcon,
+    disabled: true
   }
 }
 
@@ -51,6 +54,7 @@ function createButtons (clickHandler: ButtonClickCallback): JSX.Element[] {
         key={itemContent.route}
         startIcon={<itemContent.icon />}
         onClick={() => clickHandler(itemContent.route)}
+        disabled={itemContent.disabled}
       >
         {modalDescription}
       </Button>

@@ -3,7 +3,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import KeyboardTabIcon from '@material-ui/icons/KeyboardTab'
 import React from 'react'
-import { primaryColor } from '../../styles/theme'
+import { primaryColor, secondaryColor } from '../../styles/theme'
 
 interface SearchFooterProps {
   page: number;
@@ -27,11 +27,9 @@ export function SearchFooter (props: SearchFooterProps) {
     </IconButton>
   )
   const pageLabel = (
-    <div className="centeredColumn padSmall">
-      <label className="bold">
-        Page {props.page} / {props.totalPages}
-      </label>
-    </div>
+    <Box className="centeredColumn padSmall" color='secondary'>
+      Page {props.page} / {props.totalPages}
+    </Box>
   )
   const nextPageButton = (
     <IconButton
@@ -54,18 +52,16 @@ export function SearchFooter (props: SearchFooterProps) {
 
   return (
     <Box
-      className="centeredColumn sizeFull"
-      style={{
-        backgroundColor: primaryColor
-      }}
       boxShadow={3}
+      className="centeredColumn sizeFull"
+      style={{ backgroundColor: primaryColor, color: secondaryColor }}
     >
       <div className="flexRow justifyContentSpaceBetween widthFull">
-        <div className="flexRowCentered">
+        <Box className="flexRowCentered">
           {previousPageButton}
           {pageLabel}
           {nextPageButton}
-        </div>
+        </Box>
 
         <div className="padSmall">{nextStepButton}</div>
       </div>

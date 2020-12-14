@@ -42,7 +42,7 @@ export default function Search (props: SearchProps) {
   )
 
   const loadingBar = (
-    <LinearProgress color="secondary" variant="indeterminate" />
+    <LinearProgress color="primary" variant="indeterminate" />
   )
 
   const footer = (

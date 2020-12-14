@@ -1,20 +1,20 @@
 import React from 'react'
 import Graph from 'react-graph-vis'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTrace } from '../../redux/actions'
-import { getTrace } from '../../redux/selectors'
 import { getEdgesInFamilies, getNodesInFamilies } from '../../operations/artifacts/WordCreator'
 import { Relationships } from '../../operations/types/Trace'
+import { setTrace } from '../../redux/actions'
+import { getTrace } from '../../redux/selectors'
 import { primaryColor, secondaryColor } from '../../styles/theme'
 import ViewerModal from './ViewerModal'
 
 const NETWORK_GRAPH_LENGTH = '600px'
 const NETWORK_GRAPH_OPTIONS = {
   edges: {
-    color: secondaryColor
+    color: primaryColor
   },
   nodes: {
-    color: primaryColor
+    color: secondaryColor
   },
   width: NETWORK_GRAPH_LENGTH,
   height: NETWORK_GRAPH_LENGTH,

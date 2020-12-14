@@ -8,7 +8,7 @@ const helpMessage = 'No source artifact selected.'
 export default function NoSourceMessage () {
   return (
     <div className="textAlignCenter">
-      <p className="verticallyCenter">{helpMessage}</p>
+      <h3 className="verticallyCenter" >{helpMessage}</h3>
     </div>
   )
 }

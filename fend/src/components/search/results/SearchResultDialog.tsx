@@ -20,7 +20,7 @@ interface SearchItemDialogProps {
 }
 
 export default function SearchResultDialog (props: SearchItemDialogProps) {
-  const isCode = props.artifact.type === 'Classes'
+  const isCode = props.artifact.type === 'code'
   const createBodyContainer = isCode ? (
     <SyntaxHighlighter
       language="java"

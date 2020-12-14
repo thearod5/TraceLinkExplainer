@@ -20,40 +20,40 @@ type isValidResponse = [boolean, string];
  * Specific Command validations
  */
 
-export function isValidAttibute (command: string): isValidResponse {
+export function isValidAttibute (symbol: string): isValidResponse {
   const isValid = Attributes.some(
-    (attribute) => attribute.fieldName.toLowerCase() === command.toLowerCase()
+    (attribute) => attribute.fieldName.toLowerCase() === symbol.toLowerCase()
   )
-  return [isValid, createQueryError(command, 'Value', ATTRIBUTE_VALUES)]
+  return [isValid, createQueryError(symbol, 'Value', ATTRIBUTE_VALUES)]
 }
 
 export function isValidOperation (
-  commands: string[],
-  commandIndex: number
+  symbols: string[],
+  symbolIndex: number
 ): isValidResponse {
-  if (commandIndex === 0) return [false, MISSING_ATTRIBUTE_ERROR]
-  const previousCommand = commands[commandIndex - 1]
-  const command = commands[commandIndex]
+  if (symbolIndex === 0) return [false, MISSING_ATTRIBUTE_ERROR]
+  const previousCommand = symbols[symbolIndex - 1]
+  const symbol = symbols[symbolIndex]
   const validOperations = getOperationRecommendations(previousCommand)
-  const isValid = validOperations.includes(command.toLowerCase())
+  const isValid = validOperations.includes(symbol.toLowerCase())
   return [
     isValid,
-    `Unknown operation: ${command}. Must be one of: ${validOperations}`
+    `Unknown operation: ${symbol}. Must be one of: ${validOperations}`
   ]
 }
 
-export function isValidValue (command: string): isValidResponse {
-  if (command.length === 0) return [false, 'Value cannot be empty string.']
-  if (command.includes('"')) { return [false, 'Value multi-space string could not be parsed.'] }
+export function isValidValue (symbol: string): isValidResponse {
+  if (symbol.length === 0) return [false, 'Value cannot be empty string.']
+  if (symbol.includes('"')) { return [false, 'Value multi-space string could not be parsed.'] }
 
   return [true, '']
 }
 
-export function isValidCombinator (command: string): isValidResponse {
-  const isValid = COMBINATORS.includes(command.toLowerCase())
+export function isValidCombinator (symbol: string): isValidResponse {
+  const isValid = COMBINATORS.includes(symbol.toLowerCase())
   return [
     isValid,
-    createQueryError(command, 'Combinator', COMBINATORS, COMBINATOR_ERROR_HELP)
+    createQueryError(symbol, 'Combinator', COMBINATORS, COMBINATOR_ERROR_HELP)
   ]
 }
 
@@ -61,24 +61,24 @@ export function isValidCombinator (command: string): isValidResponse {
  * Validation
  */
 export function isValidCommandStep (
-  commands: string[],
-  commandIndex: number
+  symbols: string[],
+  symbolIndex: number
 ): isValidResponse {
-  if (commandIndex >= commands.length) { throw Error(`index out-of-bounds: ${commandIndex}`) }
+  if (symbolIndex >= symbols.length) { throw Error(`index out-of-bounds: ${symbolIndex}`) }
 
-  const command = commands[commandIndex]
+  const symbol = symbols[symbolIndex]
   const expectedStepType: CommandType =
-    STEP_ORDER[commandIndex % STEP_ORDER.length]
+    STEP_ORDER[symbolIndex % STEP_ORDER.length]
 
   switch (expectedStepType) {
     case CommandType.ATTRIBUTE:
-      return isValidAttibute(command)
+      return isValidAttibute(symbol)
     case CommandType.OPERATION:
-      return isValidOperation(commands, commandIndex)
+      return isValidOperation(symbols, symbolIndex)
     case CommandType.VALUE:
-      return isValidValue(command)
+      return isValidValue(symbol)
     case CommandType.COMBINATOR:
-      return isValidCombinator(command)
+      return isValidCombinator(symbol)
     default:
       // unreachable but demanded by typescript
       throw Error(`Unimplemented step type: ${expectedStepType}`)
@@ -105,7 +105,7 @@ export function isValidQuery (query: string): isValidResponse {
 
   switch (stepsRemaining) {
     case 0:
-      return [true, ''] // single command completed
+      return [true, ''] // single symbol completed
     case 1:
       return [false, 'Missing value.']
     case 2:
@@ -124,11 +124,11 @@ export function isValidQuery (query: string): isValidResponse {
 
 function createQueryError (
   stepName: string,
-  commandName: string,
+  symbolName: string,
   options: string[],
   suffix = ''
 ) {
-  return `${stepName} is not a ${commandName}. It must be one of: ${options.join(
+  return `${stepName} is not a ${symbolName}. It must be one of: ${options.join(
     ', '
   )}. ${suffix}`
 }

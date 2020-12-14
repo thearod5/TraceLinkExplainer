@@ -70,22 +70,22 @@ class DoesNotContainFilter(ContainsFilter):
 
 class GreaterThanEqualToFilter(FilterController):
     symbol = ">="
-    field_suffix = "__gte"
+    field_suffix = "__lte"
 
 
 class LessThanEqualToFilter(FilterController):
     symbol = "<="
-    field_suffix = "__lte"
+    field_suffix = "__gte"
 
 
 class GreaterThanFilter(FilterController):
     symbol = ">"
-    field_suffix = "__gt"
+    field_suffix = "__lt"
 
 
 class LessThanFilter(FilterController):
-    symbol = "__lt"
-    field_suffix = "<"
+    symbol = "<"
+    field_suffix = "__gt"
 
 
 REGISTERED_OPERATIONS: List[IFilter] = [EqualFilter(),
@@ -93,8 +93,8 @@ REGISTERED_OPERATIONS: List[IFilter] = [EqualFilter(),
                                         ContainsFilter(),
                                         DoesNotContainFilter(),
                                         GreaterThanEqualToFilter(),
-                                        GreaterThanFilter(),
                                         LessThanEqualToFilter(),
+                                        GreaterThanFilter(),
                                         LessThanFilter()]
 
 

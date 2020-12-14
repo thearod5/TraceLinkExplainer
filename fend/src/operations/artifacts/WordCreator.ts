@@ -55,8 +55,8 @@ export function getDefaultRelationships (): Relationships {
 
 export function getDefaultRelationshipColors (): RelationshipColors {
   const colors: RelationshipColors = {}
-  colors[SyntaxWordType] = '#FF8C00'
-  colors[KeyWordType] = '#79ADDC'
+  colors[SyntaxWordType] = 'black'
+  colors[KeyWordType] = 'black'
   colors[''] = 'black'
   return colors
 }

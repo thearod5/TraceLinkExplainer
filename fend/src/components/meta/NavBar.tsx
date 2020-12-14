@@ -1,10 +1,10 @@
 import { Box } from '@material-ui/core'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { HOME_ROUTE } from '../../constants'
 import { getCurrentStep, getDataset } from '../../redux/selectors'
 import { appHistory } from '../../redux/store'
-import { primaryColor, secondaryColor } from '../../styles/theme'
-import { HOME_ROUTE } from '../../constants'
+import { primaryColor } from '../../styles/theme'
 
 const WELCOME_MESSAGE = 'TraceViewer'
 // TODO: Add button to view dataset. Also make a real nav bar looking thing.
@@ -18,10 +18,9 @@ export default function NavBar () {
 
   return (
     <Box
-      color="secondary"
       boxShadow={3}
       className="flexRowCentered sizeFull"
-      style={{ backgroundColor: `${secondaryColor}` }}
+      style={{ backgroundColor: 'white' }}
     >
       <div className="centeredColumn">
         <h1

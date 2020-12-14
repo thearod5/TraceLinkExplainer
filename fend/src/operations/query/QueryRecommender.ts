@@ -1,9 +1,8 @@
 import { getStepsInQuery } from './QueryStepParser'
 import {
-  AttributeType,
   AttributeTypeMap,
   ATTRIBUTE_VALUES,
-  CATEGORICAL_OPERATIONS,
+
   COMBINATORS,
   CommandType,
   STEP_ORDER
@@ -36,13 +35,7 @@ export function getQueryRecommendations (query: string) {
 
 export function getOperationRecommendations (attribute: string): string[] {
   if (ATTRIBUTE_VALUES.includes(attribute)) {
-    const attributeType: AttributeType = AttributeTypeMap[attribute]
-    switch (attributeType) {
-      case AttributeType.categorical:
-        return CATEGORICAL_OPERATIONS
-      default:
-        return []
-    }
+    return AttributeTypeMap[attribute]
   }
   return []
 }

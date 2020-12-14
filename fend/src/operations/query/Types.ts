@@ -10,9 +10,20 @@ export const CATEGORICAL_OPERATIONS = [
   '!=',
   '>',
   '<',
-  '>=',
-  '=<'
+  '<=',
+  '>='
 ]
+
+export const OPERATION_NAMES: Record<string, string> = {
+  '~': 'contains',
+  '!~': 'does not contain',
+  '=': 'is equal to',
+  '!=': 'is not equal to',
+  '>': 'is greater than',
+  '<': 'is less than',
+  '>=': 'is greater or equal to',
+  '<=': 'is less than or equal to'
+}
 export const COMBINATORS = ['^^', '||']
 
 const TypeAttribute = {
@@ -56,8 +67,8 @@ export const STEP_ORDER: CommandType[] = [
 export const STEPS_IN_SINGLE_COMMAND = STEP_ORDER.length - 1 // eliminate combinator
 export const STEPS_IN_COMMAND_EXTENSION = STEP_ORDER.length
 
-export const AttributeTypeMap: Record<string, AttributeType> = {
-  type: AttributeType.categorical,
-  body: AttributeType.categorical,
-  id: AttributeType.categorical
+export const AttributeTypeMap: Record<string, string[]> = {
+  type: ['=', '!='],
+  body: ['=', '!=', '~', '!~'],
+  name: ['=', '!=', '<', '>', '<=', '>=']
 }
