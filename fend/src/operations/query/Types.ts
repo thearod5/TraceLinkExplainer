@@ -13,7 +13,7 @@ export const CATEGORICAL_OPERATIONS = [
   '>=',
   '=<'
 ]
-export const COMBINATORS = ['&&', '||']
+export const COMBINATORS = ['^^', '||']
 
 const TypeAttribute = {
   fieldName: 'type',

@@ -30,7 +30,7 @@ class CombinatorController(ICombinator, ABC):
 
 
 class AndCombinator(CombinatorController):
-    symbol = "&&"
+    symbol = "^^"
 
     def eval(self) -> Q:
         return self.left.eval() & self.right.eval()

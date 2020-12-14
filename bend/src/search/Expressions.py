@@ -11,7 +11,7 @@ class IExpr(ABC):
     """
     An expr is one of:
     - [attribute][other][value] (e.g. name=RE-8)
-    - [expr] [combinator] [expr] (e.g. name=RE-8&&type=requirements)
+    - [expr] [combinator] [expr] (e.g. name=RE-8^^type=requirements)
     """
 
     @abstractmethod

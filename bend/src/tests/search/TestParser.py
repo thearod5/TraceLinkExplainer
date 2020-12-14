@@ -33,14 +33,14 @@ class TestParse(TestCase):
         self.assertEqual(data_builder.artifact_a_name, artifacts.first().name)
 
     def test_combinator(self):
-        expr = parse_definition("name=RE-8&&type=requirements")
+        expr = parse_definition("name=RE-8^^type=requirements")
         left = QueryExpression(NameAttribute(), EqualFilter(), "RE-8")
         right = QueryExpression(TypeAttribute(), EqualFilter(), "requirements")
         expected = AndCombinator(left, right)
         self.assertEqual(expected, expr)
 
     def test_combinator_many(self):
-        expr = parse_definition("name=RE-8&&type=requirements||name=RE-10")
+        expr = parse_definition("name=RE-8^^type=requirements||name=RE-10")
         left = QueryExpression(NameAttribute(), EqualFilter(), "RE-8")
         right_left = QueryExpression(TypeAttribute(), EqualFilter(), "requirements")
         right_right = QueryExpression(NameAttribute(), EqualFilter(), "RE-10")
@@ -53,9 +53,9 @@ class TestParse(TestCase):
     """
 
     def test_get_combinator_symbols_in(self):
-        c_symbols = get_symbols_in_def("a&&b||c&&d", get_combinator_symbols())
+        c_symbols = get_symbols_in_def("a^^b||c^^d", get_combinator_symbols())
 
         self.assertEqual(3, len(c_symbols))
-        self.assertEqual("&&", c_symbols[0])
+        self.assertEqual("^^", c_symbols[0])
         self.assertEqual("||", c_symbols[1])
-        self.assertEqual("&&", c_symbols[2])
+        self.assertEqual("^^", c_symbols[2])

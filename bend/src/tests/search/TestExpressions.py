@@ -29,6 +29,16 @@ class TestExpressions(TestCase):
         self.assertEqual(1, len(artifacts))
         self.assertEqual(data_builder.artifact_a_name, artifacts.first().name)
 
+    def test_combinator_empty_query(self):
+        data_builder = DataBuilder()
+        data_builder.with_default_project()
+        q1 = QueryExpression(NameAttribute(), Filter("="), data_builder.artifact_a_name)
+        q2 = QueryExpression(TypeAttribute(), Filter("!="), data_builder.artifact_a_type)
+        q = AndCombinator(q1, q2)
+        artifacts = models.Artifact.objects.filter(q.eval())
+
+        self.assertEqual(0, len(artifacts))
+
     def test_combinator_equality(self):
         def get_parts():
             left = QueryExpression(NameAttribute(), EqualFilter(), "RE-8")
@@ -42,4 +52,4 @@ class TestExpressions(TestCase):
 
         left, right = get_parts()
         self.assertEqual(create_combinator(), create_combinator())
-        self.assertEqual(create_combinator(), Combinator("&&", left, right))
+        self.assertEqual(create_combinator(), Combinator("^^", left, right))
