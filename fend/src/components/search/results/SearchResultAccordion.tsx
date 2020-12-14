@@ -58,7 +58,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           aria-label="Select"
           onClick={(event) => event.stopPropagation()} // stops opening of accordion
           onFocus={(event) => event.stopPropagation()}
-          control={<Checkbox checked={checked} onClick={onClick} />}
+          control={<Checkbox checked={checked} onClick={onClick} color={'primary'}/>}
           label={props.result.name}
         />
       </AccordionSummary>
@@ -80,7 +80,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
 
         <div className="centeredColumn padSmall" >
           <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
-            <FullscreenIcon />
+            <FullscreenIcon color={'primary'}/>
           </IconButton>
         </div>
       </AccordionDetails>

@@ -2,9 +2,9 @@
 import { Fade } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import SplitPane from 'react-split-pane'
-import { primaryColor } from '../../styles/theme'
+import { WordModal } from '../../components/explanation/TraceExplanation'
 import { FADE_TIMEOUT } from '../../constants'
-import { WordModal } from '../../components/traceexplanation/TraceExplanation'
+import { primaryColor } from '../../styles/theme'
 
 /* Responsibility: Displaying and Transitioning between pages
  *
@@ -73,10 +73,10 @@ export function Viewer (props: ViewerProps) {
   const body = (
     <SplitPane split="vertical">
       <Fade in={!fadeLeftOut} timeout={FADE_TIMEOUT}>
-        <div className="heightFull" style={{ borderRight: `1px solid ${primaryColor}` }}>{currentLeft}</div>
+        <div className="heightFull" style={{ margin: '0px', borderRight: `2px solid ${primaryColor}` }}>{currentLeft}</div>
       </Fade>
       <Fade in={!fadeRightOut} timeout={FADE_TIMEOUT}>
-        <div className="heightFull" style={{ borderLeft: `1px solid ${primaryColor}` }}>{currentRight}</div>
+        <div className="heightFull" style={{ margin: '0px', borderLeft: `2px solid ${primaryColor}` }}>{currentRight}</div>
       </Fade>
     </SplitPane>)
 

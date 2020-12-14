@@ -3,7 +3,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeStep } from '../../../redux/actions'
 import { getCurrentStep } from '../../../redux/selectors'
-import { secondaryColor } from '../../../styles/theme'
+import { primaryColor } from '../../../styles/theme'
 
 interface ArtifactToolbarProps {
   title: string;
@@ -24,7 +24,7 @@ export default function ArtifactAccordionSummary (props: ArtifactToolbarProps) {
       style={props.style}
       expandIcon={props.expandIcon}
     >
-      <h3 onClick={clickHandler} style={{ color: secondaryColor }}>
+      <h3 onClick={clickHandler} style={{ color: primaryColor }}>
         {props.title}
       </h3>
     </AccordionSummary>

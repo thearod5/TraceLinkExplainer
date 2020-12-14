@@ -1,32 +1,32 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme } from '@material-ui/core'
 
-export const primaryColor = "#FFE4E1"; //Misty Rose
-export const secondaryColor = "#CD5C5C"; //Indian Red
-export const thirdaryColor = "#6DD3CE";
-export const fourthColor = "#C8E9A0";
-export const fitfthColor = "#351E29";
+export const primaryColor = '#b71c1c'
+export const secondaryColor = '#fbc02d'
+export const thirdaryColor = '#6DD3CE'
+export const fourthColor = '#C8E9A0'
+export const fitfthColor = '#351E29'
 
 export default createMuiTheme({
   overrides: {
     MuiStepIcon: {
       root: {
-        "&$completed": {
-          color: secondaryColor,
+        '&$completed': {
+          color: secondaryColor
         },
-        "&$active": {
-          color: primaryColor,
-        },
+        '&$active': {
+          color: primaryColor
+        }
       },
       active: {},
-      completed: {},
-    },
+      completed: {}
+    }
   },
   palette: {
     primary: {
-      main: primaryColor,
+      main: primaryColor
     },
     secondary: {
-      main: secondaryColor,
-    },
-  },
-});
+      main: secondaryColor
+    }
+  }
+})

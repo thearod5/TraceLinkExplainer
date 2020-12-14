@@ -28,11 +28,11 @@ export default function QueryFilterElement (props: BasicSearchElementProps) {
     <div className="centeredColumn">
       <div className="flexRow borderRound">
         <FormControl className="flexRow">
-          <InputLabel color="secondary">{props.label}</InputLabel>
+          <InputLabel color="primary">{props.label}</InputLabel>
           <Select
             value={props.selectedFilter}
             onChange={createOnChangeHandler(props.setFilter)}
-            color="secondary"
+            color="primary"
           >
             {props.filterOperations.map(option => filterMenuItem(option))}
           </Select>
@@ -44,7 +44,7 @@ export default function QueryFilterElement (props: BasicSearchElementProps) {
               value={props.query}
               onChange={createOnChangeHandler(props.setQuery)}
               onKeyDown={searchIfEnter}
-              color="secondary"
+              color="primary"
             />
           </FormControl>
         </div>

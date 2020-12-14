@@ -1,9 +1,9 @@
 import { AccordionDetails, LinearProgress } from '@material-ui/core'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { getLoading } from '../../../redux/selectors'
 import { Relationships, Words } from '../../../operations/types/Trace'
-import { secondaryColor } from '../../../styles/theme'
+import { getLoading } from '../../../redux/selectors'
+import { primaryColor } from '../../../styles/theme'
 import ViewerWords from '../words/ArtifactWord'
 
 /* Responsibility: Container for body of accordion when displaying trace information.
@@ -42,13 +42,13 @@ export default function ArtifactAccordionDetails (props: ArtifactAccordionDetail
       <div className="flexRowCentered justifyContentCenter padSmall">
         <div
           className="flexRowCentered justifyContentCenter roundBorderMedium"
-          style={{ backgroundColor: secondaryColor }}>
+          style={{ backgroundColor: primaryColor }}>
           {toolbarIcons}
         </div>
       </div>
     </div>)
   } else {
-    body = <LinearProgress color="secondary" />
+    body = <LinearProgress color="primary" />
   }
 
   return (

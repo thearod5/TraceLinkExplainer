@@ -47,8 +47,7 @@ export function createToolbarIcons (
       <Checkbox
         key={index}
         checked={checked}
-        color="primary"
-        checkedIcon={<iconButton.iconElement color="primary" />} // Compains if iconElement moved to deconstruction
+        checkedIcon={<iconButton.iconElement color="secondary" />} // Compains if iconElement moved to deconstruction
         icon={<iconButton.iconElement color="action" />}
         onChange={onChange}
       />

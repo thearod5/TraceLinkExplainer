@@ -27,11 +27,9 @@ export function SearchFooter (props: SearchFooterProps) {
     </IconButton>
   )
   const pageLabel = (
-    <div className="centeredColumn padSmall">
-      <label className="bold">
-        Page {props.page} / {props.totalPages}
-      </label>
-    </div>
+    <Box className="centeredColumn padSmall" color='secondary'>
+      Page {props.page} / {props.totalPages}
+    </Box>
   )
   const nextPageButton = (
     <IconButton
@@ -61,11 +59,11 @@ export function SearchFooter (props: SearchFooterProps) {
       boxShadow={3}
     >
       <div className="flexRow justifyContentSpaceBetween widthFull">
-        <div className="flexRowCentered">
+        <Box className="flexRowCentered">
           {previousPageButton}
           {pageLabel}
           {nextPageButton}
-        </div>
+        </Box>
 
         <div className="padSmall">{nextStepButton}</div>
       </div>
