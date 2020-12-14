@@ -2,6 +2,9 @@ import { Box, Button, Fade, LinearProgress } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDatasetNames } from '../../api/datasets'
+import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from '../../constants'
+import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
+import { Dataset } from '../../operations/types/Dataset'
 import {
   changeStep,
   clearData,
@@ -10,9 +13,6 @@ import {
 } from '../../redux/actions'
 import { getDataset } from '../../redux/selectors'
 import { appHistory } from '../../redux/store'
-import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
-import { Dataset } from '../../operations/types/Dataset'
-import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from '../../constants'
 import DatasetChooserItem from './DatasetChooserItem'
 
 const DEFAULT_INDEX_SELECTED = -1
@@ -64,7 +64,7 @@ function useSelectDataset () {
         dataset.name === datasetDescriptor.name ? setIndexSelected(index) : null
       )
       setDatasetsNames(datasetDescriptors)
-    })
+    }).catch(e => e)
   }, [dataset.name])
 
   const selectDatasetAtIndex = (indexToSelect: number) => {

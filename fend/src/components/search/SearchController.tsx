@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, StartSearchCallback, VIEW_TRACE_STEP } from '../../constants'
-import { changeStep, setError } from '../../redux/actions'
-import { getCurrentStep } from '../../redux/selectors'
-import { appHistory } from '../../redux/store'
-import { ArtifactMutatorActionType } from '../../redux/types'
 import { createArtifactDisplayModel } from '../../operations/artifacts/WordCreator'
 import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
 import {
@@ -12,6 +8,10 @@ import {
   ArtifactDisplayModel,
   artifactsAreEqual
 } from '../../operations/types/Dataset'
+import { changeStep, setError } from '../../redux/actions'
+import { getCurrentStep } from '../../redux/selectors'
+import { appHistory } from '../../redux/store'
+import { ArtifactMutatorActionType } from '../../redux/types'
 import Search from './Search'
 import { SuggestionFunctionType } from './types'
 
@@ -67,8 +67,7 @@ export default function SearchController (props: SearchProps) {
           setIsLoading(false)
         })
         .catch((e) => {
-          console.log(e)
-          dispatch(setError(e.toString()))
+          dispatch(setError(e))
           setIsLoading(false)
         })
     },

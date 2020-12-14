@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTraceInformation } from '../../../api/trace'
-import SourceArtifactSearch from '../../SourceArtifactSearch'
-import TargetArtifactSearch from '../../TargetArtifactSearch'
+import { NOT_CACHED, SELECT_SOURCE_STEP, SELECT_TARGET_STEP, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../../../constants'
+import { Artifact, Dataset } from '../../../operations/types/Dataset'
+import { Trace } from '../../../operations/types/Trace'
 import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex } from '../../../redux/actions'
 import {
   getCurrentStep,
@@ -15,10 +16,9 @@ import {
   getTraceSourceIndex,
   getTraceTargetIndex
 } from '../../../redux/selectors'
-import { Artifact, Dataset } from '../../../operations/types/Dataset'
-import { Trace } from '../../../operations/types/Trace'
-import { NOT_CACHED, SELECT_SOURCE_STEP, SELECT_TARGET_STEP, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../../../constants'
 import NoSourceMessage from '../../NoSourceMessage'
+import SourceArtifactSearch from '../../SourceArtifactSearch'
+import TargetArtifactSearch from '../../TargetArtifactSearch'
 import { Viewer } from '../PageManager'
 import { DefaultSourceArtifactDisplay, handleTraceInformationRequest, updateTraceArtifactDisplayInPanel } from './PageManagerControllerHelper'
 
@@ -97,7 +97,7 @@ export default function ViewerController () {
         })
         .catch((e) => {
           dispatch(setLoading(false))
-          dispatch(setError(e.toString()))
+          dispatch(setError(e))
         })
     }
 

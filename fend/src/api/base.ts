@@ -2,14 +2,7 @@ import { setError } from '../redux/actions'
 import store from '../redux/store'
 
 export const BASE_URL = 'http://localhost:8000'
-const TEST_ENDPOINT = 'test'
 export const DATASET_ENDPOINT = 'projects'
-
-export async function testCall () {
-  return await fetch([BASE_URL, TEST_ENDPOINT].join('/')).then((response) =>
-    response.json()
-  )
-}
 
 export async function post (url: string, data: object): Promise<any> {
   return fetch(url, {
@@ -32,8 +25,22 @@ export async function post (url: string, data: object): Promise<any> {
 }
 
 export async function get (url: string): Promise<any> {
-  return fetch(url).then((res) => res.json())
-    .catch((e) => {
-      store.dispatch(setError(e))
+  /* Returns an object from url on 200 response
+   * Otherwise, error message is resolved
+   */
+  return new Promise((resolve, reject) => {
+    fetch(url).then((res) => {
+      if (res.status >= 400) {
+        res.json().then(obj => reject(obj.details))
+      } else {
+        return res.json().then(obj => resolve(obj))
+      }
+    }).catch(e => {
+      if (e.messsage === undefined) {
+        reject(Error('services may be temporarily down, please see system administrators'))
+      } else {
+        reject(e.message)
+      }
     })
+  })
 }

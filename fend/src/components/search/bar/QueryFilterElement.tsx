@@ -1,5 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
+import { FormControl, InputLabel, MenuItem, Select, TextField, Tooltip } from '@material-ui/core'
 import React from 'react'
+import { OPERATION_NAMES } from '../../../operations/query/Types'
 import { ENTER_KEY_CODE } from './SearchBar'
 
 interface BasicSearchElementProps {
@@ -33,7 +34,7 @@ export default function QueryFilterElement (props: BasicSearchElementProps) {
             onChange={createOnChangeHandler(props.setFilter)}
             color="secondary"
           >
-            {props.filterOperations.map(option => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+            {props.filterOperations.map(option => filterMenuItem(option))}
           </Select>
         </FormControl>
 
@@ -49,4 +50,13 @@ export default function QueryFilterElement (props: BasicSearchElementProps) {
         </div>
       </div>
     </div>)
+}
+
+function filterMenuItem (option: string) {
+  return (
+    <MenuItem key={option} value={option}>
+      <Tooltip title={OPERATION_NAMES[option]} placement="right">
+        <label>{option}</label>
+      </Tooltip>
+    </MenuItem>)
 }

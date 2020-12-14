@@ -23,10 +23,10 @@ import { initializeEmptyDataset } from './initializers'
 import { createEmptyState } from './store'
 import { RootState } from './types'
 
-export default (
+function rootReducer (
   state = createEmptyState(),
   action: CustomAction
-): RootState => {
+): RootState {
   switch (action.type) {
     case SELECT_DATASET:
       if (isDataset(action.payload)) {
@@ -108,6 +108,8 @@ export default (
         }
       } else if (action.payload === undefined) {
         return { ...state, error: undefined }
+      } else if (typeof action.payload === 'object') {
+        return { ...state, error: JSON.stringify(action.payload) }
       } else {
         throw new Error(createReducerError(SET_ERROR_ACTION, 'string', action.payload))
       }
@@ -150,6 +152,8 @@ export default (
       return state
   }
 }
+
+export default rootReducer
 
 function createReducerError (name: string, error: string, payload: any) {
   return `Expected a ${error}. Given: ${JSON.stringify(payload)}.`

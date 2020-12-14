@@ -35,7 +35,7 @@ class AttributeController(IAttribute, ABC):
 
 class NameAttribute(AttributeController):
     symbol = "name"
-    filters = ["=", "!="]
+    filters = ["=", "!=", "<", ">", ">=", "<="]
 
 
 class TypeAttribute(AttributeController):
