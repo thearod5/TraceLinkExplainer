@@ -1,6 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
-import React from 'react';
-import { ENTER_KEY_CODE } from './SearchBar';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
+import React from 'react'
+import { ENTER_KEY_CODE } from './SearchBar'
 
 interface BasicSearchElementProps {
   label: string
@@ -12,16 +12,15 @@ interface BasicSearchElementProps {
   onSearch: () => void
 }
 
-export default function QueryFilterElement(props: BasicSearchElementProps) {
+export default function QueryFilterElement (props: BasicSearchElementProps) {
   const createOnChangeHandler = (propHandler: (v: string) => void) => {
     return (event: React.ChangeEvent<{ value: unknown }>) => {
-      propHandler(event.target.value as string);
-    };
+      propHandler(event.target.value as string)
+    }
   }
 
   const searchIfEnter = (event: any) => {
-    if (event.keyCode === ENTER_KEY_CODE)
-      props.onSearch()
+    if (event.keyCode === ENTER_KEY_CODE) { props.onSearch() }
   }
 
   return (

@@ -1,11 +1,11 @@
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import AccountTreeIcon from "@material-ui/icons/AccountTree";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
-import React, { JSXElementConstructor } from "react";
-import styled from "styled-components";
-import { DATASET_ROUTE, SELECT_SOURCES_ROUTE } from "../../constants";
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import AccountTreeIcon from '@material-ui/icons/AccountTree'
+import ViewModuleIcon from '@material-ui/icons/ViewModule'
+import React, { JSXElementConstructor } from 'react'
+import styled from 'styled-components'
+import { DATASET_ROUTE, SELECT_SOURCES_ROUTE } from '../../constants'
 type ButtonClickCallback = (route: string) => void;
 
 interface ModalItemContent {
@@ -14,21 +14,21 @@ interface ModalItemContent {
 }
 
 const MODAL_ITEMS: Record<string, ModalItemContent> = {
-  "Link Explanation": {
+  'Link Explanation': {
     route: SELECT_SOURCES_ROUTE,
-    icon: AccountTreeIcon,
+    icon: AccountTreeIcon
   },
-  "View Dataset": {
+  'View Dataset': {
     route: DATASET_ROUTE,
-    icon: ViewModuleIcon,
-  },
-};
+    icon: ViewModuleIcon
+  }
+}
 
 interface ItemDetailsProps {
   onClick: (route: string) => void;
 }
 
-export default function DatasetChooserItemDetails(props: ItemDetailsProps) {
+export default function DatasetChooserItemDetails (props: ItemDetailsProps) {
   return (
     <ItemContainer>
       <ButtonGroup
@@ -40,12 +40,12 @@ export default function DatasetChooserItemDetails(props: ItemDetailsProps) {
         {createButtons(props.onClick)}
       </ButtonGroup>
     </ItemContainer>
-  );
+  )
 }
 
-function createButtons(clickHandler: ButtonClickCallback): JSX.Element[] {
+function createButtons (clickHandler: ButtonClickCallback): JSX.Element[] {
   return Object.keys(MODAL_ITEMS).map((modalDescription) => {
-    let itemContent: ModalItemContent = MODAL_ITEMS[modalDescription];
+    const itemContent: ModalItemContent = MODAL_ITEMS[modalDescription]
     return (
       <Button
         key={itemContent.route}
@@ -54,12 +54,12 @@ function createButtons(clickHandler: ButtonClickCallback): JSX.Element[] {
       >
         {modalDescription}
       </Button>
-    );
-  });
+    )
+  })
 }
 
 const ItemContainer = styled(AccordionDetails)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
+`

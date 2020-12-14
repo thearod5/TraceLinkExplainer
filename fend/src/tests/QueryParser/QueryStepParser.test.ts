@@ -1,4 +1,4 @@
-import { getStepsInQuery } from "../../shared/query/QueryStepParser";
+import { getStepsInQuery } from "../../operations/query/QueryStepParser";
 /*
  * Step Parser
  */

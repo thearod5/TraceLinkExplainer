@@ -1,85 +1,73 @@
-import store from "../redux/store";
+import store from '../redux/store'
 import {
   Artifact,
   ArtifactIdentifier,
   Dataset,
-  isNonEmptyDataset,
-} from "../shared/types/Dataset";
+  isNonEmptyDataset
+} from '../operations/types/Dataset'
 import {
-  SearchResponse,
-  SearchSourceRoutePayload,
-  SearchTargetRoutePayload,
-} from "../shared/types/Search";
-import { BASE_URL, post } from "./base";
-import { CustomError, isError } from "./errors";
+  SearchResponse
+} from '../operations/types/Search'
+import { BASE_URL, get, post } from './base'
+import { CustomError, isError } from './errors'
 
 export type ServerResponse = CustomError | SearchResponse;
 
-export async function searchForSourceArtifact(
+export async function searchForSourceArtifact (
   query: string,
   limit: number
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    const dataset: Dataset = store.getState().dataset;
+    const dataset: Dataset = store.getState().dataset
     if (!isNonEmptyDataset(dataset)) {
-      return reject(Error("Dataset not selected."));
+      return reject(Error('Dataset not selected.'))
     }
-    const searchUrl = [BASE_URL, "source"].join("/");
-    const payload: SearchSourceRoutePayload = {
-      datasetName: dataset.name,
-      query,
-      limit,
-    };
-    return resolve(baseSearchFunction(searchUrl, payload));
-  });
+    const queryString = query.length === 0 ? '' : '?query=' + query
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
+    return resolve(baseSearchFunction(searchUrl))
+  })
 }
 
-export async function searchForTargetArtifact(
+export async function searchForTargetArtifact (
   query: string,
   limit: number
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    const dataset: Dataset = store.getState().dataset;
+    const dataset: Dataset = store.getState().dataset
 
     if (!isNonEmptyDataset(dataset)) {
-      return reject(Error("Dataset not selected."));
+      return reject(Error('Dataset not selected.'))
     }
 
-    const sources: ArtifactIdentifier[] = store.getState().selectedSources;
-    if (sources.length === 0)
+    const sources: ArtifactIdentifier[] = store.getState().selectedSources
+    if (sources.length === 0) {
       return reject(
         Error(
-          "cannot search for target artifact without a source artifact selected"
+          'cannot search for target artifact without a source artifact selected'
         )
-      );
-
-    const searchUrl = [BASE_URL, "target"].join("/");
-    const payload: SearchTargetRoutePayload = {
-      datasetName: dataset.name,
-      sources,
-      query,
-      limit,
-    };
-    return resolve(baseSearchFunction(searchUrl, payload));
-  });
+      )
+    }
+    const queryString = query.length === 0 ? '' : '?query=' + query
+    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
+    return resolve(baseSearchFunction(searchUrl))
+  })
 }
 
-async function baseSearchFunction(
-  url: string,
-  payload: SearchSourceRoutePayload
+async function baseSearchFunction (
+  url: string
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    (post(url, payload) as Promise<SearchResponse>).then(
-      (response: ServerResponse) => {
-        if (response === undefined) {
-          return reject("Backend is off. Please see system administrator.");
-        } else if (isError(response)) {
-          return reject(response.error);
-        } else if (!("searchItems" in response)) {
-          return reject("Response contains no search results.");
+    (get(url) as Promise<Artifact[]>).then(
+      (artifacts: Artifact[]) => {
+        if (artifacts === undefined) {
+          return reject(Error('Backend is off. Please see system administrator.'))
+        } else if (isError(artifacts)) {
+          return reject(artifacts.error)
+        } else {
+          console.log(artifacts)
+          return resolve(artifacts)
         }
-        return resolve(response.searchItems);
       }
-    );
-  });
+    )
+  })
 }

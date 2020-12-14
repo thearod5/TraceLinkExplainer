@@ -1,10 +1,10 @@
 
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setSelectedWord } from "../../../redux/actions";
-import { getSelectedWord } from "../../../redux/selectors";
-import { Relationships, WordDescriptorDisplay, Words } from "../../../shared/types/Trace";
-import { ViewerWord } from "./ArtifactWords";
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSelectedWord } from '../../../redux/actions'
+import { getSelectedWord } from '../../../redux/selectors'
+import { Relationships, WordDescriptorDisplay, Words } from '../../../operations/types/Trace'
+import { ViewerWord } from './ArtifactWords'
 
 interface ArtifactWordsProps {
   words: Words;
@@ -14,7 +14,7 @@ interface ArtifactWordsProps {
   defaultSize: number;
 }
 
-export default function ViewerWords(props: ArtifactWordsProps) {
+export default function ViewerWords (props: ArtifactWordsProps) {
   const selectedWord = useSelector(getSelectedWord)
   const dispatch = useDispatch()
 
@@ -30,17 +30,17 @@ export default function ViewerWords(props: ArtifactWordsProps) {
     sizeSelected,
     defaultSize,
     handleOnClick,
-    handleClose);
+    handleClose)
   return (
     <div className="textAlignLeft overflowScroll">
       <div className="sizeFull padSmall overflowScroll">{body}</div>
     </div>
-  );
+  )
 }
 
 export type WordCallback = (word: WordDescriptorDisplay) => void
 
-function createWords(
+function createWords (
   words: Words,
   selectedWord: WordDescriptorDisplay | null,
   colorSelected: boolean,
@@ -51,9 +51,5 @@ function createWords(
 ) {
   return words.map((word: WordDescriptorDisplay, wordIndex: number) => ViewerWord({
     word, selectedWord, colorSelected, sizeSelected, defaultSize, wordIndex, clickHandler, handleClose
-  }));
+  }))
 }
-
-
-
-

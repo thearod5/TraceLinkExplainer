@@ -1,10 +1,10 @@
-import { LinearProgress } from '@material-ui/core';
-import React from 'react';
-import { StartSearchCallback, VoidCallback } from '../../constants';
-import { Artifact, ArtifactDisplayModel } from '../../shared/types/Dataset';
-import SearchBar from './bar/SearchBar';
-import SearchResults from './results/SearchResults';
-import { SearchFooter } from './SearchFooter';
+import { LinearProgress } from '@material-ui/core'
+import React from 'react'
+import { StartSearchCallback, VoidCallback } from '../../constants'
+import { Artifact, ArtifactDisplayModel } from '../../operations/types/Dataset'
+import SearchBar from './bar/SearchBar'
+import SearchResults from './results/SearchResults'
+import { SearchFooter } from './SearchFooter'
 
 /* Responsibility: Defines the HTML/CSS structure of the Search.tsx
  *
@@ -27,21 +27,23 @@ interface SearchProps {
   isLoading: boolean
 }
 
-export default function Search(props: SearchProps) {
-  const { isLoading, startSearch, currentPage, totalPages,
+export default function Search (props: SearchProps) {
+  const {
+    isLoading, startSearch, currentPage, totalPages,
     footerMessage, areArtifactSelected, handleStepCompleted,
     onNextPage, onPreviousPage, numberSelected, numberOfTotalResults,
-    searchResultsInView, selectArtifact, removeArtifact } = props
+    searchResultsInView, selectArtifact, removeArtifact
+  } = props
   /*
    * Child Components
    */
   const searchBar = (
     <SearchBar onSearch={(query: string) => startSearch(query, -1)} />
-  );
+  )
 
   const loadingBar = (
     <LinearProgress color="secondary" variant="indeterminate" />
-  );
+  )
 
   const footer = (
     <SearchFooter
@@ -54,13 +56,13 @@ export default function Search(props: SearchProps) {
       onPreviousPage={onPreviousPage}
       numberSelected={numberSelected}
     />
-  );
+  )
 
   const body = (
-    <div style={{ height: "90%" }}>
+    <div style={{ height: '90%' }}>
       <div
         className="flexRowContentLeft widthFull overflowYScroll"
-        style={{ height: "90%" }}
+        style={{ height: '90%' }}
       >
         <SearchResults
           numberOfTotalResults={numberOfTotalResults}
@@ -70,19 +72,19 @@ export default function Search(props: SearchProps) {
         />
       </div>
 
-      <div style={{ height: "10%" }}>{footer}</div>
+      <div style={{ height: '10%' }}>{footer}</div>
     </div>
-  );
+  )
 
   return (
     <div className="flexColumn alignContentEnd heightFull overflowYScroll">
       <div
         className="flexRowContentLeft widthFull padVerticalLight"
-        style={{ height: "10%" }}
+        style={{ height: '10%' }}
       >
         {searchBar}
       </div>
       {isLoading ? loadingBar : body}
     </div>
-  );
+  )
 }

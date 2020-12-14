@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { CATEGORICAL_OPERATIONS } from "../../../shared/query/Types";
-import QueryFilterElement from "./QueryFilterElement";
-import { SubmitFuncType } from './SearchBar';
+import React, { useEffect, useState } from 'react'
+import { CATEGORICAL_OPERATIONS } from '../../../operations/query/Types'
+import QueryFilterElement from './QueryFilterElement'
+import { SubmitFuncType } from './SearchBar'
 
 export type REACT_STRING_SETTER = React.Dispatch<React.SetStateAction<string>>
-const EMPTY_QUERY = ""
+const EMPTY_QUERY = ''
 
 interface BasicSearchBarProps {
   query: string
@@ -15,28 +15,28 @@ interface BasicSearchBarProps {
   onChangeMode: () => void
 }
 
-export default function BasicSearchBar(props: BasicSearchBarProps) {
-  const [idFilter, setIdFilter] = useState("=")
-  const [idQuery, setIdQuery] = useState(EMPTY_QUERY)
-  const [bodyFilter, setBodyFilter] = useState("~")
+export default function BasicSearchBar (props: BasicSearchBarProps) {
+  const [nameFilter, setIdFilter] = useState('=')
+  const [nameQuery, setIdQuery] = useState(EMPTY_QUERY)
+  const [bodyFilter, setBodyFilter] = useState('~')
   const [bodyQuery, setBodyQuery] = useState(EMPTY_QUERY)
-  const [typeFilter, setTypeFilter] = useState("=")
+  const [typeFilter, setTypeFilter] = useState('=')
   const [typeQuery, setTypeQuery] = useState(EMPTY_QUERY)
 
   const { setQuery, onSearch } = props
 
   const createQuery = (): string => {
-    const queries = [["id", idFilter, idQuery], ["body", bodyFilter, bodyQuery], ["type", typeFilter, typeQuery]]
+    const queries = [['name', nameFilter, nameQuery], ['body', bodyFilter, bodyQuery], ['type', typeFilter, typeQuery]]
     return queries
       .filter(parts => parts[2] !== EMPTY_QUERY)
       .map(parts => `${parts[0]} ${parts[1]} ${parts[2]}`)
-      .join(" && ")
+      .join(' && ')
   }
 
   useEffect(() => {
     setQuery(createQuery())
-    //eslint-disable-next-line
-  }, [idFilter, idQuery, bodyFilter, bodyQuery, typeFilter, typeQuery])
+    // eslint-disable-next-line
+  }, [nameFilter, nameQuery, bodyFilter, bodyQuery, typeFilter, typeQuery])
 
   const createQuerySetter = (setter: REACT_STRING_SETTER) => {
     return (query: string) => {
@@ -47,7 +47,7 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
   return (
     <div className="flexRowSpaceAround sizeFull">
       <QueryFilterElement
-        label={"type"}
+        label={'type'}
         filterOperations={CATEGORICAL_OPERATIONS}
         selectedFilter={typeFilter}
         setFilter={setTypeFilter}
@@ -56,7 +56,7 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
         onSearch={onSearch}
       />
       <QueryFilterElement
-        label={"body"}
+        label={'body'}
         filterOperations={CATEGORICAL_OPERATIONS}
         selectedFilter={bodyFilter}
         setFilter={setBodyFilter}
@@ -65,11 +65,11 @@ export default function BasicSearchBar(props: BasicSearchBarProps) {
         onSearch={onSearch}
       />
       <QueryFilterElement
-        label={"id"}
+        label={'name'}
         filterOperations={CATEGORICAL_OPERATIONS}
-        selectedFilter={idFilter}
+        selectedFilter={nameFilter}
         setFilter={setIdFilter}
-        query={idQuery}
+        query={nameQuery}
         setQuery={createQuerySetter(setIdQuery)}
         onSearch={onSearch}
       />

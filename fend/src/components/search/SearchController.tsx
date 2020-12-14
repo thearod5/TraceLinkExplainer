@@ -1,22 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, StartSearchCallback, VIEW_TRACE_STEP } from "../../constants";
-import { changeStep, setError } from "../../redux/actions";
-import { getCurrentStep } from "../../redux/selectors";
-import { appHistory } from "../../redux/store";
-import { ArtifactMutatorActionType } from "../../redux/types";
-import { createArtifactDisplayModel } from "../../shared/artifacts/WordCreator";
-import { getStepChangeError } from "../../shared/pagechanger/PageChanger";
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, StartSearchCallback, VIEW_TRACE_STEP } from '../../constants'
+import { changeStep, setError } from '../../redux/actions'
+import { getCurrentStep } from '../../redux/selectors'
+import { appHistory } from '../../redux/store'
+import { ArtifactMutatorActionType } from '../../redux/types'
+import { createArtifactDisplayModel } from '../../operations/artifacts/WordCreator'
+import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
 import {
   Artifact,
   ArtifactDisplayModel,
   artifactsAreEqual
-} from "../../shared/types/Dataset";
-import Search from "./Search";
-import { SuggestionFunctionType } from "./types";
+} from '../../operations/types/Dataset'
+import Search from './Search'
+import { SuggestionFunctionType } from './types'
 
 /* Responsibility: Manages the state of the search bar.
- * 
+ *
  */
 
 export interface SearchProps {
@@ -25,104 +25,102 @@ export interface SearchProps {
   nextPageLocation: string;
 }
 
-export default function SearchController(props: SearchProps) {
-  const [areArtifactSelected, setAreArtifactSelected] = useState(false);
-  const [searchResults, setSearchResults] = useState<ArtifactDisplayModel[]>([]);
-  const [resultsIndexStart, setResultsIndexStart] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedArtifacts, setSelectedArtifacts] = useState<Artifact[]>([]);
+export default function SearchController (props: SearchProps) {
+  const [areArtifactSelected, setAreArtifactSelected] = useState(false)
+  const [searchResults, setSearchResults] = useState<ArtifactDisplayModel[]>([])
+  const [resultsIndexStart, setResultsIndexStart] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedArtifacts, setSelectedArtifacts] = useState<Artifact[]>([])
 
-  const dispatch = useDispatch();
-  const currentStep: number = useSelector(getCurrentStep);
+  const dispatch = useDispatch()
+  const currentStep: number = useSelector(getCurrentStep)
 
   /*
    * Visual Calculation
    */
-  const numberOfResults = searchResults.length;
-  const potentialEndIndex = resultsIndexStart + SEARCH_DISPLAY_LIMIT;
+  const numberOfResults = searchResults.length
+  const potentialEndIndex = resultsIndexStart + SEARCH_DISPLAY_LIMIT
   const endIndex =
-    potentialEndIndex >= numberOfResults ? numberOfResults : potentialEndIndex;
+    potentialEndIndex >= numberOfResults ? numberOfResults : potentialEndIndex
 
-  const searchResultsInView = searchResults.slice(resultsIndexStart, endIndex);
-  const totalPages = Math.ceil(searchResults.length / SEARCH_DISPLAY_LIMIT);
-  const currentPage = resultsIndexStart / SEARCH_DISPLAY_LIMIT + 1;
+  const searchResultsInView = searchResults.slice(resultsIndexStart, endIndex)
+  const totalPages = Math.ceil(searchResults.length / SEARCH_DISPLAY_LIMIT)
+  const currentPage = resultsIndexStart / SEARCH_DISPLAY_LIMIT + 1
   const footerMessage =
     currentStep === SELECT_SOURCE_STEP
       ? SELECT_SOURCE_MESSAGE
-      : SELECT_TARGET_MESSAGE;
+      : SELECT_TARGET_MESSAGE
 
   /*
    * Search API call
    */
   const startSearch: StartSearchCallback = useCallback(
     (searchString: string, limit: number = SEARCH_LIMIT) => {
-      setIsLoading(true);
+      setIsLoading(true)
       props
         .searchFunction(searchString, limit)
         .then((results: Artifact[]) => {
           const displayModels: ArtifactDisplayModel[] = results.map(
             (a: Artifact) => createArtifactDisplayModel(a)
-          );
-          setSearchResults(displayModels);
-          setIsLoading(false);
+          )
+          setSearchResults(displayModels)
+          setIsLoading(false)
         })
         .catch((e) => {
-          dispatch(setError(e.toString()));
-          setIsLoading(false);
-        });
+          console.log(e)
+          dispatch(setError(e.toString()))
+          setIsLoading(false)
+        })
     },
     // eslint-disable-next-line
     [props]
-  );
+  )
 
   const setResultsInView = (startIndex: number) => {
-    if (startIndex < 0) return dispatch(setError("No previous page."));
-    if (startIndex >= numberOfResults)
-      return dispatch(setError("Reached end of results."));
+    if (startIndex < 0) return dispatch(setError('No previous page.'))
+    if (startIndex >= numberOfResults) { return dispatch(setError('Reached end of results.')) }
 
-    setIsLoading(true);
-    setResultsIndexStart(startIndex);
-    setIsLoading(false);
-  };
+    setIsLoading(true)
+    setResultsIndexStart(startIndex)
+    setIsLoading(false)
+  }
 
   const onNextPage = () =>
-    setResultsInView(resultsIndexStart + SEARCH_DISPLAY_LIMIT);
+    setResultsInView(resultsIndexStart + SEARCH_DISPLAY_LIMIT)
 
   const onPreviousPage = () =>
-    setResultsInView(resultsIndexStart - SEARCH_DISPLAY_LIMIT);
+    setResultsInView(resultsIndexStart - SEARCH_DISPLAY_LIMIT)
 
   const selectArtifact = (artifact: Artifact) => {
-    setSelectedArtifacts([...selectedArtifacts, artifact]);
-    setAreArtifactSelected(false); //changes made, results not up-to-date
-  };
+    setSelectedArtifacts([...selectedArtifacts, artifact])
+    setAreArtifactSelected(false) // changes made, results not up-to-date
+  }
 
   const removeArtifact = (artifact: Artifact) => {
     setSelectedArtifacts(
       selectedArtifacts.filter((a) => !artifactsAreEqual(a, artifact))
-    );
-    setAreArtifactSelected(false); //changes made, results not up-to-date
-  };
+    )
+    setAreArtifactSelected(false) // changes made, results not up-to-date
+  }
 
   const handleStepCompleted = () => {
-    if (selectedArtifacts.length === 0)
-      return dispatch(setError("No artifacts selected."));
+    if (selectedArtifacts.length === 0) { return dispatch(setError('No artifacts selected.')) }
 
-    if (currentStep >= VIEW_TRACE_STEP)
-      return;
+    if (currentStep >= VIEW_TRACE_STEP) { return }
 
-    dispatch(props.onArtifactsSelected(selectedArtifacts));
+    dispatch(props.onArtifactsSelected(selectedArtifacts))
 
-    const nextStep = currentStep + 1;
-    const error = getStepChangeError(nextStep);
+    const nextStep = currentStep + 1
+    const error = getStepChangeError(nextStep)
     const wasSuccessful = error === undefined
     if (wasSuccessful) {
-      setAreArtifactSelected(true); //changes made, results not up-to-date
-      dispatch(changeStep(nextStep));
-    } else dispatch(setError(error));
+      setAreArtifactSelected(true) // changes made, results not up-to-date
+      dispatch(changeStep(nextStep))
+    } else dispatch(setError(error))
     appHistory.push(props.nextPageLocation)
-  };
+  }
 
-  useEffect(() => startSearch(""), [startSearch]);
+  useEffect(() => startSearch(''), [startSearch])
 
   return (
     <Search

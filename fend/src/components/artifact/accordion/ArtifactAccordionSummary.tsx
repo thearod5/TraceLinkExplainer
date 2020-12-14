@@ -1,9 +1,9 @@
-import { AccordionSummary } from "@material-ui/core";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { changeStep } from "../../../redux/actions";
-import { getCurrentStep } from "../../../redux/selectors";
-import { secondaryColor } from "../../../styles/theme";
+import { AccordionSummary } from '@material-ui/core'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeStep } from '../../../redux/actions'
+import { getCurrentStep } from '../../../redux/selectors'
+import { secondaryColor } from '../../../styles/theme'
 
 interface ArtifactToolbarProps {
   title: string;
@@ -11,13 +11,13 @@ interface ArtifactToolbarProps {
   expandIcon: React.ReactNode;
 }
 
-export default function ArtifactAccordionSummary(props: ArtifactToolbarProps) {
-  const currentStep = useSelector(getCurrentStep);
-  const dispatch = useDispatch();
+export default function ArtifactAccordionSummary (props: ArtifactToolbarProps) {
+  const currentStep = useSelector(getCurrentStep)
+  const dispatch = useDispatch()
 
   const clickHandler = () => {
-    dispatch(changeStep(currentStep - 1));
-  };
+    dispatch(changeStep(currentStep - 1))
+  }
 
   return (
     <AccordionSummary
@@ -28,5 +28,5 @@ export default function ArtifactAccordionSummary(props: ArtifactToolbarProps) {
         {props.title}
       </h3>
     </AccordionSummary>
-  );
+  )
 }

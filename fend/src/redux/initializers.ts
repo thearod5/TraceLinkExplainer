@@ -1,14 +1,16 @@
-import { Artifact, Dataset } from "../shared/types/Dataset";
-import { Trace } from "../shared/types/Trace";
+import { Artifact, Dataset } from '../operations/types/Dataset'
+import { Trace } from '../operations/types/Trace'
+import { v4 as uuidv4 } from 'uuid'
 
-export function initializeEmptyDataset(): Dataset {
+export function initializeEmptyDataset (): Dataset {
   return {
-    name: "",
-    summary: "",
-  };
+    id: uuidv4(),
+    name: '',
+    description: ''
+  }
 }
 
-export function initializeEmptyTrace(): Trace {
+export function initializeEmptyTrace (): Trace {
   return {
     targetWords: null,
     sourceWords: null,
@@ -18,10 +20,11 @@ export function initializeEmptyTrace(): Trace {
   }
 }
 
-export function initializeEmptyArtifact(): Artifact {
+export function initializeEmptyArtifact (): Artifact {
   return {
-    id: "",
-    body: "",
-    type: "",
-  };
+    name: '',
+    body: '',
+    type: '',
+    project: ''
+  }
 }

@@ -1,12 +1,12 @@
-import { Tooltip } from "@material-ui/core";
-import CheckIcon from "@material-ui/icons/Check";
-import ReportProblemIcon from "@material-ui/icons/ReportProblem";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import React from 'react';
-import { getQueryRecommendations } from "../../../shared/query/QueryRecommender";
-import { SearchSuggestion, SubmitFuncType } from './SearchBar';
+import { Tooltip } from '@material-ui/core'
+import CheckIcon from '@material-ui/icons/Check'
+import ReportProblemIcon from '@material-ui/icons/ReportProblem'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import React from 'react'
+import { getQueryRecommendations } from '../../../operations/query/QueryRecommender'
+import { SearchSuggestion, SubmitFuncType } from './SearchBar'
 
-const SEARCH_BAR_ID = "TARGET_ARTIFACT_SEARCH_BAR";
+const SEARCH_BAR_ID = 'TARGET_ARTIFACT_SEARCH_BAR'
 
 interface AdvancedSearchBarProps {
   query: string
@@ -17,16 +17,16 @@ interface AdvancedSearchBarProps {
   onChangeMode: () => void
 }
 
-export default function AdvancedSearchBar(props: AdvancedSearchBarProps) {
+export default function AdvancedSearchBar (props: AdvancedSearchBarProps) {
   return (<div className="flexRowSpaceAround sizeFull">
     <div className="centeredColumn padSmall">
       {props.validQuery ? (
         <CheckIcon color="secondary" className="heightFull" />
       ) : (
-          <Tooltip title={props.queryError}>
-            <ReportProblemIcon color="action" className="heightFull" />
-          </Tooltip>
-        )}
+        <Tooltip title={props.queryError}>
+          <ReportProblemIcon color="action" className="heightFull" />
+        </Tooltip>
+      )}
     </div>
     <div className="centeredColumn sizeFull roundBorder flexGrowTen">
       <Autocomplete
@@ -39,10 +39,10 @@ export default function AdvancedSearchBar(props: AdvancedSearchBarProps) {
         options={getQueryRecommendations(props.query)}
         value={props.query}
         onChange={(event: any, newValue: any) => {
-          props.setQuery(newValue === null ? "" : [props.query, newValue, ""].join(" "));
+          props.setQuery(newValue === null ? '' : [props.query, newValue, ''].join(' '))
         }}
         onInputChange={(event, newValue) => {
-          props.setQuery(newValue);
+          props.setQuery(newValue)
         }}
         inputValue={props.query}
         renderInput={(params: object) =>

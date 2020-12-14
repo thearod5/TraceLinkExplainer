@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>explanation.relationships.conceptmodel package &#8212; TraceLinkExplainer 1.0.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="explanation.relationships.vsm package" href="explanation.relationships.vsm.html" />
+    <link rel="prev" title="explanation.relationships package" href="explanation.relationships.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="explanation-relationships-conceptmodel-package">
+<h1>explanation.relationships.conceptmodel package<a class="headerlink" href="#explanation-relationships-conceptmodel-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-explanation.relationships.conceptmodel.ConceptModel">
+<span id="explanation-relationships-conceptmodel-conceptmodel-module"></span><h2>explanation.relationships.conceptmodel.ConceptModel module<a class="headerlink" href="#module-explanation.relationships.conceptmodel.ConceptModel" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel">
+<em class="property">class </em><code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModel.</code><code class="sig-name descname">ConceptModel</code><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel.add_concepts">
+<code class="sig-name descname">add_concepts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tsv_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel.add_concepts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add concept and relationships in TSV format. This is adpator for persisted concept models
+:param tsv_path:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel.contains_vertex">
+<code class="sig-name descname">contains_vertex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertex_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel.contains_vertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_neighborhood">
+<code class="sig-name descname">get_neighborhood</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_neighborhood" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_path">
+<code class="sig-name descname">get_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w1</span></em>, <em class="sig-param"><span class="n">w2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path from w1 to w2. If no path exist then will return empty list.
+The starting point of the path (w1) is not included in the returned path
+The end point (w2)) is included in the path
+:param w1:
+:param w2:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_path_for_all">
+<code class="sig-name descname">get_path_for_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w1</span></em>, <em class="sig-param"><span class="n">w2_list</span></em>, <em class="sig-param"><span class="n">cutoff</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_path_for_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the simple path from w1 to all concepts in w2. All possible paths will be returned
+:param w1: source term
+:param w2_list: target terms in  list
+:param cutoff: the maximal path length
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_word_relationships">
+<code class="sig-name descname">get_word_relationships</code><span class="sig-paren">(</span><em class="sig-param">source_word, target_words: [&lt;class 'str'&gt;]</em><span class="sig-paren">)</span> &#x2192; [&lt;class ‘explanation.models.TraceInformation.Relationship’&gt;]<a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel.get_word_relationships" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns
+:param source_word:
+:param target_words:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.conceptmodel.ConceptModel.get_word_node">
+<code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModel.</code><code class="sig-name descname">get_word_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em>, <em class="sig-param"><span class="n">edge</span></em>, <em class="sig-param"><span class="n">last_word</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModel.get_word_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-explanation.relationships.conceptmodel.ConceptModelRelationships">
+<span id="explanation-relationships-conceptmodel-conceptmodelrelationships-module"></span><h2>explanation.relationships.conceptmodel.ConceptModelRelationships module<a class="headerlink" href="#module-explanation.relationships.conceptmodel.ConceptModelRelationships" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="explanation.relationships.conceptmodel.ConceptModelRelationships.add_concept_families">
+<code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModelRelationships.</code><code class="sig-name descname">add_concept_families</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">explanation</span><span class="p">:</span> <span class="n">explanation.models.TraceInformation.TraceExplanation</span></em><span class="sig-paren">)</span> &#x2192; explanation.models.TraceInformation.TraceExplanation<a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModelRelationships.add_concept_families" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.conceptmodel.ConceptModelRelationships.add_relationships_to_word_descriptors">
+<code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModelRelationships.</code><code class="sig-name descname">add_relationships_to_word_descriptors</code><span class="sig-paren">(</span><em class="sig-param">explanation: explanation.models.TraceInformation.TraceExplanation, relationships: [&lt;class 'explanation.models.TraceInformation.Relationship'&gt;], source_words: [&lt;class 'str'&gt;], target_words: [&lt;class 'str'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModelRelationships.add_relationships_to_word_descriptors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.conceptmodel.ConceptModelRelationships.attach_relationship_ids_to_word_descriptors">
+<code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModelRelationships.</code><code class="sig-name descname">attach_relationship_ids_to_word_descriptors</code><span class="sig-paren">(</span><em class="sig-param">words: [&lt;class 'str'&gt;], relationships: [&lt;class 'explanation.models.TraceInformation.Relationship'&gt;], descriptors: [&lt;class 'explanation.models.WordDescriptor.WordDescriptor'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModelRelationships.attach_relationship_ids_to_word_descriptors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.conceptmodel.ConceptModelRelationships.get_concept_model_for_dataset">
+<code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModelRelationships.</code><code class="sig-name descname">get_concept_model_for_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#explanation.relationships.conceptmodel.ConceptModel.ConceptModel" title="explanation.relationships.conceptmodel.ConceptModel.ConceptModel">explanation.relationships.conceptmodel.ConceptModel.ConceptModel</a><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModelRelationships.get_concept_model_for_dataset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="explanation.relationships.conceptmodel.ConceptModelRelationships.get_relationships_for_concept_model">
+<code class="sig-prename descclassname">explanation.relationships.conceptmodel.ConceptModelRelationships.</code><code class="sig-name descname">get_relationships_for_concept_model</code><span class="sig-paren">(</span><em class="sig-param">concept_model: explanation.relationships.conceptmodel.ConceptModel.ConceptModel, source_words: [&lt;class 'str'&gt;], target_words: [&lt;class 'str'&gt;]</em><span class="sig-paren">)</span><a class="headerlink" href="#explanation.relationships.conceptmodel.ConceptModelRelationships.get_relationships_for_concept_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-explanation.relationships.conceptmodel">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-explanation.relationships.conceptmodel" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TraceLinkExplainer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">server</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">api package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="explanation.html">explanation package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">server package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">server</a><ul>
+  <li><a href="explanation.html">explanation package</a><ul>
+  <li><a href="explanation.relationships.html">explanation.relationships package</a><ul>
+      <li>Previous: <a href="explanation.relationships.html" title="previous chapter">explanation.relationships package</a></li>
+      <li>Next: <a href="explanation.relationships.vsm.html" title="next chapter">explanation.relationships.vsm package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Alberto Rodriguez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/explanation.relationships.conceptmodel.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,8 +1,8 @@
-import { Backdrop, Box, Fade, Modal } from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CloseIcon from '@material-ui/icons/Close';
-import React, { useState } from 'react';
-import { FADE_TIMEOUT } from '../../constants';
+import { Backdrop, Box, Fade, Modal } from '@material-ui/core'
+import CancelIcon from '@material-ui/icons/Cancel'
+import CloseIcon from '@material-ui/icons/Close'
+import React, { useState } from 'react'
+import { FADE_TIMEOUT } from '../../constants'
 interface ViewerModalProps {
   title: string
   open: boolean
@@ -11,12 +11,11 @@ interface ViewerModalProps {
 
 }
 
-export default function ViewerModal(props: ViewerModalProps) {
+export default function ViewerModal (props: ViewerModalProps) {
   const { title, open, handleClose, body } = props
 
   const handleCloseWrapper = () => {
-    if (handleClose !== null)
-      handleClose()
+    if (handleClose !== null) { handleClose() }
   }
   return (
     <Modal
@@ -25,14 +24,14 @@ export default function ViewerModal(props: ViewerModalProps) {
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500,
+        timeout: 500
       }}
       className="sizeFull"
     >
       <Fade in={open} timeout={FADE_TIMEOUT}>
         <div className="centeredColumn heightFull">
           <div className="flexRowCentered widthFull">
-            <Box className="roundBorderHard padLarge" style={{ backgroundColor: "white" }}>
+            <Box className="roundBorderHard padLarge" style={{ backgroundColor: 'white' }}>
               {handleClose !== null ? <HoverClose handleClose={handleCloseWrapper} /> : null}
               <div className="flexRowCentered">
                 <h2 className="displayInlineBlock textAlignCenter padMedium">{title}</h2>
@@ -50,7 +49,7 @@ interface HoverCloseProps {
   handleClose: () => void
 }
 
-function HoverClose(props: HoverCloseProps) {
+function HoverClose (props: HoverCloseProps) {
   const [hover, setHover] = useState(false)
 
   const regularElement = <CloseIcon onClick={props.handleClose} fontSize="large" />

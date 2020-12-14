@@ -1,9 +1,9 @@
-import { Box, Button, IconButton } from "@material-ui/core";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import KeyboardTabIcon from "@material-ui/icons/KeyboardTab";
-import React from "react";
-import { primaryColor } from "../../styles/theme";
+import { Box, Button, IconButton } from '@material-ui/core'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import KeyboardTabIcon from '@material-ui/icons/KeyboardTab'
+import React from 'react'
+import { primaryColor } from '../../styles/theme'
 
 interface SearchFooterProps {
   page: number;
@@ -16,7 +16,7 @@ interface SearchFooterProps {
   numberSelected: number
 }
 
-export function SearchFooter(props: SearchFooterProps) {
+export function SearchFooter (props: SearchFooterProps) {
   const previousPageButton = (
     <IconButton
       color="secondary"
@@ -25,14 +25,14 @@ export function SearchFooter(props: SearchFooterProps) {
     >
       <ArrowBackIosIcon></ArrowBackIosIcon>
     </IconButton>
-  );
+  )
   const pageLabel = (
     <div className="centeredColumn padSmall">
       <label className="bold">
         Page {props.page} / {props.totalPages}
       </label>
     </div>
-  );
+  )
   const nextPageButton = (
     <IconButton
       color="secondary"
@@ -41,12 +41,12 @@ export function SearchFooter(props: SearchFooterProps) {
     >
       <ArrowForwardIosIcon></ArrowForwardIosIcon>
     </IconButton>
-  );
+  )
 
   const nextStepButton = <Button
     variant="contained"
     color="secondary"
-    endIcon={<KeyboardTabIcon color={"primary"} />}
+    endIcon={<KeyboardTabIcon color={'primary'} />}
     onClick={props.onStepCompleted}
   >
     {props.message} ({props.numberSelected})
@@ -56,7 +56,7 @@ export function SearchFooter(props: SearchFooterProps) {
     <Box
       className="centeredColumn sizeFull"
       style={{
-        backgroundColor: primaryColor,
+        backgroundColor: primaryColor
       }}
       boxShadow={3}
     >
@@ -70,5 +70,5 @@ export function SearchFooter(props: SearchFooterProps) {
         <div className="padSmall">{nextStepButton}</div>
       </div>
     </Box>
-  );
+  )
 }

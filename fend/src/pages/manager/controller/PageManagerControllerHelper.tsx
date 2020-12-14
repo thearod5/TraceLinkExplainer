@@ -1,16 +1,15 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedSourceIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from "../../../redux/actions";
-import { getSelectedSourceIndex, getSelectedSources, getTrace } from "../../../redux/selectors";
-import store from "../../../redux/store";
-import { Artifact } from "../../../shared/types/Dataset";
-import { Trace, TraceInformation } from "../../../shared/types/Trace";
-import { ElementSetter } from "../../../constants";
-import { createDefaultArtifactAccordion, createRelationshipColors } from '../../../components/artifact/accordion/ArtifactAccordionFactory';
-import { SelectedArtifactsContainer } from '../../TracedArtifactsDisplay';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSelectedSourceIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from '../../../redux/actions'
+import { getSelectedSourceIndex, getSelectedSources, getTrace } from '../../../redux/selectors'
+import store from '../../../redux/store'
+import { Artifact } from '../../../operations/types/Dataset'
+import { Trace, TraceInformation } from '../../../operations/types/Trace'
+import { ElementSetter } from '../../../constants'
+import { createDefaultArtifactAccordion, createRelationshipColors } from '../../../components/artifact/accordion/ArtifactAccordionFactory'
+import { SelectedArtifactsContainer } from '../../TracedArtifactsDisplay'
 
-
-export function DefaultSourceArtifactDisplay() {
+export function DefaultSourceArtifactDisplay () {
   const selectedSources = useSelector(getSelectedSources)
   const selectedSourceIndex = useSelector(getSelectedSourceIndex)
   const dispatch = useDispatch()
@@ -32,7 +31,7 @@ export function DefaultSourceArtifactDisplay() {
   )
 }
 
-export function handleTraceInformationRequest(
+export function handleTraceInformationRequest (
   traceInformation: TraceInformation,
   sourceIndex: number,
   targetIndex: number
@@ -42,7 +41,7 @@ export function handleTraceInformationRequest(
   const relationshipColors = createRelationshipColors(
     traceInformation
       .relationships
-      .map(relationship => relationship.title));
+      .map(relationship => relationship.title))
   dispatch(setTrace({
     ...trace,
     relationships: traceInformation.relationships,
@@ -55,8 +54,8 @@ export function handleTraceInformationRequest(
   dispatch(setTraceTargetIndex(targetIndex))
 }
 
-export function updateTraceArtifactDisplayInPanel(
-  type: "SOURCE" | "TARGET",
+export function updateTraceArtifactDisplayInPanel (
+  type: 'SOURCE' | 'TARGET',
   setPanel: ElementSetter,
   stepsRequired: number[]
 ) {
@@ -68,6 +67,6 @@ export function updateTraceArtifactDisplayInPanel(
 
     setPanel(
       tracePanel
-    );
+    )
   }
 }

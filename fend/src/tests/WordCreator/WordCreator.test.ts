@@ -1,8 +1,8 @@
 import {
   createDefaultWordDescriptors,
   splitWordsByDelimiter
-} from "../../shared/artifacts/WordCreator";
-import { KeyWordType, SyntaxWordType, WordDescriptor } from "../../shared/types/Trace";
+} from "../../operations/artifacts/WordCreator";
+import { KeyWordType, SyntaxWordType, WordDescriptor } from "../../operations/types/Trace";
 
 test("dummy test", () => {
   const document = "function(int count)";

@@ -1,4 +1,4 @@
-import { WordDescriptorDisplay } from "./shared/types/Trace";
+import { WordDescriptorDisplay } from "./operations/types/Trace";
 
 /*
  * Search
