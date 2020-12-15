@@ -1,21 +1,19 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTraceInformation } from '../api/trace'
-import { BooleanSetter, NOT_CACHED, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../constants'
+import { createRelationshipColors } from '../components/artifact/accordion/ArtifactAccordionFactory'
+import { NOT_CACHED, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../constants'
 import { Artifact, Dataset } from '../operations/types/Dataset'
-import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex } from '../redux/actions'
-import { getCurrentStep, getDataset, getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getTraceSourceIndex, getTraceTargetIndex } from '../redux/selectors'
-import { handleTraceInformationRequest } from './controller/PageManagerControllerHelper'
+import { Trace, TraceInformation } from '../operations/types/Trace'
+import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from '../redux/actions'
+import { getCurrentStep, getDataset, getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getTrace, getTraceSourceIndex, getTraceTargetIndex } from '../redux/selectors'
+import store from '../redux/store'
 
-interface ViewTraceControllerProps {
-	setInitialStartup: BooleanSetter;
-	hasStaleData: boolean;
-}
 /* Manages fetching and updating trace information
  *
  */
-export default function useViewTraceController (props: ViewTraceControllerProps) {
-  const { hasStaleData, setInitialStartup } = props
+export default function useLoadTraceData () {
+  const [hasStaleData, setHasStaleData] = useState(true)
 
   const dispatch = useDispatch()
   const dataset: Dataset = useSelector(getDataset)
@@ -49,7 +47,7 @@ export default function useViewTraceController (props: ViewTraceControllerProps)
     dispatch(setLoading(true))
     getTraceInformation(dataset.name, sourceArtifact, targetArtifact) // change with state index
       .then((traceInformation) => {
-        handleTraceInformationRequest(traceInformation, sourceIndex, targetIndex)
+        traceResponseHandler(traceInformation, sourceIndex, targetIndex)
         dispatch(setLoading(false))
       })
       .catch((e) => {
@@ -65,10 +63,39 @@ export default function useViewTraceController (props: ViewTraceControllerProps)
       if (!containsUndefinedTraceIndices() && !traceInformationCached()) { fetchTraceInformation() }
       if (hasStaleData) {
         fetchTraceInformation()
-        setInitialStartup(false)
+        setHasStaleData(false)
       }
     }
 
     // eslint-disable-next-line
   }, [currentStep, selectedSourceIndex, selectedTargetIndex, selectedSources, selectedTargets]);
+
+  useEffect(() => {
+    if (currentStep < VIEW_TRACE_STEP) {
+      setHasStaleData(true)
+    }
+  }, [currentStep])
+}
+
+function traceResponseHandler (
+  traceInformation: TraceInformation,
+  sourceIndex: number,
+  targetIndex: number
+) {
+  const { dispatch } = store
+  const trace: Trace = getTrace(store.getState())
+  const relationshipColors = createRelationshipColors(
+    traceInformation
+      .relationships
+      .map(relationship => relationship.title))
+  dispatch(setTrace({
+    ...trace,
+    relationships: traceInformation.relationships,
+    relationshipColors: relationshipColors,
+    sourceWords: traceInformation.sourceDescriptors,
+    targetWords: traceInformation.targetDescriptors,
+    selectedWord: null
+  }))
+  dispatch(setTraceSourceIndex(sourceIndex))
+  dispatch(setTraceTargetIndex(targetIndex))
 }

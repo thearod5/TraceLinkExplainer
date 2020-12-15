@@ -1,21 +1,25 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { ElementSetter, SELECT_SOURCE_STEP, SELECT_TARGET_STEP } from '../constants'
+import { ElementSetter, SELECT_SOURCE_STEP, SELECT_TARGET_STEP, VIEW_TRACE_STEP } from '../constants'
 import { Artifact } from '../operations/types/Dataset'
-import { getCurrentStep, getSelectedSources, getSelectedTargets } from '../redux/selectors'
+import { Trace } from '../operations/types/Trace'
+import { DefaultSourceArtifactDisplay } from '../pagecontainers/DefaultSourceArtifactDisplay'
 import NoSourceMessage from '../pagecontainers/NoSourceMessage'
 import SourceArtifactSearch from '../pagecontainers/SourceArtifactSearch'
 import TargetArtifactSearch from '../pagecontainers/TargetArtifactSearch'
-import { DefaultSourceArtifactDisplay } from './controller/PageManagerControllerHelper'
+import { SelectedArtifactsContainer } from '../pagecontainers/TracedArtifactsDisplay'
+import { getCurrentStep, getSelectedSources, getSelectedTargets, getTrace } from '../redux/selectors'
+import store from '../redux/store'
 
 interface FindTraceControllerProps {
 	setLeftPanel: ElementSetter;
 	setRightPanel: ElementSetter;
 }
-export default function useFindTraceController (props: FindTraceControllerProps) {
+export default function useLoadPanels (props: FindTraceControllerProps) {
   const { setLeftPanel, setRightPanel } = props
   const selectedSources: Artifact[] = useSelector(getSelectedSources)
   const selectedTargets: Artifact[] = useSelector(getSelectedTargets)
+  const trace: Trace = useSelector(getTrace)
   const currentStep: number = useSelector(getCurrentStep)
 
   /*
@@ -44,4 +48,40 @@ export default function useFindTraceController (props: FindTraceControllerProps)
       setRightPanel(<TargetArtifactSearch />)
     }
   }, [currentStep, selectedTargets, setRightPanel])
+
+  /*
+   * Step 4
+   */
+  useEffect(() => {
+    updateTraceArtifactDisplayInPanel(
+      'SOURCE',
+      setLeftPanel,
+      [SELECT_TARGET_STEP, VIEW_TRACE_STEP]
+    )
+  }, [currentStep, selectedSources, trace, setLeftPanel])
+
+  useEffect(() => {
+    updateTraceArtifactDisplayInPanel(
+      'TARGET',
+      setRightPanel,
+      [VIEW_TRACE_STEP]
+    )
+  }, [currentStep, selectedTargets, trace, setRightPanel])
+}
+
+export function updateTraceArtifactDisplayInPanel (
+  type: 'SOURCE' | 'TARGET',
+  setPanel: ElementSetter,
+  stepsRequired: number[]
+) {
+  const currentStep = store.getState().currentStep
+  if (stepsRequired.includes(currentStep)) {
+    const tracePanel = < SelectedArtifactsContainer
+      type={type}
+    />
+
+    setPanel(
+      tracePanel
+    )
+  }
 }

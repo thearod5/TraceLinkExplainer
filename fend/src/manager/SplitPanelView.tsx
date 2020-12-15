@@ -15,7 +15,7 @@ interface ViewerProps {
 
 const PROCESSING_DELTA = 300 // ms
 
-export function BiPanelView (props: ViewerProps) {
+export function SplitPanelView (props: ViewerProps) {
   const [nextLeft, setNextLeft] = useState<(JSX.Element | null)>(null)
   const [currentLeft, setCurrentLeft] = useState<JSX.Element | null>(null)
   const [fadeLeftOut, setFadeLeftOut] = useState(false)

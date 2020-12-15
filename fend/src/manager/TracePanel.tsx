@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import ExplanationPanel from '../../components/explanation/ExplanationPanel'
-import { BiPanelView } from '../BiPanelView'
-import useTracePanelController from '../TracePanelController'
+import ExplanationPanel from '../components/explanation/ExplanationPanel'
+import { SplitPanelView } from './SplitPanelView'
+import useTracePanelController from './useTraceManager'
 
 /* Contains the view and state controller for finding and viewing a trace
  *
@@ -13,7 +13,7 @@ export default function TracePanel () {
   const [modalOpen] = useTracePanelController({ setLeftPanel, setRightPanel })
   return (
     <div>
-      <BiPanelView
+      <SplitPanelView
         leftPanel={leftPanel}
         rightPanel={rightPanel}
       />
