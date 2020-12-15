@@ -1,21 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTraceInformation } from '../../api/trace'
-import { BooleanSetter, NOT_CACHED, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../../constants'
+import { NOT_CACHED, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../../constants'
 import { Artifact, Dataset } from '../../operations/types/Dataset'
 import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex } from '../../redux/actions'
 import { getCurrentStep, getDataset, getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getTraceSourceIndex, getTraceTargetIndex } from '../../redux/selectors'
 import { handleTraceInformationRequest } from './controller/PageManagerControllerHelper'
 
-interface ViewTraceControllerProps {
-	setInitialStartup: BooleanSetter;
-	hasStaleData: boolean;
-}
 /* Manages fetching and updating trace information
  *
  */
-export default function useViewTraceController (props: ViewTraceControllerProps) {
-  const { hasStaleData, setInitialStartup } = props
+export default function useMaintainFreshTraceData () {
+  const [hasStaleData, setHasStaleData] = useState(true)
 
   const dispatch = useDispatch()
   const dataset: Dataset = useSelector(getDataset)
@@ -65,7 +61,7 @@ export default function useViewTraceController (props: ViewTraceControllerProps)
       if (!containsUndefinedTraceIndices() && !traceInformationCached()) { fetchTraceInformation() }
       if (hasStaleData) {
         fetchTraceInformation()
-        setInitialStartup(false)
+        setHasStaleData(false)
       }
     }
 

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Relationships, Words } from '../../../operations/types/Trace'
 import { getLoading } from '../../../redux/selectors'
 import LoadingBar from '../../meta/LoadingBar'
-import ViewerWords from '../words/ArtifactWord'
+import ArtifactWordContainer from '../words/ArtifactWordContainer'
 
 /* Body of artifact accordion displayed during search results
  *
@@ -31,12 +31,10 @@ export default function ArtifactAccordionDetails (props: ArtifactAccordionDetail
       className="flexColumn"
       style={style}>
       <div className="overflowScroll">
-        <ViewerWords
+        <ArtifactWordContainer
           words={words}
           families={families}
-          colorSelected={colorSelected}
-          sizeSelected={sizeSelected}
-          defaultSize={fontSize}
+          settings={{ colorSelected, sizeSelected, fontSize }}
         />
       </div>
       <div className="flexRowCentered justifyContentCenter padSmall" >

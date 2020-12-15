@@ -6,10 +6,10 @@ import store from '../../redux/store'
 import { RootState } from '../../redux/types'
 import { isNonEmptyDataset } from '../types/Dataset'
 
-const DATASET_NOT_SELECTED_ERROR =
+export const DATASET_NOT_SELECTED_ERROR =
   'You must select a dataset before proceeding.'
-const SOURCE_NOT_SELECTED_ERROR = 'You must select a source artifact.'
-const TARGET_NOT_SELECTED_ERROR = 'You must select a target artifact.'
+export const SOURCE_NOT_SELECTED_ERROR = 'You must select a source artifact.'
+export const TARGET_NOT_SELECTED_ERROR = 'You must select a target artifact.'
 
 export const PAGE_STEP_MAPPING: Record<number, string> = {
   0: HOME_ROUTE,
