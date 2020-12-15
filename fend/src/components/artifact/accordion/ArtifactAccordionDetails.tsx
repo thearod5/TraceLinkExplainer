@@ -6,7 +6,7 @@ import { getLoading } from '../../../redux/selectors'
 import LoadingBar from '../../meta/LoadingBar'
 import ViewerWords from '../words/ArtifactWord'
 
-/* Responsibility: Container for body of accordion when displaying trace information.
+/* Body of artifact accordion displayed during search results
  *
  */
 

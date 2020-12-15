@@ -49,3 +49,6 @@ export const UNSELECTED_INDEX = -1
 export type WordDescriptorDisplaySetter = React.Dispatch<React.SetStateAction<WordDescriptorDisplay | null>>
 export type NumberSetter = (num: number) => void
 export type ElementSetter = (value: React.SetStateAction<JSX.Element | null>) => void
+export type BooleanSetter = (num: boolean) => void;
+export type MUICallback = ((event: React.ChangeEvent<{}>, expanded: boolean) => void) | undefined
+export type Icons = JSX.Element[]

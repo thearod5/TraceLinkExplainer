@@ -1,8 +1,7 @@
-import { Box, Button, Fade } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDatasetNames } from '../../api/datasets'
-import { FADE_TIMEOUT, FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from '../../constants'
+import { FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from '../../constants'
 import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
 import { Dataset } from '../../operations/types/Dataset'
 import {
@@ -13,42 +12,10 @@ import {
 } from '../../redux/actions'
 import { getDataset } from '../../redux/selectors'
 import { appHistory } from '../../redux/store'
-import LoadingBar from '../meta/LoadingBar'
 import DatasetChooserItem from './DatasetChooserItem'
+import { DEFAULT_INDEX_SELECTED } from './DatasetChooser'
 
-const DEFAULT_INDEX_SELECTED = -1
-
-export default function DatasetChooser () {
-  const [datasetItems] = useSelectDataset()
-
-  return (
-    <Fade in={true} timeout={FADE_TIMEOUT}>
-      <Box className="roundBorder padMedium" boxShadow={3} >
-        <h2 className="textAlignCenter">Datasets</h2>
-        <div className="flexColumn padSmall">
-          {datasetItems.length === 0 ? (
-            LoadingBar()
-          ) : (
-            datasetItems
-          )}
-        </div>
-        <div className="flexRowCentered padMedium">
-          <Button
-            disabled
-            size="medium"
-            color="primary"
-            variant="contained"
-          // TODO: Functionality for this
-          >
-            New Dataset
-          </Button>
-        </div>
-      </Box>
-    </Fade>
-  )
-}
-
-function useSelectDataset () {
+export function useSelectDataset () {
   const dataset = useSelector(getDataset)
   const dispatch = useDispatch()
 
@@ -57,12 +24,11 @@ function useSelectDataset () {
 
   useEffect(() => {
     dispatch(changeStep(0))
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     getDatasetNames().then((datasetDescriptors) => {
-      datasetDescriptors.forEach((datasetDescriptor, index) =>
-        dataset.name === datasetDescriptor.name ? setIndexSelected(index) : null
+      datasetDescriptors.forEach((datasetDescriptor, index) => dataset.name === datasetDescriptor.name ? setIndexSelected(index) : null
       )
       setDatasetsNames(datasetDescriptors)
     }).catch(e => e)
@@ -83,7 +49,7 @@ function useSelectDataset () {
       if (error === undefined) {
         dispatch(changeStep(FIRST_STEP_IN_WIZARD))
         appHistory.push(route)
-      } else dispatch(setError(error))
+      } else { dispatch(setError(error)) }
     }
   }
 
@@ -94,8 +60,7 @@ function useSelectDataset () {
       isSelected={currentIndex === indexSelected}
       select={() => selectDatasetAtIndex(currentIndex)}
       deselect={() => deselectDataset}
-      onRouteSelected={onRouteSelected}
-    />
+      onRouteSelected={onRouteSelected} />
   ))
   return [datasetItems]
 }

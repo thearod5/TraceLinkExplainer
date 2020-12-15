@@ -2,23 +2,20 @@
 import { Fade } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import SplitPane from 'react-split-pane'
-import { WordModal } from '../../components/explanation/TraceExplanation'
 import { FADE_TIMEOUT } from '../../constants'
 import { primaryColor } from '../../styles/theme'
 
-/* Responsibility: Displaying and Transitioning between pages
- *
+/* Displays two panels in a single row and transitions panels when they change
  */
 
 interface ViewerProps {
   leftPanel: JSX.Element | null
   rightPanel: JSX.Element | null
-  modalOpen: boolean
 }
 
 const PROCESSING_DELTA = 300 // ms
 
-export function Viewer (props: ViewerProps) {
+export function BiPanelView (props: ViewerProps) {
   const [nextLeft, setNextLeft] = useState<(JSX.Element | null)>(null)
   const [currentLeft, setCurrentLeft] = useState<JSX.Element | null>(null)
   const [fadeLeftOut, setFadeLeftOut] = useState(false)
@@ -27,7 +24,7 @@ export function Viewer (props: ViewerProps) {
   const [currentRight, setCurrentRight] = useState<JSX.Element | null>(null)
   const [fadeRightOut, setFadeRightOut] = useState(false)
 
-  const { leftPanel, rightPanel, modalOpen } = props
+  const { leftPanel, rightPanel } = props
 
   // Aprocess leave old component
   useEffect(() => {
@@ -83,7 +80,6 @@ export function Viewer (props: ViewerProps) {
   return (
     <div className="flexColumn heightFull overflowYHidden">
       {body}
-      <WordModal open={modalOpen} />
     </div>
   )
 }

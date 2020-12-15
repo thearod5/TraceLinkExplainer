@@ -1,5 +1,5 @@
 import React from 'react'
-import DatasetChooser from '../components/datasetchooser/DatasetChooserContainer'
+import DatasetChooser from '../components/datasetchooser/DatasetChooser'
 
 export default function Home () {
   return (

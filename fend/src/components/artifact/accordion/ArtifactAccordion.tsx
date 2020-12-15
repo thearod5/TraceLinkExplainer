@@ -1,20 +1,18 @@
 import { Accordion } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import React, { useState } from 'react'
-import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA } from '../../../constants'
-import { createWords } from '../../../operations/artifacts/WordCreator'
-import { RelationshipColors, Relationships, WordDescriptors, Words } from '../../../operations/types/Trace'
+import React from 'react'
+import { RelationshipColors, Relationships, WordDescriptors } from '../../../operations/types/Trace'
 import { primaryColor } from '../../../styles/theme'
 import ArtifactAccordionDetails from './ArtifactAccordionDetails'
 import ArtifactAccordionSummary from './ArtifactAccordionSummary'
-import { createToolbarIcons } from './ArtifactAccordionToolbar'
+import { useArtifactSettings } from './useArtifactSettings'
 
 /*
  * Accordion for TraceInformation. Manages state changes in accordion.
  */
 const ACCORDION_MAX_HEIGHT = 600 // px
 
-interface ArtifactAccordionProps {
+export interface ArtifactAccordionProps {
   artifactType: string;
   artifactId: string;
   wordDescriptors: WordDescriptors | null;
@@ -25,43 +23,20 @@ interface ArtifactAccordionProps {
   onShrink: () => void;
 }
 
+export interface ArtifactDisplaySettings {
+  sizeSelected: boolean;
+  colorSelected:boolean;
+  fontSize: number;
+}
+
 export default function ArtifactAccordion (props: ArtifactAccordionProps) {
-  const [sizeSelected, setSizeSelected] = useState(true)
-  const [colorSelected, setColorSelected] = useState(true)
-  const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE)
+  const { artifactId, expanded, relationships } = props
 
-  const {
-    artifactId, expanded, onExpand,
-    onShrink, relationships, relationshipColors, wordDescriptors
-  } = props
-
-  const handleZoomIn = () => setFontSize(fontSize + FONT_SIZE_DELTA)
-  const handleZoomOut = () => setFontSize(fontSize - FONT_SIZE_DELTA)
-
-  const toolbarIcons: JSX.Element[] = createToolbarIcons(
-    handleZoomIn,
-    handleZoomOut,
-    colorSelected,
-    setColorSelected,
-    sizeSelected,
-    setSizeSelected)
-
-  let words: Words | null
-
-  if (wordDescriptors !== null && relationships != null && relationshipColors !== null) {
-    words = createWords(
-      wordDescriptors,
-      relationships,
-      fontSize,
-      relationshipColors,
-      DEFAULT_FONT_COLOR
-    )
-  } else {
-    words = null
-  }
+  const [words, artifactDisplaySettings, toolbarIcons] = useArtifactSettings(props)
+  const { colorSelected, sizeSelected, fontSize } = artifactDisplaySettings
 
   const handleAccordionExpandClick = (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    const callBack = newExpanded ? onExpand : onShrink
+    const callBack = newExpanded ? props.onExpand : props.onShrink
     callBack()
   }
 

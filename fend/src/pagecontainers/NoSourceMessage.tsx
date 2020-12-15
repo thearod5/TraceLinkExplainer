@@ -1,6 +1,6 @@
 import React from 'react'
 
-const helpMessage = 'no source artifacts selected'
+const helpMessage = 'no traced artifacts have been found'
 
 /* Responsibility: Dummy page used when user is selecting source artifacts.
  *

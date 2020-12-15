@@ -8,7 +8,7 @@ import NavBar from './components/meta/NavBar'
 import { DATASET_ROUTE, HOME_ROUTE, SELECT_DATASET_STEP, SELECT_SOURCES_ROUTE, SELECT_SOURCE_STEP, SELECT_TARGETS_ROUTE, SELECT_TARGET_STEP, VIEW_TRACE_ROUTE, VIEW_TRACE_STEP } from './constants'
 import DatasetViewer from './pagecontainers/DatasetView'
 import Home from './pagecontainers/Home'
-import ViewerController from './pagecontainers/manager/controller/PageManagerController'
+import TracePanel from './pagecontainers/manager/controller/TracePanel'
 import { changeStep } from './redux/actions'
 import { appHistory, persistor, store } from './redux/store'
 import './styles/App.scss'
@@ -56,7 +56,7 @@ function App () {
               <main className="flexColumn widthFull" style={{ height: '90%' }}>
                 <Switch>
                   <Route path={[SELECT_SOURCES_ROUTE, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE]}>
-                    <ViewerController />
+                    <TracePanel />
                   </Route>
                   <Route path={DATASET_ROUTE}>
                     <DatasetViewer />

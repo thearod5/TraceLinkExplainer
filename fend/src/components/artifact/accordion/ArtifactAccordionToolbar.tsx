@@ -5,6 +5,7 @@ import InvertColorsOffIcon from '@material-ui/icons/InvertColorsOff'
 import ZoomInIcon from '@material-ui/icons/ZoomIn'
 import ZoomOutIcon from '@material-ui/icons/ZoomOut'
 import React from 'react'
+import { Icons } from '../../../constants'
 
 export interface ToolbarButtonProps {
   iconElement: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
@@ -19,7 +20,7 @@ export function createToolbarIcons (
   colorSelected: any,
   setColorSelected: (arg0: boolean) => void,
   sizeSelected: any,
-  setSizeSelected: (arg0: boolean) => void) {
+  setSizeSelected: (arg0: boolean) => void): Icons {
   const icons = [
     {
       iconElement: ZoomInIcon,

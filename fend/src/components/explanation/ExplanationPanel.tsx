@@ -3,16 +3,18 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import CloseIcon from '@material-ui/icons/Close'
 import React, { useState } from 'react'
 import { FADE_TIMEOUT } from '../../constants'
+import { useTraceExplanationCreator } from './useTraceExplanationCreator'
 interface ViewerModalProps {
-  title: string
   open: boolean
-  handleClose: (() => void) | null
-  body: JSX.Element
-
 }
 
-export default function ViewerModal (props: ViewerModalProps) {
-  const { title, open, handleClose, body } = props
+/* Manages the modal that displays the concept graph between a selected word in a trace explanation
+ *
+ */
+
+export default function ExplanationPanel (props: ViewerModalProps) {
+  const { open } = props
+  const [handleClose, selectedWord, body] = useTraceExplanationCreator()
 
   const handleCloseWrapper = () => {
     if (handleClose !== null) { handleClose() }
@@ -34,7 +36,7 @@ export default function ViewerModal (props: ViewerModalProps) {
             <Box className="roundBorderHard padLarge" style={{ backgroundColor: 'white' }}>
               {handleClose !== null ? <HoverClose handleClose={handleCloseWrapper} /> : null}
               <div className="flexRowCentered">
-                <h2 className="displayInlineBlock textAlignCenter padMedium">{title}</h2>
+                <h2 className="displayInlineBlock textAlignCenter padMedium">{selectedWord}</h2>
               </div>
               {body}
             </Box>
