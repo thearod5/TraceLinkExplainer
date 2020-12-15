@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ExplanationPanel from '../../../components/explanation/ExplanationPanel'
-import { BiPanelView } from '../SplitPanelView'
+import { BiPanelView } from '../BiPanelView'
 import useTracePanelController from '../TracePanelController'
 
 /* Contains the view and state controller for finding and viewing a trace

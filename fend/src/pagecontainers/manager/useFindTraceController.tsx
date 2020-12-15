@@ -23,7 +23,7 @@ export default function useFindTraceController (props: FindTraceControllerProps)
   */
   useEffect(() => {
     if (currentStep === SELECT_SOURCE_STEP) {
-      setLeftPanel(<SourceArtifactSearch onStepDone={() => { throw Error('not implemented') }}/>)
+      setLeftPanel(<SourceArtifactSearch />)
       setRightPanel(<NoSourceMessage />)
     }
   }, [currentStep, setLeftPanel, setRightPanel])
@@ -41,7 +41,7 @@ export default function useFindTraceController (props: FindTraceControllerProps)
   // separate so reloading one does not affect the other
   useEffect(() => {
     if (currentStep === SELECT_TARGET_STEP) {
-      setRightPanel(<TargetArtifactSearch onStepDone={() => { throw Error('not implemented') }}/>)
+      setRightPanel(<TargetArtifactSearch />)
     }
   }, [currentStep, selectedTargets, setRightPanel])
 }

@@ -1,12 +1,12 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createDefaultArtifactAccordion, createRelationshipColors } from '../../../components/artifact/accordion/ArtifactAccordionFactory'
-import { ElementSetter } from '../../../constants'
-import { Artifact } from '../../../operations/types/Dataset'
-import { Trace, TraceInformation } from '../../../operations/types/Trace'
 import { setSelectedSourceIndex, setTrace, setTraceSourceIndex, setTraceTargetIndex } from '../../../redux/actions'
 import { getSelectedSourceIndex, getSelectedSources, getTrace } from '../../../redux/selectors'
 import store from '../../../redux/store'
+import { Artifact } from '../../../operations/types/Dataset'
+import { Trace, TraceInformation } from '../../../operations/types/Trace'
+import { ElementSetter } from '../../../constants'
+import { createDefaultArtifactAccordion, createRelationshipColors } from '../../../components/artifact/accordion/ArtifactAccordionFactory'
 import { SelectedArtifactsContainer } from '../../TracedArtifactsDisplay'
 
 export function DefaultSourceArtifactDisplay () {

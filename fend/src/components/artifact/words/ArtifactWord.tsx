@@ -1,56 +1,55 @@
-import React from 'react'
-import { DEFAULT_FONT_COLOR } from '../../../constants'
-import { WordDescriptorDisplay } from '../../../operations/types/Trace'
-import { WordCallback } from './ArtifactWordContainer'
 
-export interface ViewerWordProps {
-  word: WordDescriptorDisplay
-  colorSelected: boolean
-  sizeSelected: boolean
-  defaultSize: number
-  selectedWord: WordDescriptorDisplay | null
-  wordIndex: number
-  clickHandler: WordCallback | null;
-  handleClose: () => void
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSelectedWord } from '../../../redux/actions'
+import { getSelectedWord } from '../../../redux/selectors'
+import { Relationships, WordDescriptorDisplay, Words } from '../../../operations/types/Trace'
+import { ViewerWord } from './ArtifactWords'
+
+interface ArtifactWordsProps {
+  words: Words;
+  families: Relationships;
+  colorSelected: boolean;
+  sizeSelected: boolean;
+  defaultSize: number;
 }
 
-export function ArtifactWord (props: ViewerWordProps) {
-  const HAS_RELATIONSHIP = props.word.relationshipIds.length > 0
+export default function ViewerWords (props: ArtifactWordsProps) {
+  const selectedWord = useSelector(getSelectedWord)
+  const dispatch = useDispatch()
 
-  const wordId = `${props.word.word}:${props.wordIndex}`
-  if (props.word.word === '\n') {
-    return <br key={wordId}></br>
-  }
-  const relationshipIntersection = props.selectedWord !== null ? props.selectedWord.relationshipIds.filter(value => props.word.relationshipIds.includes(value)) : []
-  const isInSelectedRelationship = relationshipIntersection.length > 0
+  const { words, colorSelected, sizeSelected, defaultSize } = props
 
-  const WORD_COLOR = props.word.color
-  let border
-  if (isInSelectedRelationship) {
-    border = `3px solid ${WORD_COLOR}`
-  } else {
-    border = 'none'
-  }
+  const handleClose = () => dispatch(setSelectedWord(null))
+  const handleOnClick: WordCallback = (word: WordDescriptorDisplay) => dispatch(setSelectedWord(word))
 
-  const handleClick = () => {
-    if (HAS_RELATIONSHIP && props.clickHandler !== null) { props.clickHandler(props.word) }
-  }
-
-  const fontSize = props.sizeSelected ? props.word.size : props.defaultSize
-  const fontColor = props.colorSelected ? WORD_COLOR : DEFAULT_FONT_COLOR
+  const body = createWords(
+    words,
+    selectedWord,
+    colorSelected,
+    sizeSelected,
+    defaultSize,
+    handleOnClick,
+    handleClose)
   return (
-    <pre
-      key={wordId}
-      style={{
-        fontSize: `${fontSize}em`,
-        color: fontColor,
-        display: 'inline-block',
-        wordWrap: 'initial',
-        borderBottom: border
-      }}
-      onClick={handleClick}
-    >
-      {props.word.word}
-    </pre>
+    <div className="textAlignLeft overflowScroll">
+      <div className="sizeFull padSmall overflowScroll">{body}</div>
+    </div>
   )
+}
+
+export type WordCallback = (word: WordDescriptorDisplay) => void
+
+function createWords (
+  words: Words,
+  selectedWord: WordDescriptorDisplay | null,
+  colorSelected: boolean,
+  sizeSelected: boolean,
+  defaultSize: number,
+  clickHandler: WordCallback | null,
+  handleClose: () => void
+) {
+  return words.map((word: WordDescriptorDisplay, wordIndex: number) => ViewerWord({
+    word, selectedWord, colorSelected, sizeSelected, defaultSize, wordIndex, clickHandler, handleClose
+  }))
 }

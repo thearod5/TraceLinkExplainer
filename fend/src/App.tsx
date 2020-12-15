@@ -13,7 +13,6 @@ import { changeStep } from './redux/actions'
 import { appHistory, persistor, store } from './redux/store'
 import './styles/App.scss'
 import theme from './styles/theme'
-import WizardView from './views/TraceView'
 
 function App () {
   const dispatch = useDispatch()
@@ -56,9 +55,6 @@ function App () {
 
               <main className="flexColumn widthFull" style={{ height: '90%' }}>
                 <Switch>
-                  <Route path='/test'>
-                    <WizardView />
-                  </Route>
                   <Route path={[SELECT_SOURCES_ROUTE, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE]}>
                     <TracePanel />
                   </Route>
