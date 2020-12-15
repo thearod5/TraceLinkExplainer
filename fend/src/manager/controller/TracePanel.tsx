@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ExplanationPanel from '../../../components/explanation/ExplanationPanel'
+import ExplanationPanel from '../../components/explanation/ExplanationPanel'
 import { BiPanelView } from '../BiPanelView'
 import useTracePanelController from '../TracePanelController'
 

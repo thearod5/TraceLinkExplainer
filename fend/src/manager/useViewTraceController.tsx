@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTraceInformation } from '../../api/trace'
-import { BooleanSetter, NOT_CACHED, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../../constants'
-import { Artifact, Dataset } from '../../operations/types/Dataset'
-import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex } from '../../redux/actions'
-import { getCurrentStep, getDataset, getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getTraceSourceIndex, getTraceTargetIndex } from '../../redux/selectors'
+import { getTraceInformation } from '../api/trace'
+import { BooleanSetter, NOT_CACHED, UNSELECTED_INDEX, VIEW_TRACE_STEP } from '../constants'
+import { Artifact, Dataset } from '../operations/types/Dataset'
+import { setError, setLoading, setSelectedSourceIndex, setSelectedTargetIndex } from '../redux/actions'
+import { getCurrentStep, getDataset, getSelectedSourceIndex, getSelectedSources, getSelectedTargetIndex, getSelectedTargets, getTraceSourceIndex, getTraceTargetIndex } from '../redux/selectors'
 import { handleTraceInformationRequest } from './controller/PageManagerControllerHelper'
 
 interface ViewTraceControllerProps {

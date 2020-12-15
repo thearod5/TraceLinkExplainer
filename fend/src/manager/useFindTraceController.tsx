@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { ElementSetter, SELECT_SOURCE_STEP, SELECT_TARGET_STEP } from '../../constants'
-import { Artifact } from '../../operations/types/Dataset'
-import { getCurrentStep, getSelectedSources, getSelectedTargets } from '../../redux/selectors'
-import NoSourceMessage from '../NoSourceMessage'
-import SourceArtifactSearch from '../SourceArtifactSearch'
-import TargetArtifactSearch from '../TargetArtifactSearch'
+import { ElementSetter, SELECT_SOURCE_STEP, SELECT_TARGET_STEP } from '../constants'
+import { Artifact } from '../operations/types/Dataset'
+import { getCurrentStep, getSelectedSources, getSelectedTargets } from '../redux/selectors'
+import NoSourceMessage from '../pagecontainers/NoSourceMessage'
+import SourceArtifactSearch from '../pagecontainers/SourceArtifactSearch'
+import TargetArtifactSearch from '../pagecontainers/TargetArtifactSearch'
 import { DefaultSourceArtifactDisplay } from './controller/PageManagerControllerHelper'
 
 interface FindTraceControllerProps {

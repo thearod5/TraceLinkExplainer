@@ -2,8 +2,8 @@
 import { Fade } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import SplitPane from 'react-split-pane'
-import { FADE_TIMEOUT } from '../../constants'
-import { primaryColor } from '../../styles/theme'
+import { FADE_TIMEOUT } from '../constants'
+import { primaryColor } from '../styles/theme'
 
 /* Displays two panels in a single row and transitions panels when they change
  */
