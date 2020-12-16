@@ -1,9 +1,9 @@
 import React from 'react'
+import { NUMBER_RESULTS_PROMPT } from '../../../../constants'
 import { getDefaultRelationships } from '../../../../operations/artifacts/WordCreator'
 import { ArtifactDisplayModel } from '../../../../operations/types/Dataset'
-import { NUMBER_RESULTS_PROMPT } from '../../../../constants'
-import SearchResultAccordion from './SearchResultAccordion'
 import { ArtifactClickAction } from '../types'
+import SearchResultAccordion from './SearchResultAccordion'
 
 interface SearchResultsProps {
   numberOfTotalResults: number;
@@ -12,7 +12,7 @@ interface SearchResultsProps {
   removeArtifact: ArtifactClickAction;
 }
 
-export default function SearchResults (props: SearchResultsProps) {
+export default function SearchResultsPage (props: SearchResultsProps) {
   const numberOfTotalResults = props.numberOfTotalResults
   return (
     <div className="flexColumn sizeFull">

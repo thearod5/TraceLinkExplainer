@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { SEARCH_DISPLAY_LIMIT, SEARCH_LIMIT, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, StartSearchCallback, VIEW_TRACE_STEP } from '../../../constants'
+import { SEARCH_LIMIT, SEARCH_RESULTS_PER_PAGE, SELECT_SOURCE_MESSAGE, SELECT_SOURCE_STEP, SELECT_TARGET_MESSAGE, StartSearchCallback, VoidCallback } from '../../../constants'
 import { createArtifactDisplayModel } from '../../../operations/artifacts/WordCreator'
 import { getStepChangeError } from '../../../operations/pagechanger/PageChanger'
 import {
@@ -8,11 +8,11 @@ import {
   ArtifactDisplayModel,
   artifactsAreEqual
 } from '../../../operations/types/Dataset'
-import { changeStep, setError } from '../../../redux/actions'
+import { setError } from '../../../redux/actions'
 import { getCurrentStep } from '../../../redux/selectors'
-import { appHistory } from '../../../redux/store'
 import { ArtifactMutatorActionType } from '../../../redux/types'
-import Search from './Search'
+import { StepActionsContext } from '../../wizard/Wizard'
+import Search from './results/Search'
 import { SuggestionFunctionType } from './types'
 
 /* Responsibility: Manages the state of the search bar.
@@ -39,13 +39,13 @@ export default function SearchController (props: SearchProps) {
    * Visual Calculation
    */
   const numberOfResults = searchResults.length
-  const potentialEndIndex = resultsIndexStart + SEARCH_DISPLAY_LIMIT
+  const potentialEndIndex = resultsIndexStart + SEARCH_RESULTS_PER_PAGE
   const endIndex =
     potentialEndIndex >= numberOfResults ? numberOfResults : potentialEndIndex
 
   const searchResultsInView = searchResults.slice(resultsIndexStart, endIndex)
-  const totalPages = Math.ceil(searchResults.length / SEARCH_DISPLAY_LIMIT)
-  const currentPage = resultsIndexStart / SEARCH_DISPLAY_LIMIT + 1
+  const totalPages = Math.ceil(searchResults.length / SEARCH_RESULTS_PER_PAGE)
+  const currentPage = resultsIndexStart / SEARCH_RESULTS_PER_PAGE + 1
   const footerMessage =
     currentStep === SELECT_SOURCE_STEP
       ? SELECT_SOURCE_MESSAGE
@@ -85,10 +85,10 @@ export default function SearchController (props: SearchProps) {
   }
 
   const onNextPage = () =>
-    setResultsInView(resultsIndexStart + SEARCH_DISPLAY_LIMIT)
+    setResultsInView(resultsIndexStart + SEARCH_RESULTS_PER_PAGE)
 
   const onPreviousPage = () =>
-    setResultsInView(resultsIndexStart - SEARCH_DISPLAY_LIMIT)
+    setResultsInView(resultsIndexStart - SEARCH_RESULTS_PER_PAGE)
 
   const selectArtifact = (artifact: Artifact) => {
     setSelectedArtifacts([...selectedArtifacts, artifact])
@@ -102,41 +102,40 @@ export default function SearchController (props: SearchProps) {
     setAreArtifactSelected(false) // changes made, results not up-to-date
   }
 
-  const handleStepCompleted = () => {
+  const handleStepCompleted = (onStepDone: VoidCallback) => {
     if (selectedArtifacts.length === 0) { return dispatch(setError('No artifacts selected.')) }
 
-    if (currentStep >= VIEW_TRACE_STEP) { return }
-
     dispatch(props.onArtifactsSelected(selectedArtifacts))
-
+    onStepDone()
     const nextStep = currentStep + 1
     const error = getStepChangeError(nextStep)
     const wasSuccessful = error === undefined
     if (wasSuccessful) {
       setAreArtifactSelected(true) // changes made, results not up-to-date
-      dispatch(changeStep(nextStep))
     } else dispatch(setError(error))
-    appHistory.push(props.nextPageLocation)
   }
 
   useEffect(() => startSearch(''), [startSearch])
 
   return (
-    <Search
-      startSearch={startSearch}
-      currentPage={currentPage}
-      footerMessage={footerMessage}
-      areArtifactSelected={areArtifactSelected}
-      totalPages={totalPages}
-      handleStepCompleted={handleStepCompleted}
-      onNextPage={onNextPage}
-      onPreviousPage={onPreviousPage}
-      numberSelected={selectedArtifacts.length}
-      searchResultsInView={searchResultsInView}
-      numberOfTotalResults={searchResults.length}
-      selectArtifact={selectArtifact}
-      removeArtifact={removeArtifact}
-      isLoading={isLoading}
-    />
+    <StepActionsContext.Consumer>
+      {({ onNextStep, onPreviousStep }) => <Search
+        startSearch={startSearch}
+        currentPage={currentPage}
+        footerMessage={footerMessage}
+        areArtifactSelected={areArtifactSelected}
+        totalPages={totalPages}
+        handleStepCompleted={() => handleStepCompleted(onNextStep)}
+        onNextPage={onNextPage}
+        onPreviousPage={onPreviousPage}
+        numberSelected={selectedArtifacts.length}
+        searchResultsInView={searchResultsInView}
+        numberOfTotalResults={searchResults.length}
+        selectArtifact={selectArtifact}
+        removeArtifact={removeArtifact}
+        isLoading={isLoading}
+      />}
+    </StepActionsContext.Consumer>
+
   )
 }

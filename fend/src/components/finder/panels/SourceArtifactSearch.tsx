@@ -1,8 +1,8 @@
 import React from 'react'
 import { searchForSourceArtifact } from '../../../api/search'
 import { SELECT_TARGETS_ROUTE } from '../../../constants'
-import SearchController from '../search/SearchController'
 import { setSelectedSources } from '../../../redux/actions'
+import SearchController from '../search/SearchController'
 
 export default function SourceArtifactSearch () {
   return (

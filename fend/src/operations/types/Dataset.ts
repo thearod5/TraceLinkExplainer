@@ -12,6 +12,7 @@ export interface Dataset {
 }
 
 export interface ArtifactIdentifier {
+  id:string;
   project:string;
   name: string;
   type: string;
@@ -73,13 +74,4 @@ export function isArtifactIdentifierList (
 
 export function artifactsAreEqual (a1: Artifact, a2: Artifact) {
   return a1.type === a2.type && a1.name === a2.name
-}
-
-/*
- * Type conversions
- */
-
-export function getArtifactIdentifier (artifact: Artifact): ArtifactIdentifier {
-  const { project, name: id, type } = artifact
-  return { project, name: id, type }
 }

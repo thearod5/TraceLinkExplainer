@@ -1,3 +1,4 @@
+import { Artifact } from './operations/types/Dataset'
 import { WordDescriptorDisplay } from './operations/types/Trace'
 
 /*
@@ -6,7 +7,7 @@ import { WordDescriptorDisplay } from './operations/types/Trace'
 export const SELECT_SOURCE_MESSAGE = 'See traced artifacts'
 export const SELECT_TARGET_MESSAGE = 'See traces explanations'
 export const SEARCH_LIMIT = 100
-export const SEARCH_DISPLAY_LIMIT = 20
+export const SEARCH_RESULTS_PER_PAGE = 20
 export const NUMBER_RESULTS_PROMPT = ' artifacts retrieved'
 
 /*
@@ -39,6 +40,8 @@ export const FADE_TIMEOUT = 500 // ms
 
 export type StartSearchCallback = (searchString: string, limit?: number) => void
 export type VoidCallback = () => void
+export type StringCallback = (str: string) => void
+export type ArtifactCallback = (artifact: Artifact) => void
 export type IndexCallback = (index: number) => void
 
 export const NOT_CACHED = -2

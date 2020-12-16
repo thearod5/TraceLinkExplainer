@@ -1,10 +1,10 @@
 import React from 'react'
-import { StartSearchCallback, VoidCallback } from '../../../constants'
-import { Artifact, ArtifactDisplayModel } from '../../../operations/types/Dataset'
-import LoadingBar from '../../meta/LoadingBar'
-import SearchBar from './bar/SearchBar'
-import SearchResults from './results/SearchResults'
-import { SearchFooter } from './SearchFooter'
+import { StartSearchCallback, VoidCallback } from '../../../../constants'
+import { Artifact, ArtifactDisplayModel } from '../../../../operations/types/Dataset'
+import LoadingBar from '../../../meta/LoadingBar'
+import SearchBar from '../bar/SearchBar'
+import { SearchFooter } from '../SearchFooter'
+import SearchResultsPage from './SearchResultsPage'
 
 /* Responsibility: Defines the HTML/CSS structure of the Search.tsx
  *
@@ -30,7 +30,7 @@ interface SearchProps {
 export default function Search (props: SearchProps) {
   const {
     isLoading, startSearch, currentPage, totalPages,
-    footerMessage, areArtifactSelected, handleStepCompleted,
+    footerMessage,
     onNextPage, onPreviousPage, numberSelected, numberOfTotalResults,
     searchResultsInView, selectArtifact, removeArtifact
   } = props
@@ -48,8 +48,6 @@ export default function Search (props: SearchProps) {
       page={currentPage}
       totalPages={totalPages}
       message={footerMessage}
-      completed={areArtifactSelected}
-      onStepCompleted={handleStepCompleted}
       onNextPage={onNextPage}
       onPreviousPage={onPreviousPage}
       numberSelected={numberSelected}
@@ -62,12 +60,13 @@ export default function Search (props: SearchProps) {
         className="flexRowContentLeft widthFull overflowYScroll"
         style={{ height: '90%' }}
       >
-        <SearchResults
+        <SearchResultsPage
           numberOfTotalResults={numberOfTotalResults}
           results={searchResultsInView}
           selectArtifact={selectArtifact}
           removeArtifact={removeArtifact}
         />
+
       </div>
 
       <div style={{ height: '10%' }}>{footer}</div>

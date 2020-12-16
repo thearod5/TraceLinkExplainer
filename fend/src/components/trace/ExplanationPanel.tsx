@@ -3,7 +3,7 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import CloseIcon from '@material-ui/icons/Close'
 import React, { useState } from 'react'
 import { FADE_TIMEOUT } from '../../constants'
-import { useTraceExplanationCreator } from './useTraceExplanationCreator'
+import { useTraceExplanationCreator } from './hooks/useTraceExplanationCreator'
 interface ViewerModalProps {
   open: boolean
 }

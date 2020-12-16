@@ -21,6 +21,7 @@ export function initializeEmptyTrace (): Trace {
 
 export function initializeEmptyArtifact (): Artifact {
   return {
+    id: '',
     name: '',
     body: '',
     type: '',

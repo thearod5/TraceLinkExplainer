@@ -1,9 +1,9 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { VoidCallback } from '../../constants'
-import { setTrace } from '../../redux/actions'
-import { getTrace } from '../../redux/selectors'
-import { Explanation } from './Explanation'
+import { VoidCallback } from '../../../constants'
+import { setTrace } from '../../../redux/actions'
+import { getTrace } from '../../../redux/selectors'
+import { Explanation } from '../Explanation'
 
 export function useTraceExplanationCreator (): [VoidCallback, string | null, JSX.Element | null] {
   const trace = useSelector(getTrace)
