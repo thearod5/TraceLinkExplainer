@@ -39,6 +39,7 @@ export const FADE_TIMEOUT = 500 // ms
 
 export type StartSearchCallback = (searchString: string, limit?: number) => void
 export type VoidCallback = () => void
+export type IndexCallback = (index: number) => void
 
 export const NOT_CACHED = -2
 export const UNSELECTED_INDEX = -1
