@@ -7,7 +7,7 @@ import { Artifact } from '../../../../operations/types/Dataset'
  */
 interface SearchResultsPaginationProps {
 	totalPages: number
-	selectArtifact: ArtifactCallback
+	addArtifact: ArtifactCallback
 	removeArtifact: ArtifactCallback
 }
 export default function useSelectedArtifactCounter (props: SearchResultsPaginationProps): [number, ArtifactCallback, ArtifactCallback] {
@@ -15,7 +15,7 @@ export default function useSelectedArtifactCounter (props: SearchResultsPaginati
 
   const onSelectArtifact = (artifact: Artifact) => {
     setNumberSelected(numberSelected + 1)
-    props.selectArtifact(artifact)
+    props.addArtifact(artifact)
   }
 
   const onRemoveArtifact = (artifact: Artifact) => {

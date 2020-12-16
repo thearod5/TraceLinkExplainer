@@ -47,7 +47,7 @@ def search_artifacts(request: Request, project_name: str):
         if isinstance(expr, str):
             return ApplicationError("could not parse (%s) into expression" % expr)
         q = expr.eval()
-        project_artifacts = models.Artifact.objects.filter(q)
+        project_artifacts = project_artifacts.filter(q)
 
     payload = ArtifactSerializer(project_artifacts, many=True).data
     return JsonResponse(payload, safe=False)

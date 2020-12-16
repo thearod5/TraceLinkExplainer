@@ -32,23 +32,28 @@ export async function searchForTargetArtifact (
   query: string,
   limit: number
 ): Promise<Artifact[]> {
+  const sources: ArtifactIdentifier[] = store.getState().selectedSources
+  return searchForTracedArtifacts(sources, query)
+}
+
+export async function searchForTracedArtifacts (
+  sources: ArtifactIdentifier[],
+  query: string
+): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
+    if (sources.length === 0) {
+      resolve([])
+      return
+    }
+
     const dataset: Dataset = store.getState().dataset
 
     if (!isNonEmptyDataset(dataset)) {
-      return reject(Error('Dataset not selected.'))
+      throw Error('Dataset not selected.')
     }
 
-    const sources: ArtifactIdentifier[] = store.getState().selectedSources
-    if (sources.length === 0) {
-      return reject(
-        Error(
-          'cannot search for target artifact without a source artifact selected'
-        )
-      )
-    }
     const baseQuery = '?' + sources.map(source => 'source_name=' + source.name).join('&')
-    const queryString = query.length === 0 ? baseQuery : baseQuery + 'query=' + query
+    const queryString = query.length === 0 ? baseQuery : baseQuery + '&query=' + query
     const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
     return resolve(baseSearchFunction(searchUrl))
   })

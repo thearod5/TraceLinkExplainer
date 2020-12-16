@@ -20,10 +20,10 @@ interface SearchResultProps {
 }
 
 export default function SearchResults (props: SearchResultProps) {
-  const { artifacts, isLoading, addArtifact: selectArtifact, removeArtifact } = props
+  const { artifacts, isLoading, addArtifact, removeArtifact } = props
   const totalPages = artifacts.length / SEARCH_RESULTS_PER_PAGE
 
-  const [numberSelected, onSelectArtifact, onRemoveArtifact] = useSelectedArtifactCounter({ totalPages, selectArtifact, removeArtifact })
+  const [numberSelected, onSelectArtifact, onRemoveArtifact] = useSelectedArtifactCounter({ totalPages, addArtifact, removeArtifact })
   const [currentPage, onNextPage, onPreviousPage] = usePageCounter({ totalPages })
 
   // subcomponents

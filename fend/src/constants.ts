@@ -1,3 +1,4 @@
+import { TraceSet } from './components/finder/Finder'
 import { Artifact } from './operations/types/Dataset'
 import { WordDescriptorDisplay } from './operations/types/Trace'
 
@@ -42,6 +43,7 @@ export type StartSearchCallback = (searchString: string, limit?: number) => void
 export type VoidCallback = () => void
 export type StringCallback = (str: string) => void
 export type ArtifactCallback = (artifact: Artifact) => void
+export type TracesSetCallback = (trace: TraceSet[]) => void
 export type IndexCallback = (index: number) => void
 
 export const NOT_CACHED = -2
@@ -54,5 +56,6 @@ export type WordDescriptorDisplaySetter = React.Dispatch<React.SetStateAction<Wo
 export type NumberSetter = (num: number) => void
 export type ElementSetter = (value: React.SetStateAction<JSX.Element | null>) => void
 export type BooleanSetter = (num: boolean) => void;
+export type ArtifactsSetter = (artifacts: Artifact[]) => void;
 export type MUICallback = ((event: React.ChangeEvent<{}>, expanded: boolean) => void) | undefined
 export type Icons = JSX.Element[]

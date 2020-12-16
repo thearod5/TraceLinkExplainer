@@ -15,19 +15,14 @@ interface SearchControllerProps {
 	addArtifact: ArtifactCallback
 	removeArtifact: ArtifactCallback
 }
-export default function SearchController (props: SearchControllerProps) {
-  const searchBar = (
-    <SearchBar onSearch={(query: string) => props.onSearch(query)} />
-  )
-  const body = <SearchResults
-    artifacts={props.artifacts}
-    addArtifact={props.addArtifact}
-    removeArtifact={props.removeArtifact}
-    isLoading={props.isLoading} />
-
+export default function Search (props: SearchControllerProps) {
   return (
     <Box>
-      {searchBar}
-      {body}
+      <SearchBar onSearch={(query: string) => props.onSearch(query)} />
+      <SearchResults
+        artifacts={props.artifacts}
+        addArtifact={props.addArtifact}
+        removeArtifact={props.removeArtifact}
+        isLoading={props.isLoading} />
     </Box>)
 }

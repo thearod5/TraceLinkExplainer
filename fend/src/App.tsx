@@ -4,12 +4,10 @@ import { Provider, useDispatch } from 'react-redux'
 import { Route, Router, Switch } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 import DatasetViewer from './components/dataset/DatasetView'
-import Finder from './components/finder/Finder'
 import Home from './components/finder/panels/Home'
 import AppSnackBar from './components/meta/Footer'
 import NavBar from './components/meta/NavBar'
-import Trace from './components/trace/Trace'
-import Wizard from './components/wizard/Wizard'
+import TraceWizard from './components/tracewizard/TraceWizard'
 import { DATASET_ROUTE, HOME_ROUTE, SELECT_DATASET_STEP, SELECT_SOURCES_ROUTE, SELECT_SOURCE_STEP, SELECT_TARGETS_ROUTE, SELECT_TARGET_STEP, VIEW_TRACE_ROUTE, VIEW_TRACE_STEP } from './constants'
 import { changeStep } from './redux/actions'
 import { appHistory, persistor, store } from './redux/store'
@@ -58,10 +56,7 @@ function App () {
               <main className="flexColumn widthFull" style={{ height: '90%' }}>
                 <Switch>
                   <Route path={[SELECT_SOURCES_ROUTE, SELECT_TARGETS_ROUTE, VIEW_TRACE_ROUTE]}>
-                    <Wizard>
-                      <Finder />
-                      <Trace />
-                    </Wizard>
+                    <TraceWizard />
                   </Route>
                   <Route path={DATASET_ROUTE}>
                     <DatasetViewer />
