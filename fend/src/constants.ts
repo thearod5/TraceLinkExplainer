@@ -1,7 +1,7 @@
-import { TraceSet } from './components/tracewizard/types'
+import { createBrowserHistory } from 'history'
+import { ArtifactTraceSet } from './components/tracewizard/types'
 import { Artifact, Dataset } from './operations/types/Dataset'
-import { WordDescriptorDisplay } from './operations/types/Trace'
-
+import { Trace, WordDescriptorDisplay } from './operations/types/Trace'
 /*
  * Search
  */
@@ -50,7 +50,8 @@ export type StartSearchCallback = (searchString: string, limit?: number) => void
 export type StringCallback = (str: string) => void
 export type OptionalStringCallback = (str: string | undefined) => void
 export type ArtifactCallback = (artifact: Artifact) => void
-export type TracesSetCallback = (trace: TraceSet[]) => void
+export type TracesSetCallback = (trace: ArtifactTraceSet[]) => void
+export type TraceCallback = (trace: Trace) => void
 export type IndexCallback = (index: number) => void
 export type DatasetCallback = (dataset : Dataset) => void
 /*
@@ -63,3 +64,5 @@ export type BooleanSetter = (num: boolean) => void;
 export type ArtifactsSetter = (artifacts: Artifact[]) => void;
 export type MUICallback = ((event: React.ChangeEvent<{}>, expanded: boolean) => void) | undefined
 export type Icons = JSX.Element[]
+
+export const appHistory = createBrowserHistory()

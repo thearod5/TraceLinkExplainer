@@ -5,13 +5,13 @@ import { AppContext } from '../../../App'
 import { TracesSetCallback } from '../../../constants'
 import { Artifact } from '../../../operations/types/Dataset'
 import { StepActionsContext } from '../../wizard/Wizard'
-import { TraceContext, TraceSet } from '../types'
+import { ArtifactSetContext, ArtifactTraceSet } from '../types'
 import Search from './search/too/Search'
 import useArtifactSearch from './search/too/useArtifactSearch'
 
 export default function Finder () {
   const { onNextStep } = useContext(StepActionsContext)
-  const { setTraceSet } = useContext(TraceContext)
+  const { setTraceSet } = useContext(ArtifactSetContext)
   const { setError } = useContext(AppContext)
 
   const [sources, setSources] = useState<Artifact[]>([])
@@ -22,13 +22,13 @@ export default function Finder () {
     return searchForTracedArtifacts(affectedSources, query)
   }
   const [targetQueryArtifacts, targetIsLoading, targetOnSearch] = useArtifactSearch(targetArtifactQuery)
-  const [traces, setTraces] = useState<TraceSet[]>([])
+  const [traces, setTraces] = useState<ArtifactTraceSet[]>([])
 
   const onAddSource = (sourceArtifact: Artifact, traceSetCallback: TracesSetCallback) => {
     searchForTracedArtifacts([sourceArtifact], '').then(tracedArtifacts => {
       const sourceWithNew = [...sources, sourceArtifact]
       setSources(sourceWithNew)
-      const traceWithNew: TraceSet[] = [...traces, { sourceArtifact, tracedArtifacts }]
+      const traceWithNew: ArtifactTraceSet[] = [...traces, { sourceArtifact, tracedArtifacts }]
       setTraces(traceWithNew)
       traceSetCallback(traceWithNew)
     }).catch(e => setError(e))
@@ -54,14 +54,14 @@ export default function Finder () {
     traceSetCallback(newTraces)
   }
 
-  function addArtifactToTraceSet (trace: TraceSet, artifact: Artifact): TraceSet {
+  function addArtifactToTraceSet (trace: ArtifactTraceSet, artifact: Artifact): ArtifactTraceSet {
     return {
       ...trace,
       tracedArtifacts: [...trace.tracedArtifacts, artifact]
     }
   }
 
-  function removeArtifactFromTraceSet (trace: TraceSet, artifact: Artifact): TraceSet {
+  function removeArtifactFromTraceSet (trace: ArtifactTraceSet, artifact: Artifact): ArtifactTraceSet {
     return {
       ...trace,
       tracedArtifacts: trace.tracedArtifacts.filter(a => a.id === artifact.id)

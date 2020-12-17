@@ -1,13 +1,14 @@
+import { useContext } from 'react'
+import { AppContext } from '../App'
 import {
   Artifact,
   ArtifactIdentifier,
-  Dataset,
+
   isNonEmptyDataset
 } from '../operations/types/Dataset'
 import {
   SearchResponse
 } from '../operations/types/Search'
-import store from '../redux/store'
 import { BASE_URL, get } from './base'
 import { CustomError, isError } from './errors'
 
@@ -18,7 +19,7 @@ export async function searchForSourceArtifact (
   limit: number
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    const dataset: Dataset = store.getState().dataset
+    const { dataset } = useContext(AppContext)
     if (!isNonEmptyDataset(dataset)) {
       return reject(Error('Dataset not selected.'))
     }
@@ -26,14 +27,6 @@ export async function searchForSourceArtifact (
     const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
     baseSearchFunction(searchUrl).then(obj => resolve(obj)).catch(e => reject(e))
   })
-}
-
-export async function searchForTargetArtifact (
-  query: string,
-  limit: number
-): Promise<Artifact[]> {
-  const sources: ArtifactIdentifier[] = store.getState().selectedSources
-  return searchForTracedArtifacts(sources, query)
 }
 
 export async function searchForTracedArtifacts (
@@ -46,7 +39,7 @@ export async function searchForTracedArtifacts (
       return
     }
 
-    const dataset: Dataset = store.getState().dataset
+    const { dataset } = useContext(AppContext)
 
     if (!isNonEmptyDataset(dataset)) {
       throw Error('Dataset not selected.')

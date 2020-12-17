@@ -1,7 +1,7 @@
 import React from 'react'
-import DatasetChooser from './dataset/DatasetChooser'
+import DatasetChooser from './DatasetChooser'
 
-export default function Home () {
+export default function DatasetChooserWrapper () {
   return (
     <div className="flexRowCentered sizeFull">
       <div className="centeredColumn">

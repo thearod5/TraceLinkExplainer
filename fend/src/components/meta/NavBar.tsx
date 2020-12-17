@@ -1,18 +1,18 @@
 import { Box } from '@material-ui/core'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { HOME_ROUTE } from '../../constants'
-import { getCurrentStep, getDataset } from '../../redux/selectors'
-import { appHistory } from '../../redux/store'
+import React, { useContext } from 'react'
+import { AppContext } from '../../App'
 
-const WELCOME_MESSAGE = 'TraceViewer'
-// TODO: Add button to view dataset. Also make a real nav bar looking thing.
-export default function NavBar () {
-  const currentStep = useSelector(getCurrentStep) // recreated index at 0, but remove select dataset move
-  const dataset = useSelector(getDataset).name
+
+interface NavBarProps {
+  title: string
+}
+
+export default function NavBar (props: NavBarProps) {
+  const { dataset } = useContext(AppContext)
 
   const GoHomeClickHanlder = () => {
-    appHistory.push(HOME_ROUTE)
+    console.log('CLICK HOME')
+    // appHistory.push(HOME_ROUTE)
   }
 
   return (
@@ -26,7 +26,7 @@ export default function NavBar () {
           onClick={GoHomeClickHanlder}
           className="padSmall"
         >
-          {currentStep === 0 ? WELCOME_MESSAGE : dataset}
+          {props.title}
         </h1>
       </div>
     </Box>

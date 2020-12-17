@@ -1,8 +1,8 @@
 import React from 'react'
+import { colors } from '../../../../constants'
 import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../../../../operations/artifacts/WordCreator'
 import { Artifact, ArtifactIdentifier } from '../../../../operations/types/Dataset'
 import { RelationshipColors, Relationships, WordDescriptors } from '../../../../operations/types/Trace'
-import { colors } from '../../../../constants'
 import ArtifactAccordion from './ArtifactAccordion'
 
 export function createTracedArtifactAccordion (
@@ -12,7 +12,8 @@ export function createTracedArtifactAccordion (
   relationshipColors: RelationshipColors | null,
   expanded: boolean,
   onExpand: () => void,
-  onShrink: () => void
+  onShrink: () => void,
+  isLoading: boolean
 ) {
   return (
     <ArtifactAccordion
@@ -25,6 +26,7 @@ export function createTracedArtifactAccordion (
       expanded={expanded}
       onExpand={onExpand}
       onShrink={onShrink}
+      isLoading={isLoading}
     />
   )
 }
@@ -47,6 +49,7 @@ export function createDefaultArtifactAccordion (
       expanded={expanded}
       onExpand={onExpand}
       onShrink={onShrink}
+      isLoading={false}
     />
   )
 }

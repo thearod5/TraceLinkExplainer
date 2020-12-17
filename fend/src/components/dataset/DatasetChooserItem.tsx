@@ -2,6 +2,7 @@ import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import React, { useEffect, useState } from 'react'
+import { VoidCallback } from '../../constants'
 import DatasetChooserItemDetails from './DatasetChooserItemDetails'
 
 interface DataItemSummaryProps {
@@ -9,26 +10,29 @@ interface DataItemSummaryProps {
   isSelected: boolean;
   select: () => void;
   deselect: () => void;
-  onRouteSelected: (route: string) => void;
+  onDatasetSelected: VoidCallback
 }
 
-function DatasetChooserItem (props: DataItemSummaryProps) {
+export default function DatasetChooserItem (props: DataItemSummaryProps) {
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     const callback = expanded ? props.select : props.deselect
     callback()
+    console.log('CALLBACK:', callback, expanded)
     // eslint-disable-next-line
   }, [expanded]);
 
+  const onClick = () => {
+    setExpanded(!expanded)
+  }
+
   return (
-    <Accordion expanded={expanded} onClick={() => setExpanded(!expanded)}>
+    <Accordion expanded={expanded} onClick={onClick}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <h4>{props.datasetName}</h4>
       </AccordionSummary>
-      <DatasetChooserItemDetails onClick={props.onRouteSelected} />
+      <DatasetChooserItemDetails onClick={props.onDatasetSelected} />
     </Accordion>
   )
 }
-
-export default DatasetChooserItem

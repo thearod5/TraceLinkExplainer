@@ -1,9 +1,7 @@
 
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { setSelectedWord } from '../../../../redux/actions'
-import { getSelectedWord } from '../../../../redux/selectors'
+import React, { useContext } from 'react'
 import { Relationships, WordDescriptorDisplay, Words } from '../../../../operations/types/Trace'
+import { TraceContext } from '../../types'
 import { ViewerWord } from './ArtifactWords'
 
 interface ArtifactWordsProps {
@@ -15,13 +13,13 @@ interface ArtifactWordsProps {
 }
 
 export default function ViewerWords (props: ArtifactWordsProps) {
-  const selectedWord = useSelector(getSelectedWord)
-  const dispatch = useDispatch()
+  const { trace, setTrace } = useContext(TraceContext)
+  const { selectedWord } = trace
 
   const { words, colorSelected, sizeSelected, defaultSize } = props
 
-  const handleClose = () => dispatch(setSelectedWord(null))
-  const handleOnClick: WordCallback = (word: WordDescriptorDisplay) => dispatch(setSelectedWord(word))
+  const handleClose = () => setTrace({ ...trace, selectedWord: null })
+  const handleOnClick: WordCallback = (word: WordDescriptorDisplay) => setTrace({ ...trace, selectedWord: word })
 
   const body = createWords(
     words,

@@ -21,6 +21,7 @@ export interface ArtifactAccordionProps {
   expanded: boolean;
   onExpand: () => void;
   onShrink: () => void;
+  isLoading: boolean
 }
 
 export interface ArtifactDisplaySettings {
@@ -60,6 +61,7 @@ export default function ArtifactAccordion (props: ArtifactAccordionProps) {
         sizeSelected={sizeSelected}
         fontSize={fontSize}
         toolbarIcons={toolbarIcons}
+        isLoading={props.isLoading}
       />
     </Accordion>
   )

@@ -1,5 +1,5 @@
-import { Artifact, ArtifactIdentifier, Dataset } from '../operations/types/Dataset'
-import { Trace } from '../operations/types/Trace'
+import { Artifact, ArtifactIdentifier, Dataset } from './types/Dataset'
+import { Trace } from './types/Trace'
 
 export interface RootState {
   dataset: Dataset;

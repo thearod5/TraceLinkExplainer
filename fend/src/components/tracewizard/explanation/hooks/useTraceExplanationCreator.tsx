@@ -1,17 +1,14 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useContext } from 'react'
 import { VoidCallback } from '../../../../constants'
-import { setTrace } from '../../../../redux/actions'
-import { getTrace } from '../../../../redux/selectors'
+import { TraceContext } from '../../types'
 import { Explanation } from '../Explanation'
 
 export function useTraceExplanationCreator (): [VoidCallback, string | null, JSX.Element | null] {
-  const trace = useSelector(getTrace)
+  const { trace, setTrace } = useContext(TraceContext)
   const { selectedWord, relationships } = trace
-  const dispatch = useDispatch()
 
   const handleClose = () => {
-    dispatch(setTrace({ ...trace, selectedWord: null }))
+    setTrace({ ...trace, selectedWord: null })
   }
 
   if (selectedWord === null || relationships === null) {

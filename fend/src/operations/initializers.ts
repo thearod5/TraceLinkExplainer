@@ -1,5 +1,5 @@
-import { Artifact, Dataset } from '../operations/types/Dataset'
-import { Trace } from '../operations/types/Trace'
+import { Artifact, Dataset } from './types/Dataset'
+import { Trace } from './types/Trace'
 
 export function initializeEmptyDataset (): Dataset {
   return {

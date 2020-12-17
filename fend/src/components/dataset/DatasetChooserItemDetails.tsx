@@ -4,36 +4,32 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import React, { JSXElementConstructor } from 'react'
-import styled from 'styled-components'
-import { DATASET_ROUTE, SELECT_SOURCES_ROUTE } from '../../constants'
+import { VoidCallback } from '../../constants'
 type ButtonClickCallback = (route: string) => void;
 
 interface ModalItemContent {
-  route: string;
   icon: JSXElementConstructor<{}>;
   disabled: boolean;
 }
 
 const MODAL_ITEMS: Record<string, ModalItemContent> = {
   'Link Explanation': {
-    route: SELECT_SOURCES_ROUTE,
     icon: AccountTreeIcon,
     disabled: false
   },
   'View Dataset': {
-    route: DATASET_ROUTE,
     icon: ViewModuleIcon,
     disabled: true
   }
 }
 
 interface ItemDetailsProps {
-  onClick: (route: string) => void;
+  onClick: () => void;
 }
 
 export default function DatasetChooserItemDetails (props: ItemDetailsProps) {
   return (
-    <ItemContainer>
+    <AccordionDetails className="centeredColumn">
       <ButtonGroup
         orientation="vertical"
         color="primary"
@@ -42,18 +38,18 @@ export default function DatasetChooserItemDetails (props: ItemDetailsProps) {
       >
         {createButtons(props.onClick)}
       </ButtonGroup>
-    </ItemContainer>
+    </AccordionDetails>
   )
 }
 
-function createButtons (clickHandler: ButtonClickCallback): JSX.Element[] {
+function createButtons (clickHandler: VoidCallback): JSX.Element[] {
   return Object.keys(MODAL_ITEMS).map((modalDescription) => {
     const itemContent: ModalItemContent = MODAL_ITEMS[modalDescription]
     return (
       <Button
-        key={itemContent.route}
+        key={modalDescription}
         startIcon={<itemContent.icon />}
-        onClick={() => clickHandler(itemContent.route)}
+        onClick={() => clickHandler()}
         disabled={itemContent.disabled}
       >
         {modalDescription}
@@ -61,9 +57,3 @@ function createButtons (clickHandler: ButtonClickCallback): JSX.Element[] {
     )
   })
 }
-
-const ItemContainer = styled(AccordionDetails)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`

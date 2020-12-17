@@ -1,8 +1,6 @@
 import { AccordionDetails } from '@material-ui/core'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Relationships, Words } from '../../../../operations/types/Trace'
-import { getLoading } from '../../../../redux/selectors'
 import LoadingBar from '../../../meta/LoadingBar'
 import ViewerWords from '../words/ArtifactWord'
 
@@ -18,15 +16,14 @@ interface ArtifactAccordionDetailsProps {
   fontSize: number;
   toolbarIcons: JSX.Element[]
   style: React.CSSProperties;
+  isLoading: boolean
 }
 
 export default function ArtifactAccordionDetails (props: ArtifactAccordionDetailsProps) {
-  const loading = useSelector(getLoading)
-
   const { style, words, families, colorSelected, sizeSelected, fontSize, toolbarIcons } = props
   let body
 
-  if (!loading && words !== null && families !== null) {
+  if (!props.isLoading && words !== null && families !== null) {
     body = (<div
       className="flexColumn"
       style={style}>
