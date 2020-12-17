@@ -1,5 +1,6 @@
 import { AccordionDetails } from '@material-ui/core'
 import React from 'react'
+import { Icons } from '../../../../constants'
 import { Relationships, Words } from '../../../../operations/types/Trace'
 import LoadingBar from '../../../meta/LoadingBar'
 import ViewerWords from '../words/ArtifactWord'
@@ -14,7 +15,7 @@ interface ArtifactAccordionDetailsProps {
   colorSelected: boolean;
   sizeSelected: boolean;
   fontSize: number;
-  toolbarIcons: JSX.Element[]
+  toolbarIcons: Icons
   style: React.CSSProperties;
   isLoading: boolean
 }

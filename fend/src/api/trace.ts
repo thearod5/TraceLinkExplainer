@@ -1,4 +1,4 @@
-import { Artifact } from '../operations/types/Dataset'
+import { Artifact } from '../operations/types/Project'
 import { TraceInformation } from '../operations/types/Trace'
 import { BASE_URL, get } from './base'
 import { isError } from './errors'

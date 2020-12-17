@@ -11,12 +11,12 @@ export default function TraceWizard () {
 
   const body = (
     <ArtifactSetContext.Provider value={{ traceSet, setTraceSet }}>
-      <Wizard>
+      <Wizard stepNames={['Select Dataset', 'Select Artifacts', 'View Traces']}>
         <DatasetChooserWrapper />
         <Finder />
         <ExplanationStep />
       </Wizard>
     </ArtifactSetContext.Provider>
   )
-  return body
+  return <div className="sizeFull">{body}</div>
 }

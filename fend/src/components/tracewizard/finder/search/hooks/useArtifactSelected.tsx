@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArtifactCallback } from '../../../../../constants'
-import { Artifact } from '../../../../../operations/types/Dataset'
+import { Artifact } from '../../../../../operations/types/Project'
 
 export default function useArtifactSelector (): [Artifact[], ArtifactCallback, ArtifactCallback] {
   const [selectedArtifacts, setSelectedArtifacts] = useState<Artifact[]>([])

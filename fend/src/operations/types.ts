@@ -1,8 +1,8 @@
-import { Artifact, ArtifactIdentifier, Dataset } from './types/Dataset'
+import { Artifact, ArtifactIdentifier, Project } from './types/Project'
 import { Trace } from './types/Trace'
 
 export interface RootState {
-  dataset: Dataset;
+  dataset: Project;
   selectedSources: Artifact[];
   selectedTargets: Artifact[];
   selectedSourceIndex: number;

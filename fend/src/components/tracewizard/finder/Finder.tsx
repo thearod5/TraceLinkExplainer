@@ -1,18 +1,17 @@
-import { Button, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { searchForSourceArtifact, searchForTracedArtifacts } from '../../../api/search'
 import { AppContext } from '../../../App'
-import { TracesSetCallback } from '../../../constants'
-import { Artifact } from '../../../operations/types/Dataset'
-import { StepActionsContext } from '../../wizard/Wizard'
+import { Artifact } from '../../../operations/types/Project'
+import { StepActionsContext } from '../../wizard/types'
 import { ArtifactSetContext, ArtifactTraceSet } from '../types'
 import useArtifactSearch from './search/hooks/useArtifactSearch'
 import Search from './search/Search'
 
 export default function Finder () {
   const { dataset } = useContext(AppContext)
-  const { onNextStep } = useContext(StepActionsContext)
-  const { setTraceSet } = useContext(ArtifactSetContext)
+  const { onStepReadyToExit, onStepUnreadyToExit } = useContext(StepActionsContext)
+  const { traceSet: selectedTraceSet, setTraceSet: setSelectedTraceSet } = useContext(ArtifactSetContext)
   const { setError } = useContext(AppContext)
 
   const onSourceArtifactQuery = useCallback((query:string) => {
@@ -30,36 +29,33 @@ export default function Finder () {
   const [targetQueryArtifacts, targetIsLoading, targetOnSearch] = useArtifactSearch(onTargetArtifactQuery)
   const [traces, setTraces] = useState<ArtifactTraceSet[]>([])
 
-  const onAddSource = (sourceArtifact: Artifact, traceSetCallback: TracesSetCallback) => {
+  const onAddSource = (sourceArtifact: Artifact) => {
     searchForTracedArtifacts(dataset, [sourceArtifact], '').then(tracedArtifacts => {
       const sourceWithNew = [...sources, sourceArtifact]
       setSources(sourceWithNew)
       const traceWithNew: ArtifactTraceSet[] = [...traces, { sourceArtifact, tracedArtifacts }]
       setTraces(traceWithNew)
-      traceSetCallback(traceWithNew)
+      setSelectedTraceSet([...selectedTraceSet, { sourceArtifact, tracedArtifacts: [] }])
     }).catch(e => {
       setError(e)
     })
   }
 
-  const onRemoveSource = (artifact: Artifact, traceSetCallback: TracesSetCallback) => {
+  const onRemoveSource = (artifact: Artifact) => {
     setSources(sources.filter(s => s.id !== artifact.id))
-    const newTraces = traces.filter(t => t.sourceArtifact.id === artifact.id)
-    setTraces(newTraces)
-    traceSetCallback(newTraces)
+    setTraces(traces.filter(t => t.sourceArtifact.id === artifact.id))
+    setSelectedTraceSet(selectedTraceSet.filter(t => t.sourceArtifact.id === artifact.id))
   }
 
-  const onAddTarget = (artifact: Artifact, traceSetCallback: TracesSetCallback) => {
-    const newTraces = traces.map(t => addArtifactToTraceSet(t, artifact)) // TODO: Replace with tab artifact id of target
-    setTraces(newTraces)
-    traceSetCallback(newTraces)
+  const onAddTarget = (artifact: Artifact) => {
+    setTraces(traces.map(t => addArtifactToTraceSet(t, artifact)))
+    setSelectedTraceSet(selectedTraceSet.map(t => addArtifactToTraceSet(t, artifact)))
   }
 
-  const onRemoveTarget = (artifact: Artifact, traceSetCallback: TracesSetCallback) => {
+  const onRemoveTarget = (artifact: Artifact) => {
     const affectedSourceIds = traces.map(t => t.sourceArtifact.id) // TODO: Replace with tab artifact id of target
-    const newTraces = traces.map(t => affectedSourceIds.includes(t.sourceArtifact.id) ? removeArtifactFromTraceSet(t, artifact) : t)
-    setTraces(newTraces)
-    traceSetCallback(newTraces)
+    setTraces(traces.map(t => affectedSourceIds.includes(t.sourceArtifact.id) ? removeArtifactFromTraceSet(t, artifact) : t))
+    setSelectedTraceSet(selectedTraceSet.map(t => affectedSourceIds.includes(t.sourceArtifact.id) ? removeArtifactFromTraceSet(t, artifact) : t))
   }
 
   function addArtifactToTraceSet (trace: ArtifactTraceSet, artifact: Artifact): ArtifactTraceSet {
@@ -80,18 +76,24 @@ export default function Finder () {
     targetOnSearch('')
   }, [sources, targetOnSearch])
 
+  useEffect(() => {
+    if (selectedTraceSet.length > 0 && !selectedTraceSet.every(ts => ts.tracedArtifacts.length === 0)) {
+      onStepReadyToExit()
+    } else {
+      onStepUnreadyToExit()
+    }
+  }, [selectedTraceSet])
+
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Button onClick={onNextStep}>View Traces</Button>
-      </Grid>
+
       <Grid item xs={6}>
         <Search
           artifacts={sourceQueryArtifacts}
           onSearch={sourceOnSearch}
           isLoading={sourceIsLoading}
-          addArtifact={(a) => onAddSource(a, setTraceSet)}
-          removeArtifact={(a) => onRemoveSource(a, setTraceSet)}
+          addArtifact={(a) => onAddSource(a)}
+          removeArtifact={(a) => onRemoveSource(a)}
         />
       </Grid>
       <Grid item xs={6}>
@@ -99,8 +101,8 @@ export default function Finder () {
           artifacts={targetQueryArtifacts}
           onSearch={targetOnSearch}
           isLoading={targetIsLoading}
-          addArtifact={(a) => onAddTarget(a, setTraceSet)}
-          removeArtifact={(a) => onRemoveTarget(a, setTraceSet)}
+          addArtifact={(a) => onAddTarget(a)}
+          removeArtifact={(a) => onRemoveTarget(a)}
         />
       </Grid>
     </Grid>

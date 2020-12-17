@@ -1,6 +1,6 @@
 import { createBrowserHistory } from 'history'
 import { ArtifactTraceSet } from './components/tracewizard/types'
-import { Artifact, Dataset } from './operations/types/Dataset'
+import { Artifact, Project } from './operations/types/Project'
 import { Trace, WordDescriptorDisplay } from './operations/types/Trace'
 /*
  * Search
@@ -8,7 +8,7 @@ import { Trace, WordDescriptorDisplay } from './operations/types/Trace'
 export const SELECT_SOURCE_MESSAGE = 'See traced artifacts'
 export const SELECT_TARGET_MESSAGE = 'See traces explanations'
 export const SEARCH_LIMIT = 100
-export const SEARCH_RESULTS_PER_PAGE = 20
+export const MAX_SEARCH_RESULTS_PER_PAGE = 8
 export const NUMBER_RESULTS_PROMPT = ' artifacts retrieved'
 
 /*
@@ -53,7 +53,7 @@ export type ArtifactCallback = (artifact: Artifact) => void
 export type TracesSetCallback = (trace: ArtifactTraceSet[]) => void
 export type TraceCallback = (trace: Trace) => void
 export type IndexCallback = (index: number) => void
-export type DatasetCallback = (dataset : Dataset) => void
+export type DatasetCallback = (dataset : Project) => void
 /*
  * Types
  */
@@ -63,6 +63,7 @@ export type ElementSetter = (value: React.SetStateAction<JSX.Element | null>) =>
 export type BooleanSetter = (num: boolean) => void;
 export type ArtifactsSetter = (artifacts: Artifact[]) => void;
 export type MUICallback = ((event: React.ChangeEvent<{}>, expanded: boolean) => void) | undefined
-export type Icons = JSX.Element[]
+export type Icon = JSX.Element
+export type Icons = Icon[]
 
 export const appHistory = createBrowserHistory()

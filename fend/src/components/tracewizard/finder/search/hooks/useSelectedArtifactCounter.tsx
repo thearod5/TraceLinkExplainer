@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArtifactCallback } from '../../../../../constants'
-import { Artifact } from '../../../../../operations/types/Dataset'
+import { Artifact } from '../../../../../operations/types/Project'
 
 /* Responsible for counting how many artifacts have current been selected
  *

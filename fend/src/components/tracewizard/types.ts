@@ -1,6 +1,6 @@
 import React from 'react'
 import { TraceCallback, TracesSetCallback } from '../../constants'
-import { Artifact } from '../../operations/types/Dataset'
+import { Artifact } from '../../operations/types/Project'
 import { Trace } from '../../operations/types/Trace'
 import { initializeEmptyTrace } from '../../operations/initializers'
 

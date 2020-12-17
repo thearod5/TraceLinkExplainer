@@ -1,7 +1,7 @@
-import { Artifact, Dataset } from './types/Dataset'
+import { Artifact, Project } from './types/Project'
 import { Trace } from './types/Trace'
 
-export function initializeEmptyDataset (): Dataset {
+export function initializeEmptyDataset (): Project {
   return {
     id: '',
     name: '',

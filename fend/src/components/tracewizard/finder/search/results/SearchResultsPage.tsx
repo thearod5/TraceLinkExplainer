@@ -1,7 +1,7 @@
 import React from 'react'
 import { NUMBER_RESULTS_PROMPT } from '../../../../../constants'
 import { getDefaultRelationships } from '../../../../../operations/artifacts/WordCreator'
-import { ArtifactDisplayModel } from '../../../../../operations/types/Dataset'
+import { ArtifactDisplayModel } from '../../../../../operations/types/Project'
 import { ArtifactClickAction } from '../types'
 import SearchResultAccordion from './SearchResultAccordion'
 

@@ -10,7 +10,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FullscreenIcon from '@material-ui/icons/Fullscreen'
 import React, { useState } from 'react'
-import { Artifact } from '../../../../../operations/types/Dataset'
+import { Artifact } from '../../../../../operations/types/Project'
 import { Relationships, Words } from '../../../../../operations/types/Trace'
 import ViewerWords from '../../../artifact/words/ArtifactWord'
 import { ArtifactClickAction } from '../types'

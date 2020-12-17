@@ -5,7 +5,7 @@ import { objectContainsKeys } from './TypeUtil'
  * Type Definitions
  */
 
-export interface Dataset {
+export interface Project {
   id: string;
   name: string;
   description: string;
@@ -37,12 +37,12 @@ export interface ArtifactDisplayModel {
  * Type Checkers
  */
 
-export function isDataset (obj?: any): obj is Dataset {
+export function isDataset (obj?: any): obj is Project {
   const requiredKeys = ['name', 'id', 'description'] // TODO: Automate generation of list of keys
   return objectContainsKeys(requiredKeys, obj)
 }
 
-export function isNonEmptyDataset (obj?: any): obj is Dataset {
+export function isNonEmptyDataset (obj?: any): obj is Project {
   return isDataset(obj) && obj.id !== ''
 }
 

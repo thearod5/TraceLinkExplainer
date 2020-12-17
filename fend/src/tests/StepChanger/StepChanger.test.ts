@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 import { AppContext } from '../../App'
 import { SELECT_SOURCE_STEP } from '../../constants'
 import { getNewStepState } from '../../operations/pagechanger/PageChanger'
-import { Artifact, Dataset } from '../../operations/types/Dataset'
+import { Artifact, Project } from '../../operations/types/Project'
 import {
   clearData,
 
@@ -15,7 +15,7 @@ import { RootState } from '../../operations/types'
 
 const mockState: RootState = createEmptyState()
 
-const mockDataset: Dataset = {
+const mockDataset: Project = {
   id: v4(),
   name: 'Test Dataset',
   description: 'Test Summary'

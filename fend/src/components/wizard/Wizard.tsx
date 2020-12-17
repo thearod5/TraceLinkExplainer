@@ -1,47 +1,22 @@
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../../App'
-import { IndexCallback, VoidCallback } from '../../constants'
+import { IndexCallback } from '../../constants'
+import { StepContext } from './types'
+import { WizardStep } from './WizardStep'
 
-export const StepContext = React.createContext({
-  currentStep: 0
-})
-
-export const StepActionsContext = React.createContext({
-  onNextStep: () => { console.error('not implemented') },
-  onPreviousStep: () => { console.error('not implemented') }
-})
-
-interface StepDecoratorProps {
-	active: boolean
-	onNextStep: VoidCallback
-	onPreviousStep: VoidCallback
+interface WizardProps {
+  stepNames: string[]
 }
 
-function StepDecorator (props: React.PropsWithChildren<StepDecoratorProps>) {
-  const { active, onNextStep, onPreviousStep, children } = props
-
-  const body = (
-    <StepActionsContext.Provider value={{ onNextStep, onPreviousStep }} >
-      {children}
-    </StepActionsContext.Provider>
-  )
-
-  if (!active) {
-    return null
-  }
-
-  if (children === undefined || children === null) { throw Error('step decorator requires a single child') }
-
-  return body
-}
-
-export default function Wizard (props: React.PropsWithChildren<{}>) {
+export default function Wizard (props: React.PropsWithChildren<WizardProps>) {
   const [currentStep, setCurrentStep] = useState(0)
   const { setError } = useContext(AppContext)
 
   const children = props.children as React.ReactNode[]
+  const stepNames = props.stepNames.map((name, nameIndex) => (nameIndex + 1) + '. ' + name)
 
   const onNextStep: IndexCallback = (stepIndex: number) => {
+    console.log('on next step', stepIndex)
     if (currentStep === children.length - 1) {
       setError('cannot move beyond last step')
     } else if (stepIndex !== currentStep) {
@@ -61,14 +36,20 @@ export default function Wizard (props: React.PropsWithChildren<{}>) {
     }
   }
 
+  const previousStepName = currentStep === 0 ? null : stepNames[currentStep - 1]
+  const nextStepName = currentStep === children.length - 1 ? null : stepNames[currentStep + 1]
+
   return (
-    <StepContext.Provider value={{ currentStep }}>
-      {children.map((child, stepIndex) => (
-        <StepDecorator
-          key={stepIndex}
-          active={currentStep === stepIndex}
-          onNextStep={() => onNextStep(stepIndex)}
-          onPreviousStep={() => onPreviousStep(stepIndex)}>{child}</StepDecorator>))}
-    </StepContext.Provider>
+    <div className="sizeFull">
+      <StepContext.Provider value={{ currentStep }}>
+        {children.map((child, stepIndex) => (
+          <WizardStep
+            key={stepIndex}
+            active={currentStep === stepIndex}
+            stepNames={[previousStepName, stepNames[currentStep], nextStepName]}
+            onNextStep={() => onNextStep(stepIndex)}
+            onPreviousStep={() => onPreviousStep(stepIndex)}>{child}</WizardStep>))}
+      </StepContext.Provider>
+    </div>
   )
 }

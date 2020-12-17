@@ -1,7 +1,7 @@
 import React from 'react'
 import { colors } from '../../../../constants'
 import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../../../../operations/artifacts/WordCreator'
-import { Artifact, ArtifactIdentifier } from '../../../../operations/types/Dataset'
+import { Artifact, ArtifactIdentifier } from '../../../../operations/types/Project'
 import { RelationshipColors, Relationships, WordDescriptors } from '../../../../operations/types/Trace'
 import ArtifactAccordion from './ArtifactAccordion'
 

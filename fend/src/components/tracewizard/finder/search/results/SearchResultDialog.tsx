@@ -11,7 +11,7 @@ import DoneIcon from '@material-ui/icons/Done'
 import React from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs'
-import { Artifact } from '../../../../../operations/types/Dataset'
+import { Artifact } from '../../../../../operations/types/Project'
 
 interface SearchItemDialogProps {
   selectSource: () => void;

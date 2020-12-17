@@ -2,10 +2,10 @@ import {
   Artifact,
   ArtifactIdentifier,
 
-  Dataset,
+  Project,
 
   isNonEmptyDataset
-} from '../operations/types/Dataset';
+} from '../operations/types/Project';
 import {
   SearchResponse
 } from '../operations/types/Search';
@@ -15,7 +15,7 @@ import { CustomError, isError } from './errors';
 export type ServerResponse = CustomError | SearchResponse;
 
 export async function searchForSourceArtifact (
-  dataset: Dataset,
+  dataset: Project,
   query: string
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
@@ -30,7 +30,7 @@ export async function searchForSourceArtifact (
 }
 
 export async function searchForTracedArtifacts (
-  dataset: Dataset,
+  dataset: Project,
   sources: ArtifactIdentifier[],
   query: string
 ): Promise<Artifact[]> {

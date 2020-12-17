@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core'
 import React from 'react'
 import { ArtifactCallback, StringCallback } from '../../../../constants'
-import { Artifact } from '../../../../operations/types/Dataset'
+import { Artifact } from '../../../../operations/types/Project'
 import SearchBar from './bar/SearchBar'
 import SearchResults from './results/SearchResults'
 

@@ -1,12 +1,12 @@
 import React from 'react'
-import { SEARCH_RESULTS_PER_PAGE } from '../../../../../constants'
+import { MAX_SEARCH_RESULTS_PER_PAGE } from '../../../../../constants'
 import { createArtifactDisplayModel } from '../../../../../operations/artifacts/WordCreator'
-import { Artifact } from '../../../../../operations/types/Dataset'
+import { Artifact } from '../../../../../operations/types/Project'
 import LoadingBar from '../../../../meta/LoadingBar'
-import SearchResultsPage from './SearchResultsPage'
-import { SearchFooter } from '../SearchFooter'
 import usePageCounter from '../hooks/usePageCounter'
 import useSelectedArtifactCounter from '../hooks/useSelectedArtifactCounter'
+import { SearchFooter } from '../SearchFooter'
+import SearchResultsPage from './SearchResultsPage'
 
 /* Responsibility: Defines the HTML/CSS structure of the Search.tsx
  *
@@ -21,17 +21,14 @@ interface SearchResultProps {
 
 export default function SearchResults (props: SearchResultProps) {
   const { artifacts, isLoading, addArtifact, removeArtifact } = props
-  const totalPages = artifacts.length / SEARCH_RESULTS_PER_PAGE
+  const totalPages = Math.floor(artifacts.length / MAX_SEARCH_RESULTS_PER_PAGE) + 1
 
   const [numberSelected, onSelectArtifact, onRemoveArtifact] = useSelectedArtifactCounter({ totalPages, addArtifact, removeArtifact })
   const [currentPage, onNextPage, onPreviousPage] = usePageCounter({ totalPages })
 
-  // subcomponents
-  const loadingBar = LoadingBar()
-
   const footer = (
     <SearchFooter
-      page={currentPage}
+      pageIndex={currentPage}
       totalPages={totalPages}
       message={''}
       onNextPage={onNextPage}
@@ -40,8 +37,8 @@ export default function SearchResults (props: SearchResultProps) {
     />
   )
 
-  const startIndex = currentPage * SEARCH_RESULTS_PER_PAGE
-  const endIndex = startIndex + SEARCH_RESULTS_PER_PAGE
+  const startIndex = currentPage * MAX_SEARCH_RESULTS_PER_PAGE
+  const endIndex = startIndex + MAX_SEARCH_RESULTS_PER_PAGE
 
   const body = (
     <div style={{ height: '90%' }}>
@@ -61,5 +58,5 @@ export default function SearchResults (props: SearchResultProps) {
     </div>
   )
 
-  return isLoading ? loadingBar : body
+  return isLoading ? LoadingBar() : body
 }
