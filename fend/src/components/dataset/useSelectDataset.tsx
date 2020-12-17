@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDatasetNames } from '../../api/datasets'
+import { AppContext } from '../../App'
 import { FIRST_STEP_IN_WIZARD, SELECT_SOURCES_ROUTE } from '../../constants'
 import { getStepChangeError } from '../../operations/pagechanger/PageChanger'
 import { Dataset } from '../../operations/types/Dataset'
 import {
   changeStep,
   clearData,
-  selectDataset,
-  setError
+  selectDataset
 } from '../../redux/actions'
 import { getDataset } from '../../redux/selectors'
 import { appHistory } from '../../redux/store'
-import DatasetChooserItem from './DatasetChooserItem'
 import { DEFAULT_INDEX_SELECTED } from './DatasetChooser'
+import DatasetChooserItem from './DatasetChooserItem'
 
 export function useSelectDataset () {
   const dataset = useSelector(getDataset)
   const dispatch = useDispatch()
+  const { setError } = useContext(AppContext)
 
   const [indexSelected, setIndexSelected] = useState(DEFAULT_INDEX_SELECTED)
   const [datasets, setDatasetsNames] = useState<Dataset[]>([])
@@ -49,7 +50,7 @@ export function useSelectDataset () {
       if (error === undefined) {
         dispatch(changeStep(FIRST_STEP_IN_WIZARD))
         appHistory.push(route)
-      } else { dispatch(setError(error)) }
+      } else { setError(error) }
     }
   }
 

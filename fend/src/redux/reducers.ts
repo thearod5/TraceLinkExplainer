@@ -7,7 +7,6 @@ import {
   CLEAR_DATA,
   CustomAction,
   SELECT_DATASET,
-  SET_ERROR_ACTION,
   SET_LOADING_ACTION,
   SET_SELECTED_SOURCES_ACTION,
   SET_SELECTED_SOURCE_INDEX_ACTION,
@@ -99,20 +98,6 @@ function rootReducer (
           selectedTargets: action.payload
         }
       } else throw new Error(createReducerError(SET_SELECTED_TARGETS_ACTION, 'Artifact[]', action.payload))
-
-    case SET_ERROR_ACTION:
-      if (typeof action.payload === 'string') {
-        return {
-          ...state,
-          error: action.payload
-        }
-      } else if (action.payload === undefined) {
-        return { ...state, error: undefined }
-      } else if (typeof action.payload === 'object') {
-        return { ...state, error: JSON.stringify(action.payload) }
-      } else {
-        throw new Error(createReducerError(SET_ERROR_ACTION, 'string', action.payload))
-      }
 
     case SET_LOADING_ACTION:
       if (typeof action.payload === 'boolean') {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { AppContext } from '../../App'
 import { IndexCallback, VoidCallback } from '../../constants'
-import { setError } from '../../redux/actions'
 
 export const StepContext = React.createContext({
   currentStep: 0
@@ -36,14 +36,15 @@ function StepDecorator (props: React.PropsWithChildren<StepDecoratorProps>) {
 export default function Wizard (props: React.PropsWithChildren<{}>) {
   const dispatch = useDispatch()
   const [currentStep, setCurrentStep] = useState(0)
+  const { setError } = useContext(AppContext)
 
   const children = props.children as React.ReactNode[]
 
   const onNextStep: IndexCallback = (stepIndex: number) => {
     if (currentStep === children.length - 1) {
-      dispatch(setError('cannot move beyond last step'))
+      setError('cannot move beyond last step')
     } else if (stepIndex !== currentStep) {
-      dispatch(setError('wizard recevied erroneous request for next step'))
+      setError('wizard recevied erroneous request for next step')
     } else {
       setCurrentStep(currentStep + 1)
     }

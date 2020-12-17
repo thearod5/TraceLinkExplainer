@@ -1,7 +1,5 @@
 import { Artifact } from '../operations/types/Dataset'
 import { TraceInformation } from '../operations/types/Trace'
-import { setError } from '../redux/actions'
-import store from '../redux/store'
 import { BASE_URL, get } from './base'
 import { isError } from './errors'
 
@@ -14,9 +12,7 @@ export function getTraceInformation (
 
   return new Promise((resolve, reject) => {
     get(TRACE_URL).then((response) => {
-      console.log('GET SUCCESS!')
       if (isError(response)) {
-        store.dispatch(setError(`Error occurred on backend: ${response.error}`))
         reject(response.message)
       } else resolve(response as TraceInformation)
     }).catch(e => reject(e))

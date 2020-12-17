@@ -1,5 +1,5 @@
-import { TraceSet } from './components/finder/Finder'
-import { Artifact } from './operations/types/Dataset'
+import { TraceSet } from './components/tracewizard/types'
+import { Artifact, Dataset } from './operations/types/Dataset'
 import { WordDescriptorDisplay } from './operations/types/Trace'
 
 /*
@@ -22,6 +22,9 @@ export const DEFAULT_FONT_COLOR = 'black'
 export const DEFAULT_FONT_SIZE = 1
 export const FONT_SIZE_DELTA = 0.2
 
+export const NOT_CACHED = -2
+export const UNSELECTED_INDEX = -1
+
 /*
  * API
  */
@@ -39,16 +42,17 @@ export const VIEW_TRACE_ROUTE = '/trace' // page 4
 
 export const FADE_TIMEOUT = 500 // ms
 
-export type StartSearchCallback = (searchString: string, limit?: number) => void
+/*
+ *
+ */
 export type VoidCallback = () => void
+export type StartSearchCallback = (searchString: string, limit?: number) => void
 export type StringCallback = (str: string) => void
+export type OptionalStringCallback = (str: string | undefined) => void
 export type ArtifactCallback = (artifact: Artifact) => void
 export type TracesSetCallback = (trace: TraceSet[]) => void
 export type IndexCallback = (index: number) => void
-
-export const NOT_CACHED = -2
-export const UNSELECTED_INDEX = -1
-
+export type DatasetCallback = (dataset : Dataset) => void
 /*
  * Types
  */

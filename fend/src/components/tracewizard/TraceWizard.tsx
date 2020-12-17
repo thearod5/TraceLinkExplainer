@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react'
-import Finder, { TraceContext, TraceSet } from '../finder/Finder'
-import Trace from '../trace/Trace'
 import Wizard from '../wizard/Wizard'
+import Trace from './explanation/Trace'
+import Finder from './finder/Finder'
+import { TraceContext, TraceSet } from './types'
 
 export default function TraceWizard () {
   const [traceSet, setTraceSet] = useState<TraceSet[]>([])

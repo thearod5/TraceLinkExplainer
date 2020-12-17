@@ -1,6 +1,6 @@
-import { Artifact, Dataset } from '../operations/types/Dataset'
-import { Trace, WordDescriptorDisplay } from '../operations/types/Trace'
-import { ArtifactMutatorActionType } from './types'
+import { Artifact, Dataset } from '../operations/types/Dataset';
+import { Trace, WordDescriptorDisplay } from '../operations/types/Trace';
+import { ArtifactMutatorActionType } from './types';
 
 /*
  * All
@@ -16,7 +16,6 @@ export type CustomAction =
   | SetTraceSourceIndexAction
   | SetTraceTargetIndexAction
   | ChangeStepAction
-  | SetError
   | ClearDataAction
   | ClearDataAction
   | ArtifactMutatorActionType
@@ -189,20 +188,6 @@ export function setSelectedWord (word: WordDescriptorDisplay | null) {
 /*
  * Meta
  */
-
-export const SET_ERROR_ACTION = 'SET_ERROR_ACTION'
-
-export interface SetError {
-  type: typeof SET_ERROR_ACTION;
-  payload: string | undefined;
-}
-
-export function setError (error: string | undefined): SetError {
-  return {
-    type: SET_ERROR_ACTION,
-    payload: error
-  }
-}
 
 export const CLEAR_DATA = 'CLEAR_DATA'
 
