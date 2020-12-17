@@ -19,17 +19,20 @@ interface StepDecoratorProps {
 
 function StepDecorator (props: React.PropsWithChildren<StepDecoratorProps>) {
   const { active, onNextStep, onPreviousStep, children } = props
+
+  const body = (
+    <StepActionsContext.Provider value={{ onNextStep, onPreviousStep }} >
+      {children}
+    </StepActionsContext.Provider>
+  )
+
   if (!active) {
     return null
   }
 
   if (children === undefined || children === null) { throw Error('step decorator requires a single child') }
 
-  return (
-    <StepActionsContext.Provider value={{ onNextStep, onPreviousStep }}>
-      {children}
-    </StepActionsContext.Provider>
-  )
+  return body
 }
 
 export default function Wizard (props: React.PropsWithChildren<{}>) {
@@ -44,7 +47,6 @@ export default function Wizard (props: React.PropsWithChildren<{}>) {
     } else if (stepIndex !== currentStep) {
       setError('wizard recevied erroneous request for next step')
     } else {
-      console.log('hello world we did it')
       setCurrentStep(currentStep + 1)
     }
   }

@@ -3,27 +3,34 @@ import React, { useContext, useEffect, useState } from 'react'
 import { getTraceInformation } from '../../../api/trace'
 import { AppContext } from '../../../App'
 import { UNSELECTED_INDEX } from '../../../constants'
-import { Trace } from '../../../operations/types/Trace'
 import { initializeEmptyTrace } from '../../../operations/initializers'
+import { Artifact } from '../../../operations/types/Dataset'
+import { Trace } from '../../../operations/types/Trace'
 import LoadingBar from '../../meta/LoadingBar'
 import { createRelationshipColors } from '../artifact/accordion/ArtifactAccordionFactory'
 import { SelectedArtifactsContainer } from '../finder/panels/TracedArtifactsDisplay'
-import { ArtifactSetContext } from '../types'
+import { ArtifactSetContext, TraceContext } from '../types'
 import ExplanationPanel from './ExplanationPanel'
-import useTraceExplanationListener from './hooks/useTraceExplanationListener'
 
 export default function ExplanationStep () {
   const { dataset, setError } = useContext(AppContext)
   const { traceSet } = useContext(ArtifactSetContext)
-  const [modalOpen] = useTraceExplanationListener()
   const [trace, setTrace] = useState<Trace>(initializeEmptyTrace())
 
-  const [selectedSource, setSelectedSource] = useState<number>(UNSELECTED_INDEX)
-  const [selectedTarget, setSelectedTarget] = useState<number>(UNSELECTED_INDEX)
-  const [isLoading, setIsLoading] = useState(false)
+  const modalOpen = trace.selectedWord !== null
 
-  const sourceArtifacts = traceSet.map(ts => ts.sourceArtifact)
-  const targetArtifacts = traceSet.map(ts => ts.tracedArtifacts).flat()
+  const [selectedSource, setSelectedSource] = useState<number>(-1)
+  const [selectedTarget, setSelectedTarget] = useState<number>(-1)
+  const [isLoading, setIsLoading] = useState(false)
+  const [sourceArtifacts, setSourceArtifacts] = useState<Artifact[]>([])
+  const [targetArtifacts, setTargetArtifacts] = useState<Artifact[]>([])
+
+  useEffect(() => {
+    setSourceArtifacts(traceSet.map(ts => ts.sourceArtifact))
+    setTargetArtifacts(traceSet.map(ts => ts.tracedArtifacts).flat())
+    setSelectedSource(0)
+    setSelectedTarget(0)
+  }, [traceSet]) // trace set does not change once in this step
 
   useEffect(() => {
     if (selectedSource !== UNSELECTED_INDEX && selectedTarget !== UNSELECTED_INDEX) {
@@ -34,13 +41,15 @@ export default function ExplanationStep () {
             traceInformation
               .relationships
               .map(relationship => relationship.title))
-          setTrace({
-            ...trace,
-            relationships: traceInformation.relationships,
-            relationshipColors: relationshipColors,
-            sourceWords: traceInformation.sourceDescriptors,
-            targetWords: traceInformation.targetDescriptors,
-            selectedWord: null
+          setTrace((t) => {
+            return {
+              ...t,
+              relationships: traceInformation.relationships,
+              relationshipColors: relationshipColors,
+              sourceWords: traceInformation.sourceDescriptors,
+              targetWords: traceInformation.targetDescriptors,
+              selectedWord: null
+            }
           })
           setIsLoading(false)
         })
@@ -51,19 +60,33 @@ export default function ExplanationStep () {
     } else {
       setTrace(initializeEmptyTrace())
     }
-  }, [selectedTarget, selectedSource, dataset, setError, sourceArtifacts, targetArtifacts, trace])
+  }, [selectedTarget, selectedSource, dataset.name, setError, sourceArtifacts, targetArtifacts])
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        {isLoading ? LoadingBar() : <SelectedArtifactsContainer artifacts={sourceArtifacts} traceWords={trace.sourceWords} onItemClick={setSelectedSource}/>}
+    <TraceContext.Provider value={{ trace, setTrace }}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          {isLoading ? LoadingBar() : <SelectedArtifactsContainer
+            artifacts={sourceArtifacts}
+            traceWords={trace.sourceWords}
+            onItemClick={setSelectedSource}
+            selectedIndex={selectedSource}
+            onSelectIndex={setSelectedSource}/>}
+        </Grid>
+        <Grid item xs={6}>
+          {isLoading ? LoadingBar() : <SelectedArtifactsContainer
+            artifacts={targetArtifacts}
+            traceWords={trace.targetWords}
+            onItemClick={setSelectedTarget}
+            selectedIndex={selectedTarget}
+            onSelectIndex={setSelectedTarget}
+          />}
+        </Grid>
+        <Grid item xs={12}>
+          <ExplanationPanel open={modalOpen} />
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        {isLoading ? LoadingBar() : <SelectedArtifactsContainer artifacts={targetArtifacts} traceWords={trace.targetWords} onItemClick={setSelectedTarget}/>}
-      </Grid>
-      <Grid item xs={12}>
-        <ExplanationPanel open={modalOpen} />
-      </Grid>
-    </Grid>
+    </TraceContext.Provider>
+
   )
 }

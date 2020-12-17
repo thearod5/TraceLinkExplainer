@@ -19,7 +19,7 @@ export default function useArtifactSearch (searchFunction: SuggestionFunctionTyp
         setError(e)
         setIsLoading(false)
       })
-  }, [searchFunction, setError])
+  }, [setError, searchFunction])
 
   useEffect(() => onSearch(''), [onSearch])
   return [queriedArtifacts, isLoading, onSearch]

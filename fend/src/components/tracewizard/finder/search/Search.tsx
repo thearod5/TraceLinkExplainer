@@ -1,9 +1,9 @@
 import { Box } from '@material-ui/core'
 import React from 'react'
-import { ArtifactCallback, StringCallback } from '../../../../../constants'
-import { Artifact } from '../../../../../operations/types/Dataset'
-import SearchBar from '../bar/SearchBar'
-import SearchResults from './SearchResults'
+import { ArtifactCallback, StringCallback } from '../../../../constants'
+import { Artifact } from '../../../../operations/types/Dataset'
+import SearchBar from './bar/SearchBar'
+import SearchResults from './results/SearchResults'
 
 /* Responsible for displaying given artifacts and submitting search request on behalf of the user
  *

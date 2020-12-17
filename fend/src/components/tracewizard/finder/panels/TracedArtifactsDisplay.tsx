@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { NumberSetter } from '../../../../constants'
 import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../../../../operations/artifacts/WordCreator'
 import { Artifact } from '../../../../operations/types/Dataset'
@@ -14,18 +14,18 @@ interface TracedArtifactAccordionDisplayProps {
   artifacts: Artifact[]
   onItemClick: NumberSetter
   traceWords: WordDescriptors | null
+  selectedIndex: number
+  onSelectIndex: NumberSetter
 }
 
 export function SelectedArtifactsContainer (props: TracedArtifactAccordionDisplayProps) {
   const { trace } = useContext(TraceContext)
   const { relationships, relationshipColors } = trace
 
-  const [selectedIndex, setSelectedIndex] = useState(0)
-
   return (
     <div className="heightFull overflowScroll">      {
       props.artifacts.map((artifact, index) => {
-        if (index === selectedIndex) {
+        if (index === props.selectedIndex) {
           const defaultAccordion = relationships === null || relationshipColors === null
           return createTracedArtifactAccordion(
             defaultAccordion ? createDefaultWordDescriptors(artifact.body) : props.traceWords,
@@ -33,16 +33,16 @@ export function SelectedArtifactsContainer (props: TracedArtifactAccordionDispla
             artifact,
             defaultAccordion ? getDefaultRelationshipColors() : relationshipColors,
             true,
-            () => setSelectedIndex(index),
-            () => setSelectedIndex(-1), false
+            () => props.onSelectIndex(index),
+            () => props.onSelectIndex(-1), false
           )
         } else {
           return createDefaultArtifactAccordion(
             artifact,
             artifact.body,
             false,
-            () => setSelectedIndex(index),
-            () => setSelectedIndex(-1))
+            () => props.onSelectIndex(index),
+            () => props.onSelectIndex(-1))
         }
       })
     }

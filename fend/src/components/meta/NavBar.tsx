@@ -1,18 +1,14 @@
 import { Box } from '@material-ui/core'
-import React, { useContext } from 'react'
-import { AppContext } from '../../App'
-
+import React from 'react'
+import { appHistory, HOME_ROUTE } from '../../constants'
 
 interface NavBarProps {
   title: string
 }
 
 export default function NavBar (props: NavBarProps) {
-  const { dataset } = useContext(AppContext)
-
   const GoHomeClickHanlder = () => {
-    console.log('CLICK HOME')
-    // appHistory.push(HOME_ROUTE)
+    appHistory.push(HOME_ROUTE)
   }
 
   return (

@@ -19,7 +19,6 @@ export default function DatasetChooserItem (props: DataItemSummaryProps) {
   useEffect(() => {
     const callback = expanded ? props.select : props.deselect
     callback()
-    console.log('CALLBACK:', callback, expanded)
     // eslint-disable-next-line
   }, [expanded]);
 

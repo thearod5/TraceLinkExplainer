@@ -3,10 +3,10 @@ import { SEARCH_RESULTS_PER_PAGE } from '../../../../../constants'
 import { createArtifactDisplayModel } from '../../../../../operations/artifacts/WordCreator'
 import { Artifact } from '../../../../../operations/types/Dataset'
 import LoadingBar from '../../../../meta/LoadingBar'
-import SearchResultsPage from '../results/SearchResultsPage'
+import SearchResultsPage from './SearchResultsPage'
 import { SearchFooter } from '../SearchFooter'
-import usePageCounter from './usePageCounter'
-import useSelectedArtifactCounter from './useSelectedArtifactCounter'
+import usePageCounter from '../hooks/usePageCounter'
+import useSelectedArtifactCounter from '../hooks/useSelectedArtifactCounter'
 
 /* Responsibility: Defines the HTML/CSS structure of the Search.tsx
  *

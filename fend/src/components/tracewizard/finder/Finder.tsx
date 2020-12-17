@@ -1,37 +1,45 @@
 import { Button, Grid } from '@material-ui/core'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { searchForSourceArtifact, searchForTracedArtifacts } from '../../../api/search'
 import { AppContext } from '../../../App'
 import { TracesSetCallback } from '../../../constants'
 import { Artifact } from '../../../operations/types/Dataset'
 import { StepActionsContext } from '../../wizard/Wizard'
 import { ArtifactSetContext, ArtifactTraceSet } from '../types'
-import Search from './search/too/Search'
-import useArtifactSearch from './search/too/useArtifactSearch'
+import useArtifactSearch from './search/hooks/useArtifactSearch'
+import Search from './search/Search'
 
 export default function Finder () {
+  const { dataset } = useContext(AppContext)
   const { onNextStep } = useContext(StepActionsContext)
   const { setTraceSet } = useContext(ArtifactSetContext)
   const { setError } = useContext(AppContext)
 
-  const [sources, setSources] = useState<Artifact[]>([])
-  const [sourceQueryArtifacts, sourceIsLoading, sourceOnSearch] = useArtifactSearch(searchForSourceArtifact)
+  const onSourceArtifactQuery = useCallback((query:string) => {
+    return searchForSourceArtifact(dataset, query)
+  }, [dataset])
 
-  const targetArtifactQuery = (query: string) => {
+  const [sources, setSources] = useState<Artifact[]>([])
+  const [sourceQueryArtifacts, sourceIsLoading, sourceOnSearch] = useArtifactSearch(onSourceArtifactQuery)
+
+  const onTargetArtifactQuery = useCallback((query: string) => {
     const affectedSources = sources // TODO: Replace with tab sources
-    return searchForTracedArtifacts(affectedSources, query)
-  }
-  const [targetQueryArtifacts, targetIsLoading, targetOnSearch] = useArtifactSearch(targetArtifactQuery)
+    return searchForTracedArtifacts(dataset, affectedSources, query)
+  }, [sources, dataset])
+
+  const [targetQueryArtifacts, targetIsLoading, targetOnSearch] = useArtifactSearch(onTargetArtifactQuery)
   const [traces, setTraces] = useState<ArtifactTraceSet[]>([])
 
   const onAddSource = (sourceArtifact: Artifact, traceSetCallback: TracesSetCallback) => {
-    searchForTracedArtifacts([sourceArtifact], '').then(tracedArtifacts => {
+    searchForTracedArtifacts(dataset, [sourceArtifact], '').then(tracedArtifacts => {
       const sourceWithNew = [...sources, sourceArtifact]
       setSources(sourceWithNew)
       const traceWithNew: ArtifactTraceSet[] = [...traces, { sourceArtifact, tracedArtifacts }]
       setTraces(traceWithNew)
       traceSetCallback(traceWithNew)
-    }).catch(e => setError(e))
+    }).catch(e => {
+      setError(e)
+    })
   }
 
   const onRemoveSource = (artifact: Artifact, traceSetCallback: TracesSetCallback) => {
@@ -70,7 +78,7 @@ export default function Finder () {
 
   useEffect(() => {
     targetOnSearch('')
-  }, [targetOnSearch])
+  }, [sources, targetOnSearch])
 
   return (
     <Grid container spacing={2}>

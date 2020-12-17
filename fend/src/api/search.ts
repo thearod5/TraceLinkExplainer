@@ -1,27 +1,27 @@
-import { useContext } from 'react'
-import { AppContext } from '../App'
 import {
   Artifact,
   ArtifactIdentifier,
 
+  Dataset,
+
   isNonEmptyDataset
-} from '../operations/types/Dataset'
+} from '../operations/types/Dataset';
 import {
   SearchResponse
-} from '../operations/types/Search'
-import { BASE_URL, get } from './base'
-import { CustomError, isError } from './errors'
+} from '../operations/types/Search';
+import { BASE_URL, get } from './base';
+import { CustomError, isError } from './errors';
 
 export type ServerResponse = CustomError | SearchResponse;
 
 export async function searchForSourceArtifact (
-  query: string,
-  limit: number
+  dataset: Dataset,
+  query: string
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    const { dataset } = useContext(AppContext)
     if (!isNonEmptyDataset(dataset)) {
-      return reject(Error('Dataset not selected.'))
+      const message = 'no dataset is selected'
+      return reject(Error(message))
     }
     const queryString = query.length === 0 ? '' : '?query=' + query
     const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
@@ -30,6 +30,7 @@ export async function searchForSourceArtifact (
 }
 
 export async function searchForTracedArtifacts (
+  dataset: Dataset,
   sources: ArtifactIdentifier[],
   query: string
 ): Promise<Artifact[]> {
@@ -38,8 +39,6 @@ export async function searchForTracedArtifacts (
       resolve([])
       return
     }
-
-    const { dataset } = useContext(AppContext)
 
     if (!isNonEmptyDataset(dataset)) {
       throw Error('Dataset not selected.')

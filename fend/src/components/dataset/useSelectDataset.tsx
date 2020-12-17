@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { getDatasetNames } from '../../api/datasets'
 import { AppContext } from '../../App'
 import { initializeEmptyDataset } from '../../operations/initializers'
@@ -20,17 +20,17 @@ export function useSelectDataset () {
       )
       setDatasetsNames(datasetDescriptors)
     }).catch(e => setError(e))
-  }, [])
+  }, [dataset.name, setError])
 
   const selectDatasetAtIndex = (indexToSelect: number) => {
     const datasetAtIndex = datasets[indexToSelect]
     setDataset(datasetAtIndex)
   }
 
-  const deselectDataset = () => {
+  const deselectDataset = useCallback(() => {
     setDataset(initializeEmptyDataset())
     setIndexSelected(DEFAULT_INDEX_SELECTED)
-  }
+  }, [setDataset])
 
   const datasetItems = datasets.map((dataset, currentIndex) => (
     <DatasetChooserItem
@@ -38,7 +38,7 @@ export function useSelectDataset () {
       datasetName={dataset.name}
       isSelected={currentIndex === indexSelected}
       select={() => selectDatasetAtIndex(currentIndex)}
-      deselect={() => deselectDataset()}
+      deselect={deselectDataset}
       onDatasetSelected={() => onNextStep()} />
   ))
   return [datasetItems]
