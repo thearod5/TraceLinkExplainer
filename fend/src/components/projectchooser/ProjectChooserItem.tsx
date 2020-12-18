@@ -2,7 +2,7 @@ import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import React, { useEffect, useState } from 'react'
-import { VoidCallback } from '../../constants'
+import { VoidCallback } from '../../types/constants'
 import DatasetChooserItemDetails from './ProjectChooserItemDetails'
 
 interface DataItemSummaryProps {

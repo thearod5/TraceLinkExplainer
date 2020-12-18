@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA, Icons } from '../../../constants'
+import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE, FONT_SIZE_DELTA, Icons } from '../../../types/constants'
 import { Words } from '../../../types/Trace'
 import { createWords } from '../words/WordCreator'
 import { ArtifactAccordionProps, ArtifactDisplaySettings } from './ArtifactAccordion'

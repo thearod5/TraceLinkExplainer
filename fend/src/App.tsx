@@ -4,9 +4,9 @@ import { Router } from 'react-router-dom'
 import AppNavBar from './components/meta/AppNavBar'
 import AppSnackBar from './components/meta/AppSnackBar'
 import TraceWizard from './components/tracewizard/TraceWizard'
-import { appHistory, DatasetCallback, OptionalStringCallback } from './constants'
 import './styles/App.scss'
 import theme from './styles/theme'
+import { appHistory, DatasetCallback, OptionalStringCallback } from './types/constants'
 import { initializeEmptyDataset } from './types/initializers'
 import { Project } from './types/Project'
 
@@ -43,10 +43,10 @@ export default function App () {
           <AppContext.Provider value={{ error, setError: onSetError, project, setDataset: onSelectDataset }}>
             <Box style={{ height: '10%' }}>
               <AppNavBar title={project.name === '' ? WELCOME_MESSAGE : project.name} />
+              <AppSnackBar />
             </Box>
             <Box style={{ height: '90%' }}>
               <TraceWizard />
-              <AppSnackBar />
             </Box>
           </AppContext.Provider>
         </MuiThemeProvider>

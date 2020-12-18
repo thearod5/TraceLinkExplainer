@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core'
 import React from 'react'
-import { appHistory, HOME_ROUTE } from '../../constants'
+import { appHistory, HOME_ROUTE } from '../../types/constants'
 
 interface NavBarProps {
   title: string

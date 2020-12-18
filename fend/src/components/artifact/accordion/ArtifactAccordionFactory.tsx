@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors } from '../../../constants'
+import { colors } from '../../../types/constants'
 import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../words/WordCreator'
 import { Artifact, ArtifactIdentifier } from '../../../types/Project'
 import { RelationshipColors, Relationships, WordDescriptors } from '../../../types/Trace'

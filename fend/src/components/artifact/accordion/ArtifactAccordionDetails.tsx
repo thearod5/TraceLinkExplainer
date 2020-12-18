@@ -1,6 +1,6 @@
 import { AccordionDetails } from '@material-ui/core'
 import React from 'react'
-import { Icons } from '../../../constants'
+import { Icons } from '../../../types/constants'
 import { Relationships, Words } from '../../../types/Trace'
 import AppLoadingBar from '../../meta/AppLoadingBar'
 import ViewerWords from '../words/ArtifactWord'

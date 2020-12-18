@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { getTraceInformation } from '../../api/trace'
 import { AppContext } from '../../App'
-import { UNSELECTED_INDEX } from '../../constants'
+import { UNSELECTED_INDEX } from '../../types/constants'
 import { initializeEmptyTrace } from '../../types/initializers'
 import { Artifact } from '../../types/Project'
 import { Trace } from '../../types/Trace'
+import { TraceArtifactsContext, TraceContext, TracedArtifacts } from '../../types/TracedArtifacts'
 import { createRelationshipColors } from '../artifact/accordion/ArtifactAccordionFactory'
 import SplitPanelView from '../meta/SplitPanelView'
-import { TraceArtifactsContext, TraceContext, TracedArtifacts } from '../tracewizard/types'
 import ExplanationPanel from './graph/ExplanationPanel'
 import { TraceExplanationsContainer } from './TraceExplanationsContainer'
 
@@ -38,10 +38,18 @@ export default function ExplanationStep () {
   }, []) 
 
   useEffect(() => {
-    if (selectedSource !== UNSELECTED_INDEX && selectedTarget !== UNSELECTED_INDEX) {
+    if (selectedSource !== UNSELECTED_INDEX &&
+        selectedTarget !== UNSELECTED_INDEX &&
+        sourceArtifacts.length > selectedSource &&
+        targetArtifacts.length > selectedTarget) {
       setIsLoading(true)
       getTraceInformation(project.name, sourceArtifacts[selectedSource], targetArtifacts[selectedTarget]) // change with state index
         .then((traceInformation) => {
+          if (selectedSource === UNSELECTED_INDEX ||
+            selectedTarget === UNSELECTED_INDEX) { // stale request
+            setIsLoading(false)
+            return
+          }
           const relationshipColors = createRelationshipColors(
             traceInformation
               .relationships
@@ -69,18 +77,10 @@ export default function ExplanationStep () {
   }, [selectedTarget, selectedSource, project.name, setError, sourceArtifacts])
 
   const onSelectSourceIndex = (selectedIndex: number) => {
+    setSelectedTarget(-1)
     setSelectedSource(selectedIndex)
-    if (selectedIndex !== -1) {
-      const tracedArtifacts = getTracedArtifacts(traceSet, sourceArtifacts[selectedIndex])
-      if (tracedArtifacts.length > 0) {
-        setSelectedTarget(0)
-      }
-    } else {
-      setSelectedTarget(-1)
-    }
+    if (isLoading) { setIsLoading(false) }
   }
-
-  console.log('trace set:', traceSet)
 
   return (
     <TraceContext.Provider value={{ trace, setTrace }}>

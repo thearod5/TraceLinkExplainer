@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArtifactCallback } from '../../../../constants'
+import { ArtifactCallback } from '../../../../types/constants'
 import { Artifact } from '../../../../types/Project'
 
 /* Responsible for counting how many artifacts have current been selected

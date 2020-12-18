@@ -1,5 +1,5 @@
 import React from 'react'
-import { DEFAULT_FONT_COLOR } from '../../../constants'
+import { DEFAULT_FONT_COLOR } from '../../../types/constants'
 import { WordDescriptorDisplay } from '../../../types/Trace'
 import { WordCallback } from './ArtifactWord'
 

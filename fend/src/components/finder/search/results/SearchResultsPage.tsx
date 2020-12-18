@@ -1,15 +1,14 @@
 import React from 'react'
-import { NUMBER_RESULTS_PROMPT } from '../../../../constants'
-import { getDefaultRelationships } from '../../../artifact/words/WordCreator'
+import { ArtifactCallback, NUMBER_RESULTS_PROMPT } from '../../../../types/constants'
 import { Artifact } from '../../../../types/Project'
-import { ArtifactClickAction } from '../types'
+import { getDefaultRelationships } from '../../../artifact/words/WordCreator'
 import SearchArtifactAccordion from './SearchResultAccordion'
 
 interface SearchResultsProps {
   resultsSlice: Artifact[];
   numberOfTotalResults: number;
-  onSelectArtifact: ArtifactClickAction;
-  onRemoveArtifact: ArtifactClickAction;
+  onSelectArtifact: ArtifactCallback;
+  onRemoveArtifact: ArtifactCallback;
 }
 
 export default function SearchResultsPage (props: SearchResultsProps) {

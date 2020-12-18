@@ -1,7 +1,7 @@
 
 import React, { useContext } from 'react'
 import { Relationships, WordDescriptorDisplay, Words } from '../../../types/Trace'
-import { TraceContext } from '../../tracewizard/types'
+import { TraceContext } from '../../../types/TracedArtifacts'
 import { ViewerWord } from './ArtifactWords'
 
 interface ArtifactWordsProps {

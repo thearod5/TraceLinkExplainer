@@ -8,6 +8,8 @@ export function getTraceInformation (
   sourceArtifact: Artifact,
   targetArtifact: Artifact
 ): Promise<TraceInformation> {
+  if (sourceArtifact === undefined) { throw Error('Source artifact is undefined') }
+  if (targetArtifact === undefined) { throw Error('Source artifact is undefined') }
   const names = [projectName, sourceArtifact.name, targetArtifact.name]
   if (names.some(name => name === '')) {
     throw Error('one of these is undefined:' + names.join(' '))
@@ -16,12 +18,10 @@ export function getTraceInformation (
 
   return new Promise((resolve, reject) => {
     get(TRACE_URL).then((response) => {
-      console.log('FETCH', 'getTraceInformation', response)
       if (isError(response)) {
         reject(response.message)
       } else resolve(response as TraceInformation)
     }).catch(e => {
-      console.log('FETCH', 'ERROR', e)
       reject(e)
     })
   })

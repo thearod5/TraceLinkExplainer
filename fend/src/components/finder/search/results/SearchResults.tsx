@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../../../App'
-import { MAX_SEARCH_RESULTS_PER_PAGE } from '../../../../constants'
+import { MAX_SEARCH_RESULTS_PER_PAGE } from '../../../../types/constants'
 import { Artifact } from '../../../../types/Project'
 import AppLoadingBar from '../../../meta/AppLoadingBar'
 import useSelectedArtifactCounter from '../hooks/useSelectedArtifactCounter'

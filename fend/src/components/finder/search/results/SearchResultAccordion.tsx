@@ -10,19 +10,19 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FullscreenIcon from '@material-ui/icons/Fullscreen'
 import React, { useContext, useEffect, useState } from 'react'
-import { createArtifactDisplayModel } from '../../../artifact/words/WordCreator'
+import { ArtifactCallback } from '../../../../types/constants'
 import { Artifact } from '../../../../types/Project'
 import { Relationships } from '../../../../types/Trace'
 import ViewerWords from '../../../artifact/words/ArtifactWord'
+import { createArtifactDisplayModel } from '../../../artifact/words/WordCreator'
 import { ArtifactSelectContext } from '../../ArtifactSetFinder'
-import { ArtifactClickAction } from '../types'
 import SearchResultDialog from './SearchResultDialog'
 
 interface SearchResultAccordionProps {
   artifact: Artifact;
   families: Relationships;
-  onSelectArtifact: ArtifactClickAction;
-  onRemoveArtifact: ArtifactClickAction;
+  onSelectArtifact: ArtifactCallback;
+  onRemoveArtifact: ArtifactCallback;
 }
 
 export default function SearchResultAccordion (props: SearchResultAccordionProps) {

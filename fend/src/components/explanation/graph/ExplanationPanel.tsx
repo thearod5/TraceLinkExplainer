@@ -2,8 +2,8 @@ import { Backdrop, Box, Fade, Modal } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CloseIcon from '@material-ui/icons/Close'
 import React, { useContext, useState } from 'react'
-import { FADE_TIMEOUT } from '../../../constants'
-import { TraceContext } from '../../tracewizard/types'
+import { FADE_TIMEOUT } from '../../../types/constants'
+import { TraceContext } from '../../../types/TracedArtifacts'
 import { ExplanationGraph } from './ExplanationGraph'
 
 /* Manages the modal that displays the concept graph between a selected word in a trace explanation
@@ -32,7 +32,6 @@ export default function ExplanationPanel () {
     if (handleClose !== null) { handleClose() }
   }
 
-  console.log('panelrender')
   return (
     <Modal
       open={open}

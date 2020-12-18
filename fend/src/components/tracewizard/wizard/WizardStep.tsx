@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
-import { VoidCallback } from '../../../constants'
+import { VoidCallback } from '../../../types/constants'
 import { StepActionsContext } from './types'
 import { WizardFooter } from './WizardFooter'
 

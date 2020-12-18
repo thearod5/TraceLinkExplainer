@@ -15,8 +15,6 @@ export default function AppSnackBar () {
     setTimeout(() => setError(undefined), autoHideDuration)
   }
 
-  console.log('error:', error)
-
   return (
     <Snackbar
       anchorOrigin={{

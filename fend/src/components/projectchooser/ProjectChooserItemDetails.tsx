@@ -4,7 +4,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import React, { JSXElementConstructor } from 'react'
-import { VoidCallback } from '../../constants'
+import { VoidCallback } from '../../types/constants'
 type ButtonClickCallback = (route: string) => void;
 
 interface ModalItemContent {

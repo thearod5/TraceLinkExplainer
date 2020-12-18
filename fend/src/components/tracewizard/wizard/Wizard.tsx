@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core'
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../../../App'
-import { IndexCallback } from '../../../constants'
+import { IndexCallback } from '../../../types/constants'
 import { StepContext } from './types'
 import { WizardStep } from './WizardStep'
 
@@ -17,7 +17,6 @@ export default function Wizard (props: React.PropsWithChildren<WizardProps>) {
   const stepNames = props.stepNames.map((name, nameIndex) => (nameIndex + 1) + '. ' + name)
 
   const onNextStep: IndexCallback = (stepIndex: number) => {
-    console.log('on next step', stepIndex)
     if (currentStep === children.length - 1) {
       setError('cannot move beyond last step')
     } else if (stepIndex !== currentStep) {

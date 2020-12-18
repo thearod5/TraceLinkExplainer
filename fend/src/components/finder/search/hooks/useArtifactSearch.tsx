@@ -1,8 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../../../App'
-import { SEARCH_LIMIT, StringCallback } from '../../../../constants'
+import { SEARCH_LIMIT, StringCallback, SuggestionFunctionType } from '../../../../types/constants'
 import { Artifact } from '../../../../types/Project'
-import { SuggestionFunctionType } from '../types'
 
 export default function useArtifactSearch (searchFunction: SuggestionFunctionType): [Artifact[], boolean, StringCallback] {
   const [queriedArtifacts, setQueriedArtifacts] = useState<Artifact[]>([])

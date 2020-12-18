@@ -2,7 +2,7 @@ import { Button, Grid, Typography } from '@material-ui/core'
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import React from 'react'
-import { Icon, VoidCallback } from '../../../constants'
+import { Icon, VoidCallback } from '../../../types/constants'
 
 interface WizardFooterProps {
   stepNames: [string | null, string, string | null];

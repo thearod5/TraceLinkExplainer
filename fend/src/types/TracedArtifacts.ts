@@ -1,7 +1,7 @@
 import React from 'react'
-import { initializeEmptyTrace } from '../../types/initializers'
-import { Artifact } from '../../types/Project'
-import { Trace } from '../../types/Trace'
+import { initializeEmptyTrace } from './initializers'
+import { Artifact } from './Project'
+import { Trace } from './Trace'
 
 export interface TracedArtifacts {
   sourceArtifact: Artifact

@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history'
-import { TracedArtifacts } from './components/tracewizard/types'
-import { Artifact, Project } from './types/Project'
-import { Trace, WordDescriptorDisplay } from './types/Trace'
+import { Artifact, Project } from './Project'
+import { Trace, WordDescriptorDisplay } from './Trace'
+import { TracedArtifacts } from './TracedArtifacts'
 /*
  * Search
  */
@@ -10,7 +10,10 @@ export const SELECT_TARGET_MESSAGE = 'See traces explanations'
 export const SEARCH_LIMIT = 100
 export const MAX_SEARCH_RESULTS_PER_PAGE = 15
 export const NUMBER_RESULTS_PROMPT = ' artifacts retrieved'
-
+export type SuggestionFunctionType = (
+  query: string,
+  limit: number
+) => Promise<Artifact[]>;
 /*
  * Words
  */

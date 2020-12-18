@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { NumberSetter } from '../../constants'
-import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../artifact/words/WordCreator'
+import { NumberSetter } from '../../types/constants'
 import { Artifact } from '../../types/Project'
 import { WordDescriptors } from '../../types/Trace'
+import { TraceContext } from '../../types/TracedArtifacts'
 import { createDefaultArtifactAccordion, createTraceExplanationAccordion } from '../artifact/accordion/ArtifactAccordionFactory'
-import { TraceContext } from '../tracewizard/types'
+import { createDefaultWordDescriptors, getDefaultRelationshipColors, getDefaultRelationships } from '../artifact/words/WordCreator'
 
 /* Responsibility: Displays all selected artifacts for either Search or Target artifacts.
  *

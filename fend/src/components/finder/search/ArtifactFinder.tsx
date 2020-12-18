@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core'
 import React, { useContext } from 'react'
-import { StringCallback } from '../../../constants'
+import { StringCallback } from '../../../types/constants'
 import { Artifact } from '../../../types/Project'
 import { ArtifactSelectContext } from '../ArtifactSetFinder'
 import SearchBar from './bar/SearchBar'
