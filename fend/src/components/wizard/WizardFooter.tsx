@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core'
+import { Button, Grid, Typography } from '@material-ui/core'
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import React from 'react'
@@ -23,21 +23,19 @@ export function WizardFooter (props: WizardFooterProps) {
   }
 
   return (
-    <Box boxShadow={3} className='sizeFull centeredColumn'>
-      <Grid container spacing={1}>
-        <Grid item xs={4} className='flexRowCentered'>
-          {previousStepName === null ? null
-            : createButton(previousStepName, () => onPreviousStep(), <NavigateBeforeIcon />, null)}
-        </Grid>
-        <Grid item xs={4}>
-          <Typography variant='h5' component='h1' align='center'>
-            {stepName}
-          </Typography>
-        </Grid>
-        <Grid item xs={4} className='flexRowCentered'>
-          {nextStepName === null ? null : createButton(nextStepName, () => onNextStep(), null, <NavigateNextIcon />)}
-        </Grid>
+    <Grid container spacing={1}>
+      <Grid item xs={4} className='flexRowCentered'>
+        {previousStepName === null ? null
+          : createButton(previousStepName, () => onPreviousStep(), <NavigateBeforeIcon />, null)}
       </Grid>
-    </Box>
+      <Grid item xs={4}>
+        <Typography variant='h5' component='h1' align='center'>
+          {stepName}
+        </Typography>
+      </Grid>
+      <Grid item xs={4} className='flexRowCentered'>
+        {nextStepName === null ? null : createButton(nextStepName, () => onNextStep(), null, <NavigateNextIcon />)}
+      </Grid>
+    </Grid>
   )
 }

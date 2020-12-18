@@ -13,9 +13,7 @@ export default function NavBar (props: NavBarProps) {
 
   return (
     <Box
-      boxShadow={3}
       className="flexRowCentered sizeFull"
-      style={{ backgroundColor: 'white' }}
     >
       <div className="centeredColumn">
         <h1

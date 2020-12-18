@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core'
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../../App'
 import { IndexCallback } from '../../constants'
@@ -40,7 +41,7 @@ export default function Wizard (props: React.PropsWithChildren<WizardProps>) {
   const nextStepName = currentStep === children.length - 1 ? null : stepNames[currentStep + 1]
 
   return (
-    <div className="sizeFull">
+    <Box className="sizeFull">
       <StepContext.Provider value={{ currentStep }}>
         {children.map((child, stepIndex) => (
           <WizardStep
@@ -50,6 +51,6 @@ export default function Wizard (props: React.PropsWithChildren<WizardProps>) {
             onNextStep={() => onNextStep(stepIndex)}
             onPreviousStep={() => onPreviousStep(stepIndex)}>{child}</WizardStep>))}
       </StepContext.Provider>
-    </div>
+    </Box>
   )
 }

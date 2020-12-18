@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core'
+import { Box, Button } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import React, { useEffect, useState } from 'react'
 import { isValidQuery } from '../../../../../operations/query/QueryValidator'
@@ -45,7 +45,7 @@ export default function SearchBar (props: SearchBarProps) {
   const searchBar = advancedSearch ? advancedSearchBar : basicSearchBar
 
   return (
-    <div className="flexRow widthFull justifyContentSpaceBetween">
+    <Box className="flexRow widthFull justifyContentSpaceBetween roundBorder" style={{ padding: '1px' }}>
       {searchBar}
       <div className="centeredColumn">
         <div className="flexRowCentered padSideLight" style={{ height: '70%' }}>
@@ -68,7 +68,8 @@ export default function SearchBar (props: SearchBarProps) {
             {advancedSearch ? 'Basic' : 'Advanced'}
           </Button>
         </div>
-      </div></div>)
+      </div>
+    </Box>)
 }
 
 export function SearchSuggestion (params: object, onSubmit: SubmitFuncType) {

@@ -16,33 +16,36 @@ interface TracedArtifactAccordionDisplayProps {
   traceWords: WordDescriptors | null
   selectedIndex: number
   onSelectIndex: NumberSetter
+  isLoading: boolean
 }
 
 export function SelectedArtifactsContainer (props: TracedArtifactAccordionDisplayProps) {
   const { trace } = useContext(TraceContext)
   const { relationships, relationshipColors } = trace
+  const { artifacts, onSelectIndex, selectedIndex, traceWords, isLoading } = props
 
   return (
-    <div className="heightFull overflowScroll">      {
-      props.artifacts.map((artifact, index) => {
-        if (index === props.selectedIndex) {
+    <div className="sizeFull overflowScroll">      {
+      artifacts.map((artifact, index) => {
+        if (index === selectedIndex) {
           const defaultAccordion = relationships === null || relationshipColors === null
           return createTracedArtifactAccordion(
-            defaultAccordion ? createDefaultWordDescriptors(artifact.body) : props.traceWords,
+            defaultAccordion ? createDefaultWordDescriptors(artifact.body) : traceWords,
             defaultAccordion ? getDefaultRelationships() : relationships,
             artifact,
             defaultAccordion ? getDefaultRelationshipColors() : relationshipColors,
             true,
-            () => props.onSelectIndex(index),
-            () => props.onSelectIndex(-1), false
+            () => onSelectIndex(index),
+            () => onSelectIndex(-1),
+            isLoading
           )
         } else {
           return createDefaultArtifactAccordion(
             artifact,
             artifact.body,
             false,
-            () => props.onSelectIndex(index),
-            () => props.onSelectIndex(-1))
+            () => onSelectIndex(index),
+            () => onSelectIndex(-1))
         }
       })
     }

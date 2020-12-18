@@ -1,6 +1,6 @@
-import { MuiThemeProvider } from '@material-ui/core'
+import { Box, MuiThemeProvider } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
-import { Route, Router, Switch } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import NavBar from './components/meta/NavBar'
 import TraceWizard from './components/tracewizard/TraceWizard'
 import { appHistory, DatasetCallback, OptionalStringCallback } from './constants'
@@ -39,16 +39,12 @@ export default function App () {
       <Router history={appHistory}>
         <MuiThemeProvider theme={theme}>
           <AppContext.Provider value={{ error, setError: onSetError, dataset, setDataset: onSelectDataset }}>
-            <header style={{ height: '10%' }}>
+            <Box style={{ height: '10%' }}>
               <NavBar title={dataset.name === '' ? WELCOME_MESSAGE : dataset.name} />
-            </header>
-            <main className="flexColumn widthFull" style={{ height: '90%' }}>
-              <Switch>
-                <Route path="/">
-                  <TraceWizard />
-                </Route>
-              </Switch>
-            </main>
+            </Box>
+            <Box style={{ height: '90%' }}>
+              <TraceWizard />
+            </Box>
           </AppContext.Provider>
         </MuiThemeProvider>
       </Router>

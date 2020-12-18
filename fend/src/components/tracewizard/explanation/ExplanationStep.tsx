@@ -1,4 +1,3 @@
-import { Grid } from '@material-ui/core'
 import React, { useContext, useEffect, useState } from 'react'
 import { getTraceInformation } from '../../../api/trace'
 import { AppContext } from '../../../App'
@@ -6,7 +5,7 @@ import { UNSELECTED_INDEX } from '../../../constants'
 import { initializeEmptyTrace } from '../../../operations/initializers'
 import { Artifact } from '../../../operations/types/Project'
 import { Trace } from '../../../operations/types/Trace'
-import LoadingBar from '../../meta/LoadingBar'
+import SplitPanelView from '../../meta/SplitPanelView'
 import { createRelationshipColors } from '../artifact/accordion/ArtifactAccordionFactory'
 import { SelectedArtifactsContainer } from '../finder/panels/TracedArtifactsDisplay'
 import { ArtifactSetContext, TraceContext } from '../types'
@@ -64,28 +63,25 @@ export default function ExplanationStep () {
 
   return (
     <TraceContext.Provider value={{ trace, setTrace }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          {isLoading ? LoadingBar() : <SelectedArtifactsContainer
-            artifacts={sourceArtifacts}
-            traceWords={trace.sourceWords}
-            onItemClick={setSelectedSource}
-            selectedIndex={selectedSource}
-            onSelectIndex={setSelectedSource}/>}
-        </Grid>
-        <Grid item xs={6}>
-          {isLoading ? LoadingBar() : <SelectedArtifactsContainer
-            artifacts={targetArtifacts}
-            traceWords={trace.targetWords}
-            onItemClick={setSelectedTarget}
-            selectedIndex={selectedTarget}
-            onSelectIndex={setSelectedTarget}
-          />}
-        </Grid>
-        <Grid item xs={12}>
-          <ExplanationPanel open={modalOpen} />
-        </Grid>
-      </Grid>
+      <SplitPanelView
+        left={ <SelectedArtifactsContainer
+          artifacts={sourceArtifacts}
+          traceWords={trace.sourceWords}
+          onItemClick={setSelectedSource}
+          selectedIndex={selectedSource}
+          onSelectIndex={setSelectedSource}
+          isLoading={isLoading}
+        />}
+        right={<SelectedArtifactsContainer
+          artifacts={targetArtifacts}
+          traceWords={trace.targetWords}
+          onItemClick={setSelectedTarget}
+          selectedIndex={selectedTarget}
+          onSelectIndex={setSelectedTarget}
+          isLoading={isLoading}
+        />}
+      />
+      <ExplanationPanel open={modalOpen} />
     </TraceContext.Provider>
 
   )

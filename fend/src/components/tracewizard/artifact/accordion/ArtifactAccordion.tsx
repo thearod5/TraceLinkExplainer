@@ -2,7 +2,6 @@ import { Accordion } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import React from 'react'
 import { RelationshipColors, Relationships, WordDescriptors } from '../../../../operations/types/Trace'
-import { primaryColor } from '../../../../styles/theme'
 import ArtifactAccordionDetails from './ArtifactAccordionDetails'
 import ArtifactAccordionSummary from './ArtifactAccordionSummary'
 import { useArtifactSettings } from './useArtifactSettings'
@@ -43,13 +42,13 @@ export default function ArtifactAccordion (props: ArtifactAccordionProps) {
 
   return (
     <Accordion
-      className="flexColumn"
       TransitionProps={{ unmountOnExit: true }}
       expanded={expanded}
       onChange={handleAccordionExpandClick}
+      style={{ width: '90%' }}
+      color='primary'
     >
       <ArtifactAccordionSummary
-        style={{ backgroundColor: primaryColor, color: 'white' }}
         expandIcon={<ExpandMoreIcon />}
         title={artifactId}
       />

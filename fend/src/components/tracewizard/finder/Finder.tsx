@@ -1,8 +1,8 @@
-import { Grid } from '@material-ui/core'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { searchForSourceArtifact, searchForTracedArtifacts } from '../../../api/search'
 import { AppContext } from '../../../App'
 import { Artifact } from '../../../operations/types/Project'
+import SplitPanelView from '../../meta/SplitPanelView'
 import { StepActionsContext } from '../../wizard/types'
 import { ArtifactSetContext, ArtifactTraceSet } from '../types'
 import useArtifactSearch from './search/hooks/useArtifactSearch'
@@ -82,29 +82,24 @@ export default function Finder () {
     } else {
       onStepUnreadyToExit()
     }
-  }, [selectedTraceSet])
+  }, [selectedTraceSet, onStepReadyToExit, onStepUnreadyToExit])
 
   return (
-    <Grid container spacing={2}>
-
-      <Grid item xs={6}>
-        <Search
-          artifacts={sourceQueryArtifacts}
-          onSearch={sourceOnSearch}
-          isLoading={sourceIsLoading}
-          addArtifact={(a) => onAddSource(a)}
-          removeArtifact={(a) => onRemoveSource(a)}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <Search
-          artifacts={targetQueryArtifacts}
-          onSearch={targetOnSearch}
-          isLoading={targetIsLoading}
-          addArtifact={(a) => onAddTarget(a)}
-          removeArtifact={(a) => onRemoveTarget(a)}
-        />
-      </Grid>
-    </Grid>
+    <SplitPanelView
+      left={<Search
+        artifacts={sourceQueryArtifacts}
+        onSearch={sourceOnSearch}
+        isLoading={sourceIsLoading}
+        addArtifact={(a) => onAddSource(a)}
+        removeArtifact={(a) => onRemoveSource(a)}
+      />}
+      right={<Search
+        artifacts={targetQueryArtifacts}
+        onSearch={targetOnSearch}
+        isLoading={targetIsLoading}
+        addArtifact={(a) => onAddTarget(a)}
+        removeArtifact={(a) => onRemoveTarget(a)}
+      />}
+    />
   )
 }
