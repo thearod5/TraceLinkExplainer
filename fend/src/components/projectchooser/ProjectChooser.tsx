@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { getProjects } from '../../api/projects'
 import { AppContext } from '../../App'
 import { Project } from '../../types/Project'
-import LoadingBar from '../meta/LoadingBar'
+import AppLoadingBar from '../meta/AppLoadingBar'
 import { StepActionsContext } from '../tracewizard/wizard/types'
 
 /* Panel for selecting a project
@@ -44,7 +44,7 @@ export default function DatasetChooser () {
         <FormLabel component="legend"><h3 className='textDecorationUnderline padSmall'>Projects</h3></FormLabel>
         <RadioGroup aria-label="projects" name="projects" >
           {projectItems.length === 0 ? (
-            LoadingBar()
+            AppLoadingBar()
           ) : (
             projectItems
           )}

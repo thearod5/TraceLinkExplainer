@@ -2,7 +2,7 @@ import { AccordionDetails } from '@material-ui/core'
 import React from 'react'
 import { Icons } from '../../../constants'
 import { Relationships, Words } from '../../../types/Trace'
-import LoadingBar from '../../meta/LoadingBar'
+import AppLoadingBar from '../../meta/AppLoadingBar'
 import ViewerWords from '../words/ArtifactWord'
 
 /* Body of artifact accordion displayed during search results
@@ -46,7 +46,7 @@ export default function ArtifactAccordionDetails (props: ArtifactAccordionDetail
       </div>
     </div>)
   } else {
-    body = LoadingBar()
+    body = AppLoadingBar()
   }
 
   return (

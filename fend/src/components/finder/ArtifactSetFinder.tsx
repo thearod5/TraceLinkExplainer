@@ -40,10 +40,14 @@ export default function ArtifactSetFinder () {
       const traceWithNew: ArtifactTraces[] = [...selectedArtifactTraces, { sourceArtifact, tracedArtifacts }]
       setTraces(traceWithNew)
       setSelectedTraceSet([...selectedTraceSet, { sourceArtifact, tracedArtifacts: [] }])
+      if (tracedArtifacts.length === 0) {
+        setError(sourceArtifact.name + ' contains no traced artifacts')
+      }
     }).catch(e => {
       setError(e)
     })
   }
+
   const onRemoveSource = (artifact: Artifact) => {
     setSources(sources.filter(s => s.id !== artifact.id))
     setTraces(selectedArtifactTraces.filter(t => t.sourceArtifact.id === artifact.id))
@@ -51,8 +55,9 @@ export default function ArtifactSetFinder () {
   }
   const onAddTarget = (artifact: Artifact) => {
     setTargets([...targets, artifact])
-    setTraces(selectedArtifactTraces.map(t => addArtifactToTraceSet(t, artifact)))
-    setSelectedTraceSet(selectedTraceSet.map(t => addArtifactToTraceSet(t, artifact)))
+    const affectedSourcesIds = selectedArtifactTraces.filter(t => t.tracedArtifacts.map(a => a.id).includes(artifact.id)).map(t => t.sourceArtifact.id)
+    setTraces(selectedArtifactTraces.map(t => affectedSourcesIds.includes(t.sourceArtifact.id) ? addArtifactToTraceSet(t, artifact) : t))
+    setSelectedTraceSet(selectedTraceSet.map(t => affectedSourcesIds.includes(t.sourceArtifact.id) ? addArtifactToTraceSet(t, artifact) : t))
   }
   const onRemoveTarget = (artifact: Artifact) => {
     setTargets(targets.filter(t => t.id !== artifact.id))

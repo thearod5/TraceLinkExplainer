@@ -5,12 +5,16 @@ import { UNSELECTED_INDEX } from '../../constants'
 import { initializeEmptyTrace } from '../../types/initializers'
 import { Artifact } from '../../types/Project'
 import { Trace } from '../../types/Trace'
-import SplitPanelView from '../meta/SplitPanelView'
 import { createRelationshipColors } from '../artifact/accordion/ArtifactAccordionFactory'
-import { TraceArtifactsContext, TraceContext } from '../tracewizard/types'
+import SplitPanelView from '../meta/SplitPanelView'
+import { TraceArtifactsContext, TraceContext, TracedArtifacts } from '../tracewizard/types'
 import ExplanationPanel from './graph/ExplanationPanel'
 import { TraceExplanationsContainer } from './TraceExplanationsContainer'
 
+function getTracedArtifacts (traceSet: TracedArtifacts[], artifact: Artifact) {
+  if (artifact === undefined) { return [] }
+  return traceSet.filter(ts => ts.sourceArtifact.id === artifact.id).map(ts => ts.tracedArtifacts).flat()
+}
 export default function ExplanationStep () {
   const { project, setError } = useContext(AppContext)
   const { traceSet } = useContext(TraceArtifactsContext)
@@ -20,20 +24,22 @@ export default function ExplanationStep () {
   const [selectedTarget, setSelectedTarget] = useState<number>(-1)
   const [isLoading, setIsLoading] = useState(false)
   const [sourceArtifacts, setSourceArtifacts] = useState<Artifact[]>([])
-  const [targetArtifacts, setTargetArtifacts] = useState<Artifact[]>([])
+
+  const targetArtifacts = selectedSource === -1 ? [] : getTracedArtifacts(traceSet, sourceArtifacts[selectedSource])
 
   useEffect(() => { // only want to do this calculation once
-    setSourceArtifacts(traceSet.map(ts => ts.sourceArtifact))
-    setTargetArtifacts(traceSet.map(ts => ts.tracedArtifacts).flat())
+    const newSourceArtifacts = traceSet.map(ts => ts.sourceArtifact)
+    setSourceArtifacts(newSourceArtifacts)
     setSelectedSource(0)
-    setSelectedTarget(0)
+    if (getTracedArtifacts(traceSet, newSourceArtifacts[0]).length > 0) {
+      setSelectedTarget(0)
+    }
     // eslint-disable-next-line
   }, []) 
 
   useEffect(() => {
     if (selectedSource !== UNSELECTED_INDEX && selectedTarget !== UNSELECTED_INDEX) {
       setIsLoading(true)
-
       getTraceInformation(project.name, sourceArtifacts[selectedSource], targetArtifacts[selectedTarget]) // change with state index
         .then((traceInformation) => {
           const relationshipColors = createRelationshipColors(
@@ -59,9 +65,22 @@ export default function ExplanationStep () {
     } else {
       setTrace(initializeEmptyTrace())
     }
-  }, [selectedTarget, selectedSource, project.name, setError, sourceArtifacts, targetArtifacts])
+  }, [selectedTarget, selectedSource, project.name, setError, sourceArtifacts])
 
-  console.log('explanation render', trace.selectedWord)
+  const onSelectSourceIndex = (selectedIndex: number) => {
+    setSelectedSource(selectedIndex)
+    if (selectedIndex !== -1) {
+      const tracedArtifacts = getTracedArtifacts(traceSet, sourceArtifacts[selectedIndex])
+      if (tracedArtifacts.length > 0) {
+        setSelectedTarget(0)
+      }
+    } else {
+      setSelectedTarget(-1)
+    }
+  }
+
+  console.log('trace set:', traceSet)
+
   return (
     <TraceContext.Provider value={{ trace, setTrace }}>
       <SplitPanelView>
@@ -70,7 +89,7 @@ export default function ExplanationStep () {
           traceWords={trace.sourceWords}
           onItemClick={setSelectedSource}
           selectedIndex={selectedSource}
-          onSelectIndex={setSelectedSource}
+          onSelectIndex={onSelectSourceIndex}
           isLoading={isLoading}
         />
         <TraceExplanationsContainer

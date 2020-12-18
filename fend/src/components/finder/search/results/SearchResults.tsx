@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../../../App'
 import { MAX_SEARCH_RESULTS_PER_PAGE } from '../../../../constants'
 import { Artifact } from '../../../../types/Project'
-import LoadingBar from '../../../meta/LoadingBar'
+import AppLoadingBar from '../../../meta/AppLoadingBar'
 import useSelectedArtifactCounter from '../hooks/useSelectedArtifactCounter'
 import { SearchFooter } from '../SearchFooter'
 import SearchResultsPage from './SearchResultsPage'
@@ -77,5 +77,5 @@ export default function SearchResults (props: SearchResultProps) {
     </div>
   )
 
-  return isLoading ? LoadingBar() : body
+  return isLoading ? AppLoadingBar() : body
 }

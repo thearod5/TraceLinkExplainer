@@ -4,10 +4,19 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 import React, { useContext } from 'react'
 import { AppContext } from '../../App'
 
+const autoHideDuration = 3000
+
 export default function AppSnackBar () {
   const { error, setError } = useContext(AppContext)
 
   const handleClose = () => setError(undefined)
+
+  if (error !== undefined) {
+    setTimeout(() => setError(undefined), autoHideDuration)
+  }
+
+  console.log('error:', error)
+
   return (
     <Snackbar
       anchorOrigin={{
@@ -15,7 +24,7 @@ export default function AppSnackBar () {
         horizontal: 'center'
       }}
       open={ error !== undefined}
-      autoHideDuration={10000}
+      autoHideDuration={autoHideDuration}
       onClose={handleClose}
     >
       <Alert severity="error" style={{ width: '100%' }}>

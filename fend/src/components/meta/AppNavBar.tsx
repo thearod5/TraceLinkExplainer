@@ -6,7 +6,7 @@ interface NavBarProps {
   title: string
 }
 
-export default function NavBar (props: NavBarProps) {
+export default function AppNavBar (props: NavBarProps) {
   const GoHomeClickHanlder = () => {
     appHistory.push(HOME_ROUTE)
   }

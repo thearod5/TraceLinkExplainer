@@ -1,13 +1,15 @@
 import { Box, MuiThemeProvider } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
 import { Router } from 'react-router-dom'
-import NavBar from './components/meta/NavBar'
+import AppNavBar from './components/meta/AppNavBar'
+import AppSnackBar from './components/meta/AppSnackBar'
 import TraceWizard from './components/tracewizard/TraceWizard'
 import { appHistory, DatasetCallback, OptionalStringCallback } from './constants'
-import { initializeEmptyDataset } from './types/initializers'
-import { Project } from './types/Project'
 import './styles/App.scss'
 import theme from './styles/theme'
+import { initializeEmptyDataset } from './types/initializers'
+import { Project } from './types/Project'
+
 interface IAppContext {
   error : string | undefined
   setError: OptionalStringCallback
@@ -40,10 +42,11 @@ export default function App () {
         <MuiThemeProvider theme={theme}>
           <AppContext.Provider value={{ error, setError: onSetError, project, setDataset: onSelectDataset }}>
             <Box style={{ height: '10%' }}>
-              <NavBar title={project.name === '' ? WELCOME_MESSAGE : project.name} />
+              <AppNavBar title={project.name === '' ? WELCOME_MESSAGE : project.name} />
             </Box>
             <Box style={{ height: '90%' }}>
               <TraceWizard />
+              <AppSnackBar />
             </Box>
           </AppContext.Provider>
         </MuiThemeProvider>
