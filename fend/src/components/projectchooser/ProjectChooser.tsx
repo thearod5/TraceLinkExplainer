@@ -2,6 +2,7 @@ import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typog
 import React, { useContext, useEffect, useState } from 'react'
 import { getProjects } from '../../api/projects'
 import { AppContext } from '../../App'
+import { initializeEmptyDataset } from '../../types/initializers'
 import { Project } from '../../types/Project'
 import AppLoadingBar from '../meta/AppLoadingBar'
 import { StepActionsContext } from '../tracewizard/wizard/types'
@@ -19,6 +20,10 @@ export default function DatasetChooser () {
   const [selectedIndex, setSelectedIndex] = useState(-1)
 
   useEffect(() => {
+    setDataset(initializeEmptyDataset())
+  }, [setDataset])
+
+  useEffect(() => {
     getProjects().then(setProjects).catch(e => setError(e))
   }, [project.name, setError])
 
@@ -33,7 +38,7 @@ export default function DatasetChooser () {
     <FormControlLabel
       key={p.id}
       value={p.name}
-      checked={selectedIndex === currentIndex || p.id === project.id}
+      checked={selectedIndex === currentIndex}
       control={<Radio color='default' onClick={() => selectDatasetAtIndex(currentIndex)} />}
       label={<Typography variant='h6'>{p.name}</Typography>}
     />
