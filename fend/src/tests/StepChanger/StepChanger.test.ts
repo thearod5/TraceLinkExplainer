@@ -1,19 +1,21 @@
+import { useContext } from 'react'
 import { v4 } from 'uuid'
+import { AppContext } from '../../App'
 import { SELECT_SOURCE_STEP } from '../../constants'
 import { getNewStepState } from '../../operations/pagechanger/PageChanger'
-import { Artifact, Dataset } from '../../operations/types/Dataset'
+import { Artifact, Project } from '../../operations/types/Project'
 import {
   clearData,
-  selectDataset,
+
   setSelectedSources,
   setSelectedTargets
 } from '../../redux/actions'
 import store, { createEmptyState } from '../../redux/store'
-import { RootState } from '../../redux/types'
+import { RootState } from '../../operations/types'
 
 const mockState: RootState = createEmptyState()
 
-const mockDataset: Dataset = {
+const mockDataset: Project = {
   id: v4(),
   name: 'Test Dataset',
   description: 'Test Summary'
@@ -43,7 +45,8 @@ afterEach(() => {
 
 test('+ : getStepChangeError : select a dataset', () => {
   // Test
-  store.dispatch(selectDataset(mockDataset))
+  const { setDataset } = useContext(AppContext)
+  setDataset(mockDataset)
   const state = store.getState()
 
   const res: RootState = assertIsRootState(
@@ -67,7 +70,7 @@ test('- : getStepChangeError : select an empty dataset', () => {
  * Step 1 -> Step 2: Selecting a source artifact
  */
 
-test('+ : getStepChangeError : select a dataset', () => {
+test('+ : getStepChangeError : select a empty dataset', () => {
   const currentState: RootState = store.getState()
   expect(currentState.currentStep).toEqual(0)
   expect(currentState.selectedSources.length).toEqual(0)
@@ -79,9 +82,10 @@ test('+ : getStepChangeError : select a dataset', () => {
 
 test('+ : setDataset', () => {
   let currentState: RootState = store.getState()
+  const { setDataset } = useContext(AppContext)
 
   // Test
-  store.dispatch(selectDataset(mockDataset))
+  setDataset(mockDataset)
   // Assertions
   currentState = store.getState()
   expect(currentState.dataset.name).toEqual(mockDataset.name)

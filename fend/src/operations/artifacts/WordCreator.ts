@@ -1,4 +1,4 @@
-import { Artifact, ArtifactDisplayModel } from '../types/Dataset'
+import { Artifact, ArtifactDisplayModel } from '../types/Project'
 import {
   KeyWordType, RelationshipColors,
   Relationships,

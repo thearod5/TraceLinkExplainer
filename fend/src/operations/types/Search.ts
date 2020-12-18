@@ -2,7 +2,7 @@ import {
   Artifact,
   ArtifactIdentifier,
   isArtifactIdentifierList
-} from './Dataset'
+} from './Project'
 import { objectContainsKeys } from './TypeUtil'
 
 /*
