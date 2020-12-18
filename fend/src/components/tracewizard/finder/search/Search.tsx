@@ -17,7 +17,7 @@ interface SearchControllerProps {
 }
 export default function Search (props: SearchControllerProps) {
   return (
-    <Box>
+    <Box className="sizeFull" style={{ height: '90%' }}>
       <SearchBar onSearch={(query: string) => props.onSearch(query)} />
       <SearchResults
         artifacts={props.artifacts}

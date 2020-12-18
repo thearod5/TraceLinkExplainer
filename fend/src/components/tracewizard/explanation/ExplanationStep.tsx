@@ -7,9 +7,9 @@ import { Artifact } from '../../../operations/types/Project'
 import { Trace } from '../../../operations/types/Trace'
 import SplitPanelView from '../../meta/SplitPanelView'
 import { createRelationshipColors } from '../artifact/accordion/ArtifactAccordionFactory'
-import { SelectedArtifactsContainer } from '../finder/panels/TracedArtifactsDisplay'
+import { SelectedArtifactsContainer } from './TracedArtifactsDisplay'
 import { ArtifactSetContext, TraceContext } from '../types'
-import ExplanationPanel from './ExplanationPanel'
+import ExplanationPanel from './graph/ExplanationPanel'
 
 export default function ExplanationStep () {
   const { dataset, setError } = useContext(AppContext)

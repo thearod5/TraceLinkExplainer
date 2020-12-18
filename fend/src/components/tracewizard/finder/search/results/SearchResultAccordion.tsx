@@ -10,15 +10,15 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FullscreenIcon from '@material-ui/icons/Fullscreen'
 import React, { useState } from 'react'
+import { createArtifactDisplayModel } from '../../../../../operations/artifacts/WordCreator'
 import { Artifact } from '../../../../../operations/types/Project'
-import { Relationships, Words } from '../../../../../operations/types/Trace'
+import { Relationships } from '../../../../../operations/types/Trace'
 import ViewerWords from '../../../artifact/words/ArtifactWord'
 import { ArtifactClickAction } from '../types'
 import SearchResultDialog from './SearchResultDialog'
 
 interface SearchResultAccordionProps {
-  result: Artifact;
-  words: Words;
+  artifact: Artifact;
   families: Relationships;
   selectArtifact: ArtifactClickAction;
   removeArtifact: ArtifactClickAction;
@@ -36,7 +36,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
 
   const onClick = () => {
     const clickCallback = checked ? props.removeArtifact : props.selectArtifact
-    clickCallback(props.result)
+    clickCallback(props.artifact)
     setChecked(!checked)
   }
 
@@ -44,7 +44,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
     setDialogOpen(false)
     setExpanded(false)
     setChecked(true)
-    props.selectArtifact(props.result)
+    props.selectArtifact(props.artifact)
   }
 
   const viewExpandedArtifactIcon = (
@@ -66,7 +66,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           onClick={(event) => event.stopPropagation()} // stops opening of accordion
           onFocus={(event) => event.stopPropagation()}
           control={<Checkbox checked={checked} onClick={onClick} color={'primary'}/>}
-          label={props.result.name}
+          label={props.artifact.name}
         />
       </AccordionSummary>
 
@@ -77,7 +77,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           boxShadow={3}
         >
           <ViewerWords
-            words={props.words}
+            words={createArtifactDisplayModel(props.artifact).words}
             families={props.families}
             colorSelected={true}
             sizeSelected={false}
@@ -91,7 +91,7 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
       <SearchResultDialog
         handleClose={handleClose}
         open={dialogOpen}
-        artifact={props.result}
+        artifact={props.artifact}
         selectSource={handleDialogAccept}
       />
     </Accordion>

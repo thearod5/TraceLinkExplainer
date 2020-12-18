@@ -1,6 +1,5 @@
 import React from 'react'
 import { MAX_SEARCH_RESULTS_PER_PAGE } from '../../../../../constants'
-import { createArtifactDisplayModel } from '../../../../../operations/artifacts/WordCreator'
 import { Artifact } from '../../../../../operations/types/Project'
 import LoadingBar from '../../../../meta/LoadingBar'
 import usePageCounter from '../hooks/usePageCounter'
@@ -41,14 +40,14 @@ export default function SearchResults (props: SearchResultProps) {
   const endIndex = startIndex + MAX_SEARCH_RESULTS_PER_PAGE
 
   const body = (
-    <div style={{ height: '90%' }}>
+    <div className='sizeFull overflowYScroll'>
       <div
-        className="flexRowContentLeft widthFull overflowYScroll"
+        className="widthFull overflowYScroll"
         style={{ height: '90%' }}
       >
         <SearchResultsPage
           numberOfTotalResults={artifacts.length}
-          results={artifacts.slice(startIndex, endIndex).map(a => createArtifactDisplayModel(a))}
+          results={artifacts.slice(startIndex, endIndex)}
           selectArtifact={onSelectArtifact}
           removeArtifact={onRemoveArtifact}
         />

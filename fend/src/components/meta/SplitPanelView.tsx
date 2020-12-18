@@ -9,12 +9,12 @@ interface SplitPanelProps {
 export default function SplitPanelView (props: SplitPanelProps) {
   const { left, right } = props
   return (
-    <Grid container spacing={2} className='sizeFull'>
+    <Grid container spacing={2} className='sizeFull overflowYScroll'>
       <Grid item xs={6}>
-        <Box boxShadow={2} className="roundBorder">{left}</Box>
+        <Box style={{ maxHeight: '650px' }} boxShadow={2} className="sizeFull roundBorder overflowYScroll">{left}</Box>
       </Grid>
       <Grid item xs={6}>
-        <Box boxShadow={2} className="roundBorder">{right}</Box>
+        <Box style={{ maxHeight: '650px' }} boxShadow={2} className="sizeFull roundBorder overflowYScroll">{right}</Box>
       </Grid>
     </Grid>
   )

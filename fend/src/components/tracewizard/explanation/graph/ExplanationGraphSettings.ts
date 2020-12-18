@@ -1,4 +1,4 @@
-import { primaryColor, secondaryColor } from '../../../styles/theme'
+import { primaryColor, secondaryColor } from '../../../../styles/theme'
 
 export default {
   edges: {
