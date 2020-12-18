@@ -36,9 +36,7 @@ export function SearchFooter (props: SearchFooterProps) {
   )
 
   return (
-    <Box
-      className="centeredColumn sizeFull"
-    >
+    <Box className="centeredColumn sizeFull" >
       <div className="flexRowCentered widthFull">
         <Box className="flexRowCentered">
           {previousPageButton}

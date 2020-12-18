@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history'
-import { ArtifactTraceSet } from './components/tracewizard/types'
+import { TracedArtifacts } from './components/tracewizard/types'
 import { Artifact, Project } from './operations/types/Project'
 import { Trace, WordDescriptorDisplay } from './operations/types/Trace'
 /*
@@ -50,7 +50,7 @@ export type StartSearchCallback = (searchString: string, limit?: number) => void
 export type StringCallback = (str: string) => void
 export type OptionalStringCallback = (str: string | undefined) => void
 export type ArtifactCallback = (artifact: Artifact) => void
-export type TracesSetCallback = (trace: ArtifactTraceSet[]) => void
+export type TracesSetCallback = (trace: TracedArtifacts[]) => void
 export type TraceCallback = (trace: Trace) => void
 export type IndexCallback = (index: number) => void
 export type DatasetCallback = (dataset : Project) => void

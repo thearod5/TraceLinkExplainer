@@ -5,18 +5,16 @@ import React, { useContext, useState } from 'react'
 import { FADE_TIMEOUT } from '../../../../constants'
 import { TraceContext } from '../../types'
 import { ExplanationGraph } from './ExplanationGraph'
-interface ViewerModalProps {
-  open: boolean
-}
 
 /* Manages the modal that displays the concept graph between a selected word in a trace explanation
  *
  */
 
-export default function ExplanationPanel (props: ViewerModalProps) {
-  const { open } = props
+export default function ExplanationPanel () {
   const { trace, setTrace } = useContext(TraceContext)
+
   const { selectedWord, relationships } = trace
+  const open = selectedWord !== null
 
   const handleClose = () => {
     setTrace({ ...trace, selectedWord: null })
@@ -28,12 +26,13 @@ export default function ExplanationPanel (props: ViewerModalProps) {
 
   const body = (
     <div className="padSmall">
-      <ExplanationGraph families={relationships.filter(relationship => selectedWord.relationshipIds.includes(relationship.title))} />
-    </div>)
+      <ExplanationGraph families={relationships.filter(relationship => selectedWord.relationshipIds.includes(relationship.title))} /></div>)
 
   const handleCloseWrapper = () => {
     if (handleClose !== null) { handleClose() }
   }
+
+  console.log('panelrender')
   return (
     <Modal
       open={open}
@@ -51,7 +50,7 @@ export default function ExplanationPanel (props: ViewerModalProps) {
             <Box className="roundBorderHard padLarge" style={{ backgroundColor: 'white' }}>
               {handleClose !== null ? <HoverClose handleClose={handleCloseWrapper} /> : null}
               <div className="flexRowCentered">
-                <h2 className="displayInlineBlock textAlignCenter padMedium">{selectedWord}</h2>
+                <h2 className="displayInlineBlock textAlignCenter padMedium">{selectedWord.word}</h2>
               </div>
               {body}
             </Box>

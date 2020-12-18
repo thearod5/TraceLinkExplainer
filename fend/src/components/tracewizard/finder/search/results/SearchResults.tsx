@@ -68,9 +68,9 @@ export default function SearchResults (props: SearchResultProps) {
       >
         <SearchResultsPage
           numberOfTotalResults={artifacts.length}
-          results={artifacts.slice(startIndex, endIndex)}
-          selectArtifact={onSelectArtifact}
-          removeArtifact={onRemoveArtifact}
+          resultsSlice={artifacts.slice(startIndex, endIndex)}
+          onSelectArtifact={onSelectArtifact}
+          onRemoveArtifact={onRemoveArtifact}
         />
       </div>
       <div style={{ height: '10%' }}>{footer}</div>

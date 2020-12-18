@@ -3,20 +3,20 @@ import React, { useState } from 'react'
 import DatasetChooserWrapper from '../dataset/DatasetChooserWrapper'
 import Wizard from '../wizard/Wizard'
 import ExplanationStep from './explanation/ExplanationStep'
-import Finder from './finder/Finder'
-import { ArtifactSetContext, ArtifactTraceSet } from './types'
+import ArtifactSetFinder from './finder/ArtifactSetFinder'
+import { TraceArtifactsContext, TracedArtifacts } from './types'
 
 export default function TraceWizard () {
-  const [traceSet, setTraceSet] = useState<ArtifactTraceSet[]>([])
+  const [traceSet, setTraceSet] = useState<TracedArtifacts[]>([]) // represents the traces selected for viewing
 
   const body = (
-    <ArtifactSetContext.Provider value={{ traceSet, setTraceSet }}>
+    <TraceArtifactsContext.Provider value={{ traceSet, setTraceSet }}>
       <Wizard stepNames={['Select Dataset', 'Select Artifacts', 'View Traces']}>
         <DatasetChooserWrapper />
-        <Finder />
+        <ArtifactSetFinder />
         <ExplanationStep />
       </Wizard>
-    </ArtifactSetContext.Provider>
+    </TraceArtifactsContext.Provider>
   )
   return <div className="sizeFull">{body}</div>
 }

@@ -7,16 +7,14 @@ import { Artifact } from '../../../operations/types/Project'
 import { Trace } from '../../../operations/types/Trace'
 import SplitPanelView from '../../meta/SplitPanelView'
 import { createRelationshipColors } from '../artifact/accordion/ArtifactAccordionFactory'
-import { SelectedArtifactsContainer } from './TracedArtifactsDisplay'
-import { ArtifactSetContext, TraceContext } from '../types'
+import { TraceArtifactsContext, TraceContext } from '../types'
 import ExplanationPanel from './graph/ExplanationPanel'
+import { TraceExplanationsContainer } from './TraceExplanationsContainer'
 
 export default function ExplanationStep () {
   const { dataset, setError } = useContext(AppContext)
-  const { traceSet } = useContext(ArtifactSetContext)
+  const { traceSet } = useContext(TraceArtifactsContext)
   const [trace, setTrace] = useState<Trace>(initializeEmptyTrace())
-
-  const modalOpen = trace.selectedWord !== null
 
   const [selectedSource, setSelectedSource] = useState<number>(-1)
   const [selectedTarget, setSelectedTarget] = useState<number>(-1)
@@ -24,16 +22,17 @@ export default function ExplanationStep () {
   const [sourceArtifacts, setSourceArtifacts] = useState<Artifact[]>([])
   const [targetArtifacts, setTargetArtifacts] = useState<Artifact[]>([])
 
-  useEffect(() => {
+  useEffect(() => { // only want to do this calculation once
     setSourceArtifacts(traceSet.map(ts => ts.sourceArtifact))
     setTargetArtifacts(traceSet.map(ts => ts.tracedArtifacts).flat())
     setSelectedSource(0)
     setSelectedTarget(0)
-  }, [traceSet]) // trace set does not change once in this step
+  }, []) // trace set does not change once in this step
 
   useEffect(() => {
     if (selectedSource !== UNSELECTED_INDEX && selectedTarget !== UNSELECTED_INDEX) {
       setIsLoading(true)
+
       getTraceInformation(dataset.name, sourceArtifacts[selectedSource], targetArtifacts[selectedTarget]) // change with state index
         .then((traceInformation) => {
           const relationshipColors = createRelationshipColors(
@@ -61,27 +60,28 @@ export default function ExplanationStep () {
     }
   }, [selectedTarget, selectedSource, dataset.name, setError, sourceArtifacts, targetArtifacts])
 
+  console.log('explanation render', trace.selectedWord)
   return (
     <TraceContext.Provider value={{ trace, setTrace }}>
-      <SplitPanelView
-        left={ <SelectedArtifactsContainer
+      <SplitPanelView>
+        <TraceExplanationsContainer
           artifacts={sourceArtifacts}
           traceWords={trace.sourceWords}
           onItemClick={setSelectedSource}
           selectedIndex={selectedSource}
           onSelectIndex={setSelectedSource}
           isLoading={isLoading}
-        />}
-        right={<SelectedArtifactsContainer
+        />
+        <TraceExplanationsContainer
           artifacts={targetArtifacts}
           traceWords={trace.targetWords}
           onItemClick={setSelectedTarget}
           selectedIndex={selectedTarget}
           onSelectIndex={setSelectedTarget}
           isLoading={isLoading}
-        />}
-      />
-      <ExplanationPanel open={modalOpen} />
+        />
+      </SplitPanelView>
+      <ExplanationPanel />
     </TraceContext.Provider>
 
   )

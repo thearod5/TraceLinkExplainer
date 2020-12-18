@@ -9,50 +9,55 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FullscreenIcon from '@material-ui/icons/Fullscreen'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { createArtifactDisplayModel } from '../../../../../operations/artifacts/WordCreator'
 import { Artifact } from '../../../../../operations/types/Project'
 import { Relationships } from '../../../../../operations/types/Trace'
 import ViewerWords from '../../../artifact/words/ArtifactWord'
+import { ArtifactSelectContext } from '../../ArtifactSetFinder'
 import { ArtifactClickAction } from '../types'
 import SearchResultDialog from './SearchResultDialog'
 
 interface SearchResultAccordionProps {
   artifact: Artifact;
   families: Relationships;
-  selectArtifact: ArtifactClickAction;
-  removeArtifact: ArtifactClickAction;
+  onSelectArtifact: ArtifactClickAction;
+  onRemoveArtifact: ArtifactClickAction;
 }
 
 export default function SearchResultAccordion (props: SearchResultAccordionProps) {
+  const { artifactsSelected } = useContext(ArtifactSelectContext)
+  const { artifact, families, onSelectArtifact, onRemoveArtifact } = props
   const [expanded, setExpanded] = useState(false)
   const [checked, setChecked] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const handleClose = () => {
-    setDialogOpen(false)
-    setExpanded(false)
+  const onSelectArtifactWrapper = () => {
+    const newState = !checked
+    setChecked(newState)
+    const clickCallback = checked ? onRemoveArtifact : onSelectArtifact
+    clickCallback(artifact)
   }
 
-  const onClick = () => {
-    const clickCallback = checked ? props.removeArtifact : props.selectArtifact
-    clickCallback(props.artifact)
-    setChecked(!checked)
-  }
-
-  const handleDialogAccept = () => {
+  const onDialogAccept = () => {
     setDialogOpen(false)
     setExpanded(false)
     setChecked(true)
-    props.selectArtifact(props.artifact)
+    onSelectArtifact(artifact)
   }
 
-  const viewExpandedArtifactIcon = (
-    <div className="centeredColumn padSmall" >
-      <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
-        <FullscreenIcon/>
-      </IconButton>
-    </div>)
+  const onDialogExit = () => {
+    setDialogOpen(false)
+    setExpanded(false)
+  }
+
+  useEffect(() => {
+    if (!checked) {
+      if (artifactsSelected.some(a => a.id === artifact.id)) {
+        setChecked(true)
+      }
+    }
+  }, [checked, artifact.id, artifactsSelected])
 
   return (
     <Accordion
@@ -65,8 +70,8 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           aria-label="Select"
           onClick={(event) => event.stopPropagation()} // stops opening of accordion
           onFocus={(event) => event.stopPropagation()}
-          control={<Checkbox checked={checked} onClick={onClick} color={'primary'}/>}
-          label={props.artifact.name}
+          control={<Checkbox checked={checked} onClick={onSelectArtifactWrapper} color={'primary'}/>}
+          label={artifact.name}
         />
       </AccordionSummary>
 
@@ -77,22 +82,26 @@ export default function SearchResultAccordion (props: SearchResultAccordionProps
           boxShadow={3}
         >
           <ViewerWords
-            words={createArtifactDisplayModel(props.artifact).words}
-            families={props.families}
+            words={createArtifactDisplayModel(artifact).words}
+            families={families}
             colorSelected={true}
             sizeSelected={false}
             defaultSize={1}
           />
         </Box>
 
-        {viewExpandedArtifactIcon}
+        <div className="centeredColumn padSmall" >
+          <IconButton aria-label="expand" onClick={() => setDialogOpen(!dialogOpen)}>
+            <FullscreenIcon/>
+          </IconButton>
+        </div>
       </AccordionDetails>
 
       <SearchResultDialog
-        handleClose={handleClose}
+        handleClose={onDialogExit}
         open={dialogOpen}
-        artifact={props.artifact}
-        selectSource={handleDialogAccept}
+        artifact={artifact}
+        selectSource={onDialogAccept}
       />
     </Accordion>
   )
