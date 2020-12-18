@@ -1,5 +1,5 @@
-import { getQueryRecommendations } from '../../operations/query/QueryRecommender'
-import { ATTRIBUTE_VALUES, CATEGORICAL_OPERATIONS } from '../../operations/query/Types'
+import { getQueryRecommendations } from '../../components/finder/search/query/QueryRecommender'
+import { ATTRIBUTE_VALUES, CATEGORICAL_OPERATIONS } from '../../components/finder/search/query/Types'
 
 test('+ : getRecommendations : attributes', () => {
   const query = ''

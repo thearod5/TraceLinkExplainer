@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history'
 import { TracedArtifacts } from './components/tracewizard/types'
-import { Artifact, Project } from './operations/types/Project'
-import { Trace, WordDescriptorDisplay } from './operations/types/Trace'
+import { Artifact, Project } from './types/Project'
+import { Trace, WordDescriptorDisplay } from './types/Trace'
 /*
  * Search
  */
@@ -35,7 +35,7 @@ export const VIEW_TRACE_STEP = 3
 export const FIRST_STEP_IN_WIZARD = SELECT_SOURCE_STEP
 
 export const HOME_ROUTE = '/' // page 0 (not defined in prototype)
-export const DATASET_ROUTE = '/dataset' // page 1
+export const DATASET_ROUTE = '/project' // page 1
 export const SELECT_SOURCES_ROUTE = '/selectsources'
 export const SELECT_TARGETS_ROUTE = '/selecttargets'
 export const VIEW_TRACE_ROUTE = '/trace' // page 4
@@ -53,7 +53,7 @@ export type ArtifactCallback = (artifact: Artifact) => void
 export type TracesSetCallback = (trace: TracedArtifacts[]) => void
 export type TraceCallback = (trace: Trace) => void
 export type IndexCallback = (index: number) => void
-export type DatasetCallback = (dataset : Project) => void
+export type DatasetCallback = (project : Project) => void
 /*
  * Types
  */

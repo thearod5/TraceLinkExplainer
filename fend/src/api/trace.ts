@@ -1,14 +1,14 @@
-import { Artifact } from '../operations/types/Project'
-import { TraceInformation } from '../operations/types/Trace'
+import { Artifact } from '../types/Project'
+import { TraceInformation } from '../types/Trace'
 import { BASE_URL, get } from './base'
 import { isError } from './errors'
 
 export function getTraceInformation (
-  datasetName: string,
+  projectName: string,
   sourceArtifact: Artifact,
   targetArtifact: Artifact
 ): Promise<TraceInformation> {
-  const TRACE_URL = [BASE_URL, datasetName, 'traces', sourceArtifact.name, targetArtifact.name].join('/')
+  const TRACE_URL = [BASE_URL, projectName, 'traces', sourceArtifact.name, targetArtifact.name].join('/')
 
   return new Promise((resolve, reject) => {
     get(TRACE_URL).then((response) => {

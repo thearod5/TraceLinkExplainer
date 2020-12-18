@@ -4,28 +4,28 @@ import { Router } from 'react-router-dom'
 import NavBar from './components/meta/NavBar'
 import TraceWizard from './components/tracewizard/TraceWizard'
 import { appHistory, DatasetCallback, OptionalStringCallback } from './constants'
-import { initializeEmptyDataset } from './operations/initializers'
-import { Project } from './operations/types/Project'
+import { initializeEmptyDataset } from './types/initializers'
+import { Project } from './types/Project'
 import './styles/App.scss'
 import theme from './styles/theme'
 interface IAppContext {
   error : string | undefined
   setError: OptionalStringCallback
-  dataset: Project,
+  project: Project,
   setDataset: DatasetCallback
 }
-const WELCOME_MESSAGE = 'TraceViewer'
+const WELCOME_MESSAGE = 'Trace Explainer'
 
 export const AppContext = React.createContext<IAppContext>({
   error: undefined,
   setError: (e: string | undefined) => console.error('not implemented'),
-  dataset: initializeEmptyDataset(),
-  setDataset: (dataset: Project) => console.error('not implemented')
+  project: initializeEmptyDataset(),
+  setDataset: (project: Project) => console.error('not implemented')
 })
 
 export default function App () {
   const [error, setError] = useState<string | undefined>(undefined)
-  const [dataset, setDataset] = useState<Project>({ id: 'a', name: 'Drone', description: '' })
+  const [project, setDataset] = useState<Project>(initializeEmptyDataset())
 
   const onSelectDataset = useCallback(setDataset, [])
   const onSetError = useCallback(setError, [])
@@ -38,9 +38,9 @@ export default function App () {
     >
       <Router history={appHistory}>
         <MuiThemeProvider theme={theme}>
-          <AppContext.Provider value={{ error, setError: onSetError, dataset, setDataset: onSelectDataset }}>
+          <AppContext.Provider value={{ error, setError: onSetError, project, setDataset: onSelectDataset }}>
             <Box style={{ height: '10%' }}>
-              <NavBar title={dataset.name === '' ? WELCOME_MESSAGE : dataset.name} />
+              <NavBar title={project.name === '' ? WELCOME_MESSAGE : project.name} />
             </Box>
             <Box style={{ height: '90%' }}>
               <TraceWizard />

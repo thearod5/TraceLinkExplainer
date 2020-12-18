@@ -1,4 +1,4 @@
-import { isValidAttibute, isValidCombinator, isValidCommandStep, isValidOperation, isValidQuery, isValidValue } from '../../operations/query/QueryValidator'
+import { isValidAttibute, isValidCombinator, isValidCommandStep, isValidOperation, isValidQuery, isValidValue } from '../../components/finder/search/query/QueryValidator'
 
 /*
  * isValidAttribute

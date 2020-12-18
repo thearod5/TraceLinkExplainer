@@ -3,7 +3,8 @@ import { v4 } from 'uuid'
 import { AppContext } from '../../App'
 import { SELECT_SOURCE_STEP } from '../../constants'
 import { getNewStepState } from '../../operations/pagechanger/PageChanger'
-import { Artifact, Project } from '../../operations/types/Project'
+import { RootState } from '../../types'
+import { Artifact, Project } from '../../types/Project'
 import {
   clearData,
 
@@ -11,7 +12,6 @@ import {
   setSelectedTargets
 } from '../../redux/actions'
 import store, { createEmptyState } from '../../redux/store'
-import { RootState } from '../../operations/types'
 
 const mockState: RootState = createEmptyState()
 
@@ -40,10 +40,10 @@ afterEach(() => {
 })
 
 /*
- * Step 0 -> Step 1: Selecting a dataset
+ * Step 0 -> Step 1: Selecting a project
  */
 
-test('+ : getStepChangeError : select a dataset', () => {
+test('+ : getStepChangeError : select a project', () => {
   // Test
   const { setDataset } = useContext(AppContext)
   setDataset(mockDataset)
@@ -53,10 +53,10 @@ test('+ : getStepChangeError : select a dataset', () => {
     getNewStepState(state, SELECT_SOURCE_STEP)
   )
   // Assertions
-  expect(res.dataset.name).toEqual(mockDataset.name)
+  expect(res.project.name).toEqual(mockDataset.name)
 })
 
-test('- : getStepChangeError : select an empty dataset', () => {
+test('- : getStepChangeError : select an empty project', () => {
   // Test
   const res: RootState | string = getNewStepState(
     mockState,
@@ -70,14 +70,14 @@ test('- : getStepChangeError : select an empty dataset', () => {
  * Step 1 -> Step 2: Selecting a source artifact
  */
 
-test('+ : getStepChangeError : select a empty dataset', () => {
+test('+ : getStepChangeError : select a empty project', () => {
   const currentState: RootState = store.getState()
   expect(currentState.currentStep).toEqual(0)
   expect(currentState.selectedSources.length).toEqual(0)
   expect(currentState.selectedTargets.length).toEqual(0)
 
-  expect(currentState.dataset.name).toBe('')
-  expect(currentState.dataset.description).toBe('')
+  expect(currentState.project.name).toBe('')
+  expect(currentState.project.description).toBe('')
 })
 
 test('+ : setDataset', () => {
@@ -88,7 +88,7 @@ test('+ : setDataset', () => {
   setDataset(mockDataset)
   // Assertions
   currentState = store.getState()
-  expect(currentState.dataset.name).toEqual(mockDataset.name)
+  expect(currentState.project.name).toEqual(mockDataset.name)
 })
 
 test('+ : setSelectedSources: default', () => {

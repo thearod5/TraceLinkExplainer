@@ -1,4 +1,4 @@
-import { Project } from '../operations/types/Project'
+import { Project } from '../types/Project'
 import { BASE_URL, DATASET_ENDPOINT, get } from './base'
 
 export async function getProjects (): Promise<Project[]> {
