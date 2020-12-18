@@ -5,7 +5,7 @@ import { Artifact, ArtifactIdentifier } from '../../../../operations/types/Proje
 import { RelationshipColors, Relationships, WordDescriptors } from '../../../../operations/types/Trace'
 import ArtifactAccordion from './ArtifactAccordion'
 
-export function createTracedArtifactAccordion (
+export function createTraceExplanationAccordion (
   wordDescriptors: WordDescriptors | null,
   relationships: Relationships | null,
   artifact: Artifact,

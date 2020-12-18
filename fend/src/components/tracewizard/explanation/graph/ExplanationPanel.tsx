@@ -1,24 +1,38 @@
 import { Backdrop, Box, Fade, Modal } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CloseIcon from '@material-ui/icons/Close'
-import React, { useState } from 'react'
-import { FADE_TIMEOUT } from '../../../constants'
-import { useTraceExplanationCreator } from './hooks/useTraceExplanationCreator'
-interface ViewerModalProps {
-  open: boolean
-}
+import React, { useContext, useState } from 'react'
+import { FADE_TIMEOUT } from '../../../../constants'
+import { TraceContext } from '../../types'
+import { ExplanationGraph } from './ExplanationGraph'
 
 /* Manages the modal that displays the concept graph between a selected word in a trace explanation
  *
  */
 
-export default function ExplanationPanel (props: ViewerModalProps) {
-  const { open } = props
-  const [handleClose, selectedWord, body] = useTraceExplanationCreator()
+export default function ExplanationPanel () {
+  const { trace, setTrace } = useContext(TraceContext)
+
+  const { selectedWord, relationships } = trace
+  const open = selectedWord !== null
+
+  const handleClose = () => {
+    setTrace({ ...trace, selectedWord: null })
+  }
+
+  if (selectedWord === null || relationships === null) {
+    return null
+  }
+
+  const body = (
+    <div className="padSmall">
+      <ExplanationGraph families={relationships.filter(relationship => selectedWord.relationshipIds.includes(relationship.title))} /></div>)
 
   const handleCloseWrapper = () => {
     if (handleClose !== null) { handleClose() }
   }
+
+  console.log('panelrender')
   return (
     <Modal
       open={open}
@@ -36,7 +50,7 @@ export default function ExplanationPanel (props: ViewerModalProps) {
             <Box className="roundBorderHard padLarge" style={{ backgroundColor: 'white' }}>
               {handleClose !== null ? <HoverClose handleClose={handleCloseWrapper} /> : null}
               <div className="flexRowCentered">
-                <h2 className="displayInlineBlock textAlignCenter padMedium">{selectedWord}</h2>
+                <h2 className="displayInlineBlock textAlignCenter padMedium">{selectedWord.word}</h2>
               </div>
               {body}
             </Box>

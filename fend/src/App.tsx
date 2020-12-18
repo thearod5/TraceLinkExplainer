@@ -25,7 +25,7 @@ export const AppContext = React.createContext<IAppContext>({
 
 export default function App () {
   const [error, setError] = useState<string | undefined>(undefined)
-  const [dataset, setDataset] = useState<Project>(initializeEmptyDataset())
+  const [dataset, setDataset] = useState<Project>({ id: 'a', name: 'Drone', description: '' })
 
   const onSelectDataset = useCallback(setDataset, [])
   const onSetError = useCallback(setError, [])

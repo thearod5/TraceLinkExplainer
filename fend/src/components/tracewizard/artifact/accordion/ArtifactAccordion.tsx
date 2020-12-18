@@ -45,7 +45,6 @@ export default function ArtifactAccordion (props: ArtifactAccordionProps) {
       TransitionProps={{ unmountOnExit: true }}
       expanded={expanded}
       onChange={handleAccordionExpandClick}
-      style={{ width: '90%' }}
       color='primary'
     >
       <ArtifactAccordionSummary

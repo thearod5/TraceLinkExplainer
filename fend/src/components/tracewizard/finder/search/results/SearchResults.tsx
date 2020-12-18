@@ -1,14 +1,13 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../../../../../App'
 import { MAX_SEARCH_RESULTS_PER_PAGE } from '../../../../../constants'
-import { createArtifactDisplayModel } from '../../../../../operations/artifacts/WordCreator'
 import { Artifact } from '../../../../../operations/types/Project'
 import LoadingBar from '../../../../meta/LoadingBar'
-import usePageCounter from '../hooks/usePageCounter'
 import useSelectedArtifactCounter from '../hooks/useSelectedArtifactCounter'
 import { SearchFooter } from '../SearchFooter'
 import SearchResultsPage from './SearchResultsPage'
 
-/* Responsibility: Defines the HTML/CSS structure of the Search.tsx
+/* Provides pagination for displaying a list of artifacts, typically query results.
  *
  */
 
@@ -20,11 +19,28 @@ interface SearchResultProps {
 }
 
 export default function SearchResults (props: SearchResultProps) {
+  const { setError } = useContext(AppContext)
   const { artifacts, isLoading, addArtifact, removeArtifact } = props
   const totalPages = Math.floor(artifacts.length / MAX_SEARCH_RESULTS_PER_PAGE) + 1
 
-  const [numberSelected, onSelectArtifact, onRemoveArtifact] = useSelectedArtifactCounter({ totalPages, addArtifact, removeArtifact })
-  const [currentPage, onNextPage, onPreviousPage] = usePageCounter({ totalPages })
+  const [numSelectedArtifacts, onSelectArtifact, onRemoveArtifact] = useSelectedArtifactCounter({ totalPages, addArtifact, removeArtifact })
+  const [currentPage, setCurrentPage] = useState(0)
+
+  const onNextPage = () => {
+    if (currentPage >= totalPages - 1) {
+      setError('cannot move beyond last page')
+    } else {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const onPreviousPage = () => {
+    if (currentPage === 0) {
+      setError('cannot move before first page')
+    } else {
+      setCurrentPage(currentPage - 1)
+    }
+  }
 
   const footer = (
     <SearchFooter
@@ -33,27 +49,30 @@ export default function SearchResults (props: SearchResultProps) {
       message={''}
       onNextPage={onNextPage}
       onPreviousPage={onPreviousPage}
-      numberSelected={numberSelected}
+      numberSelected={numSelectedArtifacts}
     />
   )
+
+  useEffect(() => {
+    setCurrentPage(0)
+  }, [isLoading])
 
   const startIndex = currentPage * MAX_SEARCH_RESULTS_PER_PAGE
   const endIndex = startIndex + MAX_SEARCH_RESULTS_PER_PAGE
 
   const body = (
-    <div style={{ height: '90%' }}>
+    <div className='sizeFull overflowYScroll'>
       <div
-        className="flexRowContentLeft widthFull overflowYScroll"
+        className="widthFull overflowYScroll"
         style={{ height: '90%' }}
       >
         <SearchResultsPage
           numberOfTotalResults={artifacts.length}
-          results={artifacts.slice(startIndex, endIndex).map(a => createArtifactDisplayModel(a))}
-          selectArtifact={onSelectArtifact}
-          removeArtifact={onRemoveArtifact}
+          resultsSlice={artifacts.slice(startIndex, endIndex)}
+          onSelectArtifact={onSelectArtifact}
+          onRemoveArtifact={onRemoveArtifact}
         />
       </div>
-
       <div style={{ height: '10%' }}>{footer}</div>
     </div>
   )
