@@ -65,6 +65,7 @@ export default function ExplanationStep () {
     } else {
       setTrace(initializeEmptyTrace())
     }
+    // eslint-disable-next-line
   }, [selectedTarget, selectedSource, project.name, setError, sourceArtifacts])
 
   const onSelectSourceIndex = (selectedIndex: number) => {
