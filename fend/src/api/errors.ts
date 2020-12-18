@@ -1,4 +1,4 @@
-import { objectContainsKeys } from '../operations/types/TypeUtil'
+import { objectContainsKeys } from '../types/TypeUtil'
 
 export interface CustomError {
   error: string;

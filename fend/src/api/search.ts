@@ -2,35 +2,35 @@ import {
   Artifact,
   ArtifactIdentifier,
 
-  Project,
 
-  isNonEmptyDataset
-} from '../operations/types/Project';
+
+  isNonEmptyDataset, Project
+} from '../types/Project';
 import {
   SearchResponse
-} from '../operations/types/Search';
+} from '../types/Search';
 import { BASE_URL, get } from './base';
 import { CustomError, isError } from './errors';
 
 export type ServerResponse = CustomError | SearchResponse;
 
 export async function searchForSourceArtifact (
-  dataset: Project,
+  project: Project,
   query: string
 ): Promise<Artifact[]> {
   return new Promise((resolve, reject) => {
-    if (!isNonEmptyDataset(dataset)) {
-      const message = 'no dataset is selected'
+    if (!isNonEmptyDataset(project)) {
+      const message = 'no project is selected'
       return reject(Error(message))
     }
     const queryString = query.length === 0 ? '' : '?query=' + query
-    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
+    const searchUrl = [BASE_URL, 'projects', project.name, 'artifacts' + queryString].join('/')
     baseSearchFunction(searchUrl).then(obj => resolve(obj)).catch(e => reject(e))
   })
 }
 
 export async function searchForTracedArtifacts (
-  dataset: Project,
+  project: Project,
   sources: ArtifactIdentifier[],
   query: string
 ): Promise<Artifact[]> {
@@ -40,13 +40,13 @@ export async function searchForTracedArtifacts (
       return
     }
 
-    if (!isNonEmptyDataset(dataset)) {
+    if (!isNonEmptyDataset(project)) {
       throw Error('Dataset not selected.')
     }
 
     const baseQuery = '?' + sources.map(source => 'source_name=' + source.name).join('&')
     const queryString = query.length === 0 ? baseQuery : baseQuery + '&query=' + query
-    const searchUrl = [BASE_URL, 'projects', dataset.name, 'artifacts' + queryString].join('/')
+    const searchUrl = [BASE_URL, 'projects', project.name, 'artifacts' + queryString].join('/')
     return resolve(baseSearchFunction(searchUrl))
   })
 }

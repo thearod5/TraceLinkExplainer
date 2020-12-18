@@ -1,5 +1,5 @@
-import { getQueryRecommendations } from '../../operations/query/QueryRecommender'
-import { ATTRIBUTE_VALUES, CATEGORICAL_OPERATIONS } from '../../operations/query/Types'
+import { getQueryRecommendations } from '../../components/finder/search/query/QueryRecommender'
+import { ATTRIBUTE_VALUES, CATEGORICAL_OPERATIONS } from '../../components/finder/search/query/Types'
 
 test('+ : getRecommendations : attributes', () => {
   const query = ''
@@ -11,7 +11,7 @@ test('+ : getRecommendations : attributes', () => {
 })
 
 test('+ : getRecommendations : operations', () => {
-  const query = 'type'
+  const query = 'name'
   const recommendations = getQueryRecommendations(query)
 
   for (const catOperationIndex in CATEGORICAL_OPERATIONS) {
@@ -21,8 +21,8 @@ test('+ : getRecommendations : operations', () => {
   }
 })
 
-test('+ : getRecommendations : operations', () => {
+test('+ : getRecommendations : operations : emtpy', () => {
   const query = 'type contains'
   const recommendations = getQueryRecommendations(query)
-  expect(recommendations).toContain('""')
+  expect(recommendations).toContain('')
 })
