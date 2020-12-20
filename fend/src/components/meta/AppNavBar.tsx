@@ -1,6 +1,5 @@
 import { Box } from '@material-ui/core'
 import React from 'react'
-import { appHistory, HOME_ROUTE } from '../../types/constants'
 
 interface NavBarProps {
   title: string
@@ -8,7 +7,7 @@ interface NavBarProps {
 
 export default function AppNavBar (props: NavBarProps) {
   const GoHomeClickHanlder = () => {
-    appHistory.push(HOME_ROUTE)
+    window.location.reload()
   }
 
   return (
