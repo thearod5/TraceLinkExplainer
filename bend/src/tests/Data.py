@@ -3,7 +3,8 @@ import os
 from functools import wraps
 
 from api import models
-from api.serializers import ArtifactSerializer, TraceSerializer, ProjectMetaSerializer, create_object, ProjectSerializer
+from api.serializers import ArtifactSerializer, TraceSerializer, ProjectDescriptionSerializer, create_object, \
+    ProjectSerializer
 from paths import PATH_TO_TEST_PROJECT_RESOURCES
 
 
@@ -22,7 +23,7 @@ def get_test_file(name):
 
 
 def create_project_meta(data) -> models.ProjectDescription:
-    return create_object(ProjectMetaSerializer, data)
+    return create_object(ProjectDescriptionSerializer, data)
 
 
 def create_project(data) -> models.ProjectDescription:

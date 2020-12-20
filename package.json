@@ -6,13 +6,14 @@
   "scripts": {
     "fend": "cd fend && npm start",
     "fend-test": "cd fend && npm run test",
+    "fend-lint": "cd fend && npm run lint",
     "bend": "cd bend && ./start.sh",
     "bend-test": "cd bend && ./test.sh",
-    "fend-lint": "cd fend && npm run lint",
     "bend-lint": "cd bend && npm run lint",
     "start": "concurrently \"npm run bend\" \"npm run fend\"",
     "lint": "concurrently \"npm run bend-lint\" \"npm run fend-lint\"",
-    "test": "npm run bend-test && npm run fend-test"
+    "test": "npm run bend-test && npm run fend-test",
+    "install-project": "python3 install.py"
   },
   "repository": {
     "type": "git",

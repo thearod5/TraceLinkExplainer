@@ -1,3 +1,8 @@
+"""
+The central file containing all paths used in the system.
+Useful to build paths off of each other and making updates after
+directory changes easy.
+"""
 import os
 import pathlib
 

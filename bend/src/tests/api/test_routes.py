@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from api import models
+import api.models as models
 from tests.Data import DataBuilder
 
 

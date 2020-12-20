@@ -1,9 +1,9 @@
 from django.test import TestCase
 
 from api import models
-from search.Attributes import NameAttribute, BodyAttribute
 from search.Expressions import QueryExpression
 from search.Filters import Filter, EqualFilter
+from search.attributes import NameAttribute, BodyAttribute
 from tests.Data import DataBuilder
 
 

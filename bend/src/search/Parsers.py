@@ -1,10 +1,10 @@
 from django.db.models import Q
 
-from search.Attributes import Attribute
 from search.Combinators import get_combinator_symbols, Combinator, ICombinator
 from search.Expressions import IExpr, QueryExpression
 from search.Filters import get_operation_symbols, Filter
 from search.ParserUtil import get_symbols_in_def
+from search.attributes import Attribute
 
 
 def create_value_from_definition(definition: str):

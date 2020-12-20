@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from search.Attributes import NameAttribute, TypeAttribute
+from search.attributes import NameAttribute, TypeAttribute
 
 
 class TestAttributes(TestCase):
