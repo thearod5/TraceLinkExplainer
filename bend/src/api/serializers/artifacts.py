@@ -1,10 +1,13 @@
+"""
+Specifies serialization of artifacts to and from internal and external representations.
+"""
 from abc import ABC
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_text
 from rest_framework import serializers
 
-from api import models as models
+from api import models
 
 
 class CreatableSlugRelatedField(serializers.SlugRelatedField, ABC):
