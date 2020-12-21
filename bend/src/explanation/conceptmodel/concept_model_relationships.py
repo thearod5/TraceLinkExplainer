@@ -1,22 +1,11 @@
-import os
-
-from explanation.Cleaners import clean_doc
-from explanation.conceptmodel.ConceptModel import ConceptModel, ONTOLOGY_RELATION_PATHS
-from explanation.models.TraceInformation import TraceExplanation, Relationship
-from explanation.models.WordDescriptor import WordDescriptor
-from paths import PATH_TO_DATA
-
-
-def get_concept_model_for_dataset(dataset_name: str) -> ConceptModel:
-    ontology_name = "test" if dataset_name == "test" else "Drone"
-    path_to_concept_file = os.path.join(PATH_TO_DATA, ONTOLOGY_RELATION_PATHS[ontology_name])
-    cm = ConceptModel()
-    cm.add_concepts(path_to_concept_file)
-    return cm
+from explanation.cleaners import clean_doc
+from explanation.conceptmodel.concept_model import ConceptModel, ConceptModelFactory
+from explanation.models.trace_information import TraceExplanation, Relationship
+from explanation.models.word_descriptor import WordDescriptor
 
 
 def add_concept_families(dataset: str, explanation: TraceExplanation) -> TraceExplanation:
-    concept_model = get_concept_model_for_dataset(dataset)
+    concept_model = ConceptModelFactory.get_model(dataset)
 
     source_words_cleaned = list(map(lambda w_d: clean_doc(w_d.word), explanation.source_descriptors))
     source_words_cleaned_filtered = list(set(filter(lambda w: len(w) > 0, source_words_cleaned)))
@@ -27,7 +16,6 @@ def add_concept_families(dataset: str, explanation: TraceExplanation) -> TraceEx
     concept_model_relationships = get_relationships_for_concept_model(concept_model,
                                                                       source_words_cleaned_filtered,
                                                                       target_words_cleaned_filtered)
-
     add_relationships_to_word_descriptors(explanation,
                                           concept_model_relationships,
                                           source_words_cleaned,

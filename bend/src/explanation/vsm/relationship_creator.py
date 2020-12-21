@@ -8,11 +8,11 @@ from typing import Dict, List
 from scipy.sparse import csr_matrix
 from sklearn.preprocessing import minmax_scale
 
-from explanation.Cleaners import clean_doc
-from explanation.conceptmodel.vsm.frequency_matrix import create_term_frequency_matrix
-from explanation.models.TraceInformation import TraceExplanation, \
+from explanation.cleaners import clean_doc
+from explanation.models.trace_information import TraceExplanation, \
     Relationship, WordRelationshipNode, SYN
-from explanation.models.WordDescriptor import WordDescriptor
+from explanation.models.word_descriptor import WordDescriptor
+from explanation.vsm.frequency_matrix import create_term_frequency_matrix
 
 VSM_RELATIONSHIP_NAME = "ROOT"
 WordWeightMapping = Dict[str, float]

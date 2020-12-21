@@ -1,10 +1,10 @@
 import numpy as np
 from django.test import TestCase
 
-from explanation.conceptmodel.vsm.relationship_creator import add_root_relationships, get_vsm_weights, \
+from explanation.models.trace_information import TraceExplanation, Relationship
+from explanation.models.word_descriptor import WordDescriptor
+from explanation.vsm.relationship_creator import add_root_relationships, get_vsm_weights, \
     create_word_similarity_dictionary
-from explanation.models.TraceInformation import TraceExplanation, Relationship
-from explanation.models.WordDescriptor import WordDescriptor
 
 
 class TestRootFamilies(TestCase):
@@ -15,7 +15,7 @@ class TestRootFamilies(TestCase):
 
         initial_explanation = TraceExplanation(list(map(WordDescriptor, source_words)),
                                                list(map(WordDescriptor, target_words)))
-        explanation_with_roots: TraceExplanation = add_root_relationships("Drone", initial_explanation, -1)
+        explanation_with_roots: TraceExplanation = add_root_relationships(initial_explanation, "Drone", -1)
 
         relationships: [Relationship] = explanation_with_roots.relationships
 

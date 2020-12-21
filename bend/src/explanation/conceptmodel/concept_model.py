@@ -1,9 +1,11 @@
-from typing import List
+import os
+from typing import List, Dict
 
 import pandas as pd
 from igraph import Graph, OUT
 
-from explanation.models.TraceInformation import WordRelationshipNode, Relationship, SYN, ANC, CHILD
+from explanation.models.trace_information import WordRelationshipNode, Relationship, SYN, ANC, CHILD
+from paths import PATH_TO_DATA
 
 CONCEPT_MODEL_WEIGHT = 1
 
@@ -13,43 +15,47 @@ ONTOLOGY_RELATION_PATHS = {
 }
 
 
-class ConceptModel:
-    def __init__(self):
-        self.ig = Graph()  # use igraph to find path cause it is faster
-        self.vertex_names = []
+class ConceptModel(object):
+    """
+    Represents a graph of related concepts used to calculate how similar
+    two concepts are from each other.
+    """
 
-    def add_concepts(self, tsv_path):
+    def __init__(self, project_id: str):
+        self.project_id = project_id
+        self.ig = Graph()
+        self.vertex_names = []
+        self._load_concepts()
+
+    def _load_concepts(self):
         """
-        Add concept and relationships in TSV format. This is adpator for persisted concept models
-        :param tsv_path:
-        :return:
+        Add concept and relationships in CSV format. This is adaptor for persisted concept models.
         """
-        df = pd.read_csv(tsv_path)
-        rels, left_terms, right_terms = [], [], []
-        for index, row in df.iterrows():
+        path_to_concept_model = os.path.join(PATH_TO_DATA, ONTOLOGY_RELATION_PATHS[self.project_id])
+        concepts_df = pd.read_csv(path_to_concept_model)
+        relationships, left_terms, right_terms = [], [], []
+        for index, row in concepts_df.iterrows():
             rel, lt, rt = row[0], row[1], row[2]
-            rels.append(rel)
+            relationships.append(rel)
             left_terms.append(lt)
             right_terms.append(rt)
-        self._add_concepts(rels, left_terms, right_terms)
+        self._add_concepts(relationships, left_terms, right_terms)
         self.vertex_names = self.ig.vs.get_attribute_values("name")
 
     def _add_concepts(self, relationships: List, left_terms: List, right_terms: List):
         """
         Add concepts and relations in lists to the concept model.
-        :param rel_dict:
-        :return:
         """
 
-        for type, lt, rt in zip(relationships, left_terms, right_terms):
-            self.ig.add_vertex(lt)
-            self.ig.add_vertex(rt)
-            if type.upper() == SYN:
-                self.ig.add_edge(lt, rt, label=SYN)
-                self.ig.add_edge(rt, lt, label=SYN)
-            if type.upper() == ANC:
-                self.ig.add_edge(lt, rt, label=ANC)
-                self.ig.add_edge(rt, lt, label=CHILD)
+        for r_type, left_term, right_term in zip(relationships, left_terms, right_terms):
+            self.ig.add_vertex(left_term)
+            self.ig.add_vertex(right_term)
+            if r_type.upper() == SYN:
+                self.ig.add_edge(left_term, right_term, label=SYN)
+                self.ig.add_edge(right_term, left_term, label=SYN)
+            if r_type.upper() == ANC:
+                self.ig.add_edge(left_term, right_term, label=ANC)
+                self.ig.add_edge(right_term, left_term, label=CHILD)
 
     def get_neighborhood(self, w1):
         if w1 not in self.vertex_names:
@@ -123,6 +129,22 @@ class ConceptModel:
                 tmp.append(self.ig.vs[n]['name'])
             all_path.append(tmp)
         return all_path
+
+
+class ConceptModelFactory():
+    projects: List[str] = []  # represents list of dataset ids loaded
+    models: Dict[str, ConceptModel] = {}
+
+    @staticmethod
+    def get_model(project_id: str):
+        if project_id in ConceptModelFactory.projects:
+            return ConceptModelFactory.models[project_id]
+
+        new_concept_model = ConceptModel(project_id)
+        ConceptModelFactory.models[project_id] = new_concept_model
+        ConceptModelFactory.projects.append(project_id)
+
+        return new_concept_model
 
 
 def get_word_node(vertices, edge, last_word: str):

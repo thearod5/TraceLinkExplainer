@@ -6,8 +6,8 @@ from rest_framework.request import Request
 
 import api.models as models
 from api.serializers import ArtifactSerializer, ProjectDescriptionSerializer, ProjectSerializer
-from explanation.TraceExplanation import get_trace_information
-from search.Parsers import parse_definition
+from explanation.trace_explanation import get_trace_information
+from search.parsers import parse_definition
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

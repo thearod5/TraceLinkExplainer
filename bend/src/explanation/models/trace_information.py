@@ -2,7 +2,7 @@ from typing import List
 
 from typing_extensions import TypedDict
 
-from explanation.models.WordDescriptor import WordDescriptor, WordDescriptorDict
+from explanation.models.word_descriptor import WordDescriptor, WordDescriptorDict
 
 ANC = "ANCESTOR"
 CHILD = "CHILD"

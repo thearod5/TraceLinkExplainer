@@ -1,9 +1,9 @@
 from api import models
-from explanation.Cleaners import get_words_in_string_doc
-from explanation.conceptmodel.ConceptModelRelationships import add_concept_families
-from explanation.conceptmodel.vsm.relationship_creator import add_root_relationships
-from explanation.models.TraceInformation import TraceInformation, TraceExplanation, TracePayloadDict
-from explanation.models.WordDescriptor import WordDescriptor
+from explanation.cleaners import get_words_in_string_doc
+from explanation.conceptmodel.concept_model_relationships import add_concept_families
+from explanation.models.trace_information import TraceInformation, TraceExplanation, TracePayloadDict
+from explanation.models.word_descriptor import WordDescriptor
+from explanation.vsm.relationship_creator import add_root_relationships
 
 
 def get_trace_information(
@@ -28,6 +28,7 @@ def create_trace_payload(dataset: str, source_words: [str], target_words: [str])
     explanation = TraceExplanation(source_word_descriptors, target_word_descriptors)
 
     pipeline = [add_root_relationships, add_concept_families]
+
     for pipeline_function in pipeline:
         kwargs = {'dataset': dataset, 'explanation': explanation}
         explanation = pipeline_function(**kwargs)

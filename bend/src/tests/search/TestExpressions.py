@@ -1,11 +1,11 @@
 from django.test import TestCase
 
 from api import models
-from search.Combinators import AndCombinator, Combinator
-from search.Expressions import QueryExpression
-from search.Filters import Filter, EqualFilter
 from search.attributes import NameAttribute, TypeAttribute
-from tests.Data import DataBuilder
+from search.combinators import AndCombinator, Combinator
+from search.expressions import QueryExpression
+from search.filters import Filter, EqualFilter
+from tests.test_data import DataBuilder
 
 
 class TestExpressions(TestCase):

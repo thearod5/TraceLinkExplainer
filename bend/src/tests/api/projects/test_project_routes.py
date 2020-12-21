@@ -4,10 +4,10 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 import api.models as models
-from tests.Data import DataBuilder
+from tests.test_data import DataBuilder
 
 
-class TestRoutes(TestCase):
+class TestProjectRoutes(TestCase):
     def test_get_projects(self):
         DataBuilder().with_default_project()
         response = self.client.get('/projects')

@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 from django.db.models import Q
 
-from search.Filters import IFilter
-from search.Symbols import Value
 from search.attributes import IAttribute
+from search.filters import IFilter
+from search.symbols import Value
 
 
 class IExpr(ABC):

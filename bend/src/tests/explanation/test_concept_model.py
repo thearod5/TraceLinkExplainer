@@ -1,12 +1,12 @@
 from django.test import TestCase
 
 from api import models
-from explanation.Cleaners import get_words_in_string_doc
-from explanation.conceptmodel.ConceptModelRelationships import get_concept_model_for_dataset, \
-    add_concept_families
-from explanation.models.TraceInformation import TraceExplanation, CHILD, SYN, SOURCE
-from explanation.models.WordDescriptor import WordDescriptor
-from tests.Data import DataBuilder
+from explanation.cleaners import get_words_in_string_doc
+from explanation.conceptmodel.concept_model import ConceptModelFactory
+from explanation.conceptmodel.concept_model_relationships import add_concept_families
+from explanation.models.trace_information import TraceExplanation, CHILD, SYN, SOURCE
+from explanation.models.word_descriptor import WordDescriptor
+from tests.test_data import DataBuilder
 
 
 def get_words_in_artifact(artifact_id: str):
@@ -15,13 +15,13 @@ def get_words_in_artifact(artifact_id: str):
 
 
 class TestConceptModel(TestCase):
-    concept_model = get_concept_model_for_dataset("test")
+    dataset = "test"
+    concept_model = ConceptModelFactory.get_model(dataset)
 
     def test_ex_test_dataset(self):
         data_builder = DataBuilder()
         project = data_builder.with_default_project(return_obj=True)
 
-        dataset = "test"
         source_words = get_words_in_artifact(data_builder.artifact_a_id)
         target_words = get_words_in_artifact(data_builder.artifact_b_id)
 
@@ -29,7 +29,7 @@ class TestConceptModel(TestCase):
         target_word_descriptors = list(map(WordDescriptor, target_words))
 
         explanation = TraceExplanation(source_word_descriptors, target_word_descriptors)
-        result = add_concept_families(dataset, explanation)
+        result = add_concept_families(self.dataset, explanation)
         relationships = result.relationships
         self.assertEqual(1, len(relationships))
 

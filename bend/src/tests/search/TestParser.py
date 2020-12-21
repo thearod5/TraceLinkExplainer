@@ -1,13 +1,12 @@
 from django.test import TestCase
 
 from api import models
-from search.Combinators import AndCombinator, OrCombinator, get_combinator_symbols
-from search.Expressions import QueryExpression
-from search.Filters import EqualFilter, DoesNotEqualFilter
-from search.ParserUtil import get_symbols_in_def
-from search.Parsers import parse_definition
 from search.attributes import NameAttribute, TypeAttribute
-from tests.Data import DataBuilder
+from search.combinators import AndCombinator, OrCombinator, get_combinator_symbols
+from search.expressions import QueryExpression
+from search.filters import EqualFilter, DoesNotEqualFilter
+from search.parsers import parse_definition, get_symbols_in_def
+from tests.test_data import DataBuilder
 
 
 class TestParse(TestCase):

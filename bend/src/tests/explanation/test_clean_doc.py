@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from explanation.Cleaners import clean_doc, split_chained_calls, separate_camel_case, \
+from explanation.cleaners import clean_doc, split_chained_calls, separate_camel_case, \
     remove_non_alphanumeric_characters, remove_stop_words, stem_doc, to_lower, get_camel_case_words, \
     get_words_in_string_doc
 

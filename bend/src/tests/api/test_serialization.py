@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 import api.models as models
-from tests.Data import DataBuilder
+from tests.test_data import DataBuilder
 
 
 class TestTraceSerializer(TestCase):

@@ -6,7 +6,7 @@ For example, in the Project modal contains a `name` attribute.
 from abc import ABC, abstractmethod
 from typing import List
 
-from search.Symbols import ISymbol, get_operation
+from search.symbols import ISymbol, get_operation
 
 
 class IAttribute(ISymbol, ABC):

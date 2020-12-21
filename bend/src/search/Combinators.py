@@ -3,8 +3,8 @@ from typing import List, Type
 
 from django.db.models import Q
 
-from search.Expressions import IExpr
-from search.Symbols import ISymbol, get_operation
+from search.expressions import IExpr
+from search.symbols import ISymbol, get_operation
 
 
 class ICombinator(IExpr, ISymbol, ABC):

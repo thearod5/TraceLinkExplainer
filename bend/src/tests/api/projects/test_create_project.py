@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from tests.Data import DataBuilder
+from tests.test_data import DataBuilder
 
 
 class TestCreateProject(TestCase):

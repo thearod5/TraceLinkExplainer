@@ -3,7 +3,7 @@ from typing import List
 
 from django.db.models import Q
 
-from search.Symbols import get_operation, NOT_SYMBOL
+from search.symbols import get_operation, NOT_SYMBOL
 
 
 class IFilter(ABC):
