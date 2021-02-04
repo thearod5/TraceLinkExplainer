@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from api import models
+from search.Combinators import AndCombinator, Combinator
 from search.attributes import NameAttribute, TypeAttribute
-from search.combinators import AndCombinator, Combinator
 from search.expressions import QueryExpression
 from search.filters import Filter, EqualFilter
 from tests.test_data import DataBuilder

@@ -47,7 +47,7 @@ REGISTERED_COMBINATORS: List[Type[CombinatorController]] = [AndCombinator, OrCom
 
 
 def get_combinator_symbols():
-    return list(map(lambda c: c.name, REGISTERED_COMBINATORS))
+    return list(map(lambda c: c.symbol, REGISTERED_COMBINATORS))
 
 
 class Combinator(ICombinator):

@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from api import models
+from search.Combinators import AndCombinator, get_combinator_symbols, OrCombinator
 from search.attributes import NameAttribute, TypeAttribute
-from search.combinators import AndCombinator, OrCombinator, get_combinator_symbols
 from search.expressions import QueryExpression
 from search.filters import EqualFilter, DoesNotEqualFilter
 from search.parsers import parse_definition, get_symbols_in_def
