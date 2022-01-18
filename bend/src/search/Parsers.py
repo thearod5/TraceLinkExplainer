@@ -1,8 +1,8 @@
 import pandas as pd
 from django.db.models import Q
 
+from search.Combinators import Combinator, get_combinator_symbols, ICombinator
 from search.attributes import Attribute
-from search.combinators import get_combinator_symbols, Combinator, ICombinator
 from search.expressions import IExpr, QueryExpression
 from search.filters import get_operation_symbols, Filter
 

@@ -24,7 +24,7 @@ class IAttribute(ISymbol, ABC):
         return self.get_symbol() == other.get_symbol()
 
 
-class CoreAttribute(ABC):
+class CoreAttribute(IAttribute):
     """
     Specification for a Attribute enforcing required information
     """
@@ -43,6 +43,12 @@ class CoreAttribute(ABC):
         """
         raise NotImplementedError()
 
+    def get_filters(self) -> List[str]:
+        return self.filters
+
+    def get_symbol(self):
+        return self.name
+
 
 class CoreAttributeDecorator(IAttribute):
     """
@@ -51,6 +57,10 @@ class CoreAttributeDecorator(IAttribute):
 
     def __init__(self, core_attribute: CoreAttribute):
         self.core_attribute = core_attribute
+
+    @property
+    def symbol(self):
+        return self.core_attribute.name
 
     def get_symbol(self):
         """

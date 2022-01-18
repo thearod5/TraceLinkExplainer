@@ -36,7 +36,6 @@ def search_artifacts(request: Request, project_name: str):
     project_artifacts = models.Artifact.objects.filter(project__name=project_name)
     if "source_name" in request.query_params:
         source_names = request.GET.getlist("source_name")
-        print(source_names)
         filter_query = (Q(traces__source__name__in=source_names) | Q(traces__target__name__in=source_names))
         project_artifacts = models.Artifact.objects.filter(filter_query).exclude(name__in=source_names)
 

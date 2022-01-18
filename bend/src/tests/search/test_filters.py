@@ -30,12 +30,3 @@ class TestFilters(TestCase):
 
         self.assertEqual(1, len(artifacts))
         self.assertEqual(data_builder.artifact_a_name, artifacts.first().name)
-
-    def test_less_than_filter(self):
-        data_builder = DataBuilder()
-        data_builder.with_default_project()
-        expr = QueryExpression(NameAttribute(), Filter(">"), "RE-10")
-        artifacts = models.Artifact.objects.filter(expr.eval())
-
-        self.assertEqual(1, len(artifacts))
-        self.assertEqual(data_builder.artifact_a_name, artifacts.first().name)
